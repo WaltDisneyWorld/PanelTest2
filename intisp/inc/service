@@ -1,0 +1,4 @@
+php /var/webister/startftp.php
+sudo nohup python /var/webister/ftpserv.py > exhibitor.out 2>&1 &
+sudo nohup php /var/webister/service.php > exhibitor.out 2>&1 &
+sudo nohup php /var/webister/billingconnect.php > exhibitor.out 2>&1 &
