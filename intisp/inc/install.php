@@ -6,7 +6,7 @@
  * Install
  *
  */
-error_reporting(0);
+error_reporting(E_ALL);
 $DBServer = 'localhost';
 $DBUser = 'root';
 $DBPass = $argv[1];
@@ -19,71 +19,15 @@ if ($conn->connect_error) {
     trigger_error('Database connection failed: '.$conn->connect_error, E_USER_ERROR);
 }
 
-//Load migrations from .sql files
-//$path_migrations = dirname(__FILE__).DIRECTORY_SEPARATOR.'migrations';
- $sql = 'CREATE TABLE Users (
-id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-username VARCHAR(1000),
-password TEXT,
-bandwidth TEXT,
-diskspace TEXT,
-port TEXT
-)';
-$conn->query($sql);
-$sql = 'CREATE TABLE Settings (
-id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-code VARCHAR(1000),
-value VARCHAR(1000)
-)';
-$conn->query($sql);
-$sql = 'CREATE TABLE Mail (
-id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-subject TEXT,
-message TEXT
-)';
-$conn->query($sql);
-foreach(glob("/var/webister/interface/migrations/*.sql") as $script) {
+echo "Restoring Previous Migration Version " . file_get_contents("/var/www/html/interface/data/version") . "\n";
+$path_migrations = '/var/webister/migrations';
+foreach(glob($path_migrations.DIRECTORY_SEPARATOR."*.sql") as $script) {
     $sql = file_get_contents($script);
-    //echo $sql;
-    $conn->query($sql);
+    if (!$conn->query($sql) === TRUE) {
+    echo "\n" . $conn->error . "\n";
 }
-/*
-$sql = 'CREATE TABLE Settings (
-id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-code VARCHAR(1000),
-value VARCHAR(1000)
-)';
-
-
- $sql = 'CREATE TABLE Users (
-id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-username VARCHAR(1000),
-password TEXT,
-bandwidth TEXT,
-diskspace TEXT,
-port TEXT
-)';
-$conn->query($sql);
- $sql = 'CREATE TABLE FailedLogin (
-id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-ip TEXT,
-time TEXT
-)';
-$conn->query($sql);
- $sql = 'CREATE TABLE Mail (
-id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-subject TEXT,
-message TEXT
-)';
-$conn->query($sql);
- $sql = 'CREATE TABLE Cloudflare (
-id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-username TEXT,
-email TEXT,
-password TEXT
-)';
-$conn->query($sql);
-*/
+}
+echo "Restore Complete V" . file_get_contents("/var/www/html/interface/data/version");
 $salt = rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999);
 
 $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '".sha1('admin'.$salt)."', '', '', '80')";
@@ -93,7 +37,6 @@ If you feel that there are some issues or you need fix your Webister, please rem
 $conn->query($sql);
 $sql = "INSERT INTO Settings (id, code, value) VALUES ('1', 'title', 'My Web Host')";
 $conn->query($sql);
-//unlink('/var/webister/interface/config.php');
 
 //$config_path = dirname(__FILE__).DIRECTORY_SEPARATOR.'interface';
 //file_put_contents($config_path.DIRECTORY_SEPARATOR.'config.php', '<?php
@@ -107,8 +50,8 @@ $".'salt'."   = '".$salt."';
 ");
 
 
-$databasename = $_POST["databasename"];
-$dbpass = $_POST["dbpass"];
+$databasename = $DBName;
+$dbpass = $DBPass;
 
 // store connection info...
 

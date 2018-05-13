@@ -4,7 +4,7 @@ function adminer_object() {
     // required to run any plugin
     include_once "plugin.php";
 
-        include_once "ade/l.php";
+        include_once "features/ade/l.php";
 
     
     $plugins = array(

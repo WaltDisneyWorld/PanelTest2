@@ -88,29 +88,9 @@ $result = mysqli_query($con, $sql);
 	<meta charset="UTF-8">
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">	
 	<title>IntISP</title>
-	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-	<link rel="icon" href="https://www.kalzediahosting.com/assets/kh.png">
-	<link rel="stylesheet" type="text/css" href="style/tour.css">
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-61941734-2', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
 	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-            <?php if (file_Get_contents("data/theme") == "default") { ?>
-				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-				<link rel="stylesheet" type="text/css" href="cpanel\bootpanel\css\admin.css">
-				<link rel="stylesheet" type="text/css" href="cpanel\bootpanel\css\custom.css">
-				<link rel="stylesheet" type="text/css" href="cpanel\bootpanel\css\local.css">
-            <?php } ?>
-            <script src="js/jquery.min.js"></script>
-            <script src="cpanel\bootpanel\js\engine.js" type="text/javascript"></script>
+          
+            <script src="public/assets/js/jquery.min.js"></script>
      
             <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
             <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -118,11 +98,14 @@ $result = mysqli_query($con, $sql);
               <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
               <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
             <![endif]-->   
+              <?php if (file_Get_contents("data/theme") == "default") { ?>
+				<link rel="stylesheet" href="public/assets/css/bootstrap.min.css">
+            <?php } ?>
               <?php if (file_Get_contents("data/theme") == "modern") { ?>
-            <link rel="stylesheet" type="text/css" href="cpanel\bootpanel\css\modern.css">
+            <link rel="stylesheet" type="text/css" href="public/assets/css/modern.min.css">
             <?php } ?>
             <?php if (file_Get_contents("data/theme") == "dark") { ?>
-            <link rel="stylesheet" type="text/css" href="cpanel\bootpanel\css\dark.css">
+            <link rel="stylesheet" type="text/css" href="cpanel\bootpanel\css\dark.min.css">
             <?php } ?>
          
             </head>

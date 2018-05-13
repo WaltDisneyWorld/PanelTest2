@@ -37,6 +37,8 @@ BLAH=$(chmod -R 777 /etc/init.d/webister)
 vhost() {
     BLAH=$(sudo cp inc/service.php /var/webister/)
 BLAH=$(sudo cp inc/billingconnect.php /var/webister/)
+BLAH=$(sudo cp inc/restore.sql /var/webister/)
+BLAH=$(sudo cp -r inc/migrations /var/webister/)
 BLAH=$(sudo cp inc/virtualhost.sh /usr/local/bin/wvhost)
 BLAH=$(sudo chmod +x /usr/local/bin/wvhost)
 BLAH=$(echo 'apache ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo)

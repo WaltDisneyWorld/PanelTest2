@@ -6,10 +6,9 @@
 
 IntISP is a hosting control panel that is designed to be light and fast. It uses only PHP and HTML with a few shell. IntISP only takes 5 MB of space to run.
 
- PHP 49.2%	 JavaScript 33.4%	 CSS 16.0%	 Other 1.4%
+ PHP 51.7%	 JavaScript 31.6%	 CSS 15.2%	 HTML 1.2%	 Other 0.3%
 
-[ ![Codeship Status for INTisp/INTisp](https://app.codeship.com/projects/f7dd2c40-386e-0136-c44d-5a4e6b080e3e/status?branch=master)](https://app.codeship.com/projects/289840)
-
+[![CircleCI](https://circleci.com/gh/INTisp/INTisp/tree/master.svg?style=svg)](https://circleci.com/gh/INTisp/INTisp/tree/master)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c2051a2b233d4ed8b884b9ad028052ce)](https://www.codacy.com/app/alwaysontop617/webister?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alwaysontop617/webister&amp;utm_campaign=Badge_Grade)
  

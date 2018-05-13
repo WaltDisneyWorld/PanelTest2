@@ -16,3 +16,6 @@ everything:
 	sudo mysql_secure_installation
 	echo "Install using make.sh"
 	cd intisp && bash make.sh
+bypass:
+	echo "Install using make.sh"
+	cd intisp && bash make.sh

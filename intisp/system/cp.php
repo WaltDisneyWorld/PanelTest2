@@ -205,7 +205,7 @@ if (ismasterreseller()) {
                                                                                 <a type="button" href="mail.php" class="sys btn btn-default"><i class="fa fa-5x fa-envelope-o"></i><hr>Messages</a>
                                       
                                         <a type="button" href="http://adaclare.com/errtrck/bug_report_page.php" class="sys btn btn-default"><i class="fa fa-5x fa-life-ring"></i><hr>Bugs</a>
-                                        <a type="button" class="sys btn btn-large btn-success" href="javascript:void(0);" onclick="javascript:introJs().start();" class="btn btn-default"><i class="fa fa-5x fa-question-circle"></i><hr>Tour</a>
+                                       
                                         <?php
                                         $scan = scandir("plugins/");
                                         foreach ($scan as $file) {

@@ -160,23 +160,14 @@ if ($result = mysqli_query($con, $sql)) {
             </section>
         </div>
            
-        <script src="cpanel/bootpanel/js/bootstrap.min.js" type="text/javascript"></script>
-        <div id="branding">
+          <div id="branding">
         
     Copyright Adaclare Technologies | Powered By Bing Translate
     
 </div>
 
-	<script src="js/bootstrap-select.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.dataTables.min.js"></script>
-	<script src="js/dataTables.bootstrap.min.js"></script>
-	<script src="js/Chart.min.js"></script>
-	<script src="js/fileinput.js"></script>
-	<script src="js/chartData.js"></script>
 
-	<script src="js/main.js"></script>
-<script src="js/tour.js"></script>
+	<script src="public/assets/js/bootstrap.min.js"></script>
 
 		</body>
 </html>

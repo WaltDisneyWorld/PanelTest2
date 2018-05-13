@@ -1,5 +1,0 @@
-CREATE TABLE Mail (
-id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-subject TEXT,
-message TEXT
-);
