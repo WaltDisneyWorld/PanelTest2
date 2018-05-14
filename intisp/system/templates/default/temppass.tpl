@@ -471,7 +471,7 @@ input {
   <div class="card"></div>
   <div class="card">
     <h1 class="title">Login</h1>
-    <form action="pass.php" method="post">
+    <form action="index.php?page=pass" method="post">
       <div class="input-container">
           <input type="hidden" name="username" value="<?php echo $_SESSION['user']; ?>">
         <input type="password" name="password" id="Password" required="required"/>

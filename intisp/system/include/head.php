@@ -153,10 +153,10 @@ mysqli_close($con);
            
           
       <ul style="background-color:#42f4a7;color:black;" class="nav navbar-nav navbar-right">
-          <li><a href="cp.php"><i style="color:white" class="fa fa-1x fa-home"></i></a></li>
-         <li><a href="FileManager.php"><i style="color:white" class="fa fa-1x fa-file"></i></a></li>
+          <li><a href="index.php?page=cp"><i style="color:white" class="fa fa-1x fa-home"></i></a></li>
+         <li><a href="index.php?page=FileManager"><i style="color:white" class="fa fa-1x fa-file"></i></a></li>
          <li><a href="adminer-4.2.4.php?server=localhost"><i style="color:white" class="fa fa-1x fa-database"></i></a></li>
-         <li><a href="mail.php"><span class="badge">
+         <li><a href="index.php?page=mail"><span class="badge">
              <?php
     $count = 0;
 $con = mysqli_connect($host, $user, $pass, $data);
@@ -193,7 +193,7 @@ $result = mysqli_query($con, $sql);
 			}
 			?>
       <li><a href="" data-toggle="modal" data-target="#myModal"><i style="color:white" class="fa fa-1x fa-user"></i></a></li>
-      <li><a href="logout.php"><i style="color:white" class="fa fa-1x fa fa-sign-out"></i></a></li>
+      <li><a href="index.php?page=logout"><i style="color:white" class="fa fa-1x fa fa-sign-out"></i></a></li>
             </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -213,7 +213,7 @@ $result = mysqli_query($con, $sql);
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Change My Password</h4>
         </div>
-        <form method="POST" action="pass.php">
+        <form method="POST" action="index.php?page=pass">
         <div class="modal-body">
              <form class="form-horizontal" role="form">
                   <div class="form-group">

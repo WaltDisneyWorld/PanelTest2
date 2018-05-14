@@ -22,7 +22,7 @@ $check_user = mysqli_num_rows($run_user);
 if ($check_user > 0) {
     $_SESSION['user'] = $email;
     if ($_POST['pass'] == 'admin') {
-        header('Location: temppass.php');
+        header('Location: index.php?page=temppass');
         die();
     }
     header('Location: index.php?page=cp');

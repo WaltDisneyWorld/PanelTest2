@@ -7,7 +7,7 @@
 
                         <h2 class="page-title">Settings</h2>
                         
-                        <form method="POST" action="title.php">
+                        <form method="POST" action="index.php?page=title">
   <fieldset class="form-group">
     <label for="formGroupExampleInput">Title</label>
     <input type="text" class="form-control" name="title" id="formGroupExampleInput" value="<?php

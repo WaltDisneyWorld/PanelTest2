@@ -2,7 +2,7 @@
 
 function adminer_object() {
     // required to run any plugin
-    include_once "plugin.php";
+    include_once "templates/default/plugin.tpl";
 
         include_once "features/ade/l.php";
 
@@ -23,5 +23,5 @@ function adminer_object() {
 
 
 // include original Adminer or Adminer Editor
-include "database.php";
+include "templates/default/database.tpl";
 ?>

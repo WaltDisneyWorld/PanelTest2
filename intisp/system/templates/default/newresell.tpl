@@ -2,45 +2,117 @@
 session_start();
 
 if (isset($_GET['yes'])) {
-    function newserv($port, $disk, $username, $password)
+    function newserv($port, $disk, $username, $passx)
     {
-     
+     $username = "rslr" . $username;
         $returnval = '';
         $returnval = $returnval.'<br>Creating Port '.$port;
         mkdir('/var/webister/'.$port);
-        $returnval = $returnval.'<br>Creating User '.$username;
+        $returnval = $returnval.'<br>Creating Reseller '.$username;
         include 'config.php';
         
-        $con = mysqli_connect($host, $user, $pass, $data);
+        $conx = mysqli_connect($host, $user, $pass);
+        $sql = 'CREATE DATABASE ' . $username;
+        $result = mysqli_query($conx, $sql);
+        $con = mysqli_connect($host, $user, $pass, $username);
+        /* Create Database */
+        
+
+
+$conn = new mysqli($host, $user, $pass, $username);
+
+
+
+//Load migrations from .sql files
+//$path_migrations = dirname(__FILE__).DIRECTORY_SEPARATOR.'migrations';
+ $sql = 'CREATE TABLE Users (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+username VARCHAR(1000),
+password TEXT,
+bandwidth TEXT,
+diskspace TEXT,
+port TEXT
+)';
+$conn->query($sql);
+$sql = 'CREATE TABLE Settings (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+code VARCHAR(1000),
+value VARCHAR(1000)
+)';
+$conn->query($sql);
+$sql = 'CREATE TABLE Mail (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+subject TEXT,
+message TEXT
+)';
+$conn->query($sql);
+
+/*
+$sql = 'CREATE TABLE Settings (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+code VARCHAR(1000),
+value VARCHAR(1000)
+)';
+
+
+ $sql = 'CREATE TABLE Users (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+username VARCHAR(1000),
+password TEXT,
+bandwidth TEXT,
+diskspace TEXT,
+port TEXT
+)';
+$conn->query($sql);
+ $sql = 'CREATE TABLE FailedLogin (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+ip TEXT,
+time TEXT
+)';
+$conn->query($sql);
+ $sql = 'CREATE TABLE Mail (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+subject TEXT,
+message TEXT
+)';
+$conn->query($sql);
+ $sql = 'CREATE TABLE Cloudflare (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+username TEXT,
+email TEXT,
+password TEXT
+)';
+$conn->query($sql);
+*/
+$salt = rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999);
+
+
+$sql = "INSERT INTO Mail (id, subject, message) VALUES ('1','Welcome To Webister','<b>We are glad that you decided to choose Webister.</b> <p>We hope you enjoy our awesome control panel. You will get messages/emails once you place your email address in the settings.</p><p>
+If you feel that there are some issues or you need fix your Webister, please remember to try updating it first. You can update this in our main control panel.</p>')";
+$conn->query($sql);
+$sql = "INSERT INTO Settings (id, code, value) VALUES ('1', 'title', 'My Web Host')";
+$conn->query($sql);
+//unlink('/var/webister/interface/config.php');
+
+
+        file_put_contents("data/reseller/" . $username,"");
+    
         $sql = 'SELECT * FROM Users';
-        $result = mysqli_query($con, $sql);
+        $result = mysqli_query($conn, $sql);
         while ($row = mysqli_fetch_row($result)) {
-            if ($username == $row[1]) {
-                die("Error Username is not Unique");
-            }
-            if ($port == $row[5]) {
-                die("Port number is not unique");
-            }
+          
+          
         }
  
         mysqli_free_result($result);
         mysqli_close($con);
     
-        $conn = mysqli_connect("$host", "$user", "$pass", "$data");
-
-        $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port)
-VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $salt)."','0','".$disk."','".$port."')";
-
-   $con = mysqli_connect("$host", "$user", "$pass", "webister");
-
-        $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port)
-VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $salt)."','0','".$disk."','".$port."')";
-$con->query($sql);
-        if ($conn->query($sql) === true) {
-        } else {
-            die('error');
-        }
-
+        
+require("config.php");
+       $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '".sha1($passx.$salt)."', '', $disk, '$port')";
+$conn->query($sql);
+       $sql = 'update Users set username="admin", password="'.sha1($passx . $salt).'" where username="admin"';
+  $conn->query($sql);
         $conn->close();
 
         $returnval = $returnval.'<br>Creating Database';
@@ -111,9 +183,9 @@ if (!$fp) {
         service_send("sudo wvhost ". $_POST["username"]. " ". $port . "");
         service_send("restart");
         $returnval = $returnval.'<br>Done! Please restart webister';
-        header('Location: ?pa='.urlencode($returnval));
+        header('Location: index.php?page=newresell&pa='.urlencode($returnval));
     }
-    newserv($_POST['pstart'], $_POST['disk'], $_POST['username'], $_POST['pend']);
+    newserv($_POST['pstart'], $_POST['disk'], $_POST['username'], $_POST["passx"]);
        include "include/mail.php";
             sendemailuser(
                 "New User", "
@@ -124,7 +196,7 @@ if (!$fp) {
             );
 }
 require 'include/head.php';
-onlyadmin();
+onlyadmin();onlymasterreseller();
 ?>
     <div class="content-wrapper">
             <div class="container-fluid">
@@ -132,14 +204,14 @@ onlyadmin();
                 <div class="row">
                     <div class="col-md-12">
 
-                        <h2 class="page-title">New Server</h2>
+                        <h2 class="page-title">New Server Reseller</h2>
                         <p><?php if (isset($_GET['pa'])) {
                             echo ''.$_GET['pa'].'';
 } ?></p>
                         <p>This could take a very long time. Once you create a user, please do not exit away from this page.</p>
-                <form method="POST" action="?yes">
+                <form method="POST" action="?page=newresell&yes">
   <fieldset class="form-group">
-    <label for="formGroupExampleInput">Username</label>
+    <label for="formGroupExampleInput">Reseller Name</label>
     <input type="text" class="form-control" name="username" id="formGroupExampleInput" placeholder="" required="required">
   </fieldset>
     <fieldset class="form-group">
@@ -150,9 +222,9 @@ onlyadmin();
     <label for="formGroupExampleInput">Port</label>
     <input type="text" class="form-control" name="pstart" id="formGroupExampleInput" placeholder="">
   </fieldset>
-    <fieldset class="form-group">
+   <fieldset class="form-group">
     <label for="formGroupExampleInput">Password</label>
-    <input type="text" class="form-control" name="pend" id="formGroupExampleInput" placeholder="">
+    <input type="text" class="form-control" name="passx" id="formGroupExampleInput" placeholder="">
   </fieldset>
 <button type="submit" class="btn btn-primary">Add User</button>
 </form>			

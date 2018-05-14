@@ -125,9 +125,9 @@ $(document).ready(function(){
   <ul id="myUL" class="list-group" data-step="2" data-intro="Here you can control the power options of webister and the computer it's running on.">
   <li class="list-group-item"><a id="chide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="cshow"><i class="fa fa-list" aria-hidden="true"></i></a> | Power Management</li>
   <li class="list-group-item">            
-                                      <a type="button" href="action.php?act=restart" class="csys btn btn-default"><i class="fa fa-5x fa-refresh"></i><hr>Restart</a>
-                                      <a type="button" href="action.php?act=server" class="csys btn btn-default"><i class="fa fa-5x fa-server"></i><hr>Restart</a>
-                                      <a type="button" href="action.php?act=mysql" class="csys btn btn-default"><i class="fa fa-5x fa-database"></i><hr>Restart</a></li>
+                                      <a type="button" href="index.php?page=action&act=restart" class="csys btn btn-default"><i class="fa fa-5x fa-refresh"></i><hr>Restart</a>
+                                      <a type="button" href="index.php?page=action&act=server" class="csys btn btn-default"><i class="fa fa-5x fa-server"></i><hr>Restart</a>
+                                      <a type="button" href="index.php?page=action&act=mysql" class="csys btn btn-default"><i class="fa fa-5x fa-database"></i><hr>Restart</a></li>
   </li>
   </ul>
     <?php
@@ -154,20 +154,20 @@ $(document).ready(function(){
   <li class="list-group-item"><a id="bhide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="bshow"><i class="fa fa-list" aria-hidden="true"></i></a> | Servers</li>
   <li class="list-group-item">  
 
-                                        <a type="button" href="newserv.php" class="svr btn btn-default"><i class="fa fa-5x fa-plus"></i><hr>New Server</a>
+                                        <a type="button" href="index.php?page=newserv" class="svr btn btn-default"><i class="fa fa-5x fa-plus"></i><hr>New Server</a>
                                             <?php
                                             if (ismasterreseller()) {
                                             ?>
-                                             <a type="button" href="newresell.php" class="svr btn btn-default"><i class="fa fa-5x fa-plus"></i><hr>New Reseller</a>
+                                             <a type="button" href="index.php?page=newresell" class="svr btn btn-default"><i class="fa fa-5x fa-plus"></i><hr>New Reseller</a>
                                             <?php
                                             } ?>
                                         <?php if (file_get_contents("data/cloudflare") != "") {
                                             ?>
                                         
-                                          <a type="button" href="cloudflare.php" class="svr btn btn-default"><i class="fa fa-5x fa-cloud"></i><hr>Cloudflare</a>
+                                          <a type="button" href="index.php?page=cloudflare" class="svr btn btn-default"><i class="fa fa-5x fa-cloud"></i><hr>Cloudflare</a>
                                         <?php } ?>
                                         <a type="button" href="index.php?page=list#" class="svr btn btn-default"><i class="fa fa-5x fa-user"></i><hr>Users</a>
-                                        <a type="button" href="plans.php" class="svr btn btn-default"><i class="fa fa-5x fa-columns" aria-hidden="true"></i><hr>Plans</a>
+                                        <a type="button" href="index.php?page=plans" class="svr btn btn-default"><i class="fa fa-5x fa-columns" aria-hidden="true"></i><hr>Plans</a>
                                                                             <?php
                                                                             if (ismasterreseller()) {
                                                                             ?>
@@ -197,21 +197,20 @@ $(document).ready(function(){
 <?php
 if (ismasterreseller()) {
     ?>
-                                <a type="button" href="settings.php" class="sys btn btn-default"><i class="fa fa-5x fa-sliders"></i><hr>Settings</a> 
-                                <a type="button" href="update.php" class="sys btn btn-default"><i class="fa fa-5x fa-upload"></i><hr>Update</a> <?php
+                                <a type="button" href="index.php?page=settings" class="sys btn btn-default"><i class="fa fa-5x fa-sliders"></i><hr>Settings</a> 
+                                <a type="button" href="index.php?page=update" class="sys btn btn-default"><i class="fa fa-5x fa-upload"></i><hr>Update</a> <?php
 } ?>
-                                  <a type="button" href="plug.php" class="sys btn btn-default"><i class="fa fa-5x fa-puzzle-piece"></i><hr>Plugins</a>
-                                        <a type="button" href="terminal.php" class="sys btn btn-default"><i class="fa fa-5x fa-terminal"></i><hr>Terminal</a>
-                                                                                <a type="button" href="mail.php" class="sys btn btn-default"><i class="fa fa-5x fa-envelope-o"></i><hr>Messages</a>
+                                  <a type="button" href="index.php?page=plug" class="sys btn btn-default"><i class="fa fa-5x fa-puzzle-piece"></i><hr>Plugins</a>
+                                        <a type="button" href="index.php?page=terminal" class="sys btn btn-default"><i class="fa fa-5x fa-terminal"></i><hr>Terminal</a>
+                                                                                <a type="button" href="index.php?page=mail" class="sys btn btn-default"><i class="fa fa-5x fa-envelope-o"></i><hr>Messages</a>
                                       
-                                        <a type="button" href="http://adaclare.com/errtrck/bug_report_page.php" class="sys btn btn-default"><i class="fa fa-5x fa-life-ring"></i><hr>Bugs</a>
-                                       
+                                        
                                         <?php
                                         $scan = scandir("plugins/");
                                         foreach ($scan as $file) {
                                             include "plugins/" . $file;
                                             if ($menu) {
-                                                echo '<a type="button" class="sys btn btn-large btn-default" href="plpage.php?pl=' . urlencode($file) . '" class="btn btn-default"><i class="fa fa-5x fa-puzzle-piece"></i><hr>' . $menu_name . '</a>';
+                                                echo '<a type="button" class="sys btn btn-large btn-default" href="index.php?page=plpage&pl=' . urlencode($file) . '" class="btn btn-default"><i class="fa fa-5x fa-puzzle-piece"></i><hr>' . $menu_name . '</a>';
                                             }
                                         }
                                         ?>
@@ -242,13 +241,13 @@ $(document).ready(function(){
   <li class="list-group-item"><a id="hide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="show"><i class="fa fa-list" aria-hidden="true"></i></a> | My Server</li>
   <li class="list-group-item">  
 
-                                        <a  type="button" href="FileManager.php" class="serv btn btn-default"><i class="fa fa-5x fa-file"></i><hr>Files</a>
+                                        <a  type="button" href="index.php?page=FileManager" class="serv btn btn-default"><i class="fa fa-5x fa-file"></i><hr>Files</a>
     
                                         <a    type="button" href="adminer-4.2.4.php?server=localhost" class="serv btn btn-default"><i class="fa fa-5x fa-database"></i><hr>Database</a>
-                                        <a  type="button" href="wp.php" class="serv btn btn-default"><i class="fa fa-5x fa-wordpress"></i><hr>Wordpress</a>
-                                        <a  type="button" href="phpinfo.php" class="serv btn btn-default"><i class="fa fa-5x fa-code"></i><hr>PHP Info</a>
-                                        <a  type="button" href="ucreate.php" class="serv btn btn-default"><i class="fa fa-5x fa-university"></i><hr>Webister U</a>
-                                        <a  type="button" href="mobiapp.php" class="serv btn btn-default"><i class="fa fa-5x fa-mobile"></i><hr>Mobile App</a>
+                                        <a  type="button" href="index.php?page=wp" class="serv btn btn-default"><i class="fa fa-5x fa-wordpress"></i><hr>Wordpress</a>
+                                        <a  type="button" href="index.php?page=phpinfo" class="serv btn btn-default"><i class="fa fa-5x fa-code"></i><hr>PHP Info</a>
+                                        <a  type="button" href="index.php?page=ucreate" class="serv btn btn-default"><i class="fa fa-5x fa-university"></i><hr>Webister U</a>
+                                        <a  type="button" href="index.php?page=mobiapp" class="serv btn btn-default"><i class="fa fa-5x fa-mobile"></i><hr>Mobile App</a>
                                           <a id="serv"  type="button" href="<?php echo file_get_contents("data/forum"); ?>" class="serv btn btn-large btn-warning"><i class="fa fa-5x fa-file"></i><hr>Forum</a>
                                         <a type="button" href="<?php echo file_get_contents("data/support"); ?>" class="serv btn btn-large btn-danger"><i class="fa fa-5x fa-life-ring"></i><hr>Support</a>
                                     

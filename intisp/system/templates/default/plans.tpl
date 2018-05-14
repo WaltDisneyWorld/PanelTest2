@@ -18,7 +18,7 @@
                         
         }
                         ?>
-                                                <form method="POST" action="?yes">
+                                                <form method="POST" action="?page=plans&yes">
   <fieldset class="form-group">
     <label for="formGroupExampleInput">Name</label>
     <input type="text" class="form-control" name="title" id="formGroupExampleInput" placeholder="">

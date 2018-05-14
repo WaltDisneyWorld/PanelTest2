@@ -32,4 +32,4 @@ require 'include/mail.php';
     <p>This email is automatically sent out everytime a setting is changed. To disable this feature please visit the control panel and set the email to nothing.
     "
     );
-    header('Location: index.php?page=cp#');
+    header('Location: index.php?page=settings');
