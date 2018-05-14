@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
@@ -13,7 +13,6 @@ include '/var/www/html/interface/config.php';
     $con = mysqli_connect("$host", "$user", "$pass", "$data"); 
     $sql = "SELECT * \n"
     ."FROM `Users`";
-
 
 $file = "from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
@@ -27,7 +26,6 @@ handler.authorizer = authorizer
 server = FTPServer(("0.0.0.0", 21), handler)
 server.max_cons_per_ip = 5
 server.serve_forever()';
-
 
 $u = "";
 

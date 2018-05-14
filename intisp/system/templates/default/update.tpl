@@ -10,7 +10,7 @@ error_reporting(E_ALL);
 
                         <h2 class="page-title">Updates</h2>
 <?php
-$current = file_get_contents("data/version");
+$current     = file_get_contents("data/version");
 $getVersions = file_get_contents("https://dl.adaclare.com/main/intisp/curversion.txt");
 if ($getVersions != '') {
     echo '<p>CURRENT VERSION: '.$current.'</p>';
@@ -28,11 +28,11 @@ if ($getVersions != '') {
              echo '<p>Update Downloaded And Saved</p>';
         } else { echo '<p>Update already downloaded.</p>';
         }   
-        if ($_GET['doUpdate'] == true) {
+        if ($_GET['doUpdate'] == TRUE) {
             echo "Opening " . 'data/wb-'.$getVersions.'.zip...<br><pre>';
             echo shell_exec('unzip -o /var/www/html/interface/data/wb-'.$getVersions.'.zip -d /var/www/html/interface/');
             echo "</pre>";
-            $updated = true;
+            $updated = TRUE;
                 
             file_put_contents("data/version", $getVersions);
             include "include/mail.php";

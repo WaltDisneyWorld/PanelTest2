@@ -1,26 +1,30 @@
-<?php 
+<?php
+
+/*
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
+ *
+ */
+
 error_reporting(0);
     function newreseller($port, $disk, $username, $passx)
     {
-        require("/var/www/html/interface/configdatabase.php");
-     $username = "rslr" . $username;
+        require "/var/www/html/interface/configdatabase.php";
+     $username     = "rslr" . $username;
         $returnval = '';
         $returnval = $returnval.'<br>Creating Port '.$port;
         mkdir('/var/webister/'.$port);
         $returnval = $returnval.'<br>Creating Reseller '.$username;
 
-        
-        $conx = mysqli_connect($host, $user, $pass);
-        $sql = 'CREATE DATABASE ' . $username;
+        $conx   = mysqli_connect($host, $user, $pass);
+        $sql    = 'CREATE DATABASE ' . $username;
         $result = mysqli_query($conx, $sql);
-        $con = mysqli_connect($host, $user, $pass, $username);
+        $con    = mysqli_connect($host, $user, $pass, $username);
         /* Create Database */
         
-
-
 $conn = new mysqli($host, $user, $pass, $username);
-
-
 
 //Load migrations from .sql files
 //$path_migrations = dirname(__FILE__).DIRECTORY_SEPARATOR.'migrations';
@@ -82,9 +86,8 @@ email TEXT,
 password TEXT
 )';
 $conn->query($sql);
-*/
+ */
 $salt = rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999);
-
 
 $sql = "INSERT INTO Mail (id, subject, message) VALUES ('1','Welcome To Webister','<b>We are glad that you decided to choose Webister.</b> <p>We hope you enjoy our awesome control panel. You will get messages/emails once you place your email address in the settings.</p><p>
 If you feel that there are some issues or you need fix your Webister, please remember to try updating it first. You can update this in our main control panel.</p>')";
@@ -93,21 +96,18 @@ $sql = "INSERT INTO Settings (id, code, value) VALUES ('1', 'title', 'My Web Hos
 $conn->query($sql);
 //unlink('/var/webister/interface/config.php');
 
-
         file_put_contents("/var/www/html/interface/data/reseller/" . $username,"");
     
-        $sql = 'SELECT * FROM Users';
+        $sql    = 'SELECT * FROM Users';
         $result = mysqli_query($conn, $sql);
         while ($row = mysqli_fetch_row($result)) {
-          
           
         }
  
         mysqli_free_result($result);
         mysqli_close($con);
     
-        
-require("/var/www/html/interface/config.php");
+        require "/var/www/html/interface/config.php";
        $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '".sha1($passx.$salt)."', '', $disk, '$port')";
 $conn->query($sql);
        $sql = 'update Users set username="admin", password="'.sha1($passx . $salt).'" where username="admin"';
@@ -117,21 +117,17 @@ $conn->query($sql);
         $returnval = $returnval.'<br>Creating Database';
         
         $databasename = $data;
-        $dbpass = $pass;
-
-
+        $dbpass       = $pass;
 
         // store connection info...
 
         $connection=mysqli_connect("localhost", "root", "$pass");
-
 
         // check connection...
 
         if (mysqli_connect_errno()) {
                   echo "Failed to connect to MySQL: " . mysqli_connect_error();
         }
-
 
         $sql="CREATE DATABASE $username";
 
@@ -142,9 +138,6 @@ $conn->query($sql);
         $sql='grant usage on *.* to ' . $username . '@localhost identified by ' . "'" . "$passx" . "'";
 
         mysqli_query($connection, $sql);
-
-
-  
 
         $sql="grant all privileges on admin.* to admin@localhost";
 
@@ -164,8 +157,6 @@ $conn->query($sql);
         // mysql_close();
         $returnval = $returnval.'<br>Trying to Restart Webister';
 
-
-      
         mkdir("/var/webister/" . $port);
         //shell_exec("cd /var/webister/" . $port . "/ && sudo nohup php -S 0.0.0.0:" . $port. " > exhibitor.out 2>&1 &");
         //Start the webserver using apache
@@ -185,19 +176,17 @@ if (!$fp) {
       
     }
 
-
-
    function newserv($port, $disk, $username, $passx)
     {
-      require("/var/www/html/interface/configdatabase.php");
+      require "/var/www/html/interface/configdatabase.php";
         $returnval = '';
         $returnval = $returnval.'<br>Creating Port '.$port;
         mkdir('/var/webister/'.$port);
         $returnval = $returnval.'<br>Creating User '.$username;
         require '/var/www/html/interface/configdatabase.php';
         
-        $con = mysqli_connect($host, $user, $pass, $data);
-        $sql = 'SELECT * FROM Users';
+        $con    = mysqli_connect($host, $user, $pass, $data);
+        $sql    = 'SELECT * FROM Users';
         $result = mysqli_query($con, $sql);
         while ($row = mysqli_fetch_row($result)) {
             if ($username == $row[1]) {
@@ -220,7 +209,7 @@ VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($passx . $salt)."','0
 
         $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port)
 VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($passx . $salt)."','0','".$disk."','".$port."')";
-        if ($conn->query($sql) === true) {
+        if ($conn->query($sql) === TRUE) {
         } else {
             echo('error');
         }
@@ -228,21 +217,17 @@ VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($passx . $salt)."','0
         $conn->close();
 
         $returnval = $returnval.'<br>Creating Database';
-        require("/var/www/html/interface/config.php");
+        require "/var/www/html/interface/config.php";
        
-
-
         // store connection info...
 
         $connection=mysqli_connect("localhost", "root", "$pass");
-
 
         // check connection...
 
         if (mysqli_connect_errno()) {
                   echo "Failed to connect to MySQL: " . mysqli_connect_error();
         }
-
 
         $sql="CREATE DATABASE $username";
 
@@ -253,9 +238,6 @@ VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($passx . $salt)."','0
         $sql='grant usage on *.* to ' . $username . '@localhost identified by ' . "'" . "$passx" . "'";
 
         mysqli_query($connection, $sql);
-
-
-  
 
         $sql="grant all privileges on admin.* to admin@localhost";
 
@@ -275,8 +257,6 @@ VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($passx . $salt)."','0
         // mysql_close();
         $returnval = $returnval.'<br>Trying to Restart Webister';
 
-
-      
         mkdir("/var/webister/" . $port);
         //shell_exec("cd /var/webister/" . $port . "/ && sudo nohup php -S 0.0.0.0:" . $port. " > exhibitor.out 2>&1 &");
         //Start the webserver using apache
@@ -292,14 +272,12 @@ if (!$fp) {
 }
 }
 
-
-
 set_time_limit (0);
-require("/var/www/html/interface/config.php");
+require "/var/www/html/interface/config.php";
 $securityhash = $securehash;
 // Set the ip and port we will listen on 
 $address = "0.0.0.0"; 
-$port = 1209; 
+$port    = 1209; 
 
 // Create a TCP Stream socket 
 $sock = socket_create(AF_INET, SOCK_STREAM, 0); 
@@ -312,7 +290,7 @@ socket_listen($sock);
 
 //loop and listen
 
-while (true) {
+while (TRUE) {
     /* Accept incoming requests and handle them as child processes */ 
     $client = socket_accept($sock); 
     
@@ -359,5 +337,4 @@ if (!$fp) {
 socket_close($client); 
 
 // Close the master sockets 
-socket_close($sock); 
-?>
+socket_close($sock);

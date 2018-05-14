@@ -9,14 +9,14 @@
 <?php
 session_start();
 function onlymasterreseller() {
-    require("../../config.php");
+    require "../../config.php";
     if ($data == "webister") {
         
     } else {
         die();
     }
 }
-function onlyadmin () {
+function onlyadmin() {
      if ($_SESSION['user'] == 'admin') {
          
      } else {

@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
@@ -17,7 +17,7 @@ function newserv($port, $disk, $username, $password)
     $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port)
 VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $salt)."','0','".$disk."','".$port."')";
 
-    if ($conn->query($sql) === true) {
+    if ($conn->query($sql) === TRUE) {
     } else {
         die('error');
     }

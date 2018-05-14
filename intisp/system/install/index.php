@@ -111,10 +111,10 @@ This EULA agreement, and any dispute arising out of or in connection with this E
       <div class="tab-pane" id="step3">
           <h1>Basic Requirements</h1>
           <?php
-          $failed = false;
+          $failed = FALSE;
          if(version_compare(PHP_VERSION, '7.0.0') >= 0) {
 		echo '<li>You need<strong> PHP 7.0.0</strong> (or greater)</li>';
-		$failed = true;
+		$failed = TRUE;
 	} else {
 	echo '<li>You have<strong> PHP 7.0.0</strong> (or greater)</li>';
 	}
@@ -122,10 +122,8 @@ This EULA agreement, and any dispute arising out of or in connection with this E
 	    echo '<li>You have the <strong> MySQLi</strong> extention</li>';
 	} else {
 	     echo '<li>You need the <strong> MySQLi</strong> extention</li>';
-	     $failed = true;
+	     $failed = TRUE;
 	}
-
-
 
 	if (!$failed) {
 	    ?><a class="btn btn-default next" href="?s=3">Continue</a>

@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
@@ -16,8 +16,8 @@ $email = mysqli_real_escape_string($con, $_POST['user']);
 
 $pass = sha1($_POST['pass'] . $salt);
 
-$sql = "select * from Users where username='$email' AND password='$pass'";
-$run_user = mysqli_query($con, $sql);
+$sql        = "select * from Users where username='$email' AND password='$pass'";
+$run_user   = mysqli_query($con, $sql);
 $check_user = mysqli_num_rows($run_user);
 if ($check_user > 0) {
     $_SESSION['user'] = $email;
@@ -27,13 +27,13 @@ if ($check_user > 0) {
     }
     header('Location: index.php?page=cp');
     die();
-} else {
+}  
     include 'config.php';
 
     // Create connection
     $conn = new mysqli('localhost', 'root', "$pass", "$data");
 
-    $t = time();
+    $t   = time();
     $sql = "INSERT INTO FailedLogin(id, ip, time)
 VALUES ('".rand(1, 99999)."', '".$_SERVER['REMOTE_ADDR']."', '".date('Y-m-d', $t)."')";
     $conn->query($sql);
@@ -41,4 +41,4 @@ VALUES ('".rand(1, 99999)."', '".$_SERVER['REMOTE_ADDR']."', '".date('Y-m-d', $t
 
     header('Location: index.php?page=main&error');
     die();
-}
+

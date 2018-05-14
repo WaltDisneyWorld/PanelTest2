@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
@@ -68,7 +68,7 @@ function access($attr, $path, $data, $volume)
 {
     return strpos(basename($path), '.') === 0       // if file/folder begins with '.' (dot)
         ? !($attr == 'read' || $attr == 'write')    // set read+write to false, other (locked+hidden) set to true
-        : null;                                    // else elFinder decide it itself
+        : NULL;                                    // else elFinder decide it itself
 }
 
 // Documentation for connector options:

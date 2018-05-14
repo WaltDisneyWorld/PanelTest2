@@ -48,7 +48,7 @@ if (!isset($_SESSION['planid']) && !isset($_GET['planid'])) {
         <a href="index.html" class="logo"><h7>Webister on <b><?php
         require 'config.php';
         $mysqli = new mysqli();
-        $con = mysqli_connect("$host", "$user", "$pass", "$data");
+        $con    = mysqli_connect("$host", "$user", "$pass", "$data");
         // Check connection
 
         $sql = "SELECT value FROM Settings WHERE code =  'title' LIMIT 0 , 30";
@@ -72,14 +72,14 @@ if (!isset($_SESSION['planid']) && !isset($_GET['planid'])) {
     function isSSL()
     {
         if (!empty($_SERVER['https'])) {
-            return true;
+            return TRUE;
         }
 
         if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-            return true;
+            return TRUE;
         }
 
-        return false;
+        return FALSE;
     }
     if (!isSSL()) {
         ?>
@@ -103,8 +103,8 @@ if (!isset($_SESSION['planid']) && !isset($_GET['planid'])) {
             include 'config.php';
             mkdir('/var/webister/'.$port);
             include 'config.php';
-            $con = mysqli_connect($host, $user, $pass, $data);
-            $sql = 'SELECT * FROM Users';
+            $con    = mysqli_connect($host, $user, $pass, $data);
+            $sql    = 'SELECT * FROM Users';
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_row($result)) {
                 if ($username == $row[1]) {
@@ -122,7 +122,7 @@ if (!isset($_SESSION['planid']) && !isset($_GET['planid'])) {
             $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port)
 VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $hash)."','0','".$disk."','".$port."')";
 
-            if ($conn->query($sql) === true) {
+            if ($conn->query($sql) === TRUE) {
             } else {
                 die('error');
             }
@@ -146,13 +146,11 @@ VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $hash)."'
 
             $connection=mysqli_connect("localhost", "root", "$pass");
 
-
             // check connection...
 
             if (mysqli_connect_errno()) {
                           echo "Failed to connect to MySQL: " . mysqli_connect_error();
             }
-
 
             $sql="CREATE DATABASE $username";
 
@@ -163,9 +161,6 @@ VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $hash)."'
             $sql='grant usage on *.* to ' . $username . '@localhost identified by ' . "'" . "$password" . "'";
 
             mysqli_query($connection, $sql);
-
-
-  
 
             $sql="grant all privileges on admin.* to admin@localhost";
 
@@ -188,9 +183,9 @@ VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $hash)."'
         if (isset($_GET['planid'])) {
             newserv(rand('1000', '9999'), $_GET['planid'], $_GET['username'], $_GET['password']);
             die();
-        } else {
+        }  
             newserv(rand($pstart, $pend), $disk, $_POST['username'], $_POST['password']);
-        }
+        
                 echo 'Your Server was created login to control panel now.<br>';
                 session_destroy();
     }

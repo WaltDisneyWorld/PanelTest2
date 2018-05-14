@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
@@ -22,7 +22,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
             'bucket'             => '',
             'tmpPath'            => '',
         ];
-        $this->options = array_merge($this->options, $opts);
+        $this->options               = array_merge($this->options, $opts);
         $this->options['mimeDetect'] = 'internal';
     }
 
@@ -40,7 +40,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
 
         $this->rootName = 's3';
 
-        return true;
+        return TRUE;
     }
 
     protected function configure()
@@ -70,7 +70,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
     protected function _dirname($path)
     {
         $newpath = preg_replace("/\/$/", '', $path);
-        $dn = substr($path, 0, strrpos($newpath, '/'));
+        $dn      = substr($path, 0, strrpos($newpath, '/'));
 
         if (substr($dn, 0, 1) != '/') {
             $dn = "/$dn";
@@ -246,10 +246,10 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
         $stat = [
          'size'   => 0,
          'ts'     => time(),
-         'read'   => true,
-         'write'  => true,
-         'locked' => false,
-         'hidden' => false,
+         'read'   => TRUE,
+         'write'  => TRUE,
+         'locked' => FALSE,
+         'hidden' => FALSE,
          'mime'   => 'directory',
         ];
 
@@ -260,14 +260,14 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
         $np = $this->_normpath($path);
 
         try {
-            $obj = $this->s3->GetObject(['Bucket' => $this->options['bucket'], 'Key' => $np, 'GetMetadata' => true, 'InlineData' => false, 'GetData' => false]);
+            $obj = $this->s3->GetObject(['Bucket' => $this->options['bucket'], 'Key' => $np, 'GetMetadata' => TRUE, 'InlineData' => FALSE, 'GetData' => FALSE]);
         } catch (Exception $e) {
         }
 
         if (!isset($obj) || ($obj->GetObjectResponse->Status->Code != 200)) {
             $np .= '/';
             try {
-                $obj = $this->s3->GetObject(['Bucket' => $this->options['bucket'], 'Key' => $np, 'GetMetadata' => true, 'InlineData' => false, 'GetData' => false]);
+                $obj = $this->s3->GetObject(['Bucket' => $this->options['bucket'], 'Key' => $np, 'GetMetadata' => TRUE, 'InlineData' => FALSE, 'GetData' => FALSE]);
             } catch (Exception $e) {
             }
         }
@@ -328,12 +328,12 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
             foreach ($files as $file) {
                 $fstat = $this->_stat($file);
                 if ($fstat['mime'] == 'directory') {
-                    return true;
+                    return TRUE;
                 }
             }
         }
 
-        return false;
+        return FALSE;
     }
 
     /**
@@ -350,7 +350,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
      **/
     protected function _dimensions($path, $mime)
     {
-        $ret = false;
+        $ret = FALSE;
         if ($imgsize = $this->getImageSize($path, $mime)) {
             $ret = $imgsize['dimensions'];
         }
@@ -416,7 +416,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
 
         if ($fp) {
             try {
-                $obj = $this->s3->GetObject(['Bucket' => $this->options['bucket'], 'Key' => $this->_normpath($path), 'GetMetadata' => true, 'InlineData' => true, 'GetData' => true]);
+                $obj = $this->s3->GetObject(['Bucket' => $this->options['bucket'], 'Key' => $this->_normpath($path), 'GetMetadata' => TRUE, 'InlineData' => TRUE, 'GetData' => TRUE]);
             } catch (Exception $e) {
             }
 
@@ -430,7 +430,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
             return $fp;
         }
 
-        return false;
+        return FALSE;
     }
 
     /**
@@ -479,7 +479,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
             return "$path/$name";
         }
 
-        return false;
+        return FALSE;
     }
 
      /**
@@ -508,7 +508,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
              return "$path/$name";
          }
 
-         return false;
+         return FALSE;
      }
 
      /**
@@ -524,7 +524,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
       **/
      protected function _symlink($source, $targetDir, $name)
      {
-         return false;
+         return FALSE;
      }
 
      /**
@@ -540,7 +540,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
       **/
      protected function _copy($source, $targetDir, $name)
      {
-         return false;
+         return FALSE;
      }
 
     /**
@@ -557,7 +557,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
      **/
     protected function _move($source, $targetDir, $name)
     {
-        return false;
+        return FALSE;
     }
 
     /**
@@ -590,14 +590,14 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
                 $rc = $obj->DeleteObjectResponse->Code;
 
                 if (substr($rc, 0, 1) == '2') {
-                    return true;
+                    return TRUE;
                 }
             }
         }
 
         //fclose($fp);
 
-        return false;
+        return FALSE;
     }
 
     /**
@@ -629,7 +629,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
      */
     protected function _save($fp, $dir, $name, $stat)
     {
-        return false;
+        return FALSE;
     }
 
     /**
@@ -643,7 +643,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
      **/
     protected function _getContents($path)
     {
-        return false;
+        return FALSE;
     }
 
     /**
@@ -658,7 +658,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
      **/
     protected function _filePutContents($path, $content)
     {
-        return false;
+        return FALSE;
     }
 
      /**
@@ -674,7 +674,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
       **/
      protected function _extract($path, $arc)
      {
-         return false;
+         return FALSE;
      }
 
     /**
@@ -692,7 +692,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
      **/
     protected function _archive($dir, $files, $name, $arc)
     {
-        return false;
+        return FALSE;
     }
 
     /**
@@ -717,7 +717,7 @@ class elFinderVolumeS3 extends elFinderVolumeDriver
      */
     protected function _chmod($path, $mode)
     {
-        return false;
+        return FALSE;
     }
 }
 
@@ -730,7 +730,7 @@ class S3SoapClient extends SoapClient
 {
     private $accesskey = '';
     private $secretkey = '';
-    public $client = null;
+    public $client     = NULL;
 
     public function __construct($key = '', $secret = '')
     {
@@ -798,7 +798,7 @@ class S3SoapClient extends SoapClient
 
         $sign_str = 'AmazonS3'.$operation.$params['Timestamp'];
 
-        $params['Signature'] = base64_encode(hash_hmac('sha1', $sign_str, $this->secretkey, true));
+        $params['Signature'] = base64_encode(hash_hmac('sha1', $sign_str, $this->secretkey, TRUE));
 
         return $params;
     }

@@ -9,8 +9,8 @@ if (isset($_POST["domain"])) {
             echo "<div class='alert alert-danger'>You already have a domain</div>";
         } else {
         
-            $con = mysqli_connect($host, $user, $pass, $data);
-            $sql = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+            $con    = mysqli_connect($host, $user, $pass, $data);
+            $sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_row($result)) {
                 $port = $row[5];

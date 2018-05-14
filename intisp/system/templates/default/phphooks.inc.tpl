@@ -1,12 +1,13 @@
 <?php
-/**
- * @author eric@wangzhengyu.com
- * @version 1.2
- * @package phphooks
- * @category Plugins
- * 
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
+
+/*
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
+ *
  */
+
 define('PLUGINS_FOLDER', 'plugins/');
 class phphooks
 {
@@ -16,7 +17,7 @@ class phphooks
      *
      * @var array
      */
-    var $active_plugins = null;
+    var $active_plugins = NULL;
     
     /**
      * all plugins header information array.
@@ -39,7 +40,7 @@ class phphooks
      * @since   1.0
      *       
      * @param string $tag.
-     *            The name of the hook.
+     *                     The name of the hook.
      */
     function set_hook($tag) 
     {
@@ -53,7 +54,7 @@ class phphooks
      * @since   1.0
      *       
      * @param array $tags.
-     *            The name of the hooks.
+     *                     The name of the hooks.
      */
     function set_hooks($tags) 
     {
@@ -69,7 +70,7 @@ class phphooks
      * @since   1.0
      *       
      * @param string $tag.
-     *            The name of the hook.
+     *                     The name of the hook.
      */
     function unset_hook($tag) 
     {
@@ -83,7 +84,7 @@ class phphooks
      * @since   1.0
      *       
      * @param array $tags.
-     *            The name of the hooks.
+     *                     The name of the hooks.
      */
     function unset_hooks($tags) 
     {
@@ -99,7 +100,7 @@ class phphooks
      * @since   1.0
      *       
      * @param string $from_folder
-     *            optional. load plugins from folder, if no argument is supplied, a 'plugins/' constant will be used
+     *                            optional. load plugins from folder, if no argument is supplied, a 'plugins/' constant will be used
      */
     function load_plugins($from_folder = PLUGINS_FOLDER) 
     {
@@ -124,9 +125,9 @@ class phphooks
      *
      * @package phphooks
      * @since   1.1
-     * @param   string $from_folder
-     *            optional. load plugins from folder, if no argument is supplied, a 'plugins/' constant will be used
-     * @return  array. return the all plugins ,which is stored in the plugin folder, header information.
+     * @param  string $from_folder
+     *                             optional. load plugins from folder, if no argument is supplied, a 'plugins/' constant will be used
+     * @return array. return the all plugins ,which is stored in the plugin folder, header information.
      */
     function get_plugins_header($from_folder = PLUGINS_FOLDER) 
     {
@@ -191,19 +192,19 @@ class phphooks
      * @since   1.0
      *       
      * @param string $tag.
-     *            The name of the hook.
+     *                          The name of the hook.
      * @param string $function.
-     *            The function you wish to be called.
+     *                          The function you wish to be called.
      * @param int    $priority
-     *            optional. Used to specify the order in which the functions associated with a particular action are executed.(range 0~20, 0 first call, 20 last call)
+     *                          optional. Used to specify the order in which the functions associated with a particular action are executed.(range 0~20, 0 first call, 20 last call)
      */
     function add_hook($tag, $function, $priority = 10) 
     {
         if (! isset($this->hooks [$tag])) {
             die("There is no such place ($tag) for hooks.");
-        } else {
+        }  
             $this->hooks [$tag] [$priority] [] = $function;
-        }
+        
     }
     
     /**
@@ -213,7 +214,7 @@ class phphooks
      * @since   1.0
      *       
      * @param string $tag
-     *            The name of the hook.
+     *                    The name of the hook.
      */
     function hook_exist($tag) 
     {
@@ -226,10 +227,10 @@ class phphooks
      * @package phphooks
      * @since   1.0
      *       
-     * @param  string $tag.
-     *            The name of the hook.
-     * @param  mix    $args
-     *            optional.The arguments the function accept (default none)
+     * @param  string    $tag.
+     *                         The name of the hook.
+     * @param  mix       $args
+     *                         optional.The arguments the function accept (default none)
      * @return optional.
      */
     function execute_hook($tag, $args = '') 
@@ -262,9 +263,9 @@ class phphooks
      * @since   1.0
      *       
      * @param  string $tag.
-     *            The name of the hook.
+     *                      The name of the hook.
      * @param  mix    $args
-     *            optional.The arguments the function accept to filter(default none)
+     *                      optional.The arguments the function accept to filter(default none)
      * @return array. The $args filter result.
      */
     function filter_hook($tag, $args = '') 
@@ -275,15 +276,14 @@ class phphooks
             for($i = 0; $i <= 20; $i ++) {
                 if (isset($these_hooks [$i])) {
                     foreach ( $these_hooks [$i] as $hook ) {
-                        $args = $result;
+                        $args   = $result;
                         $result = call_user_func($hook, $args);
                     }
                 }
             }
             return $result;
-        } else {
+        }  
             die("There is no such place ($tag) for hooks.");
-        }
+        
     }
 }
-?>

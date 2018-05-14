@@ -51,9 +51,9 @@ $(document).ready(function(){
   <li class="list-group-item"><a id="baahide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="baashow"><i class="fa fa-list" aria-hidden="true"></i></a> | Status</li>
   <li class="list-group-item">  
                                           <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
-                                            $count = 0;
-                                            $con = mysqli_connect($host, $user, $pass, $data);
-                                            $sql = 'SELECT * FROM Users';
+                                            $count  = 0;
+                                            $con    = mysqli_connect($host, $user, $pass, $data);
+                                            $sql    = 'SELECT * FROM Users';
                                             $result = mysqli_query($con, $sql);
                                             while ($row = mysqli_fetch_row($result)) {
                                                 $count = $count + 1;
@@ -63,9 +63,9 @@ $(document).ready(function(){
                                             echo $count;
     ?></h1><hr> Users</a>
                                           <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
-                                            $count = 0;
-                                            $con = mysqli_connect($host, $user, $pass, $data);
-                                            $sql = 'SELECT * FROM FailedLogin';
+                                            $count  = 0;
+                                            $con    = mysqli_connect($host, $user, $pass, $data);
+                                            $sql    = 'SELECT * FROM FailedLogin';
                                             $result = mysqli_query($con, $sql);
                                             while ($row = mysqli_fetch_row($result)) {
                                                 $count = $count + 1;
@@ -75,9 +75,9 @@ $(document).ready(function(){
                                             echo $count;
     ?></h1><hr> Failed Logins</a>
                                                                                 <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
-                                                                                $count = 0;
-                                                                                $con = mysqli_connect($host, $user, $pass, $data);
-                                                                                $sql = 'SELECT * FROM Users';
+                                                                                $count  = 0;
+                                                                                $con    = mysqli_connect($host, $user, $pass, $data);
+                                                                                $sql    = 'SELECT * FROM Users';
                                                                                 $result = mysqli_query($con, $sql);
                                                                                 while ($row = mysqli_fetch_row($result)) {
                                                                                     $count = $count + 1;
@@ -89,7 +89,7 @@ $(document).ready(function(){
                                                                                                                         <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;">
                                                                                                                             <?php
                                                                                                                             $count = 0;
-                                                                                                                            $scan = scandir("plugins");
+                                                                                                                            $scan  = scandir("plugins");
                                                                                                                             foreach ($scan as $file) {
                                                                                                                                 $count = $count +1;
                                                                                                                             }

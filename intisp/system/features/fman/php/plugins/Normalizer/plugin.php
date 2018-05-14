@@ -1,18 +1,18 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
 class elFinderPluginNormalizer
 {
-    private $opts = [];
+    private $opts     = [];
     private $replaced = [];
-    private $keyMap = [
+    private $keyMap   = [
         'ls'     => 'intersect',
         'upload' => 'renames',
     ];
@@ -20,10 +20,10 @@ class elFinderPluginNormalizer
     public function __construct($opts)
     {
         $defaults = [
-            'enable'    => true,  // For control by volume driver
-            'nfc'       => true,  // Canonical Decomposition followed by Canonical Composition
-            'nfkc'      => true,  // Compatibility Decomposition followed by Canonical
-            'lowercase' => false, // Make chars lowercase
+            'enable'    => TRUE,  // For control by volume driver
+            'nfc'       => TRUE,  // Canonical Decomposition followed by Canonical Composition
+            'nfkc'      => TRUE,  // Compatibility Decomposition followed by Canonical
+            'lowercase' => FALSE, // Make chars lowercase
             'convmap'   => [], // Convert map ('FROM' => 'TO') array
         ];
 
@@ -34,10 +34,10 @@ class elFinderPluginNormalizer
     {
         $opts = $this->getOpts($volume);
         if (!$opts['enable']) {
-            return false;
+            return FALSE;
         }
         $this->replaced[$cmd] = [];
-        $key = (isset($this->keyMap[$cmd])) ? $this->keyMap[$cmd] : 'name';
+        $key                  = (isset($this->keyMap[$cmd])) ? $this->keyMap[$cmd] : 'name';
 
         if (isset($args[$key])) {
             if (is_array($args[$key])) {
@@ -45,12 +45,12 @@ class elFinderPluginNormalizer
                     $this->replaced[$cmd][$name] = $args[$key][$i] = $this->normalize($name, $opts);
                 }
             } else {
-                $name = $args[$key];
+                $name                        = $args[$key];
                 $this->replaced[$cmd][$name] = $args[$key] = $this->normalize($name, $opts);
             }
         }
 
-        return true;
+        return TRUE;
     }
 
     public function cmdPostprocess($cmd, &$result, $args, $elfinder)
@@ -74,7 +74,7 @@ class elFinderPluginNormalizer
     {
         $opts = $this->getOpts($volume);
         if (!$opts['enable']) {
-            return false;
+            return FALSE;
         }
 
         if ($path) {
@@ -82,7 +82,7 @@ class elFinderPluginNormalizer
         }
         $name = $this->normalize($name, $opts);
 
-        return true;
+        return TRUE;
     }
 
     private function getOpts($volume)
@@ -101,7 +101,7 @@ class elFinderPluginNormalizer
     private function normalize($str, $opts)
     {
         if ($opts['nfc'] || $opts['nfkc']) {
-            if (class_exists('Normalizer', false)) {
+            if (class_exists('Normalizer', FALSE)) {
                 if ($opts['nfc'] && !Normalizer::isNormalized($str, Normalizer::FORM_C)) {
                     $str = Normalizer::normalize($str, Normalizer::FORM_C);
                 }
@@ -109,10 +109,10 @@ class elFinderPluginNormalizer
                     $str = Normalizer::normalize($str, Normalizer::FORM_KC);
                 }
             } else {
-                if (!class_exists('I18N_UnicodeNormalizer', false)) {
+                if (!class_exists('I18N_UnicodeNormalizer', FALSE)) {
                     @include_once 'I18N/UnicodeNormalizer.php';
                 }
-                if (class_exists('I18N_UnicodeNormalizer', false)) {
+                if (class_exists('I18N_UnicodeNormalizer', FALSE)) {
                     $normalizer = new I18N_UnicodeNormalizer();
                     if ($opts['nfc']) {
                         $str = $normalizer->normalize($str, 'NFC');

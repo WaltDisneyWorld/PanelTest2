@@ -1,23 +1,23 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
 class elFinderSession implements elFinderSessionInterface
 {
-    protected $started = false;
+    protected $started = FALSE;
 
     protected $keys = [];
 
-    protected $base64encode = false;
+    protected $base64encode = FALSE;
 
     protected $opts = [
-        'base64encode' => false,
+        'base64encode' => FALSE,
         'keys'         => [
             'default'   => 'elFinderCaches',
             'netvolume' => 'elFinderNetVolumes',
@@ -26,9 +26,9 @@ class elFinderSession implements elFinderSessionInterface
 
     public function __construct($opts)
     {
-        $this->opts = array_merge($this->opts, $opts);
+        $this->opts         = array_merge($this->opts, $opts);
         $this->base64encode = !empty($this->opts['base64encode']);
-        $this->keys = $this->opts['keys'];
+        $this->keys         = $this->opts['keys'];
 
         return $this;
     }
@@ -47,7 +47,7 @@ class elFinderSession implements elFinderSessionInterface
             session_start();
             restore_error_handler();
         }
-        $this->started = session_id() ? true : false;
+        $this->started = session_id() ? TRUE : FALSE;
 
         return $this;
     }
@@ -60,7 +60,7 @@ class elFinderSession implements elFinderSessionInterface
         if ($this->started) {
             session_write_close();
         }
-        $this->started = false;
+        $this->started = FALSE;
 
         return $this;
     }
@@ -68,25 +68,25 @@ class elFinderSession implements elFinderSessionInterface
     /**
      * {@inheritdoc}
      */
-    public function get($key, $empty = null)
+    public function get($key, $empty = NULL)
     {
-        $closed = false;
+        $closed = FALSE;
         if (!$this->started) {
-            $closed = true;
+            $closed = TRUE;
             $this->start();
         }
 
-        $data = null;
+        $data = NULL;
 
         if ($this->started) {
             $session = &$this->getSessionRef($key);
-            $data = $session;
+            $data    = $session;
             if ($data && $this->base64encode) {
                 $data = $this->decodeData($data);
             }
         }
 
-        $checkFn = null;
+        $checkFn = NULL;
         if (!is_null($empty)) {
             if (is_string($empty)) {
                 $checkFn = 'is_string';
@@ -117,9 +117,9 @@ class elFinderSession implements elFinderSessionInterface
      */
     public function set($key, $data)
     {
-        $closed = false;
+        $closed = FALSE;
         if (!$this->started) {
-            $closed = true;
+            $closed = TRUE;
             $this->start();
         }
         $session = &$this->getSessionRef($key);
@@ -140,24 +140,24 @@ class elFinderSession implements elFinderSessionInterface
      */
     public function remove($key)
     {
-        $closed = false;
+        $closed = FALSE;
         if (!$this->started) {
-            $closed = true;
+            $closed = TRUE;
             $this->start();
         }
 
-        list($cat, $name) = array_pad(explode('.', $key, 2), 2, null);
+        list($cat, $name) = array_pad(explode('.', $key, 2), 2, NULL);
         if (is_null($name)) {
             if (!isset($this->keys[$cat])) {
                 $name = $cat;
-                $cat = 'default';
+                $cat  = 'default';
             }
         }
         if (isset($this->keys[$cat])) {
             $cat = $this->keys[$cat];
         } else {
             $name = $cat.'.'.$name;
-            $cat = $this->keys['default'];
+            $cat  = $this->keys['default'];
         }
         if (is_null($name)) {
             unset($_SESSION[$cat]);
@@ -176,24 +176,24 @@ class elFinderSession implements elFinderSessionInterface
 
     protected function &getSessionRef($key)
     {
-        $session = null;
+        $session = NULL;
         if ($this->started) {
-            list($cat, $name) = array_pad(explode('.', $key, 2), 2, null);
+            list($cat, $name) = array_pad(explode('.', $key, 2), 2, NULL);
             if (is_null($name)) {
                 if (!isset($this->keys[$cat])) {
                     $name = $cat;
-                    $cat = 'default';
+                    $cat  = 'default';
                 }
             }
             if (isset($this->keys[$cat])) {
                 $cat = $this->keys[$cat];
             } else {
                 $name = $cat.'.'.$name;
-                $cat = $this->keys['default'];
+                $cat  = $this->keys['default'];
             }
             if (is_null($name)) {
                 if (!isset($_SESSION[$cat])) {
-                    $_SESSION[$cat] = null;
+                    $_SESSION[$cat] = NULL;
                 }
                 $session = &$_SESSION[$cat];
             } else {
@@ -201,7 +201,7 @@ class elFinderSession implements elFinderSessionInterface
                     $_SESSION[$cat] = [];
                 }
                 if (!isset($_SESSION[$cat][$name])) {
-                    $_SESSION[$cat][$name] = null;
+                    $_SESSION[$cat][$name] = NULL;
                 }
                 $session = &$_SESSION[$cat][$name];
             }
@@ -223,13 +223,13 @@ class elFinderSession implements elFinderSessionInterface
     {
         if ($this->base64encode) {
             if (is_string($data)) {
-                if (($data = base64_decode($data)) !== false) {
+                if (($data = base64_decode($data)) !== FALSE) {
                     $data = @unserialize($data);
                 } else {
-                    $data = null;
+                    $data = NULL;
                 }
             } else {
-                $data = null;
+                $data = NULL;
             }
         }
 
