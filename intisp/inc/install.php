@@ -1,16 +1,18 @@
 <?php
-/**
- * Adaclare Technologies
- *
- * Webister Hosting Software
- * Install
+
+/*
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
+
 error_reporting(E_ALL);
 $DBServer = 'localhost';
-$DBUser = 'root';
-$DBPass = $argv[1];
-$DBName = 'webister';
+$DBUser   = 'root';
+$DBPass   = $argv[1];
+$DBName   = 'webister';
 
 $conn = new mysqli($DBServer, $DBUser, $DBPass, $DBName);
 
@@ -49,14 +51,12 @@ $".'salt'."   = '".$salt."';
 
 ");
 
-
 $databasename = $DBName;
-$dbpass = $DBPass;
+$dbpass       = $DBPass;
 
 // store connection info...
 
 $connection=mysqli_connect("localhost","root","$DBPass");
-
 
 // check connection...
 
@@ -64,7 +64,6 @@ if (mysqli_connect_errno())
   {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
-
 
 $sql="CREATE DATABASE admin";
 
@@ -76,14 +75,10 @@ $sql='grant usage on *.* to admin@localhost identified by ' . "'" . "admin" . "'
 
 mysqli_query($connection,$sql);
 
-
-  
-
 $sql="grant all privileges on admin.* to admin@localhost";
 
 #echo "$sql";
 mysqli_query($connection,$sql);
-
 
 #Deprecated
 #mysql_connect('localhost', 'root', $argv[1]);

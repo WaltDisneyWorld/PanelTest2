@@ -1,15 +1,16 @@
 <?php
 
-    /*
-    *  PHP+JQuery Temrinal Emulator by Fluidbyte <http://www.fluidbyte.net>
-    *
-    *  This software is released as-is with no warranty and is complete free
-    *  for use, modification and redistribution
-    */
+/*
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
+ *
+ */
 
-    ini_set("session.cookie_lifetime","360");
+ini_set("session.cookie_lifetime","360");
     session_start();
-    function onlyadmin () {
+    function onlyadmin() {
      if ($_SESSION['user'] == 'admin') {
          
      } else {
@@ -51,7 +52,7 @@ $_SESSION['term_auth'] = 'true';
         // Constructor
         ////////////////////////////////////////////////////
         
-        public function __construct(){
+        public function __construct() {
             if(!isset($_SESSION['dir'])){
                 if(ROOT==''){
                     $this->command_exec = 'pwd';
@@ -71,7 +72,7 @@ $_SESSION['term_auth'] = 'true';
         // Primary call
         ////////////////////////////////////////////////////
         
-        public function Process(){
+        public function Process() {
             $this->ParseCommand();
             $this->Execute();
             return $this->output;
@@ -81,7 +82,7 @@ $_SESSION['term_auth'] = 'true';
         // Parse command for special functions, blocks
         ////////////////////////////////////////////////////
         
-        public function ParseCommand(){
+        public function ParseCommand() {
             
             // Explode command
             $command_parts = explode(" ",$this->command);
@@ -97,7 +98,7 @@ $_SESSION['term_auth'] = 'true';
             }
             
             // Replace text editors with cat
-            $editors = array('vi','vim','nano');
+            $editors       = array('vi','vim','nano');
             $this->command = str_replace($editors,'cat',$this->command);
             
             // Handle blocked commands
@@ -114,7 +115,7 @@ $_SESSION['term_auth'] = 'true';
         // Chnage Directory
         ////////////////////////////////////////////////////
         
-        public function ChangeDirectory(){
+        public function ChangeDirectory() {
             chdir($this->directory);
             // Store new directory
             $_SESSION['dir'] = exec('pwd');
@@ -124,7 +125,7 @@ $_SESSION['term_auth'] = 'true';
         // Execute commands
         ////////////////////////////////////////////////////
         
-        public function Execute(){
+        public function Execute() {
             //system
             if(function_exists('system')){
                 ob_start();
@@ -160,7 +161,7 @@ $_SESSION['term_auth'] = 'true';
     // Processing
     //////////////////////////////////////////////////////////////////
     
-    $command = '';
+    $command                                = '';
     if(!empty($_POST['command'])){ $command = $_POST['command']; }
     
     if(strtolower($command=='exit')){
@@ -170,7 +171,7 @@ $_SESSION['term_auth'] = 'true';
         //////////////////////////////////////////////////////////////
         
         $_SESSION['term_auth'] = 'false';
-        $output = '[CLOSED]';
+        $output                = '[CLOSED]';
         
     }else if($_SESSION['term_auth']!='true'){
         
@@ -178,9 +179,8 @@ $_SESSION['term_auth'] = 'true';
         // Authentication
         //////////////////////////////////////////////////////////////
         
-       
             $_SESSION['term_auth'] = 'true';
-            $output = '[AUTHENTICATED]';
+            $output                = '[AUTHENTICATED]';
       
     }else{
     
@@ -190,8 +190,8 @@ $_SESSION['term_auth'] = 'true';
         
         // Split &&
         $Terminal = new Terminal();
-        $output = '';
-        $command = explode("&&", $command);
+        $output   = '';
+        $command  = explode("&&", $command);
         foreach($command as $c){
             $Terminal->command = $c;
             $output .= $Terminal->Process();
@@ -199,9 +199,4 @@ $_SESSION['term_auth'] = 'true';
     
     }
 
-    
     echo(htmlentities($output));
-
-
-
-?>

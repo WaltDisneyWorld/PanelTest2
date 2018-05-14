@@ -4,22 +4,22 @@ ini_set("session.cookie_lifetime","360");
 session_start();
 include 'config.php';
 function ismasterreseller() {
-    require("config.php");
+    require "config.php";
     if ($data == "webister") {
-        return true;
-    } else {
-        return false;
-    }
+        return TRUE;
+    }  
+        return FALSE;
+    
 }
 function onlymasterreseller() {
-    require("config.php");
+    require "config.php";
     if ($data == "webister") {
         
     } else {
         die();
     }
 }
-function onlyadmin () {
+function onlyadmin() {
      if ($_SESSION['user'] == 'admin') {
          
      } else {
@@ -35,17 +35,17 @@ if (!isset($_SESSION['user'])) {
      {
          $serverConn = @stream_socket_client("tcp://127.0.0.1:$port", $errno, $errstr);
          if ($errstr != '') {
-             return false;
+             return FALSE;
          }
          fclose($serverConn);
 
-         return true;
+         return TRUE;
      }
  function GetDirectorySize($path)
  {
      $bytestotal = 0;
-     $path = realpath($path);
-     if ($path !== false) {
+     $path       = realpath($path);
+     if ($path !== FALSE) {
          foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)) as $object) {
              $bytestotal += $object->getSize();
          }
@@ -54,8 +54,8 @@ if (!isset($_SESSION['user'])) {
      return $bytestotal;
  }
 
-$con = mysqli_connect($host, $user, $pass, $data);
-$sql = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+$con    = mysqli_connect($host, $user, $pass, $data);
+$sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      $quote = $row[4];
@@ -67,8 +67,8 @@ $result = mysqli_query($con, $sql);
     mysqli_close($con);
 ?>
 <?php
-$con = mysqli_connect($host, $user, $pass, $data);
-$sql = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+$con    = mysqli_connect($host, $user, $pass, $data);
+$sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      $myp = $row[5];
@@ -128,7 +128,7 @@ $result = mysqli_query($con, $sql);
       	<a href="index.php?page=cp" class="navbar-brand">IntISP on <b><?php
 include 'config.php';
     $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
 // Check connection
     $sql = "SELECT value FROM Settings WHERE code =  'title' LIMIT 0 , 30";
 if ($result = mysqli_query($con, $sql)) {
@@ -159,9 +159,9 @@ mysqli_close($con);
          <li><a href="index.php?page=mail"><span class="badge">
              <?php
     $count = 0;
-$con = mysqli_connect($host, $user, $pass, $data);
-$sql = 'SELECT * FROM Mail';
-$result = mysqli_query($con, $sql);
+$con       = mysqli_connect($host, $user, $pass, $data);
+$sql       = 'SELECT * FROM Mail';
+$result    = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      $count = $count + 1;
  }
@@ -177,10 +177,10 @@ $result = mysqli_query($con, $sql);
 			  function isSSL()
     {
         if( !empty( $_SERVER['https'] ) )
-            return true;
+            return TRUE;
         if( !empty( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' )
-            return true;
-        return false;
+            return TRUE;
+        return FALSE;
     }
 			if (!isSSL()) {
 				?>

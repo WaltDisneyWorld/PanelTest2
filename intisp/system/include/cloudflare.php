@@ -1,14 +1,13 @@
 <?php
 
-/**
- * CloudFlare API
+/*
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
- * Built for the webister project
- * 
- * @author AzzA <azza@broadcasthe.net>
- * @copyright omgwtfhax inc. 2013
- * @version 1.1
  */
+
 class cloudflare_api
 {
     //The URL of the API
@@ -28,12 +27,12 @@ class cloudflare_api
 
     //Interval values for Stats
     const INTERVAL_365_DAYS = 10;
-    const INTERVAL_30_DAYS = 20;
-    const INTERVAL_7_DAYS = 30;
-    const INTERVAL_DAY = 40;
+    const INTERVAL_30_DAYS  = 20;
+    const INTERVAL_7_DAYS   = 30;
+    const INTERVAL_DAY      = 40;
     const INTERVAL_24_HOURS = 100;
     const INTERVAL_12_HOURS = 110;
-    const INTERVAL_6_HOURS = 120;
+    const INTERVAL_6_HOURS  = 120;
 
     //Stores the api key
     private $token_key;
@@ -70,7 +69,6 @@ class cloudflare_api
     {
         $this->token_key = $token_key;
     }
-
 
     /**
      * CLIENT API
@@ -220,7 +218,7 @@ class cloudflare_api
         $data = array(
             'a' => 'devmode',
             'z' => $domain,
-            'v' => ($mode == true) ? 1 : 0
+            'v' => ($mode == TRUE) ? 1 : 0
         );
         return $this->http_post($data);
     }
@@ -319,7 +317,7 @@ class cloudflare_api
         $data = array(
             'a' => 'ipv46',
             'z' => $domain,
-            'v' => ($mode == true) ? 1 : 0
+            'v' => ($mode == TRUE) ? 1 : 0
         );
         return $this->http_post($data);
     }
@@ -352,7 +350,6 @@ class cloudflare_api
         return $this->http_post($data);
     }
 
-
     /**
      * CLIENT API
      * Section 5
@@ -375,7 +372,7 @@ class cloudflare_api
             'ttl'     => $ttl
         );
         if (in_array($type, self::$MODE_SERVICE))
-            $data['service_mode'] = ($mode == true) ? 1 : 0;
+            $data['service_mode'] = ($mode == TRUE) ? 1 : 0;
         else if (in_array($type, self::$PRIO)) {
             $data['prio'] = $prio;
             if ($type == 'SRV') {
@@ -409,7 +406,7 @@ class cloudflare_api
             'ttl'     => $ttl
         );
         if (in_array($type, self::$MODE_SERVICE))
-            $data['service_mode'] = ($mode == true) ? 1 : 0;
+            $data['service_mode'] = ($mode == TRUE) ? 1 : 0;
         else if (in_array($type, self::$PRIO)) {
             $data['prio'] = $prio;
             if ($type == 'SRV') {
@@ -443,7 +440,6 @@ class cloudflare_api
         return $this->http_post($data);
     }
 
-
     /**
      * HOST API
      * Section 3
@@ -466,7 +462,7 @@ class cloudflare_api
     {
         if (is_array($subdomains))
             $subdomains = implode(',', $subdomains);
-        $data = array(
+        $data           = array(
             'act'        => 'zone_set',
             'user_key'   => $key,
             'zone_name'  => $zone,
@@ -487,7 +483,7 @@ class cloudflare_api
         return $this->http_post($data, 'HOST');
     }
 
-    public function user_lookup($email, $isID = false)
+    public function user_lookup($email, $isID = FALSE)
     {
         $data = array(
             'act' => 'user_lookup'
@@ -558,13 +554,13 @@ class cloudflare_api
         }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_VERBOSE, 0);
-        curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+        curl_setopt($ch, CURLOPT_FORBID_REUSE, TRUE);
         curl_setopt($ch, CURLOPT_URL, self::$URL[$type]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_TIMEOUT, self::TIMEOUT);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         $http_result = curl_exec($ch);
         $error       = curl_error($ch);
         $http_code   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -573,8 +569,8 @@ class cloudflare_api
             return array(
                 'error' => $error
             );
-        } else {
+        }  
             return json_decode($http_result);
-        }
+        
     }
 }

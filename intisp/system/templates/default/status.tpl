@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
@@ -28,18 +28,18 @@ if ($action == 'phpinfo') {
     }
 
     $uptime_text = file_get_contents('/proc/uptime');
-    $uptime = substr($uptime_text, 0, strpos($uptime_text, ' '));
+    $uptime      = substr($uptime_text, 0, strpos($uptime_text, ' '));
     if (!$uptime && function_exists('shell_exec')) {
         $uptime = shell_exec('cut -d. -f1 /proc/uptime');
     }
-    $days = floor($uptime / 60 / 60 / 24);
+    $days  = floor($uptime / 60 / 60 / 24);
     $hours = str_pad($uptime / 60 / 60 % 24, 2, '0', STR_PAD_LEFT);
-    $mins = str_pad($uptime / 60 % 60, 2, '0', STR_PAD_LEFT);
-    $secs = str_pad($uptime % 60, 2, '0', STR_PAD_LEFT);
+    $mins  = str_pad($uptime / 60 % 60, 2, '0', STR_PAD_LEFT);
+    $secs  = str_pad($uptime % 60, 2, '0', STR_PAD_LEFT);
 
-    $phpver = phpversion();
+    $phpver   = phpversion();
     $mysqlver = (function_exists('mysql_get_client_info')) ? mysql_get_client_info() : '-';
-    $zendver = (function_exists('zend_version')) ? zend_version() : '-';
+    $zendver  = (function_exists('zend_version')) ? zend_version() : '-';
 
     echo "<load>$load</load>\n";
     echo "<uptime>$days Days $hours:$mins:$secs</uptime>\n";

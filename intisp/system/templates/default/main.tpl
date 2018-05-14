@@ -493,12 +493,12 @@ input {
             function isSSL()
             {
                 if(!empty($_SERVER['https']) ) {
-                    return true;
+                    return TRUE;
                 }
                 if(!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ) {
-                    return true;
+                    return TRUE;
                 }
-                return false;
+                return FALSE;
             }
             if (!isSSL()) {
                 ?>

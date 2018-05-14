@@ -1,4 +1,13 @@
 <?php
+
+/*
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
+ *
+ */
+
 if (!isset($_GET["i"])) {
     echo "No Address Found<br>";
     echo "Please try again or contact website owner<br>";
@@ -26,6 +35,4 @@ else if (file_exists("/var/webister/" . $a . "/index.html")) {
     die();
 }
 
-
  echo file_get_contents("/var/webister/interface/data/loginfoot");
-?>

@@ -11,8 +11,8 @@ if (isset($_GET['yes'])) {
         $returnval = $returnval.'<br>Creating User '.$username;
         include 'config.php';
         
-        $con = mysqli_connect($host, $user, $pass, $data);
-        $sql = 'SELECT * FROM Users';
+        $con    = mysqli_connect($host, $user, $pass, $data);
+        $sql    = 'SELECT * FROM Users';
         $result = mysqli_query($con, $sql);
         while ($row = mysqli_fetch_row($result)) {
             if ($username == $row[1]) {
@@ -36,31 +36,25 @@ VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $salt)."'
         $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port)
 VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $salt)."','0','".$disk."','".$port."')";
 $con->query($sql);
-        if ($conn->query($sql) === true) {
-        } else {
+        if ($conn->query($sql) === TRUE) {
+        }  
         
-        }
-
         $conn->close();
 
         $returnval = $returnval.'<br>Creating Database';
         
         $databasename = $_POST["databasename"];
-        $dbpass = $_POST["dbpass"];
-
-
+        $dbpass       = $_POST["dbpass"];
 
         // store connection info...
 
         $connection=mysqli_connect("localhost", "root", "$pass");
-
 
         // check connection...
 
         if (mysqli_connect_errno()) {
                   echo "Failed to connect to MySQL: " . mysqli_connect_error();
         }
-
 
         $sql="CREATE DATABASE $username";
 
@@ -71,9 +65,6 @@ $con->query($sql);
         $sql='grant usage on *.* to ' . $username . '@localhost identified by ' . "'" . "$password" . "'";
 
         mysqli_query($connection, $sql);
-
-
-  
 
         $sql="grant all privileges on admin.* to admin@localhost";
 
@@ -93,8 +84,6 @@ $con->query($sql);
         // mysql_close();
         $returnval = $returnval.'<br>Trying to Restart Webister';
 
-
-      
         mkdir("/var/webister/" . $port);
         //shell_exec("cd /var/webister/" . $port . "/ && sudo nohup php -S 0.0.0.0:" . $port. " > exhibitor.out 2>&1 &");
         //Start the webserver using apache

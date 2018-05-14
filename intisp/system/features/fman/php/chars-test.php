@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
@@ -31,7 +31,7 @@ array_shift($origParts);
 
 //                     й                 ё              Й               Ё              Ø         Å
 $patterns = ["\u0438\u0306", "\u0435\u0308", "\u0418\u0306", "\u0415\u0308", "\u00d8A", "\u030a"];
-$replace = ["\u0439",        "\u0451",       "\u0419",       "\u0401",       "\u00d8", "\u00c5"];
+$replace  = ["\u0439",        "\u0451",       "\u0419",       "\u0401",       "\u00d8", "\u00c5"];
 
 foreach (scandir($path) as $f) {
     if ($f != '.' && $f != '..' && substr($f, 0, 1) != '.') {

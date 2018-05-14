@@ -1,18 +1,18 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
 class elFinderPluginSanitizer
 {
-    private $opts = [];
+    private $opts     = [];
     private $replaced = [];
-    private $keyMap = [
+    private $keyMap   = [
         'ls'     => 'intersect',
         'upload' => 'renames',
     ];
@@ -20,7 +20,7 @@ class elFinderPluginSanitizer
     public function __construct($opts)
     {
         $defaults = [
-            'enable'   => true,  // For control by volume driver
+            'enable'   => TRUE,  // For control by volume driver
             'targets'  => ['\\', '/', ':', '*', '?', '"', '<', '>', '|'], // target chars
             'replace'  => '_',    // replace to this
         ];
@@ -32,10 +32,10 @@ class elFinderPluginSanitizer
     {
         $opts = $this->getOpts($volume);
         if (!$opts['enable']) {
-            return false;
+            return FALSE;
         }
         $this->replaced[$cmd] = [];
-        $key = (isset($this->keyMap[$cmd])) ? $this->keyMap[$cmd] : 'name';
+        $key                  = (isset($this->keyMap[$cmd])) ? $this->keyMap[$cmd] : 'name';
 
         if (isset($args[$key])) {
             if (is_array($args[$key])) {
@@ -47,7 +47,7 @@ class elFinderPluginSanitizer
             }
         }
 
-        return true;
+        return TRUE;
     }
 
     public function cmdPostprocess($cmd, &$result, $args, $elfinder)
@@ -71,7 +71,7 @@ class elFinderPluginSanitizer
     {
         $opts = $this->getOpts($volume);
         if (!$opts['enable']) {
-            return false;
+            return FALSE;
         }
 
         if ($path) {
@@ -79,7 +79,7 @@ class elFinderPluginSanitizer
         }
         $name = $this->sanitizeFileName($name, $opts);
 
-        return true;
+        return TRUE;
     }
 
     private function getOpts($volume)

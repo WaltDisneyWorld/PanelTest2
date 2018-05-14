@@ -3,7 +3,7 @@
 require 'include/head.php';
 require 'templates/default/phphooks.inc.tpl';
 onlyadmin();
-$plugin_list = new phphooks();
+$plugin_list    = new phphooks();
 $plugin_headers = $plugin_list->get_plugins_header();
 ?>
     <div class="content-wrapper">
@@ -35,10 +35,10 @@ $plugin_headers = $plugin_list->get_plugins_header();
     <tbody class="plugins">
 <?php
 foreach ( $plugin_headers as $plugin_header ) {
-    $action = false;
+    $action = FALSE;
     foreach ( $result_rows as $result_row ) {
         if ($plugin_header ['filename'] == $result_row ['filename'] && $result_row ['action'] == 1) {
-            $action = true;
+            $action = TRUE;
         }
     }
     ?>

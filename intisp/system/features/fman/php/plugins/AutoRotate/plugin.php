@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
@@ -15,7 +15,7 @@ class elFinderPluginAutoRotate
     public function __construct($opts)
     {
         $defaults = [
-            'enable'         => true,       // For control by volume driver
+            'enable'         => TRUE,       // For control by volume driver
             'quality'        => 95,         // JPEG image save quality
         ];
 
@@ -24,24 +24,24 @@ class elFinderPluginAutoRotate
 
     public function onUpLoadPreSave(&$path, &$name, $src, $elfinder, $volume)
     {
-        $opts = $this->opts;
+        $opts    = $this->opts;
         $volOpts = $volume->getOptionsPlugin('AutoRotate');
         if (is_array($volOpts)) {
             $opts = array_merge($this->opts, $volOpts);
         }
 
         if (!$opts['enable']) {
-            return false;
+            return FALSE;
         }
 
         $srcImgInfo = @getimagesize($src);
-        if ($srcImgInfo === false) {
-            return false;
+        if ($srcImgInfo === FALSE) {
+            return FALSE;
         }
 
         // check target image type
         if ($srcImgInfo[2] !== IMAGETYPE_JPEG) {
-            return false;
+            return FALSE;
         }
 
         return $this->rotate($volume, $src, $srcImgInfo, $opts['quality']);
@@ -50,10 +50,10 @@ class elFinderPluginAutoRotate
     private function rotate($volume, $src, $srcImgInfo, $quality)
     {
         if (!function_exists('exif_read_data')) {
-            return false;
+            return FALSE;
         }
         $degree = 0;
-        $exif = @exif_read_data($src);
+        $exif   = @exif_read_data($src);
         if ($exif && !empty($exif['Orientation'])) {
             switch ($exif['Orientation']) {
                 case 8:

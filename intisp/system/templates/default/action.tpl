@@ -1,12 +1,13 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
+
  session_start();
 function onlyadmin() 
 {
@@ -32,7 +33,6 @@ if (!isset($_SESSION['user'])) {
     header('Location: index.php?page=main');
     die();
 }
-
 
 if ($_GET['act'] == 'restart') {
     service_send("restart");

@@ -1,5 +1,13 @@
-<?php 
-// by John Schimmel 
+<?php
+
+/*
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
+ *
+ */
+ 
 // modified from the code at http://www.zend.com/pecl/tutorials/sockets.php
 // 
 // run this from terminal on mac os x or another command line interface.
@@ -9,7 +17,7 @@ set_time_limit (0);
 
 // Set the ip and port we will listen on 
 $address = '127.0.0.1'; 
-$port = 1210; 
+$port    = 1210; 
 
 // Create a TCP Stream socket 
 $sock = socket_create(AF_INET, SOCK_STREAM, 0); 
@@ -22,7 +30,7 @@ socket_listen($sock);
 
 //loop and listen
 
-while (true) {
+while (TRUE) {
     /* Accept incoming requests and handle them as child processes */ 
     $client = socket_accept($sock); 
     
@@ -51,5 +59,4 @@ while (true) {
 socket_close($client); 
 
 // Close the master sockets 
-socket_close($sock); 
-?>
+socket_close($sock);

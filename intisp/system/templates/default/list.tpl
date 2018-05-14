@@ -20,8 +20,8 @@ onlyadmin();
     <tbody>
             <?php
 
-            $con = mysqli_connect($host, $user, $pass, $data);
-            $sql = 'SELECT * FROM Users';
+            $con    = mysqli_connect($host, $user, $pass, $data);
+            $sql    = 'SELECT * FROM Users';
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_row($result)) {
                 echo ' <tr>

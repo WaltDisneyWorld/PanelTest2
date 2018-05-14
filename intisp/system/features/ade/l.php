@@ -1,22 +1,22 @@
 <?php
 
 /** Display constant list of servers in login form
-* @link https://www.adminer.org/plugins/#use
-* @author Jakub Vrana, https://www.vrana.cz/
-* @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
-* @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
-*/
+ * @link https://www.adminer.org/plugins/#use
+ * @author Jakub Vrana, https://www.vrana.cz/
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
+ */
 class AdminerLoginServers {
 	/** @access protected */
 	var $servers, $driver;
 	
 	/** Set supported servers
-	* @param array array($domain) or array($domain => $description) or array($category => array())
-	* @param string
-	*/
+	 * @param array array($domain) or array($domain => $description) or array($category => array())
+	 * @param string
+	 */
 	function __construct($servers, $driver = "server") {
 		$this->servers = $servers;
-		$this->driver = $driver;
+		$this->driver  = $driver;
 	}
 	
 	function login($login, $password) {
@@ -32,7 +32,7 @@ class AdminerLoginServers {
 				}
 			}
 		}
-		return false;
+		return FALSE;
 	}
 	
 	function loginForm() {
@@ -45,7 +45,7 @@ class AdminerLoginServers {
 <p><input type="submit" value="<?php echo lang('Login'); ?>">
 <?php
 		//echo checkbox("auth[permanent]", 1, $_COOKIE["adminer_permanent"], lang('Permanent login')) . "\n";
-		return true;
+		return TRUE;
 	}
 	
 }

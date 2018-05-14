@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
@@ -18,7 +18,7 @@ use \League\Flysystem\Filesystem;
 
 elFinder::$netDrivers['googledrive'] = 'FlysystemGoogleDriveNetmount';
 
-if (!class_exists('elFinderVolumeFlysystemGoogleDriveCache', false)) {
+if (!class_exists('elFinderVolumeFlysystemGoogleDriveCache', FALSE)) {
     class elFinderVolumeFlysystemGoogleDriveCache extends ACache
     {
         use Hasdir;
@@ -52,10 +52,10 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
     protected function init()
     {
         if (empty($this->options['icon'])) {
-            $this->options['icon'] = true;
+            $this->options['icon'] = TRUE;
         }
         if ($res = parent::init()) {
-            if ($this->options['icon'] === true) {
+            if ($this->options['icon'] === TRUE) {
                 unset($this->options['icon']);
             }
         }
@@ -104,7 +104,7 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
             }
             $aToken = $options['access_token'];
 
-            $rootObj = $service = null;
+            $rootObj = $service = NULL;
             if ($aToken) {
                 try {
                     $client->setAccessToken($aToken);
@@ -118,12 +118,12 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
                     $options['access_token'] = $aToken;
                     $this->session->set('GoogleDriveAuthParams', $options);
                 } catch (Exception $e) {
-                    $aToken = [];
+                    $aToken                  = [];
                     $options['access_token'] = [];
                     if ($options['user'] !== 'init') {
                         $this->session->set('GoogleDriveAuthParams', $options);
 
-                        return ['exit' => true, 'error' => elFinder::ERROR_REAUTH_REQUIRE];
+                        return ['exit' => TRUE, 'error' => elFinder::ERROR_REAUTH_REQUIRE];
                     }
                 }
             }
@@ -153,8 +153,8 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
                         $options['pass'] = 'return';
                         $this->session->set('GoogleDriveAuthParams', $options);
 
-                        return ['exit' => true, 'body' => $html];
-                    } else {
+                        return ['exit' => TRUE, 'body' => $html];
+                    }  
                         $out = [
                             'node' => $options['id'],
                             'json' => '{"protocol": "googledrive", "mode": "makebtn", "body" : "'.str_replace($html, '"', '\\"').'", "error" : "'.elFinder::ERROR_ACCESS_DENIED.'"}',
@@ -162,10 +162,10 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
                         ];
 
                         return ['exit' => 'callback', 'out' => $out];
-                    }
-                } else {
+                    
+                }  
                     if (!empty($_GET['code'])) {
-                        $aToken = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+                        $aToken                  = $client->fetchAccessTokenWithAuthCode($_GET['code']);
                         $options['access_token'] = $aToken;
                         $this->session->set('GoogleDriveTokens', $aToken)->set('GoogleDriveAuthParams', $options);
                         $out = [
@@ -184,30 +184,30 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
                         $folders[$f->getId()] = $f->getName();
                     }
                     natcasesort($folders);
-                    $folders = ['root' => $rootObj->getName()] + $folders;
-                    $folders = json_encode($folders);
-                    $json = '{"protocol": "googledrive", "mode": "done", "folders": '.$folders.'}';
+                    $folders         = ['root' => $rootObj->getName()] + $folders;
+                    $folders         = json_encode($folders);
+                    $json            = '{"protocol": "googledrive", "mode": "done", "folders": '.$folders.'}';
                     $options['pass'] = 'return';
-                    $html = 'Google.com';
+                    $html            = 'Google.com';
                     $html .= '<script>
                         $("#'.$options['id'].'").elfinder("instance").trigger("netmount", '.$json.');
                     </script>';
                     $this->session->set('GoogleDriveAuthParams', $options);
 
-                    return ['exit' => true, 'body' => $html];
-                }
+                    return ['exit' => TRUE, 'body' => $html];
+                
             }
         } catch (Exception $e) {
             $this->session->remove('GoogleDriveAuthParams')->remove('GoogleDriveTokens');
             if (empty($options['pass'])) {
-                return ['exit' => true, 'body' => '{msg:'.elFinder::ERROR_ACCESS_DENIED.'}'.' '.$e->getMessage()];
-            } else {
-                return ['exit' => true, 'error' => [elFinder::ERROR_ACCESS_DENIED, $e->getMessage()]];
-            }
+                return ['exit' => TRUE, 'body' => '{msg:'.elFinder::ERROR_ACCESS_DENIED.'}'.' '.$e->getMessage()];
+            }  
+                return ['exit' => TRUE, 'error' => [elFinder::ERROR_ACCESS_DENIED, $e->getMessage()]];
+            
         }
 
         if (!$aToken) {
-            return ['exit' => true, 'error' => elFinder::ERROR_REAUTH_REQUIRE];
+            return ['exit' => TRUE, 'error' => elFinder::ERROR_REAUTH_REQUIRE];
         }
 
         if ($options['path'] === '/') {
@@ -215,17 +215,17 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
         }
 
         try {
-            $file = $service->files->get($options['path']);
+            $file             = $service->files->get($options['path']);
             $options['alias'] = sprintf($this->options['gdAlias'], $file->getName());
         } catch (Google_Service_Exception $e) {
-            $err = @json_decode($e->getMessage(), true);
+            $err = @json_decode($e->getMessage(), TRUE);
             if (isset($err['error']) && $err['error']['code'] == 404) {
-                return ['exit' => true, 'error' => [elFinder::ERROR_TRGDIR_NOT_FOUND, $options['path']]];
-            } else {
-                return ['exit' => true, 'error' => $e->getMessage()];
-            }
+                return ['exit' => TRUE, 'error' => [elFinder::ERROR_TRGDIR_NOT_FOUND, $options['path']]];
+            }  
+                return ['exit' => TRUE, 'error' => $e->getMessage()];
+            
         } catch (Exception $e) {
-            return ['exit' => true, 'error' => $e->getMessage()];
+            return ['exit' => TRUE, 'error' => $e->getMessage()];
         }
 
         foreach (['host', 'user', 'pass', 'id', 'offline'] as $key) {
@@ -255,7 +255,7 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
             }
         }
 
-        return true;
+        return TRUE;
     }
 
     /**
@@ -269,7 +269,7 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
      **/
     public function mount(array $opts)
     {
-        $creds = null;
+        $creds = NULL;
         if (isset($opts['access_token'])) {
             $this->netMountKey = md5(implode('-', ['googledrive', $opts['path'], (isset($opts['access_token']['refresh_token']) ? $opts['access_token']['refresh_token'] : $opts['access_token']['access_token'])]));
         }
@@ -297,9 +297,9 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
             $opts['path'] = 'root';
         }
 
-        $googleDrive = new GoogleDriveAdapter($service, $opts['path'], ['useHasDir' => true]);
+        $googleDrive = new GoogleDriveAdapter($service, $opts['path'], ['useHasDir' => TRUE]);
 
-        $opts['fscache'] = null;
+        $opts['fscache'] = NULL;
         if ($this->options['gdCacheDir'] && is_writable($this->options['gdCacheDir'])) {
             if ($this->options['gdCacheExpire']) {
                 $opts['fscache'] = new elFinderVolumeFlysystemGoogleDriveCache(new Local($this->options['gdCacheDir']), $this->options['gdCachePrefix'].$this->netMountKey, $this->options['gdCacheExpire']);
@@ -311,9 +311,9 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
             $filesystem = new Filesystem($googleDrive);
         }
 
-        $opts['driver'] = 'Flysystem'.(class_exists('elFinderVolumeFlysystemExt') ? 'Ext' : '');
-        $opts['filesystem'] = $filesystem;
-        $opts['checkSubfolders'] = true;
+        $opts['driver']          = 'Flysystem'.(class_exists('elFinderVolumeFlysystemExt') ? 'Ext' : '');
+        $opts['filesystem']      = $filesystem;
+        $opts['checkSubfolders'] = TRUE;
         if (!isset($opts['alias'])) {
             $opts['alias'] = 'GoogleDrive';
         }
@@ -321,7 +321,7 @@ class elFinderVolumeFlysystemGoogleDriveNetmount extends \Barryvdh\elFinderFlysy
         if ($res = parent::mount($opts)) {
             // update access_token of session data
             if ($creds) {
-                $netVolumes = $this->session->get('netvolume');
+                $netVolumes                                     = $this->session->get('netvolume');
                 $netVolumes[$this->netMountKey]['access_token'] = array_merge($netVolumes[$this->netMountKey]['access_token'], $creds);
                 $this->session->set('netvolume', $netVolumes);
             }

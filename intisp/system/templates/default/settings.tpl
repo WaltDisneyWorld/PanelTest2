@@ -13,7 +13,7 @@
     <input type="text" class="form-control" name="title" id="formGroupExampleInput" value="<?php
     require 'config.php';
     $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
 
     $sql = "SELECT value FROM Settings WHERE code =  'title' LIMIT 0 , 30";

@@ -1,13 +1,13 @@
 <?php
 
-/**
- * Adminer customization allowing usage of plugins
+/*
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
- * @link    https://www.adminer.org/plugins/#use
- * @author  Jakub Vrana, https://www.vrana.cz/
- * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
- * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2 (one or other)
  */
+
 class AdminerPlugin extends Adminer
 {
     /**
@@ -31,7 +31,7 @@ class AdminerPlugin extends Adminer
      */
     function __construct($plugins) 
     {
-        if ($plugins === null) {
+        if ($plugins === NULL) {
             $plugins = array();
             foreach (get_declared_classes() as $class) {
                 if (preg_match('~^Adminer.~i', $class) && strcasecmp($this->_findRootClass($class), 'Adminer')) { //! can use interface
@@ -69,7 +69,7 @@ class AdminerPlugin extends Adminer
                     break;
                 default: trigger_error('Too many parameters.', E_USER_WARNING);
                 }
-                if ($return !== null) {
+                if ($return !== NULL) {
                     return $return;
                 }
             }
@@ -122,7 +122,7 @@ class AdminerPlugin extends Adminer
         return $this->_applyPlugin(__FUNCTION__, $args);
     }
 
-    function permanentLogin($create = false) 
+    function permanentLogin($create = FALSE) 
     {
         $args = func_get_args();
         return $this->_applyPlugin(__FUNCTION__, $args);
@@ -140,7 +140,7 @@ class AdminerPlugin extends Adminer
         return $this->_applyPlugin(__FUNCTION__, $args);
     }
 
-    function databases($flush = true) 
+    function databases($flush = TRUE) 
     {
         $args = func_get_args();
         return $this->_applyPlugin(__FUNCTION__, $args);
@@ -404,7 +404,7 @@ class AdminerPlugin extends Adminer
         return $this->_applyPlugin(__FUNCTION__, $args);
     }
 
-    function dumpHeaders($identifier, $multi_table = false) 
+    function dumpHeaders($identifier, $multi_table = FALSE) 
     {
         $args = func_get_args();
         return $this->_applyPlugin(__FUNCTION__, $args);

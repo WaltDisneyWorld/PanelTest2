@@ -40,7 +40,7 @@ if (!isset($_GET['page'])) {
 if (file_exists("templates/default/" . $_GET['page'].'.tpl')) {
     include "templates/default/" . $_GET['page'].'.tpl';
     die();
-} else {
+}  
     header('HTTP/1.0 404 Not Found'); ?>
 <!doctype html><html><head><title>404 Not Found</title><style>
 body { background-color: #fcfcfc; color: #333333; margin: 0; padding:0; }
@@ -51,5 +51,5 @@ code.url { background-color: #eeeeee; font-family:monospace; padding:0 2px;}
 </head><body><h1>Not Found</h1><p>The requested resource <code class="url">index.php?page=<?php echo $_GET['page']; ?></code> was not found on this server.</p></body></html>
 <?php
 
-}
+
 ?>

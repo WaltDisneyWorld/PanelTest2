@@ -1,22 +1,22 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
 class elFinderPluginWatermark
 {
-    private $opts = [];
-    private $watermarkImgInfo = null;
+    private $opts             = [];
+    private $watermarkImgInfo = NULL;
 
     public function __construct($opts)
     {
         $defaults = [
-            'enable'         => true,       // For control by volume driver
+            'enable'         => TRUE,       // For control by volume driver
             'source'         => 'logo.png', // Path to Water mark image
             'marginRight'    => 5,          // Margin right pixel
             'marginBottom'   => 5,          // Margin bottom pixel
@@ -31,24 +31,24 @@ class elFinderPluginWatermark
 
     public function onUpLoadPreSave(&$path, &$name, $src, $elfinder, $volume)
     {
-        $opts = $this->opts;
+        $opts    = $this->opts;
         $volOpts = $volume->getOptionsPlugin('Watermark');
         if (is_array($volOpts)) {
             $opts = array_merge($this->opts, $volOpts);
         }
 
         if (!$opts['enable']) {
-            return false;
+            return FALSE;
         }
 
         $srcImgInfo = @getimagesize($src);
-        if ($srcImgInfo === false) {
-            return false;
+        if ($srcImgInfo === FALSE) {
+            return FALSE;
         }
 
         // check Animation Gif
         if (elFinder::isAnimationGif($src)) {
-            return false;
+            return FALSE;
         }
 
         // check water mark image
@@ -58,16 +58,16 @@ class elFinderPluginWatermark
         if (is_readable($opts['source'])) {
             $watermarkImgInfo = @getimagesize($opts['source']);
             if (!$watermarkImgInfo) {
-                return false;
+                return FALSE;
             }
         } else {
-            return false;
+            return FALSE;
         }
 
-        $watermark = $opts['source'];
-        $marginLeft = $opts['marginRight'];
+        $watermark    = $opts['source'];
+        $marginLeft   = $opts['marginRight'];
         $marginBottom = $opts['marginBottom'];
-        $quality = $opts['quality'];
+        $quality      = $opts['quality'];
         $transparency = $opts['transparency'];
 
         // check target image type
@@ -79,24 +79,24 @@ class elFinderPluginWatermark
             IMAGETYPE_WBMP => IMG_WBMP,
         ];
         if (!($opts['targetType'] & @$imgTypes[$srcImgInfo[2]])) {
-            return false;
+            return FALSE;
         }
 
         // check target image size
         if ($opts['targetMinPixel'] > 0 && $opts['targetMinPixel'] > min($srcImgInfo[0], $srcImgInfo[1])) {
-            return false;
+            return FALSE;
         }
 
-        $watermark_width = $watermarkImgInfo[0];
+        $watermark_width  = $watermarkImgInfo[0];
         $watermark_height = $watermarkImgInfo[1];
-        $dest_x = $srcImgInfo[0] - $watermark_width - $marginLeft;
-        $dest_y = $srcImgInfo[1] - $watermark_height - $marginBottom;
+        $dest_x           = $srcImgInfo[0] - $watermark_width - $marginLeft;
+        $dest_y           = $srcImgInfo[1] - $watermark_height - $marginBottom;
 
-        if (class_exists('Imagick', false)) {
+        if (class_exists('Imagick', FALSE)) {
             return $this->watermarkPrint_imagick($src, $watermark, $dest_x, $dest_y, $quality, $transparency, $watermarkImgInfo);
-        } else {
+        }  
             return $this->watermarkPrint_gd($src, $watermark, $dest_x, $dest_y, $quality, $transparency, $watermarkImgInfo, $srcImgInfo);
-        }
+        
     }
 
     private function watermarkPrint_imagick($src, $watermark, $dest_x, $dest_y, $quality, $transparency, $watermarkImgInfo)
@@ -129,15 +129,15 @@ class elFinderPluginWatermark
             $watermark->clear();
             $watermark->destroy();
 
-            return $result ? true : false;
+            return $result ? TRUE : FALSE;
         } catch (Exception $e) {
-            return false;
+            return FALSE;
         }
     }
 
     private function watermarkPrint_gd($src, $watermark, $dest_x, $dest_y, $quality, $transparency, $watermarkImgInfo, $srcImgInfo)
     {
-        $watermark_width = $watermarkImgInfo[0];
+        $watermark_width  = $watermarkImgInfo[0];
         $watermark_height = $watermarkImgInfo[1];
 
         $ermsg = '';
@@ -171,8 +171,8 @@ class elFinderPluginWatermark
                 }
                 break;
             default:
-                $oWatermarkImg = false;
-                $ermsg = $watermarkImgInfo['mime'].' images are not supported';
+                $oWatermarkImg = FALSE;
+                $ermsg         = $watermarkImgInfo['mime'].' images are not supported';
                 break;
         }
 
@@ -207,14 +207,14 @@ class elFinderPluginWatermark
                     }
                     break;
                 default:
-                    $oSrcImg = false;
-                    $ermsg = $srcImgInfo['mime'].' images are not supported';
+                    $oSrcImg = FALSE;
+                    $ermsg   = $srcImgInfo['mime'].' images are not supported';
                     break;
             }
         }
 
-        if ($ermsg || false === $oSrcImg || false === $oWatermarkImg) {
-            return false;
+        if ($ermsg || FALSE === $oSrcImg || FALSE === $oWatermarkImg) {
+            return FALSE;
         }
 
         if ($srcImgInfo['mime'] === 'image/png') {
@@ -239,8 +239,8 @@ class elFinderPluginWatermark
                 break;
             case 'image/png':
                 if (function_exists('imagesavealpha') && function_exists('imagealphablending')) {
-                    imagealphablending($oSrcImg, false);
-                    imagesavealpha($oSrcImg, true);
+                    imagealphablending($oSrcImg, FALSE);
+                    imagesavealpha($oSrcImg, TRUE);
                 }
                 imagepng($oSrcImg, $src);
                 break;
@@ -252,6 +252,6 @@ class elFinderPluginWatermark
         imagedestroy($oSrcImg);
         imagedestroy($oWatermarkImg);
 
-        return true;
+        return TRUE;
     }
 }

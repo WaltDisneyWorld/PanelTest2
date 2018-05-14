@@ -4,8 +4,8 @@ if (isset($_GET['yes'])) {
     echo 'Downloading...';
     $wordpress_url = 'https://wordpress.org/latest.zip';
 
-    $con = mysqli_connect($host, $user, $pass, $data);
-    $sql = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+    $con    = mysqli_connect($host, $user, $pass, $data);
+    $sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
     $result = mysqli_query($con, $sql);
     while ($row = mysqli_fetch_row($result)) {
         echo $row[5];
@@ -19,7 +19,7 @@ if (isset($_GET['yes'])) {
     echo 'Installing...';
     $zip = new ZipArchive();
     $res = $zip->open('wp.zip');
-    if ($res === true) {
+    if ($res === TRUE) {
         $zip->extractTo('/var/webister/'.$myp);
         $zip->close();
         echo 'Done!';
@@ -38,8 +38,8 @@ if (isset($_GET['yes'])) {
                     <div class="col-md-12">
 
                         <h2 class="page-title">Install Wordpress to Your Site running on <?php
-                        $con = mysqli_connect($host, $user, $pass, $data);
-                        $sql = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+                        $con    = mysqli_connect($host, $user, $pass, $data);
+                        $sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_row($result)) {
                             echo $row[5];

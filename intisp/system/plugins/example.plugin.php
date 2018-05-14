@@ -6,10 +6,10 @@ Description: This is plugin
 Version: 1.1
 Author: Thomas Wilbur
 Author URI: https://www.youtube.com/
-*/
-$menu = true;
-$menu_name="Example Plugin";
-$menu_only_admin = true;
+ */
+$menu            = TRUE;
+$menu_name       ="Example Plugin";
+$menu_only_admin = TRUE;
 function page() {
    ?>
    <h1>Welcome</h1>

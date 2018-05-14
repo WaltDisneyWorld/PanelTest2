@@ -1,10 +1,10 @@
 <?php
 
 /*
- * Adaclare Technologies
- *
- * Webister Hosting Software
- *
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
  *
  */
 
@@ -15,11 +15,11 @@ class elFinderPluginAutoResize
     public function __construct($opts)
     {
         $defaults = [
-            'enable'         => true,       // For control by volume driver
+            'enable'         => TRUE,       // For control by volume driver
             'maxWidth'       => 1024,       // Path to Water mark image
             'maxHeight'      => 1024,       // Margin right pixel
             'quality'        => 95,         // JPEG image save quality
-            'preserveExif'   => false,      // Preserve EXIF data (Imagick only)
+            'preserveExif'   => FALSE,      // Preserve EXIF data (Imagick only)
             'targetType'     => IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP, // Target image formats ( bit-field )
         ];
 
@@ -28,19 +28,19 @@ class elFinderPluginAutoResize
 
     public function onUpLoadPreSave(&$path, &$name, $src, $elfinder, $volume)
     {
-        $opts = $this->opts;
+        $opts    = $this->opts;
         $volOpts = $volume->getOptionsPlugin('AutoResize');
         if (is_array($volOpts)) {
             $opts = array_merge($this->opts, $volOpts);
         }
 
         if (!$opts['enable']) {
-            return false;
+            return FALSE;
         }
 
         $srcImgInfo = @getimagesize($src);
-        if ($srcImgInfo === false) {
-            return false;
+        if ($srcImgInfo === FALSE) {
+            return FALSE;
         }
 
         // check target image type
@@ -52,27 +52,27 @@ class elFinderPluginAutoResize
             IMAGETYPE_WBMP => IMG_WBMP,
         ];
         if (!($opts['targetType'] & @$imgTypes[$srcImgInfo[2]])) {
-            return false;
+            return FALSE;
         }
 
         if ($srcImgInfo[0] > $opts['maxWidth'] || $srcImgInfo[1] > $opts['maxHeight']) {
             return $this->resize($src, $srcImgInfo, $opts['maxWidth'], $opts['maxHeight'], $opts['quality'], $opts['preserveExif']);
         }
 
-        return false;
+        return FALSE;
     }
 
     private function resize($src, $srcImgInfo, $maxWidth, $maxHeight, $quality, $preserveExif)
     {
-        $zoom = min(($maxWidth / $srcImgInfo[0]), ($maxHeight / $srcImgInfo[1]));
-        $width = round($srcImgInfo[0] * $zoom);
+        $zoom   = min(($maxWidth / $srcImgInfo[0]), ($maxHeight / $srcImgInfo[1]));
+        $width  = round($srcImgInfo[0] * $zoom);
         $height = round($srcImgInfo[1] * $zoom);
 
-        if (class_exists('Imagick', false)) {
+        if (class_exists('Imagick', FALSE)) {
             return $this->resize_imagick($src, $width, $height, $quality, $preserveExif);
-        } else {
+        }  
             return $this->resize_gd($src, $width, $height, $quality, $srcImgInfo);
-        }
+        
     }
 
     private function resize_gd($src, $width, $height, $quality, $srcImgInfo)
@@ -107,14 +107,14 @@ class elFinderPluginAutoResize
                 }
                 break;
             default:
-                $oSrcImg = false;
-                $ermsg = $srcImgInfo['mime'].' images are not supported';
+                $oSrcImg = FALSE;
+                $ermsg   = $srcImgInfo['mime'].' images are not supported';
                 break;
         }
 
-        if ($oSrcImg && false != ($tmp = imagecreatetruecolor($width, $height))) {
+        if ($oSrcImg && FALSE != ($tmp = imagecreatetruecolor($width, $height))) {
             if (!imagecopyresampled($tmp, $oSrcImg, 0, 0, 0, 0, $width, $height, $srcImgInfo[0], $srcImgInfo[1])) {
-                return false;
+                return FALSE;
             }
 
             switch ($srcImgInfo['mime']) {
@@ -126,8 +126,8 @@ class elFinderPluginAutoResize
                     break;
                 case 'image/png':
                     if (function_exists('imagesavealpha') && function_exists('imagealphablending')) {
-                        imagealphablending($tmp, false);
-                        imagesavealpha($tmp, true);
+                        imagealphablending($tmp, FALSE);
+                        imagesavealpha($tmp, TRUE);
                     }
                     imagepng($tmp, $src);
                     break;
@@ -139,10 +139,10 @@ class elFinderPluginAutoResize
             imagedestroy($oSrcImg);
             imagedestroy($tmp);
 
-            return true;
+            return TRUE;
         }
 
-        return false;
+        return FALSE;
     }
 
     private function resize_imagick($src, $width, $height, $quality, $preserveExif)
@@ -166,16 +166,16 @@ class elFinderPluginAutoResize
                 }
             }
 
-            $img->resizeImage($width, $height, Imagick::FILTER_LANCZOS, true);
+            $img->resizeImage($width, $height, Imagick::FILTER_LANCZOS, TRUE);
 
             $result = $img->writeImage($src);
 
             $img->clear();
             $img->destroy();
 
-            return $result ? true : false;
+            return $result ? TRUE : FALSE;
         } catch (Exception $e) {
-            return false;
+            return FALSE;
         }
     }
 }

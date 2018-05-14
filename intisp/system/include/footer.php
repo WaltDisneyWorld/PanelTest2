@@ -22,8 +22,8 @@
           <ul>
           				<li class="ts-label">Status of Server</li>
 			 <li>Hostname: <span class="badge"><?php echo gethostname(); ?>:<?php
-$con = mysqli_connect($host, $user, $pass, $data);
-$sql = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+$con    = mysqli_connect($host, $user, $pass, $data);
+$sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      echo $row[5];
@@ -32,8 +32,8 @@ $result = mysqli_query($con, $sql);
     mysqli_close($con);
     ?></span></li>
 			 <li>IP Address: <span class="badge"><?php echo gethostbyname(gethostname()); ?>:<?php
-$con = mysqli_connect($host, $user, $pass, $data);
-$sql = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+$con    = mysqli_connect($host, $user, $pass, $data);
+$sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      echo $row[5];
@@ -51,8 +51,8 @@ $result = mysqli_query($con, $sql);
     <li>FTP Hostname: <span class="badge"><?php echo gethostbyname(gethostname()); ?></li>
     <li>FTP Username: <span class="badge"><?php echo $_SESSION['user']; ?></span></li>
     <li>FTP Password: :<span class="badge"><?php
-$con = mysqli_connect($host, $user, $pass, $data);
-$sql = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+$con    = mysqli_connect($host, $user, $pass, $data);
+$sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      echo $row[2];
@@ -85,16 +85,14 @@ $result = mysqli_query($con, $sql);
     Data Folder (
     <?php
     
-    function scan_dir($path){
-    $ite=new RecursiveDirectoryIterator($path);
+    function scan_dir($path) {
+    $ite    =new RecursiveDirectoryIterator($path);
     $nbfiles=0;
     foreach (new RecursiveIteratorIterator($ite) as $filename=>$cur) {
         $filesize=$cur->getSize();
         $nbfiles++;
         $files[] = $filename;
     }
-
- 
 
     return array('total_files'=>$nbfiles,'files'=>$files);
 }
@@ -123,7 +121,7 @@ echo $files['total_files'];
                                             <tbody>
                                             
 <?php  $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data"); $sql = "SELECT * \n"
+    $con       = mysqli_connect("$host", "$user", "$pass", "$data"); $sql       = "SELECT * \n"
     ."FROM `FailedLogin` \n"
     .'LIMIT 0 , 5';
 

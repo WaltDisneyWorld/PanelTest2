@@ -1,4 +1,13 @@
 <?php
+
+/*
+ * Adaclare IntISP System
+ * Copyright Adaclare Technologies 2007-2018
+ * https://www.adaclare.com
+ * https://github.com/INTisp
+ *
+ */
+
 require "include/head.php";
 require "plugins/" . $_GET["pl"];
 if ($menu_only_admin) {
@@ -6,4 +15,3 @@ if ($menu_only_admin) {
 }
 page();
 require "include/footer.php";
-?>
