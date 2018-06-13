@@ -9,7 +9,7 @@
  */
 
 require "/var/www/html/interface/configdatabase.php";
- $con = new mysqli($host, $user, $pass, $data);
+ $con    = mysqli_connect($host, $user, $pass, $data);
     $sql = "SELECT * \n"
     ."FROM `Users`";
 
