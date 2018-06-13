@@ -8,9 +8,8 @@
  *
  */
 
-include '/var/www/html/interface/config.php';
- $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data"); 
+require "/var/www/html/interface/configdatabase.php";
+ $con = new mysqli($host, $user, $pass, $data);
     $sql = "SELECT * \n"
     ."FROM `Users`";
 
