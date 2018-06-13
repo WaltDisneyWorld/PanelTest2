@@ -4,7 +4,7 @@
 # LAMP installer and INTISP
 everything:
 	# Installing Python and add-apt-repository
-	sudo apt-get install curl python3 python3-pip software-properties-common -y
+	sudo apt-get install curl python3 python-pip software-properties-common -y
 	# Adding PHP Repository
 	#sudo add-apt-repository ppa:ondrej/php broken fix later
 	# Updating Sources
