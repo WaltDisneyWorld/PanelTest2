@@ -10,7 +10,7 @@ everything:
 	# Updating Sources
 	sudo apt-get update
 	# Installing MariaDB and PHP 7.X Apache2
-	sudo apt-get install apache2 mariadb-common mariadb-client mariadb-server php php-cli php-fpm php-json php-mysql php-curl php-mail -y 
+	sudo apt-get install apache2 mysql-server php php-cli php-fpm php-json php-mysql php-curl php-mail -y 
 	# Setting up MYSQL
 	sudo service mysql start
 	sudo mysql_secure_installation
