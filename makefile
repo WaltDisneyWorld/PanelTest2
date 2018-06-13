@@ -6,11 +6,11 @@ everything:
 	# Installing Python and add-apt-repository
 	sudo apt-get install curl python3 python3-pip software-properties-common -y
 	# Adding PHP Repository
-	sudo add-apt-repository ppa:ondrej/php
+	#sudo add-apt-repository ppa:ondrej/php broken fix later
 	# Updating Sources
 	sudo apt-get update
 	# Installing MariaDB and PHP 7.X Apache2
-	sudo apt-get install apache2 mariadb-common mariadb-client mariadb-server php7.2 php7.2-cli php7.2-fpm php7.2-json php7.2-mysql php7.2-curl php7.2-mail -y 
+	sudo apt-get install apache2 mariadb-common mariadb-client mariadb-server php php-cli php-fpm php-json php-mysql php-curl php-mail -y 
 	# Setting up MYSQL
 	sudo service mysql start
 	sudo mysql_secure_installation
