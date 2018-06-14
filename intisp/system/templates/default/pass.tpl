@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(E_ALL);
 /*
  * Adaclare IntISP System
  * Copyright Adaclare Technologies 2007-2018
@@ -16,9 +16,16 @@ require 'config.php';
    $query = sprintf("SET PASSWORD FOR %s@localhost = PASSWORD('%s');", $_POST['username'], $_POST['password']);
     mysqli_query($con, $query);
     mysqli_close($con);
-if ($_POST["username"] == "admin" || $_POST["username"] == "Admin") {
-    include "include/mail.php";
-    sendemailuser("Password Changed", "The password for the main administrator account has been changed. If you did not change your password we recommend that you restore the password or reinstall webister. This may also be an issue with the installation of project webister.");
+    function service_send($command) 
+{
+    $fp = fsockopen("127.0.0.1", 1210, $errno, $errstr, 30);
+    if (!$fp) {
+        echo "$errstr ($errno)<br />\n";
+    } else {
+        fwrite($fp, $command);
+ 
+        fclose($fp);
+    }
 }
-    
+service_send("restart");
     header('Location: index.php?page=cp#');
