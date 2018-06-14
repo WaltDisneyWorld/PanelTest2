@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/var/webister/ftpserv.py", line 10, in <module>
+    server = FTPServer(("0.0.0.0", 21), handler)
+  File "/usr/local/lib/python2.7/dist-packages/pyftpdlib/servers.py", line 114, in __init__
+    self.bind_af_unspecified(address_or_socket)
+  File "/usr/local/lib/python2.7/dist-packages/pyftpdlib/ioloop.py", line 1018, in bind_af_unspecified
+    raise socket.error(err)
+socket.error: [Errno 98] Address already in use
