@@ -1,0 +1,204 @@
+<?php
+
+/**
+ * This is a FILTER POINT in Softaculous.
+ * NOTE : You must rename this file to filter.php
+ */
+ 
+//////////////////////////////////////////////////////////////
+//===========================================================
+// filter.php
+//===========================================================
+// SOFTACULOUS 
+// Version : 1.1
+// Inspired by the DESIRE to be the BEST OF ALL
+// ----------------------------------------------------------
+// Started by: Alons
+// Date:       10th Jan 2009
+// Time:       21:00 hrs
+// Site:       http://www.softaculous.com/ (SOFTACULOUS)
+// ----------------------------------------------------------
+// Please Read the Terms of use at http://www.softaculous.com
+// ----------------------------------------------------------
+//===========================================================
+// (c)Softaculous Inc.
+//===========================================================
+//////////////////////////////////////////////////////////////
+
+if(!defined('SOFTACULOUS')){
+
+	die('Hacking Attempt');
+
+}
+
+
+if(is_dir('/usr/local/mgr5')){
+	
+	if(!defined('SOFTCLI') && !defined('SOFTADMIN')){
+	
+		function __multiphp_pre_install(){
+			global $l, $isp, $__hooks, $softdomain, $softins;
+			
+			if(defined('NO_REQUIREMENT')){
+				return true;
+			}
+			
+			//Since its pre_install hook, we do not have domain posted by the user yet, hence we take it via POST here.
+			$softdomain = optPOST('softdomain', $l['no_softdomain']);
+			$softdomain = rawGPC($_POST['softdomain']);
+			
+			if(empty($softdomain)){
+				$softdomain = $softins['softdomain'];
+				
+				//If by any reason softdomain is found empty then using the 'softurl' find the domain
+				if(empty($softdomain)){
+					$softdomain = parse_url($softins['softurl'], PHP_URL_HOST);
+				}
+			}
+			
+			if(empty($softdomain)){
+				return true;
+			}			
+			
+			//Determine the user's selected php version	using ISP Manager's API
+			$res = $isp->query('out=xml&func=webdomain.edit&elid='.$softdomain);
+			//r_print($res);
+						
+			//If found native version then select the do nothing(i.e default php binary is to be used)
+			if(empty($res['doc']['php_cgi_version']) || $res['doc']['php_cgi_version'] == 'native'){
+				return true;
+			}
+			
+			$out = $phpv = $pout = $output = array();
+			
+			$multi_php_version = $res['doc']['php_cgi_version'];
+			preg_match('/isp-(.*)/i', $multi_php_version, $phpv);
+			$multi_php_bin = '/opt/'.$phpv[1].'/bin/php';				
+			
+			@exec($multi_php_bin.' -v', $out, $errtxt);
+			$pout = implode('', $out);
+			preg_match('/PHP (.*?)\s/i', $pout, $output);
+			$tmp_out = $output[1];
+			
+			(!empty($output[1]) ? $php_version = $output[1] : '');
+			
+			//PHP Extensions based on the detected php binary
+			if(!empty($multi_php_version)){
+				
+				@exec($multi_php_bin.' -m', $extout, $extret);
+				
+				if(!empty($extout) && is_array($extout)){
+					if(!empty($__hooks['loaded_extension']) && is_array($__hooks['loaded_extension'])){
+						$__hooks['loaded_extension'] = array_merge($__hooks['loaded_extension'], $extout);
+					}else{
+						$__hooks['loaded_extension'] = $extout;
+					}
+				}
+				
+				// these extensions are returned by php and we need to convert them all to same format
+				foreach($__hooks['loaded_extension'] as $ke => $ve){
+					$__hooks['loaded_extension'][$ke] = strtolower($ve);
+				}
+				
+				// This indicates that the PHP extensions list loaded in $__hooks is exhaustive list
+				if(!empty($__hooks['loaded_extension'])){
+					define('PHP_EXT_EXHAUSTIVE', 1);
+				}
+			}
+			
+			if(!empty($multi_php_version)) define('multi_php_version', $multi_php_version);
+			if(!empty($php_version)) define('php_version', $php_version);
+			if(!empty($multi_php_bin)) define('eu_php_bin', $multi_php_bin);
+			
+		}
+		
+		insert_filter('pre_install', '__multiphp_pre_install', 1);
+		insert_filter('pre_upgrade', '__multiphp_pre_install', 1, 1);
+	}
+}
+
+//Check for DirectAdmin MultiPHP is present
+if(is_dir('/usr/local/directadmin')){
+	
+	if(!defined('SOFTCLI') && !defined('SOFTADMIN')){
+	
+		function __multiphp_pre_install(){
+			global $l, $__hooks, $softdomain, $softins, $softpanel;
+			
+			if(defined('NO_REQUIREMENT')){
+				return true;
+			}
+			
+			//Since its pre_install hook, we do not have domain posted by the user yet, hence we take it via POST here.
+			$softdomain = optPOST('softdomain', $l['no_softdomain']);
+			$softdomain = rawGPC($_POST['softdomain']);
+			
+			if(empty($softdomain)){
+				$softdomain = $softins['softdomain'];
+				
+				//If by any reason softdomain is found empty then using the 'softurl' find the domain
+				if(empty($softdomain)){
+					$softdomain = parse_url($softins['softurl'], PHP_URL_HOST);
+				}
+			}
+			
+			if(empty($softdomain)){
+				return true;
+			}			
+			
+			//Determine the user's selected php version	using DirectAdmin's API
+			$res = $softpanel->query('CMD_API_ADDITIONAL_DOMAINS?action=view&domain='.$softdomain);
+			//r_print($res);
+			
+			//If found native version then select the do nothing(i.e default php binary is to be used)
+			if(empty($res['has_php_selector']) || $res['has_php_selector'] != 'yes'){
+				return true;
+			}
+			
+			$out = $pout = $output = array();
+			
+			$multi_php_version = (strpos($res['php1_ver'], '.') !== false ? str_replace(".", "", $res['php1_ver']) : $res['php1_ver'].'0');
+			
+			$multi_php_bin = '/usr/local/php'.$multi_php_version.'/bin/php';
+
+			@exec($multi_php_bin.' -v', $out, $errtxt);
+			$pout = implode('', $out);
+			preg_match('/PHP (.*?)\s/i', $pout, $output);
+			$tmp_out = $output[1];
+			
+			(!empty($output[1]) ? $php_version = $output[1] : '');
+			
+			//PHP Extensions based on the detected php binary
+			if(!empty($multi_php_version)){
+				
+				@exec($multi_php_bin.' -m', $extout, $extret);
+				
+				if(!empty($extout) && is_array($extout)){
+					if(!empty($__hooks['loaded_extension']) && is_array($__hooks['loaded_extension'])){
+						$__hooks['loaded_extension'] = array_merge($__hooks['loaded_extension'], $extout);
+					}else{
+						$__hooks['loaded_extension'] = $extout;
+					}
+				}
+				
+				// these extensions are returned by php and we need to convert them all to same format
+				foreach($__hooks['loaded_extension'] as $ke => $ve){
+					$__hooks['loaded_extension'][$ke] = strtolower($ve);
+				}
+				
+				// This indicates that the PHP extensions list loaded in $__hooks is exhaustive list
+				if(!empty($__hooks['loaded_extension'])){
+					define('PHP_EXT_EXHAUSTIVE', 1);
+				}
+			}		
+			
+			if(!empty($multi_php_version)) define('multi_php_version', $multi_php_version);
+			if(!empty($php_version)) define('php_version', $php_version);
+			if(!empty($multi_php_bin)) define('eu_php_bin', $multi_php_bin);
+				
+		}
+		
+		insert_filter('pre_install', '__multiphp_pre_install', 1);
+		insert_filter('pre_upgrade', '__multiphp_pre_install', 1, 1);
+	}
+}

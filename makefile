@@ -15,6 +15,7 @@ everything:
 	sudo service mysql start
 	sudo mysql_secure_installation
 	echo "Install using make.sh"
+	sudo sh eng_ioncube.sh
 	cd intisp && bash make.sh
 bypass:
 	echo "Install using make.sh"
