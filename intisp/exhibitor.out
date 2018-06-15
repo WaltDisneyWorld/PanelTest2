@@ -1,9 +1,24 @@
-[I 2018-06-14 10:34:15] >>> starting FTP server on 0.0.0.0:21, pid=7127 <<<
-[I 2018-06-14 10:34:15] concurrency model: async
-[I 2018-06-14 10:34:15] masquerade (NAT) adReceived: restart
-
-sh: 1: restart: not found
-ts: None
-[I 2018-06-14 10:37:15] 127.0.0.1:56890-[] FTP session opened (connect)
-[I 2018-06-14 10:37:15] 127.0.0.1:56890-[admin] USER 'admin' logged in.
-[I 2018-06-14 10:37:15] 127.0.0.1:56890-[admin] FTP session closed (disconnect).
+[I 2018-06-14 11:00:28] >>> starting FTP server on 0.0.0.0:21, pid=7959 <<<
+[I 2018-06-14 11:00:28] concurrency model: async
+[I 2018-06-14 11:00:28] masquerade (NAT) address: None
+[I 2018-06-14 11:00:28] passive ports: None
+[I 2018-06-14 11:01:20] 127.0.0.1:57104-[] FTP session opened (connect)
+[I 2018-06-14 11:01:20] 127.0.0.1:57104-[hello] USER 'hello' logged in.
+[I 2018-06-14 11:01:20] 127.0.0.1:57104-[hello] FTP session closed (disconnect).
+[I 2018-06-14 11:01:31] 127.0.0.1:57108-[] FTP session opened (connect)
+[I 2018-06-14 11:01:31] 127.0.0.1:57108-[hello] USER 'hello' logged in.
+[I 2018-06-14 11:01:31] 127.0.0.1:57108-[hello] CWD /var/webister/1023 250
+[I 2018-06-14 11:01:31] 127.0.0.1:57108-[hello] FTP session closed (disconnect).
+[I 2018-06-14 11:01:38] 127.0.0.1:57112-[] FTP session opened (connect)
+[I 2018-06-14 11:01:38] 127.0.0.1:57112-[hello] USER 'hello' logged in.
+[I 2018-06-14 11:01:38] 127.0.0.1:57112-[hello] CWD /var/webister/1023 250
+[I 2018-06-14 11:01:38] 127.0.0.1:57112-[hello] FTP session closed (disconnect).
+[I 2018-06-14 11:01:54] 127.0.0.1:57118-[] FTP session opened (connect)
+[I 2018-06-14 11:01:54] 127.0.0.1:57118-[hello] USER 'hello' logged in.
+[I 2018-06-14 11:01:54] 127.0.0.1:57118-[hello] CWD /var/webister/1023 250
+[I 2018-06-14 11:01:54] 127.0.0.1:57118-[hello] FTP session closed (disconnect).
+[I 2018-06-14 13:28:02] 196.52.43.114:6666-[] FTP session opened (connect)
+[I 2018-06-14 13:28:02] 196.52.43.114:6666-[] FTP session closed (disconnect).
+[I 2018-06-14 13:56:43] 78.161.105.70:50983-[] FTP session opened (connect)
+[I 2018-06-14 13:56:47] 78.161.105.70:50983-[] USER 'Admin' failed login.
+[I 2018-06-14 13:56:48] 78.161.105.70:50983-[] FTP session closed (disconnect).

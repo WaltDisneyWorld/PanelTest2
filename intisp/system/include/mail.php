@@ -30,6 +30,6 @@ $headers .= 'From: '.$from."\r\n".
 if(mail($to, $subject, $message, $headers)) {
     return TRUE;
 }  
-    die("Cannot Send Email Out Please try again Later.");
+    //die("Cannot Send Email Out Please try again Later.");
 
 }

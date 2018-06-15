@@ -64,7 +64,10 @@
     <label for="formGroupExampleInput">Cloudflare API Key</label>
     <input type="text" class="form-control" name="cloudflare" id="formGroupExampleInput" value="<?php echo file_get_contents('data/cloudflare'); ?>">
   </fieldset>
-  
+    <fieldset class="form-group">
+    <label for="formGroupExampleInput">WHMCS URL</label>
+    <input type="text" class="form-control" name="whmurl" id="formGroupExampleInput" value="<?php echo file_get_contents('data/whmurl'); ?>">
+  </fieldset>
   
   <fieldset class="form-group">
     <label for="sel1">Select theme (select one):</label>

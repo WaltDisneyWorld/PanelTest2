@@ -25,7 +25,8 @@ require 'include/mail.php';
     file_put_contents('data/color', $_POST['navbar']);
     file_put_contents('data/cloudflare', $_POST['cloudflare']);
     file_put_contents('data/upbutton', $_POST['upgrade']);
-        file_put_contents('data/mail', $_POST['mail']);
+        file_put_contents('data/mail', $_POST['mail']);    
+		file_put_contents('data/whmurl', $_POST['whmurl']);
     sendemailuser(
         "Settings Changed", "
     <b>Settings have been changed on the Webister Hosting Control Panel</b>

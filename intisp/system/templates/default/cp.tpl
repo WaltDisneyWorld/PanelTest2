@@ -10,27 +10,7 @@
   
 </style>
  
-                      <div data-step="1" data-intro="Welcome to Webister Platform, this is where you can see info about different versions." style="   margin-top: 5px;
-    margin-bottom: 5px;
-    margin-right: 100px;
-    margin-left: 100px; text-align:center;" class="jumbotron">
-  <h1>News</h1>
-  <p><?php 
-  
-    $news = file_get_contents("https://dl.adaclare.com/intisp.MESSAGES"); 
-    if (strlen($news) > "190") {
-        echo substr($news, 0, 190) . "...</p>";
-        ?>
-    
-        <p><a class="btn btn-primary btn-lg" href="https://dl.adaclare.com/intisp.MESSAGES" role="button">Learn more</a><a class="btn btn-primary btn-lg" href="javascript:void(0);" onclick="javascript:introJs().start();" role="button">Take The Tour</a></p>
-        <?php
-    } else {
-        echo $news . "</p>";
-    }
-  
-    ?>
-  
-</div>  
+                  
 <div>
      <script>
 $(document).ready(function(){
@@ -104,6 +84,39 @@ $(document).ready(function(){
   
                                      </li>
   </ul> 
+  
+  <?php 
+  if (file_get_contents("data/whmurl") != "") {
+  $whmurl = file_get_contents("data/whmurl");
+  ?>
+  <script>
+$(document).ready(function(){
+  $("#sxxhow").hide();
+    $("#hxxide").click(function(){
+        $(".sxrv").hide();
+        $("#hxxide").hide();
+        $("#sxxhow").show();
+    });
+    $("#sxxhow").click(function(){
+        $(".sxrv").show();
+        $("#hxxide").show();
+        $("#sxxhow").hide();
+    });
+});
+</script>
+  <ul class="list-group" data-step="5" data-intro="This is where users manage there servers.">
+  <li class="list-group-item"><a id="hxxide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="sxxhow"><i class="fa fa-list" aria-hidden="true"></i></a> |  Billing and Support</li>
+  <li class="list-group-item">  
+
+                                        <a  type="button" href="<?php echo $whmurl; ?>/clientarea.php" class="sxrv btn btn-default"><i class="fa fa-5x fa-newspaper-o"></i><hr> News and Announcements</a>
+    <a  type="button" href="<?php echo $whmurl; ?>/clientarea.php" class="sxrv btn btn-default"><i class="fa fa-5x fa-credit-card"></i><hr> Billing Info</a>
+        <a  type="button" href="<?php echo $whmurl; ?>/index.php?rp=/knowledgebase" class="sxrv btn btn-default"><i class="fa fa-5x fa-question-circle"></i><hr> Assistance</a>
+             <a  type="button" href="<?php echo $whmurl; ?>/clientarea.php?action=emails" class="sxrv btn btn-default"><i class="fa fa-5x fa-envelope-o"></i><hr> Email History</a>
+                       
+                                                         </li>
+  </ul>  
+  <?php } ?>
+  
 <?php
 if (ismasterreseller()) {
     ?>
