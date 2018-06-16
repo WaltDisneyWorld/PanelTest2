@@ -16,7 +16,7 @@ if ($_GET['val']) {
     $email = mysqli_real_escape_string($con, $_GET['user']);
     $pass  = sha1(mysqli_real_escape_string($con, $_GET['pass']));
 
-    $sql        = "select * from Users where username='$email' AND password='$pass'";
+    $sql        = "select * from users where username='$email' AND password='$pass'";
     $run_user   = mysqli_query($con, $sql);
     $check_user = mysqli_num_rows($run_user);
     if ($check_user > 0) {

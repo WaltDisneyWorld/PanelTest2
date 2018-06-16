@@ -2202,7 +2202,7 @@ module.exports = {
     var id = ++idCounter + '';
     return prefix ? prefix + id : id;
   };
-  _.templateSettings = {
+  _.templatesettings = {
     evaluate    : /<%([\s\S]+?)%>/g,
     interpolate : /<%=([\s\S]+?)%>/g,
     escape      : /<%-([\s\S]+?)%>/g
@@ -2221,7 +2221,7 @@ module.exports = {
   var escaper = /\\|'|\r|\n|\t|\u2028|\u2029/g;
   _.template = function(text, data, settings) {
     var render;
-    settings = _.defaults({}, settings, _.templateSettings);
+    settings = _.defaults({}, settings, _.templatesettings);
     var matcher = new RegExp([
       (settings.escape || noMatch).source,
       (settings.interpolate || noMatch).source,

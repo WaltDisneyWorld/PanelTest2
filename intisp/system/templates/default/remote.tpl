@@ -22,7 +22,7 @@ $email = mysqli_real_escape_string($con, $username);
 
 $pass = sha1(mysqli_real_escape_string($con, $password));
 
-$sql        = "select * from Users where username='$email' AND password='$pass'";
+$sql        = "select * from users where username='$email' AND password='$pass'";
 $run_user   = mysqli_query($con, $sql);
 $check_user = mysqli_num_rows($run_user);
 if ($check_user > 0) {
@@ -36,7 +36,7 @@ if ($check_user > 0) {
     $conn = new mysqli('localhost', 'root', "$pass", 'webister');
 
     $t   = time();
-    $sql = "INSERT INTO FailedLogin(id, ip, time)
+    $sql = "INSERT INTO failedlogin(id, ip, time)
 VALUES ('".rand(1, 99999)."', '".$_SERVER['REMOTE_ADDR']."', '".date('Y-m-d', $t)."')";
     $conn->query($sql);
     $conn->close();

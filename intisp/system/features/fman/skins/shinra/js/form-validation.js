@@ -38,7 +38,7 @@ jQuery(document).ready(function($) {
 		var comments = $("#comments").val();
 		
 		// send mail php
-		var sendMailUrl = $("#sendMailUrl").val();
+		var sendmailUrl = $("#sendmailUrl").val();
 		
 		//to, from & subject
 		var to = $("#to").val();
@@ -56,7 +56,7 @@ jQuery(document).ready(function($) {
 		// ajax
 		$.ajax({
 			type:"POST",
-			url: sendMailUrl,
+			url: sendmailUrl,
 			data: dataString,
 			success: success()
 		});

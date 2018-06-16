@@ -6,7 +6,7 @@ class LuminousHTMLScanner extends LuminousEmbeddedWebScript {
 
   public $scripts = true;
   
-  // XML literals are part of several languages. Settings this makes the scanner
+  // XML literals are part of several languages. settings this makes the scanner
   // halt as soon as it pops the its root tag from the stack, so no trailing 
   // code is consumed.
   public $xml_literal = false;

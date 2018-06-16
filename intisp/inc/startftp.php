@@ -11,7 +11,7 @@
 require "/var/www/html/interface/configdatabase.php";
  $con    = mysqli_connect($host, $user, $pass, $data);
     $sql = "SELECT * \n"
-    ."FROM `Users`";
+    ."FROM `users`";
 
 $file = "from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler

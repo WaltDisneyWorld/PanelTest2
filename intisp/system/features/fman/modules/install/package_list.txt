@@ -63,7 +63,7 @@
 <option value="http://belnet.dl.sourceforge.net/sourceforge/gallery/gallery-2.1.1a-minimal.tar.gz">Gallery 2.1.1a (mininal)</option>
 <option value="http://belnet.dl.sourceforge.net/sourceforge/gallery/gallery-2.1.1a-developer.tar.gz">Gallery 2.1.1a (developer)</option>
 
-<option value="" style="font-weight: bold; text-decoration: underline;">Mailing lists</option>
+<option value="" style="font-weight: bold; text-decoration: underline;">mailing lists</option>
 <option value="http://belnet.dl.sourceforge.net/sourceforge/phplist/phplist-2.10.2.tgz">PHPlist 2.10.2</option>
 
 <option value="" style="font-weight: bold; text-decoration: underline;">Polls and surveys</option>
@@ -78,7 +78,7 @@
 <option value="" style="font-weight: bold; text-decoration: underline;">Webmail</option>
 <option value="ftp://ftp.horde.org/pub/horde/horde-3.1.2.tar.gz">Horde 3.1.2 (required for IMP)</option>
 <option value="ftp://ftp.horde.org/pub/imp/imp-h3-4.1.2.tar.gz">IMP H3 4.1.2 (requires Horde)</option>
-<option value="http://belnet.dl.sourceforge.net/sourceforge/neomail/neomail-1.29.tar.gz">NeoMail 1.29</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/neomail/neomail-1.29.tar.gz">Neomail 1.29</option>
 <option value="http://belnet.dl.sourceforge.net/sourceforge/squirrelmail/squirrelmail-1.4.7.tar.gz">Squirrelmail 1.4.7</option>
 
 <option value="" style="font-weight: bold; text-decoration: underline;">Wiki</option>

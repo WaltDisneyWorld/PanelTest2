@@ -1,7 +1,7 @@
 <?php session_start(); require 'include/head.php';onlyadmin(); 
 if (isset($_GET["a"])) {
      $con           = mysqli_connect($host, $user, $pass, $data);
-            $sql    = 'delete from Mail where id = ' . $_GET["a"];
+            $sql    = 'delete from mail where id = ' . $_GET["a"];
             $result = mysqli_query($con, $sql);
 }
 
@@ -24,7 +24,7 @@ if (isset($_GET["a"])) {
             <?php
 
             $con    = mysqli_connect($host, $user, $pass, $data);
-            $sql    = 'SELECT * FROM Mail';
+            $sql    = 'SELECT * FROM mail';
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_row($result)) {
                 echo ' <tr>

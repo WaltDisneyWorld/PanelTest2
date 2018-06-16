@@ -31,7 +31,7 @@ var PowershellHighlightRules = function() {
        "Set-Item|Clear-ItemProperty|Copy-ItemProperty|Get-ItemProperty|Move-ItemProperty|New-ItemProperty|" +
        "Remove-ItemProperty|Rename-ItemProperty|Set-ItemProperty|Get-Job|Receive-Job|Remove-Job|" +
        "Start-Job|Stop-Job|Wait-Job|Stop-Process|Update-List|Get-Location|" +
-       "Pop-Location|Push-Location|Set-Location|Send-MailMessage|Add-Member|Get-Member|" +
+       "Pop-Location|Push-Location|Set-Location|Send-mailMessage|Add-Member|Get-Member|" +
        "Move-Item|Compare-Object|Group-Object|Measure-Object|New-Object|Select-Object|" +
        "Sort-Object|Where-Object|Out-Default|Out-File|Out-GridView|Out-Host|" +
        "Out-Null|Out-Printer|Out-String|Convert-Path|Join-Path|Resolve-Path|" +
@@ -42,7 +42,7 @@ var PowershellHighlightRules = function() {
        "New-PSSession|Remove-PSSession|Disable-PSSessionConfiguration|Enable-PSSessionConfiguration|Get-PSSessionConfiguration|Register-PSSessionConfiguration|" +
        "Set-PSSessionConfiguration|Unregister-PSSessionConfiguration|New-PSSessionOption|Add-PsSnapIn|Get-PsSnapin|Remove-PSSnapin|" +
        "Get-Random|Read-Host|Remove-Item|Rename-Item|Rename-ItemProperty|Select-Object|" +
-       "Select-XML|Send-MailMessage|Get-Service|New-Service|Restart-Service|Resume-Service|" +
+       "Select-XML|Send-mailMessage|Get-Service|New-Service|Restart-Service|Resume-Service|" +
        "Set-Service|Start-Service|Stop-Service|Suspend-Service|Sort-Object|Start-Sleep|" +
        "ConvertFrom-StringData|Select-String|Tee-Object|New-Timespan|Trace-Command|Get-Tracesource|" +
        "Set-Tracesource|Start-Transaction|Complete-Transaction|Get-Transaction|Use-Transaction|Undo-Transaction|" +

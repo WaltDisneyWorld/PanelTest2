@@ -21,7 +21,7 @@ $conn = new mysqli($host, $user, $pass, $username);
 
 //Load migrations from .sql files
 //$path_migrations = dirname(__FILE__).DIRECTORY_SEPARATOR.'migrations';
- $sql = 'CREATE TABLE Users (
+ $sql = 'CREATE TABLE users (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
 username VARCHAR(1000),
 password TEXT,
@@ -30,13 +30,13 @@ diskspace TEXT,
 port TEXT
 )';
 $conn->query($sql);
-$sql = 'CREATE TABLE Settings (
+$sql = 'CREATE TABLE settings (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
 code VARCHAR(1000),
 value VARCHAR(1000)
 )';
 $conn->query($sql);
-$sql = 'CREATE TABLE Mail (
+$sql = 'CREATE TABLE mail (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
 subject TEXT,
 message TEXT
@@ -44,14 +44,14 @@ message TEXT
 $conn->query($sql);
 
 /*
-$sql = 'CREATE TABLE Settings (
+$sql = 'CREATE TABLE settings (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
 code VARCHAR(1000),
 value VARCHAR(1000)
 )';
 
 
- $sql = 'CREATE TABLE Users (
+ $sql = 'CREATE TABLE users (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
 username VARCHAR(1000),
 password TEXT,
@@ -60,19 +60,19 @@ diskspace TEXT,
 port TEXT
 )';
 $conn->query($sql);
- $sql = 'CREATE TABLE FailedLogin (
+ $sql = 'CREATE TABLE failedlogin (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
 ip TEXT,
 time TEXT
 )';
 $conn->query($sql);
- $sql = 'CREATE TABLE Mail (
+ $sql = 'CREATE TABLE mail (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
 subject TEXT,
 message TEXT
 )';
 $conn->query($sql);
- $sql = 'CREATE TABLE Cloudflare (
+ $sql = 'CREATE TABLE cloudflare (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
 username TEXT,
 email TEXT,
@@ -82,16 +82,16 @@ $conn->query($sql);
  */
 $salt = rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999) . rand(1,9999);
 
-$sql = "INSERT INTO Mail (id, subject, message) VALUES ('1','Welcome To Webister','<b>We are glad that you decided to choose Webister.</b> <p>We hope you enjoy our awesome control panel. You will get messages/emails once you place your email address in the settings.</p><p>
+$sql = "INSERT INTO mail (id, subject, message) VALUES ('1','Welcome To Webister','<b>We are glad that you decided to choose Webister.</b> <p>We hope you enjoy our awesome control panel. You will get messages/emails once you place your email address in the settings.</p><p>
 If you feel that there are some issues or you need fix your Webister, please remember to try updating it first. You can update this in our main control panel.</p>')";
 $conn->query($sql);
-$sql = "INSERT INTO Settings (id, code, value) VALUES ('1', 'title', 'My Web Host')";
+$sql = "INSERT INTO settings (id, code, value) VALUES ('1', 'title', 'My Web Host')";
 $conn->query($sql);
 //unlink('/var/webister/interface/config.php');
 
         file_put_contents("data/reseller/" . $username,"");
     
-        $sql    = 'SELECT * FROM Users';
+        $sql    = 'SELECT * FROM users';
         $result = mysqli_query($conn, $sql);
         while ($row = mysqli_fetch_row($result)) {
           
@@ -101,9 +101,9 @@ $conn->query($sql);
         mysqli_close($con);
     
         require "config.php";
-       $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '".sha1($passx.$salt)."', '', $disk, '$port')";
+       $sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '".sha1($passx.$salt)."', '', $disk, '$port')";
 $conn->query($sql);
-       $sql = 'update Users set username="admin", password="'.sha1($passx . $salt).'" where username="admin"';
+       $sql = 'update users set username="admin", password="'.sha1($passx . $salt).'" where username="admin"';
   $conn->query($sql);
         $conn->close();
 

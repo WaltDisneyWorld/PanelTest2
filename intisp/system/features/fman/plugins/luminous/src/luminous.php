@@ -43,7 +43,7 @@ define('LUMINOUS_VERSION', 'v0.7.0');
  */
 class _Luminous {
 
-  /// Settings array
+  /// settings array
   /// @see LuminousOptions
   public $settings;
 
@@ -159,7 +159,7 @@ class _Luminous {
     $old_settings = null;
     if ($settings !== null) {
       if (!is_array($settings)) {
-          throw new Exception('Luminous internal error: Settings is not an array');
+          throw new Exception('Luminous internal error: settings is not an array');
       }
       $old_settings = clone $this->settings;
       foreach($settings as $k=>$v) {
@@ -225,7 +225,7 @@ $luminous_ = new _Luminous();
 // static because these are actually procudural functions, we're using the
 // class as a namespace.
 /**
- * @brief Users' API
+ * @brief users' API
  */
 abstract class luminous {
 

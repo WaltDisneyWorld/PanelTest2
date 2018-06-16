@@ -12,7 +12,7 @@ require 'config.php';
 require 'include/mail.php';
 //die('update Administrators set username="' .addslashes($_POST["username"]) .'", password="' . md5(addslashes($_POST["password_ch"])) .'" where username=' . $_POST["username"]);
     $con = mysqli_connect($host, $user, $pass, $data);
-    $sql = 'update Settings set id="1", value="'.$_POST['title'].'",code="title" where id="1"';
+    $sql = 'update settings set id="1", value="'.$_POST['title'].'",code="title" where id="1"';
     mysqli_query($con, $sql);
     mysqli_close($con);
     file_put_contents('data/head', $_POST['head']);
@@ -28,8 +28,8 @@ require 'include/mail.php';
         file_put_contents('data/mail', $_POST['mail']);    
 		file_put_contents('data/whmurl', $_POST['whmurl']);
     sendemailuser(
-        "Settings Changed", "
-    <b>Settings have been changed on the Webister Hosting Control Panel</b>
+        "settings Changed", "
+    <b>settings have been changed on the Webister Hosting Control Panel</b>
     <p>This email is automatically sent out everytime a setting is changed. To disable this feature please visit the control panel and set the email to nothing.
     "
     );

@@ -5,7 +5,7 @@ if (isset($_GET['yes'])) {
     $wordpress_url = 'https://wordpress.org/latest.zip';
 
     $con    = mysqli_connect($host, $user, $pass, $data);
-    $sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+    $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
     $result = mysqli_query($con, $sql);
     while ($row = mysqli_fetch_row($result)) {
         echo $row[5];
@@ -39,7 +39,7 @@ if (isset($_GET['yes'])) {
 
                         <h2 class="page-title">Install Wordpress to Your Site running on <?php
                         $con    = mysqli_connect($host, $user, $pass, $data);
-                        $sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+                        $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
                         $result = mysqli_query($con, $sql);
                         while ($row = mysqli_fetch_row($result)) {
                             echo $row[5];

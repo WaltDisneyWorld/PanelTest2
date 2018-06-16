@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="col-md-12">
 
-                        <h2 class="page-title">Settings</h2>
+                        <h2 class="page-title">settings</h2>
                         
                         <form method="POST" action="index.php?page=title">
   <fieldset class="form-group">
@@ -16,7 +16,7 @@
     $con    = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
 
-    $sql = "SELECT value FROM Settings WHERE code =  'title' LIMIT 0 , 30";
+    $sql = "SELECT value FROM settings WHERE code =  'title' LIMIT 0 , 30";
 
     if ($result = mysqli_query($con, $sql)) {
         // Fetch one and one row
@@ -61,7 +61,7 @@
     <input type="text" class="form-control" name="mail" id="formGroupExampleInput" value="<?php echo file_get_contents('data/mail'); ?>">
   </fieldset>
     <fieldset class="form-group">
-    <label for="formGroupExampleInput">Cloudflare API Key</label>
+    <label for="formGroupExampleInput">cloudflare API Key</label>
     <input type="text" class="form-control" name="cloudflare" id="formGroupExampleInput" value="<?php echo file_get_contents('data/cloudflare'); ?>">
   </fieldset>
     <fieldset class="form-group">
@@ -88,7 +88,7 @@
    <label for="formGroupExampleInput">Footer for Login</label><Br>
    <textarea style="width:500px;height:500px;" name="loginf"><?php echo file_get_contents('data/loginfoot'); ?></textarea><Br>
   </fieldset>
-<button type="submit" class="btn btn-primary">Change Settings</button>
+<button type="submit" class="btn btn-primary">Change settings</button>
 
 </form>
                         </div></div>

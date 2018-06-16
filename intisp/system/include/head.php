@@ -55,7 +55,7 @@ if (!isset($_SESSION['user'])) {
  }
 
 $con    = mysqli_connect($host, $user, $pass, $data);
-$sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+$sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      $quote = $row[4];
@@ -68,7 +68,7 @@ $result = mysqli_query($con, $sql);
 ?>
 <?php
 $con    = mysqli_connect($host, $user, $pass, $data);
-$sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+$sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      $myp = $row[5];
@@ -130,7 +130,7 @@ include 'config.php';
     $mysqli = new mysqli();
     $con    = mysqli_connect("$host", "$user", "$pass", "$data");
 // Check connection
-    $sql = "SELECT value FROM Settings WHERE code =  'title' LIMIT 0 , 30";
+    $sql = "SELECT value FROM settings WHERE code =  'title' LIMIT 0 , 30";
 if ($result = mysqli_query($con, $sql)) {
     // Fetch one and one row
   while ($row = mysqli_fetch_row($result)) {
@@ -160,7 +160,7 @@ mysqli_close($con);
              <?php
     $count = 0;
 $con       = mysqli_connect($host, $user, $pass, $data);
-$sql       = 'SELECT * FROM Mail';
+$sql       = 'SELECT * FROM mail';
 $result    = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      $count = $count + 1;

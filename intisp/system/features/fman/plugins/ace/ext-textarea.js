@@ -356,7 +356,7 @@ exports.transformTextarea = function(element, options) {
 
     event.addListener(settingOpener, "mousedown", function(e) {
         if (state == "toggle") {
-            editor.setDisplaySettings();
+            editor.setDisplaysettings();
             return;
         }
         container.style.zIndex = 100000;
@@ -388,7 +388,7 @@ function setupApi(editor, editorDiv, settingDiv, ace, options, loader) {
         return value === "true" || value == true;
     }
 
-    editor.setDisplaySettings = function(display) {
+    editor.setDisplaysettings = function(display) {
         if (display == null)
             display = settingDiv.style.display == "none";
         if (display) {
@@ -608,7 +608,7 @@ function setupSettingPanel(settingDiv, settingOpener, editor) {
     button.type = "button";
     button.value = "Hide";
     event.addListener(button, "click", function() {
-        editor.setDisplaySettings(false);
+        editor.setDisplaysettings(false);
     });
     settingDiv.appendChild(button);
     settingDiv.hideButton = button;

@@ -921,7 +921,7 @@ $luminous_java_types = array(
 'Externalizable',
 'FREE_MEM',
 'FactoryConfigurationError',
-'FailedLoginException',
+'failedloginException',
 'FeatureDescriptor',
 'Fidelity',
 'Field',

@@ -23,7 +23,7 @@
           				<li class="ts-label">Status of Server</li>
 			 <li>Hostname: <span class="badge"><?php echo gethostname(); ?>:<?php
 $con    = mysqli_connect($host, $user, $pass, $data);
-$sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+$sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      echo $row[5];
@@ -33,7 +33,7 @@ $result = mysqli_query($con, $sql);
     ?></span></li>
 			 <li>IP Address: <span class="badge"><?php echo gethostbyname(gethostname()); ?>:<?php
 $con    = mysqli_connect($host, $user, $pass, $data);
-$sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+$sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      echo $row[5];
@@ -52,7 +52,7 @@ $result = mysqli_query($con, $sql);
     <li>FTP Username: <span class="badge"><?php echo $_SESSION['user']; ?></span></li>
     <li>FTP Password: :<span class="badge"><?php
 $con    = mysqli_connect($host, $user, $pass, $data);
-$sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+$sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
      echo $row[2];
@@ -122,7 +122,7 @@ echo $files['total_files'];
                                             
 <?php  $mysqli = new mysqli();
     $con       = mysqli_connect("$host", "$user", "$pass", "$data"); $sql       = "SELECT * \n"
-    ."FROM `FailedLogin` \n"
+    ."FROM `failedlogin` \n"
     .'LIMIT 0 , 5';
 
 if ($result = mysqli_query($con, $sql)) {

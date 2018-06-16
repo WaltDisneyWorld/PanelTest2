@@ -12,7 +12,7 @@ if (isset($_GET['yes'])) {
         include 'config.php';
         
         $con    = mysqli_connect($host, $user, $pass, $data);
-        $sql    = 'SELECT * FROM Users';
+        $sql    = 'SELECT * FROM users';
         $result = mysqli_query($con, $sql);
         while ($row = mysqli_fetch_row($result)) {
             if ($username == $row[1]) {
@@ -28,12 +28,12 @@ if (isset($_GET['yes'])) {
     
         $conn = mysqli_connect("$host", "$user", "$pass", "$data");
 
-        $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port)
+        $sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port)
 VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $salt)."','0','".$disk."','".$port."')";
 
    $con = mysqli_connect("$host", "$user", "$pass", "webister");
 
-        $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port)
+        $sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port)
 VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $salt)."','0','".$disk."','".$port."')";
 $con->query($sql);
         if ($conn->query($sql) === TRUE) {

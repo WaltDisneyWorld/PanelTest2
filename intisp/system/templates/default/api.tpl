@@ -51,7 +51,7 @@ if (!isset($_SESSION['planid']) && !isset($_GET['planid'])) {
         $con    = mysqli_connect("$host", "$user", "$pass", "$data");
         // Check connection
 
-        $sql = "SELECT value FROM Settings WHERE code =  'title' LIMIT 0 , 30";
+        $sql = "SELECT value FROM settings WHERE code =  'title' LIMIT 0 , 30";
 
         if ($result = mysqli_query($con, $sql)) {
             // Fetch one and one row
@@ -104,7 +104,7 @@ if (!isset($_SESSION['planid']) && !isset($_GET['planid'])) {
             mkdir('/var/webister/'.$port);
             include 'config.php';
             $con    = mysqli_connect($host, $user, $pass, $data);
-            $sql    = 'SELECT * FROM Users';
+            $sql    = 'SELECT * FROM users';
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_row($result)) {
                 if ($username == $row[1]) {
@@ -119,7 +119,7 @@ if (!isset($_SESSION['planid']) && !isset($_GET['planid'])) {
             mysqli_close($con);
             $conn = mysqli_connect("$host", "$user", "$pass", 'webister');
 
-            $sql = "INSERT INTO Users (id, username, password, bandwidth, diskspace, port)
+            $sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port)
 VALUES ('".rand(10000, 99999)."', '".$username."', '".sha1($password . $hash)."','0','".$disk."','".$port."')";
 
             if ($conn->query($sql) === TRUE) {

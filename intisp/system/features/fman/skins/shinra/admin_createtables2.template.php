@@ -8,7 +8,7 @@
 <input type="hidden" name="dbname2"     value="<?php echo $dbname2_html; ?>" />
 <input type="hidden" name="dbserver2"   value="<?php echo $dbserver2_html; ?>" />
 
-<div class="header31"><?php echo __("Settings used:"); ?></div>
+<div class="header31"><?php echo __("settings used:"); ?></div>
 <?php echo __("MySQL username"); ?>: <?php echo $dbusername2; ?><br />
 <?php echo __("MySQL password length"); ?>: <?php echo $dbpassword2_length; ?><br />
 <?php echo __("MySQL database"); ?>: <?php echo $dbname2; ?><br />

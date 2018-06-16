@@ -33,7 +33,7 @@ $(document).ready(function(){
                                           <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
                                             $count  = 0;
                                             $con    = mysqli_connect($host, $user, $pass, $data);
-                                            $sql    = 'SELECT * FROM Users';
+                                            $sql    = 'SELECT * FROM users';
                                             $result = mysqli_query($con, $sql);
                                             while ($row = mysqli_fetch_row($result)) {
                                                 $count = $count + 1;
@@ -41,11 +41,11 @@ $(document).ready(function(){
                                             mysqli_free_result($result);
                                             mysqli_close($con);
                                             echo $count;
-    ?></h1><hr> Users</a>
+    ?></h1><hr> users</a>
                                           <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
                                             $count  = 0;
                                             $con    = mysqli_connect($host, $user, $pass, $data);
-                                            $sql    = 'SELECT * FROM FailedLogin';
+                                            $sql    = 'SELECT * FROM failedlogin';
                                             $result = mysqli_query($con, $sql);
                                             while ($row = mysqli_fetch_row($result)) {
                                                 $count = $count + 1;
@@ -57,7 +57,7 @@ $(document).ready(function(){
                                                                                 <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
                                                                                 $count  = 0;
                                                                                 $con    = mysqli_connect($host, $user, $pass, $data);
-                                                                                $sql    = 'SELECT * FROM Users';
+                                                                                $sql    = 'SELECT * FROM users';
                                                                                 $result = mysqli_query($con, $sql);
                                                                                 while ($row = mysqli_fetch_row($result)) {
                                                                                     $count = $count + 1;
@@ -177,9 +177,9 @@ $(document).ready(function(){
                                         <?php if (file_get_contents("data/cloudflare") != "") {
                                             ?>
                                         
-                                          <a type="button" href="index.php?page=cloudflare" class="svr btn btn-default"><i class="fa fa-5x fa-cloud"></i><hr>Cloudflare</a>
+                                          <a type="button" href="index.php?page=cloudflare" class="svr btn btn-default"><i class="fa fa-5x fa-cloud"></i><hr>cloudflare</a>
                                         <?php } ?>
-                                        <a type="button" href="index.php?page=list#" class="svr btn btn-default"><i class="fa fa-5x fa-user"></i><hr>Users</a>
+                                        <a type="button" href="index.php?page=list#" class="svr btn btn-default"><i class="fa fa-5x fa-user"></i><hr>users</a>
                                         <a type="button" href="index.php?page=plans" class="svr btn btn-default"><i class="fa fa-5x fa-columns" aria-hidden="true"></i><hr>Plans</a>
                                                                             <?php
                                                                             if (ismasterreseller()) {
@@ -210,7 +210,7 @@ $(document).ready(function(){
 <?php
 if (ismasterreseller()) {
     ?>
-                                <a type="button" href="index.php?page=settings" class="sys btn btn-default"><i class="fa fa-5x fa-sliders"></i><hr>Settings</a> 
+                                <a type="button" href="index.php?page=settings" class="sys btn btn-default"><i class="fa fa-5x fa-sliders"></i><hr>settings</a> 
                                 <a type="button" href="index.php?page=update" class="sys btn btn-default"><i class="fa fa-5x fa-upload"></i><hr>Update</a> <?php
 } ?>
                                   <a type="button" href="index.php?page=plug" class="sys btn btn-default"><i class="fa fa-5x fa-puzzle-piece"></i><hr>Plugins</a>

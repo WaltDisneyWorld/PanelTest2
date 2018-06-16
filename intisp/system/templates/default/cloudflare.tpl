@@ -8,10 +8,10 @@ if (isset($_POST["email"])) {
     $password   = $_POST["password"];
     $cf         = new cloudflare_api(file_get_contents("data/cloudflare"));
     $response   = $cf->user_create($email, $password, $usernameit, $uniqueid);
-    sendemailuser("New Cloudflare", "A new cloudflare account has been created!!<br>Username: " . $usernameit . "<br>Password:" . $password . "<br>Email: " . $email . "<br>Unique Id: " . $uniqueid . "<br><p>Thank You for using the Cloudflare API</p>");
+    sendemailuser("New cloudflare", "A new cloudflare account has been created!!<br>Username: " . $usernameit . "<br>Password:" . $password . "<br>Email: " . $email . "<br>Unique Id: " . $uniqueid . "<br><p>Thank You for using the cloudflare API</p>");
     $mysqli   = new mysqli();
         $conn = mysqli_connect("$host", "$user", "$pass", "$data"); 
-         $sql = "INSERT INTO Cloudflare (id, username, email, password)
+         $sql = "INSERT INTO cloudflare (id, username, email, password)
 VALUES ('" .$uniqueid ."','" .$_SESSION['user'] . "','" .$email ."','" . $password."')";
        $conn->query($sql);
        echo "The server responded back<br><br>" . $response . "<br><br>";
@@ -21,10 +21,10 @@ VALUES ('" .$uniqueid ."','" .$_SESSION['user'] . "','" .$email ."','" . $passwo
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="page-title">Cloudflare Integration</h2>
+                    <h2 class="page-title">cloudflare Integration</h2>
                     <p>This will allow you to configure your cloudflare DNS settings. However before you do this, you will need to use a free dns Redirection service.</p>
                     <p>This will allow you to use your own domain with Webister. This will also speed up your website.</p>
-                    <p>Crontabs may be needed for this to work correctly!</p>
+                    <p>crontabs may be needed for this to work correctly!</p>
                     <b>This is still very EXPERIMENTAL and may not work correctly.</b>
                     <p>If you already have an account login <a href="https://www.cloudflare.com/a/login">Here</a></p>
 

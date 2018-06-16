@@ -148,7 +148,7 @@ class cloudflare_api
     }
 
     /**
-     * 3.7 - List All The Current Settings
+     * 3.7 - List All The Current settings
      * This function retrieves all the current settings for a given domain.
      */
     public function zone_settings($domain)

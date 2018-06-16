@@ -10,7 +10,7 @@ if (isset($_POST["domain"])) {
         } else {
         
             $con    = mysqli_connect($host, $user, $pass, $data);
-            $sql    = 'SELECT * FROM Users WHERE username = "'.$_SESSION['user'].'"';
+            $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_row($result)) {
                 $port = $row[5];

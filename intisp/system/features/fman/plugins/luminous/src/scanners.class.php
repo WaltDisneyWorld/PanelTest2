@@ -12,7 +12,7 @@
  * \brief A glorified lookup table for languages to scanners.
  * One of these is instantiated in the global scope at the bottom of this source.
  * The parser assumes it to exist and uses it to look up scanners.
- * Users seeking to override scanners or add new scanners should add their
+ * users seeking to override scanners or add new scanners should add their
  * scanner into '$luminous_scanners'.
  *
  */

@@ -139,7 +139,7 @@ function net2ftp_module_printBody() {
 	global $net2ftp_settings, $net2ftp_globals, $net2ftp_messages, $net2ftp_result, $net2ftp_output;
 
 // ----------------------------------------------
-// Settings for the test FTP server: ftp.belnet.be
+// settings for the test FTP server: ftp.belnet.be
 // ----------------------------------------------
 	$troubleshoot_ftpserver     = "ftp.belnet.be";
 	$troubleshoot_ftpserverport = 21;

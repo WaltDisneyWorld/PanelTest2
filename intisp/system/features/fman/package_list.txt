@@ -44,7 +44,7 @@
 <option value="http://downloads.sourceforge.net/project/eenemeenemuu.u/cpg1.5.20.zip?r=&ts=1342773320&use_mirror=freefr">Coppermine Photo Gallery 1.5.20</option>
 <option value="http://downloads.sourceforge.net/project/gallery/gallery3/3.0.4/gallery-3.0.4.zip?r=&ts=1342773363&use_mirror=freefr">Gallery 3.0.4</option>
 
-<option value="" style="font-weight: bold; text-decoration: underline;">Mailing lists</option>
+<option value="" style="font-weight: bold; text-decoration: underline;">mailing lists</option>
 <option value="http://downloads.sourceforge.net/project/phplist/phplist/2.10.18/phplist-2.10.18.zip?r=&ts=1342773405&use_mirror=garr">PHPlist 2.10.18</option>
 
 <option value="" style="font-weight: bold; text-decoration: underline;">Polls and surveys</option>

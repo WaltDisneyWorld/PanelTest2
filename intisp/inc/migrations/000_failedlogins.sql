@@ -1,4 +1,4 @@
-CREATE TABLE FailedLogin (
+CREATE TABLE failedlogin (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
 ip TEXT,
 time TEXT

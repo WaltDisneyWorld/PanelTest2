@@ -38,7 +38,7 @@ $(document).ready(function(){
 		//to & subject
 		var to = $("#sc-contact-form #to").val();
 		var subject = $("#sc-contact-form #subject").val();
-		var sendMailUrl = $("#sc-contact-form #sendmailurl").val();
+		var sendmailUrl = $("#sc-contact-form #sendmailurl").val();
 		
 		// data string
 		var dataString = 'name='+ name
@@ -50,7 +50,7 @@ $(document).ready(function(){
 		// ajax
 		$.ajax({
 			type:"POST",
-			url: sendMailUrl,
+			url: sendmailUrl,
 			data: dataString,
 			success: success()
 		});

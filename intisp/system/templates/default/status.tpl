@@ -48,7 +48,7 @@ if ($action == 'phpinfo') {
      * server status.
      *
      * Some 3rd-party integrations may rely on previous revisions of this file that
-     * exposed said information.  Users who have 3rd-party functionality which
+     * exposed said information.  users who have 3rd-party functionality which
      * require this may uncomment the lines at their own risk.
      *
      * Future revisions to this file may remove those commented lines and this

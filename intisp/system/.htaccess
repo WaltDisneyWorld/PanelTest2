@@ -379,7 +379,7 @@ SetEnvIfNoCase User-Agent "^WebAuto" bad_bot
 SetEnvIfNoCase User-Agent "^WebBandit" bad_bot
 SetEnvIfNoCase User-Agent "^Webclipping.com" bad_bot
 SetEnvIfNoCase User-Agent "^WebCopier" bad_bot
-SetEnvIfNoCase User-Agent "^WebEMailExtrac.*" bad_bot
+SetEnvIfNoCase User-Agent "^WebEmailExtrac.*" bad_bot
 SetEnvIfNoCase User-Agent "^WebEnhancer" bad_bot
 SetEnvIfNoCase User-Agent "^WebFetch" bad_bot
 SetEnvIfNoCase User-Agent "^WebGo\ IS" bad_bot

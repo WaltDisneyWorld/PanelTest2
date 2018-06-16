@@ -10392,12 +10392,12 @@ function bindKey(win, mac) {
     return {win: win, mac: mac};
 }
 exports.commands = [{
-    name: "showSettingsMenu",
+    name: "showsettingsMenu",
     bindKey: bindKey("Ctrl-,", "Command-,"),
     exec: function(editor) {
         config.loadModule("ace/ext/settings_menu", function(module) {
             module.init(editor);
-            editor.showSettingsMenu();
+            editor.showsettingsMenu();
         });
     },
     readOnly: true

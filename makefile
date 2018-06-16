@@ -20,3 +20,8 @@ everything:
 bypass:
 	echo "Install using make.sh"
 	cd intisp && bash make.sh
+clean:
+	mysql -uroot -p
+	rm -rf /var/www/html
+	rm -rf /var/webister
+        

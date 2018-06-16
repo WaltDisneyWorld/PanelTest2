@@ -397,7 +397,7 @@ define("ace/ext/menu_tools/generate_settings_menu",["require","exports","module"
 var egen = require('./element_generator');
 var addEditorMenuOptions = require('./add_editor_menu_options').addEditorMenuOptions;
 var getSetFunctions = require('./get_set_functions').getSetFunctions;
-module.exports.generateSettingsMenu = function generateSettingsMenu (editor) {
+module.exports.generatesettingsMenu = function generatesettingsMenu (editor) {
     var elements = [];
     function cleanupElementsList() {
         elements.sort(function(a, b) {
@@ -620,17 +620,17 @@ module.exports.overlayPage = function overlayPage(editor, contentElement, top, r
 
 define("ace/ext/settings_menu",["require","exports","module","ace/ext/menu_tools/generate_settings_menu","ace/ext/menu_tools/overlay_page","ace/editor"], function(require, exports, module) {
 "use strict";
-var generateSettingsMenu = require('./menu_tools/generate_settings_menu').generateSettingsMenu;
+var generatesettingsMenu = require('./menu_tools/generate_settings_menu').generatesettingsMenu;
 var overlayPage = require('./menu_tools/overlay_page').overlayPage;
-function showSettingsMenu(editor) {
+function showsettingsMenu(editor) {
     var sm = document.getElementById('ace_settingsmenu');
     if (!sm)    
-        overlayPage(editor, generateSettingsMenu(editor), '0', '0', '0');
+        overlayPage(editor, generatesettingsMenu(editor), '0', '0', '0');
 }
 module.exports.init = function(editor) {
     var Editor = require("ace/editor").Editor;
-    Editor.prototype.showSettingsMenu = function() {
-        showSettingsMenu(this);
+    Editor.prototype.showsettingsMenu = function() {
+        showsettingsMenu(this);
     };
 };
 });

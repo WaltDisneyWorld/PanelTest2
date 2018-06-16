@@ -463,7 +463,7 @@ function getMime($listline) {
 	}
 	elseif ($last == "sdm") {
 		$icon = "openoffice";
-		$type = __("StarOffice - StarMail 5.x mail file");
+		$type = __("StarOffice - Starmail 5.x mail file");
 	}
 
 // PDF and PS

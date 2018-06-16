@@ -2098,7 +2098,7 @@ function ftp_zip($conn_id, $directory, $list, $zipactions, $zipdir, $divelevel) 
 
 			$AttmFiles = array($tempfilename);
 
-			SendMail($From, $FromName, $To, $ToName, $Subject, $Text, $Html, $AttmFiles);
+			Sendmail($From, $FromName, $To, $ToName, $Subject, $Text, $Html, $AttmFiles);
 			if ($net2ftp_result["success"] == false) { 
 				@unlink($tempfilename); 
 				return false; 
@@ -3458,7 +3458,7 @@ function net2ftp_shutdown() {
 // **                                                                                  **
 // **                                                                                  **
 
-function SendMail($From, $FromName, $To, $ToName, $Subject, $Text, $Html, $AttmFiles) {
+function Sendmail($From, $FromName, $To, $ToName, $Subject, $Text, $Html, $AttmFiles) {
 
 // --------------
 // This function taken from www.PHP.net.
@@ -3478,7 +3478,7 @@ wherever it's needed. Anyway I am not too sure how this script will
 behave under Windows.
 {br} represent the HTML-tag for line break and should be replaced,
 but I did not know how to not get the original tag  parsed here.
-function SendMail($From, $FromName, $To, $ToName, $Subject, $Text, $Html, $AttmFiles)
+function Sendmail($From, $FromName, $To, $ToName, $Subject, $Text, $Html, $AttmFiles)
 $From      ... sender mail address like "my@address.com"
 $FromName  ... sender name like "My Name"
 $To        ... recipient mail address like "your@address.com"
@@ -3536,8 +3536,8 @@ $AttmFiles ... array containing the filenames to attach like array("file1","file
 	$headers.="To: ".$ToName." <".$To.">\n"; 
 	$headers.="Reply-To: ".$FromName." <".$From.">\n"; 
 	$headers.="X-Priority: 1\n"; 
-	$headers.="X-MSMail-Priority: High\n"; 
-	$headers.="X-Mailer: My PHP Mailer\n"; 
+	$headers.="X-MSmail-Priority: High\n"; 
+	$headers.="X-mailer: My PHP mailer\n"; 
 	$headers.="Content-Type: multipart/mixed;\n\tboundary=\"".$OB."\"\n";
 
 // Messages start with text/html alternatives in OB
@@ -3598,9 +3598,9 @@ $AttmFiles ... array containing the filenames to attach like array("file1","file
 	}
 
 // Logging
-	//syslog(LOG_INFO,"Mail: Message sent to $ToName <$To>");
+	//syslog(LOG_INFO,"mail: Message sent to $ToName <$To>");
 
-} // end function SendMail
+} // end function Sendmail
 
 // **                                                                                  **
 // **                                                                                  **
