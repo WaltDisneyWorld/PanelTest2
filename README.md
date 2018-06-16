@@ -8,7 +8,7 @@ IntISP is a hosting control panel that is designed to be light and fast. It uses
 
  PHP 51.7%	 JavaScript 31.6%	 CSS 15.2%	 HTML 1.2%	 Other 0.3%
 
-[![CircleCI](https://circleci.com/gh/INTisp/INTisp/tree/master.svg?style=svg)](https://circleci.com/gh/INTisp/INTisp/tree/master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ba5db9bff49f405fbedc4b3872813f69)](https://www.codacy.com/app/alwaysontop617_2/INTisp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=INTisp/INTisp&amp;utm_campaign=Badge_Grade) [![StyleCI](https://styleci.io/repos/55188220/shield?branch=master)](https://styleci.io/repos/55188220)
+[![CircleCI](https://circleci.com/gh/INTisp/INTisp/tree/master.svg?style=svg)](https://circleci.com/gh/INTisp/INTisp/tree/master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ba5db9bff49f405fbedc4b3872813f69)](https://www.codacy.com/app/alwaysontop617_2/INTisp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=INTisp/INTisp&amp;utm_campaign=Badge_Grade)
  
 Report a bug [here](https://stuff.adaclare.com/bugs/webister/)
 

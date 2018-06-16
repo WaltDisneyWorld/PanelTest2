@@ -1,7 +1,74 @@
-[I 2018-06-15 21:17:56] >>> starting FTP server on 0.0.0.0:21, pid=26120 <<<
-[I 2018-06-15 21:17:56] concurrency model: async
-[I 2018-06-15 21:17:56] masquerade (NAT) address: None
-[I 2018-06-15 21:17:56] passive ports: None
-[I 2018-06-15 21:18:08] 127.0.0.1:57272-[] FTP session opened (connect)
-[I 2018-06-15 21:18:08] 127.0.0.1:57272-[admin] USER 'admin' logged in.
-[I 2018-06-15 21:18:08] 127.0.0.1:57272-[admin] FTP session closed (disconnect).
+[I 2018-06-15 21:48:16] >>> starting FTP server on 0.0.0.0:21, pid=26293 <<<
+[I 2018-06-15 21:48:16] concurrency model: async
+[I 2018-06-15 21:48:16] masquerade (NAT) address: None
+[I 2018-06-15 21:48:16] passive ports: None
+[I 2018-06-15 21:48:41] 127.0.0.1:57402-[] FTP session opened (connect)
+[I 2018-06-15 21:48:44] 127.0.0.1:57402-[] USER 'adminann.adaclare.com' failed login.
+[I 2018-06-15 21:48:44] 127.0.0.1:57402-[] FTP session closed (disconnect).
+[I 2018-06-15 21:48:44] 127.0.0.1:57410-[] FTP session opened (connect)
+[I 2018-06-15 21:48:44] 127.0.0.1:57410-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:48:44] 127.0.0.1:57410-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:48:53] 127.0.0.1:57414-[] FTP session opened (connect)
+[I 2018-06-15 21:48:53] 127.0.0.1:57414-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:48:53] 127.0.0.1:57414-[ann.adaclare.com] STOR /var/webister/1000/index.php completed=1 bytes=4 seconds=0.001
+[I 2018-06-15 21:48:53] 127.0.0.1:57414-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:48:57] 127.0.0.1:57418-[] FTP session opened (connect)
+[I 2018-06-15 21:48:57] 127.0.0.1:57418-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:48:57] 127.0.0.1:57418-[ann.adaclare.com] CWD /var/webister/1000 250
+[I 2018-06-15 21:48:57] 127.0.0.1:57418-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:49:05] 127.0.0.1:57422-[] FTP session opened (connect)
+[I 2018-06-15 21:49:05] 127.0.0.1:57422-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:49:05] 127.0.0.1:57422-[ann.adaclare.com] DELE /var/webister/1000/index.php 250
+[I 2018-06-15 21:49:05] 127.0.0.1:57422-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:49:06] 127.0.0.1:57426-[] FTP session opened (connect)
+[I 2018-06-15 21:49:06] 127.0.0.1:57426-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:49:06] 127.0.0.1:57426-[ann.adaclare.com] CWD /var/webister/1000 250
+[I 2018-06-15 21:49:06] 127.0.0.1:57426-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:51:04] 127.0.0.1:57442-[] FTP session opened (connect)
+[I 2018-06-15 21:51:04] 127.0.0.1:57442-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:51:04] 127.0.0.1:57442-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:51:30] 127.0.0.1:57448-[] FTP session opened (connect)
+[I 2018-06-15 21:51:30] 127.0.0.1:57448-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:51:30] 127.0.0.1:57448-[ann.adaclare.com] MKD /var/webister/1000/net2ftp_temp_f6y3v 257
+[I 2018-06-15 21:51:30] 127.0.0.1:57448-[ann.adaclare.com] SITE CHMOD /var/webister/1000/net2ftp_temp_f6y3v 550 'Not enough privileges.'
+[I 2018-06-15 21:51:30] 127.0.0.1:57448-[ann.adaclare.com] STOR /var/webister/1000/net2ftp_temp_f6y3v/.htaccess completed=1 bytes=13 seconds=0.001
+[I 2018-06-15 21:51:30] 127.0.0.1:57448-[ann.adaclare.com] STOR /var/webister/1000/net2ftp_installer.php completed=1 bytes=248149 seconds=0.006
+[I 2018-06-15 21:51:30] 127.0.0.1:57448-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:51:42] 127.0.0.1:57452-[] FTP session opened (connect)
+[I 2018-06-15 21:51:42] 127.0.0.1:57452-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:51:42] 127.0.0.1:57452-[ann.adaclare.com] CWD /var/webister/1000 250
+[I 2018-06-15 21:51:42] 127.0.0.1:57452-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:51:58] 127.0.0.1:57462-[] FTP session opened (connect)
+[I 2018-06-15 21:51:58] 127.0.0.1:57462-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:51:58] 127.0.0.1:57462-[ann.adaclare.com] MKD /var/webister/1000/net2ftp_temp_otxq 257
+[I 2018-06-15 21:51:58] 127.0.0.1:57462-[ann.adaclare.com] SITE CHMOD /var/webister/1000/net2ftp_temp_otxq 550 'Not enough privileges.'
+[I 2018-06-15 21:51:58] 127.0.0.1:57462-[ann.adaclare.com] STOR /var/webister/1000/net2ftp_temp_otxq/.htaccess completed=1 bytes=13 seconds=0.001
+[I 2018-06-15 21:51:58] 127.0.0.1:57462-[ann.adaclare.com] STOR /var/webister/1000/net2ftp_installer.php completed=1 bytes=248145 seconds=0.006
+[I 2018-06-15 21:51:58] 127.0.0.1:57462-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:54:03] 127.0.0.1:57474-[] FTP session opened (connect)
+[I 2018-06-15 21:54:03] 127.0.0.1:57474-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:54:03] 127.0.0.1:57474-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[] FTP session opened (connect)
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] CWD /var/webister/1000/cgi-bin 250
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] RMD /var/webister/1000/cgi-bin 250
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] CWD /var/webister/1000/net2ftp_temp_f6y3v 250
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] DELE /var/webister/1000/net2ftp_temp_f6y3v/.htaccess 250
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] RMD /var/webister/1000/net2ftp_temp_f6y3v 250
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] CWD /var/webister/1000/net2ftp_temp_otxq 250
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] DELE /var/webister/1000/net2ftp_temp_otxq/.htaccess 250
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] RMD /var/webister/1000/net2ftp_temp_otxq 250
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] DELE /var/webister/1000/net2ftp_installer.php 250
+[I 2018-06-15 21:54:09] 127.0.0.1:57478-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:54:15] 127.0.0.1:57482-[] FTP session opened (connect)
+[I 2018-06-15 21:54:15] 127.0.0.1:57482-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:54:15] 127.0.0.1:57482-[ann.adaclare.com] CWD /var/webister/1000 250
+[I 2018-06-15 21:54:15] 127.0.0.1:57482-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:54:26] 127.0.0.1:57486-[] FTP session opened (connect)
+[I 2018-06-15 21:54:26] 127.0.0.1:57486-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:54:26] 127.0.0.1:57486-[ann.adaclare.com] STOR /var/webister/1000/index.php completed=1 bytes=76294 seconds=0.002
+[I 2018-06-15 21:54:26] 127.0.0.1:57486-[ann.adaclare.com] FTP session closed (disconnect).
+[I 2018-06-15 21:54:48] 127.0.0.1:57490-[] FTP session opened (connect)
+[I 2018-06-15 21:54:48] 127.0.0.1:57490-[ann.adaclare.com] USER 'ann.adaclare.com' logged in.
+[I 2018-06-15 21:54:48] 127.0.0.1:57490-[ann.adaclare.com] STOR /var/webister/1000/index.php completed=1 bytes=76144 seconds=0.003
+[I 2018-06-15 21:54:48] 127.0.0.1:57490-[ann.adaclare.com] FTP session closed (disconnect).

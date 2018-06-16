@@ -217,7 +217,12 @@ if (ismasterreseller()) {
                                         <a type="button" href="index.php?page=terminal" class="sys btn btn-default"><i class="fa fa-5x fa-terminal"></i><hr>Terminal</a>
                                                                                 <a type="button" href="index.php?page=mail" class="sys btn btn-default"><i class="fa fa-5x fa-envelope-o"></i><hr>Messages</a>
                                       
-                                        
+                                            <?php
+                                            if (ismasterreseller()) {
+                                            ?>
+                                             <a type="button" href="index.php?page=systemcheck" class="sys btn btn-default"><i class="fa fa-5x fa-info-circle"></i><hr>System Checklist</a>
+                                            <?php
+                                            } ?>
                                         <?php
                                         $scan = scandir("plugins/");
                                         foreach ($scan as $file) {
@@ -255,7 +260,7 @@ $(document).ready(function(){
   <li class="list-group-item">  
 
                                         <a  type="button" href="index.php?page=FileManager" class="serv btn btn-default"><i class="fa fa-5x fa-file"></i><hr>Files</a>
-    
+    <a    type="button" href="index.php?page=cron" class="serv btn btn-default"><i class="fa fa-5x fa-clock-o"></i><hr>Cron Jobs</a>
                                         <a    type="button" href="adminer-4.2.4.php?server=localhost" class="serv btn btn-default"><i class="fa fa-5x fa-database"></i><hr>Database</a>
                                         <a  type="button" href="index.php?page=wp" class="serv btn btn-default"><i class="fa fa-5x fa-wordpress"></i><hr>Wordpress</a>
                                         <a  type="button" href="index.php?page=phpinfo" class="serv btn btn-default"><i class="fa fa-5x fa-code"></i><hr>PHP Info</a>
