@@ -72,13 +72,13 @@ $result = mysqli_query($con, $sql);
      }
     ?> </li>
     <li>	Disk Space (<?php echo GetDirectorySize('/var/webister/'.$myp); ?>/<?php echo $quote; ?>):<div class="progress">
-  <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo GetDirectorySize('/var/webister/'.$myp); ?>"
+  <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo GetDirectorySize('/var/webister/'.$myp); ?>"
   aria-valuemin="0" aria-valuemax="<?php 
-  if ($quote == "∞") {echo "99999999999999999";} else {
+  if ($quote == "∞") {$quote="1"; echo "1"; } else {
   echo $quote;
   }
-  ?>" style="width:<?php echo GetDirectorySize('/var/webister/'.$myp); ?>%">
-    <span class="sr-only"><?php echo GetDirectorySize('/var/webister/'.$myp); ?>% Complete</span>
+  ?>" style="width:<?php echo GetDirectorySize('/var/webister/'.$myp) / $quote * 100; ?>%">
+    <span class="sr-only"><?php echo GetDirectorySize('/var/webister/'.$myp) / $quote * 100; ?>% Complete</span>
   </div>
 </div></li>
 <li>
@@ -101,7 +101,7 @@ echo $files['total_files'];
 ?>
 /100):
 <div class="progress">
-  <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $files['total_files']; ?>"
+  <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo $files['total_files']; ?>"
   aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $files['total_files']; ?>%">
     <span class="sr-only"><?php echo $files['total_files']; ?>% Complete</span>
   </div>
