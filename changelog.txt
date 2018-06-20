@@ -1,6 +1,22 @@
-Version 6.0.1 - Release 19.06.2018
-ADD - Security Update
-ADD - Template Fix
-ADD - New Styles
-FIX - This update requires a specific system version. This update may not be supported by your version of INTISP or Webister.
-FIX - The update platform has been added and is not completely fix please make sure you do a complete backup before updating.
+Version 9.0.0 - Release 19.06.2018
+INF - The moon version of IntISP is more flexible then the last few versions. It is recommended to run on Ubuntu 18+, Ubuntu 17+, Lubuntu. Debian requires a manual installation which is for advanced users. INTisp Support for WHMCS has been added, users are now able to manage there services by using the IntISP control panel.
+FIX - Security Fixes
+FIX - Fixed lots of bugs
+FIX - Using new Structure for code
+FIX - Fixed Cant send email bug
+ADD - Added Ioncube support for encrypted PHP Scripts.
+ADD - Changed Installation
+ADD - Added WHMCS
+ADD - New Features Coming Soon
+UPD - Removed Installer
+UPD - Switched File Manager to Net2ftp
+FTR - Cron Jobs
+FTR - New Control Panel Themes
+FTR - PHP.ini editor from inside the control panel
+FTR - User Spy
+FTR - Adaclare FileTranaferCluster FTC technology
+FTR - Ability to Terminate User Services
+REQ - Apache2 Web Services for Basic Web Services
+REQ - Python 2 & 3 + PIP for integrated FTP
+REQ - PHP 7+ for lastest security and php features
+REQ - Some computers may not have make installed, install INTisp using this command once files are downloaded and extracted.
