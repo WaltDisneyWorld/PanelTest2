@@ -231,7 +231,7 @@ if ($getVersions != '' and $currentVersion != '')
                 recurse_copy("/var/webister/tmp/INTisp-master/intisp/system/", "/var/www/html/interface/");
                 $step++;
                 print_message(lang('STEP') . " " . $step, "Overwrited Directories.", $color = 'grey');
-                deleteDirectory("/var/webister/tmp");
+                exec("rm -rf /var/webister/tmp");
                 $step++;
                 print_message(lang('STEP') . " " . $step, "Cleaning Up.", $color = 'grey');
                 $updated = TRUE;
