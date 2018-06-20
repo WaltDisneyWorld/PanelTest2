@@ -2,3 +2,12 @@
 [I 2018-06-19 21:29:49] concurrency model: async
 [I 2018-06-19 21:29:49] masquerade (NAT) address: None
 [I 2018-06-19 21:29:49] passive ports: None
+[I 2018-06-20 01:19:56] 107.170.226.8:33072-[] FTP session opened (connect)
+[I 2018-06-20 01:20:06] 107.170.226.8:33072-[] FTP session closed (disconnect).
+[I 2018-06-20 05:14:23] 164.52.24.165:50634-[] FTP session opened (connect)
+[I 2018-06-20 05:14:24] 164.52.24.165:50634-[] FTP session closed (disconnect).
+[I 2018-06-20 05:14:24] 164.52.24.165:40744-[] FTP session opened (connect)
+[I 2018-06-20 05:14:27] 164.52.24.165:40744-[] FTP session closed (disconnect).
+[I 2018-06-20 07:03:01] 127.0.0.1:42272-[] FTP session opened (connect)
+[I 2018-06-20 07:03:01] 127.0.0.1:42272-[admin] USER 'admin' logged in.
+[I 2018-06-20 07:03:01] 127.0.0.1:42272-[admin] FTP session closed (disconnect).
