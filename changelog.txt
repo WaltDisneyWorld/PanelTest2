@@ -1,0 +1,6 @@
+Version 6.0.1 - Release 19.06.2018
+ADD - Security Update
+ADD - Template Fix
+ADD - New Styles
+FIX - This update requires a specific system version. This update may not be supported by your version of INTISP or Webister.
+FIX - The update platform has been added and is not completely fix please make sure you do a complete backup before updating.
