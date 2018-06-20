@@ -2,7 +2,7 @@
                        
                     </section>
                     <section class="col-lg-3" data-step="6" data-intro="This will show info about your server and the way it works.">
-                        <div class="list list-info" >
+                        <div class="list list-info" style="padding-left:0px">
 
    
  <form class="navbar-form" role="search">
@@ -13,15 +13,21 @@
             </form>
                         </div>
                     <div class="list list-info">
+					<div class="panel panel-default">
+  <div class="panel-heading">Notice</div>
+  <div class="panel-body">
                                       <?php echo file_get_contents('data/head'); ?>
+									  </div>
                     </div>
                         <div class="list list-info">
     <div class="account-information">
-        <div class="head">Client Information</div>
+  <div class="panel panel-default">
+  <div class="panel-heading">Server Info</div>
+  <div class="panel-body">
         <table id="account-information">
-          <ul>
-          				<li class="ts-label">Status of Server</li>
-			 <li>Hostname: <span class="badge"><?php echo gethostname(); ?>:<?php
+          <ul style="list-style-type: none; padding-left:0px;">
+          			
+			 <li>Hostname: <span class="badge pull-right"><?php echo gethostname(); ?>:<?php
 $con    = mysqli_connect($host, $user, $pass, $data);
 $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
@@ -31,7 +37,7 @@ $result = mysqli_query($con, $sql);
    mysqli_free_result($result);
     mysqli_close($con);
     ?></span></li>
-			 <li>IP Address: <span class="badge"><?php echo gethostbyname(gethostname()); ?>:<?php
+			 <li>IP Address: <span class="badge pull-right"><?php echo gethostbyname(gethostname()); ?>:<?php
 $con    = mysqli_connect($host, $user, $pass, $data);
 $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
@@ -42,15 +48,14 @@ $result = mysqli_query($con, $sql);
    mysqli_free_result($result);
     mysqli_close($con);
     ?></li>
-    <li>MySQL Status: <i class="fa fa-check" aria-hidden="true"></i></li>
-			<li>MySQL Hostname: <span class="badge">localhost</span></li>
-   <li>MySQL Username: <span class="badge"><?php echo $_SESSION['user']; ?></span></li>
-   <li>MySQL Password: <span class="badge">Same as CP</span></li>
-   <li>Database: <span class="badge"><?php echo $_SESSION['user']; ?></span></li>
-   <li>Webister Status: <i class="fa fa-check" aria-hidden="true"></i></li>
-    <li>FTP Hostname: <span class="badge"><?php echo gethostbyname(gethostname()); ?></li>
-    <li>FTP Username: <span class="badge"><?php echo $_SESSION['user']; ?></span></li>
-    <li>FTP Password: :<span class="badge"><?php
+	<li>MySQL Hostname: <span class="badge pull-right">localhost</span></li>
+   <li>MySQL Username: <span class="badge pull-right"><?php echo $_SESSION['user']; ?></span></li>
+   <li>MySQL Password: <span class="badge pull-right">Same as CP</span></li>
+   <li>Database: <span class="badge pull-right"><?php echo $_SESSION['user']; ?></span></li>
+
+    <li>FTP Hostname: <span class="badge pull-right"><?php echo gethostbyname(gethostname()); ?></li>
+    <li>FTP Username: <span class="badge pull-right"><?php echo $_SESSION['user']; ?></span></li>
+    <li>FTP Password: <input type="text" class="pull-right"  style="width:100px" value="<?php
 $con    = mysqli_connect($host, $user, $pass, $data);
 $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
@@ -60,17 +65,20 @@ $result = mysqli_query($con, $sql);
  }
    mysqli_free_result($result);
     mysqli_close($con);
-    ?></span></li>
+    ?>" disabled></li><li><br></li>
    <li>Status: 
        <?php
 
 
-     if (Connect($mm)) {
-         echo '<i class="fa fa-check" aria-hidden="true"></i>';
+     if (Connect(80)) {
+         echo '<i class="fa fa-check pull-right" aria-hidden="true"></i>';
      } else {
-         echo '<i class="fa fa-times" aria-hidden="true"></i>';
+         echo '<i class="fa fa-times pull-right" aria-hidden="true"></i>';
      }
     ?> </li>
+	
+    <li>MySQL Status: <i class="fa fa-check pull-right" aria-hidden="true"></i></li>
+	   <li>IntISP Status: <i class="fa fa-check pull-right" aria-hidden="true"></i></li>
     <li>	Disk Space (<?php echo GetDirectorySize('/var/webister/'.$myp); ?>/<?php echo $quote; ?>):<div class="progress">
   <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo GetDirectorySize('/var/webister/'.$myp); ?>"
   aria-valuemin="0" aria-valuemax="<?php 
@@ -109,7 +117,7 @@ echo $files['total_files'];
 </li>
 
           </ul>
-          
+          </div>
           <table class="table table-hover">
                                             <thead>
                                                 <tr>
@@ -143,14 +151,18 @@ if ($result = mysqli_query($con, $sql)) {
    
 </div>       
 <div class="list list-info">
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<div class="row">
+  <div class="col-md-6">      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="H7P5P7PY5C4EL">
 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" name="submit" alt="PayPal - The safer, easier way to pay online!">
 <img alt=""  src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif">
-</form>
+</form></div>
+  <div class="col-md-6">
  <div id='MicrosoftTranslatorWidget' class='Dark' style='color:white;background-color:#555555'></div><script type='text/javascript'>setTimeout(function(){{var s=document.createElement('script');s.type='text/javascript';s.charset='UTF-8';s.src=((location && location.href && location.href.indexOf('https') == 0)?'https://ssl.microsofttranslator.com':'http://www.microsofttranslator.com')+'/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&ctf=False&ui=true&settings=undefined&from=';var p=document.getElementsByTagName('head')[0]||document.documentElement;p.insertBefore(s,p.firstChild); }},0);</script>
-        </div>
+       </div>
+</div>
+  
 </div> 
  
 </section>

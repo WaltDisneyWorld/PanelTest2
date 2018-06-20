@@ -105,7 +105,7 @@ $result = mysqli_query($con, $sql);
             <link rel="stylesheet" type="text/css" href="public/assets/css/modern.min.css">
             <?php } ?>
             <?php if (file_Get_contents("data/theme") == "dark") { ?>
-            <link rel="stylesheet" type="text/css" href="cpanel\bootpanel\css\dark.min.css">
+            <link rel="stylesheet" type="text/css" href="public/assets/css/dark.min.css">
             <?php } ?>
          
             </head>
@@ -198,11 +198,9 @@ $result    = mysqli_query($con, $sql);
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
- <br>
- <br>
- <br>
- <br>
-
+</div>
+<br><br>
+<br><br>
  <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
