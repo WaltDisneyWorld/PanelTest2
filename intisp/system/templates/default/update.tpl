@@ -206,6 +206,7 @@ if ($getVersions != '' and $currentVersion != '')
                     print_message(lang('ERROR'), lang('Could Not Read File') . ' master.zip. ' . lang('Operation Aborted'), $color = 'red');
                     redodie('</body></html>');
                   }
+				  exec("rm -rf /var/webister/tmp/INTisp-master/intisp/system/data");
                 unlink("/var/webister/master.zip");
                 function recurse_copy($src, $dst)
                   {
@@ -246,6 +247,12 @@ if ($getVersions != '' and $currentVersion != '')
       }
     if (isset($updated) and $updated == true)
       {
+		    include "include/mail.php";
+            sendemailuser(
+                "System Update/Emergency Recovery", "
+    <p>IntISP has been updated to version " . $actualVersion . ". Please make sure everything works, if not you will need to either run a emergency restore or restore your backup.</p>
+    "
+            );
         print_message(lang('READY'), lang('Script Updated To Version') . ' ' . $actualVersion, $color = 'green');
       }
     else if (!isset($found) or $found != true)

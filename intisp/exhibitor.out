@@ -11,3 +11,7 @@
 [I 2018-06-20 07:03:01] 127.0.0.1:42272-[] FTP session opened (connect)
 [I 2018-06-20 07:03:01] 127.0.0.1:42272-[admin] USER 'admin' logged in.
 [I 2018-06-20 07:03:01] 127.0.0.1:42272-[admin] FTP session closed (disconnect).
+[I 2018-06-20 12:32:07] 196.52.43.111:6666-[] FTP session opened (connect)
+[I 2018-06-20 12:32:07] 196.52.43.111:6666-[] FTP session closed (disconnect).
+[I 2018-06-20 13:23:48] 80.82.70.118:60000-[] FTP session opened (connect)
+[I 2018-06-20 13:23:48] 80.82.70.118:60000-[] FTP session closed (disconnect).

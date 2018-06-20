@@ -79,8 +79,11 @@ $result = mysqli_query($con, $sql);
 	
     <li>MySQL Status: <i class="fa fa-check pull-right" aria-hidden="true"></i></li>
 	   <li>IntISP Status: <i class="fa fa-check pull-right" aria-hidden="true"></i></li>
+	   <style>
+	   .progress, .progress-bar-striped, .progress-bar {height: 10px !important;}
+	   </style>
     <li>	Disk Space (<?php echo GetDirectorySize('/var/webister/'.$myp); ?>/<?php echo $quote; ?>):<div class="progress">
-  <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo GetDirectorySize('/var/webister/'.$myp); ?>"
+  <div class="progress-bar progress-bar-striped"  role="progressbar" aria-valuenow="<?php echo GetDirectorySize('/var/webister/'.$myp); ?>"
   aria-valuemin="0" aria-valuemax="<?php 
   if ($quote == "∞") {$quote="1"; echo "1"; } else {
   echo $quote;
