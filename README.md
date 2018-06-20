@@ -12,11 +12,10 @@ IntISP is a hosting control panel that is designed to be light and fast. It uses
  
 
 # Links
-View the project page by [clicking here](http://adaclare.com/old/webister.php).
-
-Vew the demo by [clicking here](https://www.adaclare.com/old/intisp_demo/index.php?page=cp).
-
-Help support the project by [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?token=Ea_rrJDbgtQPpP7fa1R8N_SuEQgxg2ZtaT77NZYhUJ7sZCJxxacpOionaVcz5erevcOpbG)
+- [Project Page](http://adaclare.com/old/webister.php)
+- [Releases](https://github.com/INTisp/INTisp/releases)
+- [Demo](https://www.adaclare.com/old/intisp_demo/index.php?page=cp)
+- [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?token=Ea_rrJDbgtQPpP7fa1R8N_SuEQgxg2ZtaT77NZYhUJ7sZCJxxacpOionaVcz5erevcOpbG)
 
 
 
