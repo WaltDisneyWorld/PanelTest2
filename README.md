@@ -1,7 +1,7 @@
 
 # IntISP Web Hosting Platform
 
-![cpanel](https://github.com/INTisp/INTisp/blob/master/screenshots/intisp.png?raw=true)
+![cpanel](https://github.com/INTisp/INTisp/blob/master/screenshots/LogoMakr_9GhXUB.png?raw=true)
 
 
 IntISP is a hosting control panel that is designed to be light and fast. It uses only PHP and HTML with a few shell. IntISP only takes 1 GB approximately to run. It is recommended to run on Ubuntu 18+, Ubuntu 17+, Lubuntu. Debian requires a manual installation which is for advanced users.  
