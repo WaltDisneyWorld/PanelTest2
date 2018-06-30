@@ -50,7 +50,7 @@ IntISP is a hosting control panel that is designed to be light and fast. It uses
 
 To install IntISP all you have to type is:
 ```sh
-$ sudo apt-get install git make && git clone https://github.com/INTisp/INTisp.git && cd INTisp && make
+$ sudo apt-get update && sudo apt-get install git make && git clone https://github.com/INTisp/INTisp.git && cd INTisp && make
 ```
 
 ## Installation of demo
