@@ -9,9 +9,8 @@ everything:
 	#sudo add-apt-repository ppa:ondrej/php broken fix later
 	# Updating Sources
 	sudo apt-get update
-	# Installing MariaDB and PHP 7.X Apache2
-	sudo apt-get install apache2 libapache2-mod-php mysql-server php php-cli php-fpm php-json php-mysql php-curl php-mail php-zip unzip zip -y 
-	# Setting up MYSQL
+	sudo sh intisp/inc/lamp.sh
+    #Setting up MYSQL
 	sudo service mysql start
 	sudo mysql_secure_installation
 	echo "Install using make.sh"
