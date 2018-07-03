@@ -100,6 +100,7 @@ $result = mysqli_query($con, $sql);
             <![endif]-->   
               <?php if (file_Get_contents("data/theme") == "default") { ?>
 				<link rel="stylesheet" href="public/assets/css/bootstrap.min.css">
+      <link rel="stylesheet" href="public/assets/css/bulma.min.css">
             <?php } ?>
               <?php if (file_Get_contents("data/theme") == "modern") { ?>
             <link rel="stylesheet" type="text/css" href="public/assets/css/modern.min.css">
@@ -107,25 +108,20 @@ $result = mysqli_query($con, $sql);
             <?php if (file_Get_contents("data/theme") == "dark") { ?>
             <link rel="stylesheet" type="text/css" href="public/assets/css/dark.min.css">
             <?php } ?>
-         
+         <style>
+      .modal-backdrop {
+  z-index: -1;
+}
+      </style>
             </head>
     <body class="skin-blue dashboard">
 
 
    <div id="cpanel">
-        <div id="border-efx">
-        <!--Handheld heading-->
-    <nav style="background-color:#<?php echo file_get_contents("data/color"); ?>;" class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      	<a href="index.php?page=cp" class="navbar-brand">IntISP on <b><?php
+    <nav class="navbar is-transparent">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="index.php?page=cp">
+    <h1><?php
 include 'config.php';
     $mysqli = new mysqli();
     $con    = mysqli_connect("$host", "$user", "$pass", "$data");
@@ -140,23 +136,31 @@ if ($result = mysqli_query($con, $sql)) {
   mysqli_free_result($result);
 }
 mysqli_close($con);
-?></b></a> 
+?></h1>
+    </a>
+    <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-               <li><a><span class="badge">build # <?php echo file_get_contents("data/version"); ?></span></a></li>
-               <li><a><span class="badge"><?php echo php_uname("s"); ?> <?php echo php_uname("r"); ?>.<?php echo php_uname("m"); ?></span></a></li>
-                    <li><a href="<?php echo file_get_contents("data/upbutton"); ?>" class="fa fa-arrow-up"> Upgrade</a>
+  </div>
+
+  <div id="navbarExampleTransparentExample" class="navbar-menu">
+    <div class="navbar-start" >
+      <div class="navbar-item">
+          <?php echo file_get_contents("data/version"); ?>
+        </div>
+      <div class="navbar-item"><a href="<?php echo file_get_contents("data/upbutton"); ?>" class="fa fa-arrow-up"> Upgrade</a>
            
-           </li>
-              </ul>
-           
-          
-      <ul style="background-color:#42f4a7;color:black;" class="nav navbar-nav navbar-right">
-          <li><a href="index.php?page=cp"><i style="color:white" class="fa fa-1x fa-home"></i></a></li>
-         <li><a href="index.php?page=FileManager"><i style="color:white" class="fa fa-1x fa-file"></i></a></li>
-         <li><a href="adminer-4.2.4.php?server=localhost"><i style="color:white" class="fa fa-1x fa-database"></i></a></li>
-         <li><a href="index.php?page=mail"><span class="badge">
+           </div>
+      </div>
+    </div>
+
+    <div class="navbar-end" style="background-color:#<?php echo file_get_contents("data/color"); ?>;">
+   <div class="navbar-item"><a href="index.php?page=cp"><i style="color:white" class="fa fa-1x fa-home"></i></a></li>
+            <div class="navbar-item"><a href="index.php?page=FileManager"><i style="color:white" class="fa fa-1x fa-file"></i></a></div>
+           <div class="navbar-item"><a href="adminer-4.2.4.php?server=localhost"><i style="color:white" class="fa fa-1x fa-database"></i></a></div>
+          <div class="navbar-item"><a href="index.php?page=mail"><span class="badge">
              <?php
     $count = 0;
 $con       = mysqli_connect($host, $user, $pass, $data);
@@ -172,7 +176,7 @@ $result    = mysqli_query($con, $sql);
              
              
       
-         </span></a></li>
+         </span></a></div>
          <?php
 			  function isSSL()
     {
@@ -184,58 +188,23 @@ $result    = mysqli_query($con, $sql);
     }
 			if (!isSSL()) {
 				?>
-				<li><A><i  style="color:white" class="fa fa-1x fa-unlock"></i></A></li>
+				   <div class="navbar-item"><A><i  style="color:white" class="fa fa-1x fa-unlock"></i></A></div>
 				<?php
 			} else {
 			?>
-				<li><A><i style="color:white" class="fa fa-1x fa-lock"></i></A></li>
+				   <div class="navbar-item"><A><i style="color:white" class="fa fa-1x fa-lock"></i></A></div>
 			<?php
 			}
 			?>
-      <li><a href="" data-toggle="modal" data-target="#myModal"><i style="color:white" class="fa fa-1x fa-user"></i></a></li>
-      <li><a href="index.php?page=logout"><i style="color:white" class="fa fa-1x fa fa-sign-out"></i></a></li>
-            </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-</div>
-<br><br>
-<br><br>
- <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Change My Password</h4>
-        </div>
-        <form method="POST" action="index.php?page=pass">
-        <div class="modal-body">
-             <form class="form-horizontal" role="form">
-                  <div class="form-group">
-                  	<input type="hidden" name="username" value="<?php echo $_SESSION['user'] ?>">
-                    <label  class="col-sm-2 control-label" for="inputEmail3">Password</label>
-                    <div class="col-sm-10">
-                        <input type="password" name="password" class="form-control" id="inputEmail3" placeholder="password">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-default">Change IT</button>
-                    </div>
-                  </div>
-        </div></form>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+        <div class="navbar-item"><a href="" data-toggle="modal" data-target="#myModal"><i style="color:white" class="fa fa-1x fa-user"></i></a></div>
+         <div class="navbar-item"><a href="index.php?page=logout"><i style="color:white" class="fa fa-1x fa fa-sign-out"></i></a></div>
+            </div>
+       
       </div>
-      
     </div>
-  </div>
-  </div>
-</div>
+</nav>
+
+ 
             <section class="content">
 
                 <div class="row">
@@ -243,11 +212,13 @@ $result    = mysqli_query($con, $sql);
         
              
                    
-                       <hr>
+                     
+                     
+                      
                        <?php
                        if (!isSSL()) {
                            ?>
-                           <div class="alert alert-danger">
+                           <div class="notification is-danger">
   <strong>Danger!</strong> You are connected to Webister however your connection is insecure.
 </div>
                            <?php
@@ -257,9 +228,9 @@ $result    = mysqli_query($con, $sql);
                            if ($quote != "∞") {
                            if (GetDirectorySize('/var/webister/'.$myp) > $quote) {
                                die("
-                               <div class='alert alert-danger'>Please contact support if you are having issues.Your plan quota has been reached.</div>
+                               <div class='notification is-danger'>Please contact support if you are having issues.Your plan quota has been reached.</div>
                                
                                ");
                            } 
                            }
-                           ?>
+                           ?> 

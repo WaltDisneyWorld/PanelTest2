@@ -28,7 +28,7 @@ $(document).ready(function(){
 });
 </script>
 <ul class="list-group">
-  <li class="list-group-item"><a id="baahide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="baashow"><i class="fa fa-list" aria-hidden="true"></i></a> | Status</li>
+  <li class="list-group-item notification is-dark"><a id="baahide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="baashow" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> Status</li>
   <li class="list-group-item">  
                                           <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
                                             $count  = 0;
@@ -105,7 +105,7 @@ $(document).ready(function(){
 });
 </script>
   <ul class="list-group" data-step="5" data-intro="This is where users manage there servers.">
-  <li class="list-group-item"><a id="hxxide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="sxxhow"><i class="fa fa-list" aria-hidden="true"></i></a> |  Billing and Support</li>
+  <li class="list-group-item notification is-dark"><a id="hxxide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="sxxhow" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> Billing and Support</li>
   <li class="list-group-item">  
 
                                         <a  type="button" href="<?php echo $whmurl; ?>/clientarea.php" class="sxrv btn btn-default"><i class="fa fa-5x fa-newspaper-o"></i><hr> News and Announcements</a>
@@ -136,7 +136,7 @@ $(document).ready(function(){
 });
 </script>
   <ul id="myUL" class="list-group" data-step="2" data-intro="Here you can control the power options of webister and the computer it's running on.">
-  <li class="list-group-item"><a id="chide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="cshow"><i class="fa fa-list" aria-hidden="true"></i></a> | Power Management</li>
+  <li class="list-group-item notification is-dark"><a id="chide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="cshow" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> Power Management</li>
   <li class="list-group-item">            
                                       <a type="button" href="index.php?page=action&act=restart" class="csys btn btn-default"><i class="fa fa-5x fa-refresh"></i><hr>Restart</a>
                                       <a type="button" href="index.php?page=action&act=server" class="csys btn btn-default"><i class="fa fa-5x fa-server"></i><hr>Restart</a>
@@ -164,7 +164,7 @@ $(document).ready(function(){
 });
 </script>
 <ul class="list-group" data-step="3" data-intro="Here is where you can create new servers and control different servers.">
-  <li class="list-group-item"><a id="bhide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="bshow"><i class="fa fa-list" aria-hidden="true"></i></a> | Servers</li>
+  <li class="list-group-item notification is-dark"><a id="bhide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="bshow" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> Servers</li>
   <li class="list-group-item">  
 
                                         <a type="button" href="index.php?page=newserv" class="svr btn btn-default"><i class="fa fa-5x fa-plus"></i><hr>New Server</a>
@@ -205,7 +205,7 @@ $(document).ready(function(){
 });
 </script>
                                       <ul class="list-group" data-step="4" data-intro="Here is you can manage webister, these are the settings of it.">
-  <li class="list-group-item"><a id="ahide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="ashow"><i class="fa fa-list" aria-hidden="true"></i></a> | System</li>
+  <li class="list-group-item notification is-dark"><a id="ahide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="ashow" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> System</li>
   <li class="list-group-item">  
 <?php
 if (ismasterreseller()) {
@@ -256,7 +256,7 @@ $(document).ready(function(){
 });
 </script>
   <ul class="list-group" data-step="5" data-intro="This is where users manage there servers.">
-  <li class="list-group-item"><a id="hide"><i class="fa fa-list" aria-hidden="true"></i></a><a id="show"><i class="fa fa-list" aria-hidden="true"></i></a> | My Server</li>
+  <li class="list-group-item notification is-dark"><a id="hide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="show" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> My Server</li>
   <li class="list-group-item">  
 
                                         <a  type="button" href="index.php?page=FileManager" class="serv btn btn-default"><i class="fa fa-5x fa-file"></i><hr>Files</a>

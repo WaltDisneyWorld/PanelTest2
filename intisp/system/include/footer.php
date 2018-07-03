@@ -27,7 +27,7 @@
         <table id="account-information">
           <ul style="list-style-type: none; padding-left:0px;">
           			
-			 <li>Hostname: <span class="badge pull-right"><?php echo gethostname(); ?>:<?php
+			 <li>Hostname: <span class="tag is-dark pull-right"><?php echo gethostname(); ?>:<?php
 $con    = mysqli_connect($host, $user, $pass, $data);
 $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
@@ -37,7 +37,7 @@ $result = mysqli_query($con, $sql);
    mysqli_free_result($result);
     mysqli_close($con);
     ?></span></li>
-			 <li>IP Address: <span class="badge pull-right"><?php echo gethostbyname(gethostname()); ?>:<?php
+			 <li>IP Address: <span class="tag is-dark pull-right"><?php echo gethostbyname(gethostname()); ?>:<?php
 $con    = mysqli_connect($host, $user, $pass, $data);
 $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
@@ -48,13 +48,13 @@ $result = mysqli_query($con, $sql);
    mysqli_free_result($result);
     mysqli_close($con);
     ?></li>
-	<li>MySQL Hostname: <span class="badge pull-right">localhost</span></li>
-   <li>MySQL Username: <span class="badge pull-right"><?php echo $_SESSION['user']; ?></span></li>
-   <li>MySQL Password: <span class="badge pull-right">Same as CP</span></li>
-   <li>Database: <span class="badge pull-right"><?php echo $_SESSION['user']; ?></span></li>
+	<li>MySQL Hostname: <span class="tag is-info pull-right">localhost</span></li>
+   <li>MySQL Username: <span class="tag is-info pull-right"><?php echo $_SESSION['user']; ?></span></li>
+   <li>MySQL Password: <span class="tag is-info pull-right">Same as CP</span></li>
+   <li>Database: <span class="tag is-info pull-right"><?php echo $_SESSION['user']; ?></span></li>
 
-    <li>FTP Hostname: <span class="badge pull-right"><?php echo gethostbyname(gethostname()); ?></li>
-    <li>FTP Username: <span class="badge pull-right"><?php echo $_SESSION['user']; ?></span></li>
+    <li>FTP Hostname: <span class="tag is-info pull-right"><?php echo gethostbyname(gethostname()); ?></li>
+    <li>FTP Username: <span class="tag is-info pull-right"><?php echo $_SESSION['user']; ?></span></li>
     <li>FTP Password: <input type="text" class="pull-right"  style="width:100px" value="<?php
 $con    = mysqli_connect($host, $user, $pass, $data);
 $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
@@ -82,16 +82,16 @@ $result = mysqli_query($con, $sql);
 	   <style>
 	   .progress, .progress-bar-striped, .progress-bar {height: 10px !important;}
 	   </style>
-    <li>	Disk Space (<?php echo GetDirectorySize('/var/webister/'.$myp); ?>/<?php echo $quote; ?>):<div class="progress">
-  <div class="progress-bar progress-bar-striped"  role="progressbar" aria-valuenow="<?php echo GetDirectorySize('/var/webister/'.$myp); ?>"
-  aria-valuemin="0" aria-valuemax="<?php 
+    <li>	Disk Space (<?php echo GetDirectorySize('/var/webister/'.$myp); ?>/<?php echo $quote; ?>):
+      
+
+
+<progress class="progress is-small" value="<?php echo GetDirectorySize('/var/webister/'.$myp); ?>" max="<?php 
   if ($quote == "∞") {$quote="1"; echo "1"; } else {
   echo $quote;
   }
-  ?>" style="width:<?php echo GetDirectorySize('/var/webister/'.$myp) / $quote * 100; ?>%">
-    <span class="sr-only"><?php echo GetDirectorySize('/var/webister/'.$myp) / $quote * 100; ?>% Complete</span>
-  </div>
-</div></li>
+  ?>"><?php echo GetDirectorySize('/var/webister/'.$myp) / $quote * 100; ?>%</progress>
+            </li>
 <li>
     Data Folder (
     <?php
@@ -111,12 +111,8 @@ $files = scan_dir('data');
 echo $files['total_files'];
 ?>
 /100):
-<div class="progress">
-  <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo $files['total_files']; ?>"
-  aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $files['total_files']; ?>%">
-    <span class="sr-only"><?php echo $files['total_files']; ?>% Complete</span>
-  </div>
-</div>
+
+<progress class="progress is-small" value="<?php echo $files['total_files']; ?>" max="100"><?php echo $files['total_files']; ?>%</progress>
 </li>
 
           </ul>
@@ -173,13 +169,52 @@ if ($result = mysqli_query($con, $sql)) {
             </section>
         </div>
            
-          <div id="branding">
-        
-    Copyright Adaclare Technologies | Powered By Bing Translate
+      
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      Copyright Adaclare Technologies <div class="pull-right">
+    Powered By Bing Translate
+    </div> 
+    </p>
+  </div>
+</footer>
+
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
     
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Change My Password</h4>
+        </div>
+        <form method="POST" action="index.php?page=pass">
+        <div class="modal-body">
+             <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                  	<input type="hidden" name="username" value="<?php echo $_SESSION['user'] ?>">
+                    <label  class="col-sm-2 control-label" for="inputEmail3">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" name="password" class="form-control" id="inputEmail3" placeholder="password">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-default">Change IT</button>
+                    </div>
+                  </div>
+        </div></form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  </div>
 </div>
-
-
 	<script src="public/assets/js/bootstrap.min.js"></script>
 
 		</body>
