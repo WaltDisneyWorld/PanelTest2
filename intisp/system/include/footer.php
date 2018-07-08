@@ -66,6 +66,13 @@ $result = mysqli_query($con, $sql);
    mysqli_free_result($result);
     mysqli_close($con);
     ?>" disabled></li><li><br></li>
+		  <?php
+		  if ($_SESSION['user'] == 'admin') {
+    echo ' <li>Serial Number: <span class="tag is-dark pull-right">' . file_get_contents("data/register") . '</span></li><li><br></li>
+     <li>Registered to: <span class="tag is-dark pull-right">' . json_decode(file_get_contents("https://intisp.adaclare.com/api/valid/" . file_get_contents("data/register")),true)["username"] . '</span></li>
+     <li>Email Registered: <span class="tag is-dark pull-right">' . json_decode(file_get_contents("https://intisp.adaclare.com/api/valid/" . file_get_contents("data/register")),true)["email"] . '</span></li><li><br></li>';
+}
+		  ?>
    <li>Status: 
        <?php
 
