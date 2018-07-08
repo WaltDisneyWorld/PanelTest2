@@ -3,6 +3,23 @@ error_reporting(0);
 ini_set("session.cookie_lifetime","360");
 session_start();
 include 'config.php';
+
+if (!file_exists("data/register")) {
+    header("Location: install/");
+    die();
+}
+if (file_exists("install/authorize.php")) unlink("install/authorize.php");
+$key = file_get_contents("https://intisp.adaclare.com/api/valid/" . file_get_contents("data/register"));
+if ($key == "") {
+    header("Location: install/");
+die();
+}
+$key = json_decode($key, true);
+$ip = $key["ip"];
+if ($ip != $_SERVER['SERVER_ADDR']) {
+    die("IP Mismatch. The key that is registered is for " . $ip . " and user " . $key["username"]);
+}
+
 function ismasterreseller() {
     require "config.php";
     if ($data == "webister") {
