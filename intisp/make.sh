@@ -1,11 +1,14 @@
-VERSION=6
+# INTisp Installation script
+version=9
+permision=775
+installPath=/var/webister
+# Webserver: apache2 / nginx
+webserver=apache2
+
 showLoading() {
-  mypid=$!
-  loadingText=$1
-
-  echo -ne "$loadingText\r"
-
-  
+    mypid=$!
+    loadingText=$1
+    echo -ne "$loadingText\r"
     echo -ne "$loadingText.\r"
     sleep 0.5
     echo -ne "$loadingText..\r"
@@ -15,41 +18,56 @@ showLoading() {
     echo -ne "\r\033[K"
     echo -ne "$loadingText\r"
     sleep 0.5
-
-
-  echo "$loadingText... DONE"
+    echo "$loadingText... DONE"
 }
 direct() {
-    BLAH=$(mkdir -p /var/webister)
-BLAH=$(mkdir -p /var/webister/80)
-BLAH=$(rm -rf /var/www/html)
-BLAH=$(cp -r public /var/www/html)
-BLAH=$(cp -r system /var/www/html/interface)
-BLAH=$(chmod -R 777 /var/www/html)
-    }
+    BLAH=$(mkdir -p $installPath)
+    BLAH=$(mkdir -p /var/webister/80)
+    BLAH=$(cp -r public /var/www/html)
+    BLAH=$(cp -r system /var/www/html/interface)
+    BLAH=$(chmod -R $permision /var/www/html)
+}
 ftp() {
     BLAH=$(cp inc/startftp.php /var/webister/)
-BLAH=$(sudo pip install pyftpdlib)
-BLAH=$(sudo cp inc/ftpserv.py /var/webister/)
-BLAH=$(cp inc/service /etc/init.d/webister)
-BLAH=$(chmod -R 777 /etc/init.d/webister) 
-    }
+    BLAH=$(sudo pip install pyftpdlib)
+    BLAH=$(sudo cp inc/ftpserv.py /var/webister/)
+    BLAH=$(cp inc/service /etc/init.d/webister)
+    BLAH=$(chmod -R $permission /etc/init.d/webister) 
+ }
 vhost() {
     BLAH=$(sudo cp inc/service.php /var/webister/)
-BLAH=$(sudo cp inc/billingconnect.php /var/webister/)
-BLAH=$(sudo cp inc/restore.sql /var/webister/)
-BLAH=$(sudo cp -r inc/migrations /var/webister/)
-BLAH=$(sudo cp inc/virtualhost.sh /usr/local/bin/wvhost)
-BLAH=$(sudo chmod +x /usr/local/bin/wvhost)
-BLAH=$(echo 'apache ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo)
-BLAH=$(wvhost admin.com 80)
-BLAH=$(php inc/install.php $PASS)
-BLAH=$(chmod -R 777 /var/webister/)
+    BLAH=$(sudo cp inc/billingconnect.php /var/webister/)
+    BLAH=$(sudo cp inc/restore.sql /var/webister/)
+    BLAH=$(sudo cp -r inc/migrations /var/webister/)
+    BLAH=$(sudo cp inc/virtualhost.sh /usr/local/bin/wvhost)
+    BLAH=$(sudo chmod +x /usr/local/bin/wvhost)
+    BLAH=$(echo 'apache ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo)
+    BLAH=$(wvhost admin.com 80)
+    BLAH=$(php inc/install.php $PASS)
+    BLAH=$(chmod -R $permission /var/webister/)
     }
 services() {
-    BLAH=$(/etc/init.d/webister)
-BLAH=$(service apache2 start)
-    }
+  BLAH=$(/etc/init.d/webister)
+  BLAH=$(service $webserver start)
+}
+
+fqdn() {
+    echo -n Hostname FQDN: 
+    read HOSTNET
+
+    result=`echo $HOSTNET | grep -P '(?=^.{1,254}$)(^(?>(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)'`
+    if [[ -z "$result" ]]
+    then
+        echo "$HOSTNET is NOT a FQDN"
+        read
+        clear
+        bash make.sh nok
+    else
+        echo "$HOSTNET is a FQDN"
+        hostname $HOSTNET
+    fi
+}
+
 endmsg() {
     
 echo -e "\nThe installation is now complete."
@@ -66,7 +84,7 @@ fi
 }
 check php
 check mysql
-check apache2
+check $webserver
 echo "The default username and password is admin"
 echo "Visit the control panel http://localhost/interface."
 echo -e "###############################################################################"
@@ -88,7 +106,7 @@ We follow these licences:
 http://www.apache.org/licenses/LICENSE-2.0
 https://opensource.org/licenses/MIT
 
-Copyright (C) 2007 Adaclare Technologies <http://www.adaclare.com>
+Copyright (C) 2018 Adaclare Technologies <http://www.adaclare.com>
 Everyone is permitted to use and distribute verbatim copies
 of this license document, but changing it is not allowed.
 
@@ -109,23 +127,10 @@ SOFTWARE. IF ANYTHING BREAKS I AM NOT RESPONSIBLE FOR IT.
 "
 echo -n MySQL Password: 
 read PASS
-echo -n Hostname FQDN: 
-read HOSTNET
+# FQDN
+fqdn
 
-result=`echo $HOSTNET | grep -P '(?=^.{1,254}$)(^(?>(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)'`
-if [[ -z "$result" ]]
-then
-    echo "$HOSTNET is NOT a FQDN"
-    read
-    clear
-    bash make.sh nok
-else
-    echo "$HOSTNET is a FQDN"
-    hostname $HOSTNET
-fi
 # Create Database
-
-
 BLAH=$(mysql -u root -p"$PASS" -e "CREATE DATABASE webister;") & showLoading "Creating Database"
 BLAH=$(service mysql start) & showLoading "Starting MySQL Server"
 
