@@ -70,6 +70,9 @@ $sql="CREATE DATABASE admin";
 mysqli_query($connection,$sql);
 
     // Create user
+$sql = "CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';";
+mysqli_query($connection,$sql);
+
 
 $sql='grant usage on *.* to admin@localhost identified by ' . "'" . "admin" . "'";
 
