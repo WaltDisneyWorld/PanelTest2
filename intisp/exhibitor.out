@@ -1,3 +1,0 @@
-PHP Socket Server started at 127.0.0.1 1210
-PHP Warning:  socket_bind(): unable to bind address [98]: Address already in use in /var/webister/service.php on line 27
-Could not bind to address
