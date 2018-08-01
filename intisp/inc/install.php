@@ -14,6 +14,8 @@ $DBUser   = 'root';
 $DBPass   = $argv[1];
 $DBName   = 'webister';
 
+
+
 $conn = new mysqli($DBServer, $DBUser, $DBPass, $DBName);
 
 // check connection
@@ -50,42 +52,3 @@ $".'data'."   = 'webister';
 $".'salt'."   = '".$salt."';
 
 ");
-
-$databasename = $DBName;
-$dbpass       = $DBPass;
-
-// store connection info...
-
-$connection=mysqli_connect("localhost","root","$DBPass");
-
-// check connection...
-
-if (mysqli_connect_errno())
-  {
-  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-  }
-
-$sql="CREATE DATABASE admin";
-
-mysqli_query($connection,$sql);
-
-    // Create user
-$sql = "CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';";
-mysqli_query($connection,$sql);
-
-
-$sql='grant usage on *.* to admin@localhost identified by ' . "'" . "admin" . "'";
-
-mysqli_query($connection,$sql);
-
-$sql="grant all privileges on admin.* to admin@localhost";
-
-#echo "$sql";
-mysqli_query($connection,$sql);
-
-#Deprecated
-#mysql_connect('localhost', 'root', $argv[1]);
-#mysql_query("CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';");
-#mysql_query('CREATE DATABASE admin');
-#mysql_query("GRANT ALL ON admin.* TO 'admin'@'localhost'");
-#mysql_close();

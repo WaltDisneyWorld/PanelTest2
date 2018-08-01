@@ -1,141 +1,163 @@
-# INTisp Installation script
+#!/bin/bash
+# IntISP Installation Script
 version=9
-permision=775
-installPath=/var/webister
-# Webserver: apache2 / nginx
-webserver=apache2
+intro () {
 
-showLoading() {
-    mypid=$!
-    loadingText=$1
-    echo -ne "$loadingText\r"
-    echo -ne "$loadingText.\r"
-    sleep 0.5
-    echo -ne "$loadingText..\r"
-    sleep 0.5
-    echo -ne "$loadingText...\r"
-    sleep 0.5
-    echo -ne "\r\033[K"
-    echo -ne "$loadingText\r"
-    sleep 0.5
-    echo "$loadingText... DONE"
+   echo  " _____       _   _____  _____ _____  "
+   echo  "|_   _|     | | |_   _|/ ____|  __ \ "
+   echo  "  | |  _ __ | |_  | | | (___ | |__) |"
+   echo  "  | | | '_ \| __| | |  \___ \|  ___/ "
+   echo  " _| |_| | | | |_ _| |_ ____) | | "    
+  echo   "|_____|_| |_|\__|_____|_____/|_| "    
+  
+       echo "Copyright Adaclare Technologies 2007-2018 All Rights Reserved"             
+       echo "You are installing IntISP V$version on your computer."
+       echo "NOTICE! YUM SYSTEMS MAY NOT BE FULLY COMPATIBLE WITH INTISP RIGHT NOW!!"
 }
-direct() {
-    BLAH=$(mkdir -p $installPath)
-    BLAH=$(mkdir -p /var/webister/80)
-    BLAH=$(cp -r public /var/www/html)
-    BLAH=$(cp -r system /var/www/html/interface)
-    BLAH=$(chmod -R $permision /var/www/html)
-}
-ftp() {
-    BLAH=$(cp inc/startftp.php /var/webister/)
-    BLAH=$(sudo pip install pyftpdlib)
-    BLAH=$(sudo cp inc/ftpserv.py /var/webister/)
-    BLAH=$(cp inc/service /etc/init.d/webister)
-    BLAH=$(chmod -R $permission /etc/init.d/webister) 
- }
-vhost() {
-    BLAH=$(sudo cp inc/service.php /var/webister/)
-    BLAH=$(sudo cp inc/billingconnect.php /var/webister/)
-    BLAH=$(sudo cp inc/restore.sql /var/webister/)
-    BLAH=$(sudo cp -r inc/migrations /var/webister/)
-    BLAH=$(sudo cp inc/virtualhost.sh /usr/local/bin/wvhost)
-    BLAH=$(sudo chmod +x /usr/local/bin/wvhost)
-    BLAH=$(echo 'apache ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo)
-    BLAH=$(wvhost admin.com 80)
-    BLAH=$(php inc/install.php $PASS)
-    BLAH=$(chmod -R $permission /var/webister/)
-    }
-services() {
-  BLAH=$(/etc/init.d/webister)
-  BLAH=$(service $webserver start)
-}
-
-fqdn() {
-    echo -n Hostname FQDN: 
-    read HOSTNET
-
-    result=`echo $HOSTNET | grep -P '(?=^.{1,254}$)(^(?>(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z]{2,})$)'`
-    if [[ -z "$result" ]]
-    then
-        echo "$HOSTNET is NOT a FQDN"
-        read
-        clear
-        bash make.sh nok
+questions () {
+    read -p "Do you agree to Adaclare Technologies Terms of Service and MIT Licences (Yy/Nn)? " -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    echo 
     else
-        echo "$HOSTNET is a FQDN"
-        hostname $HOSTNET
-    fi
+    echo 
+    exit 7
+fi
+echo Requirements - IntISP $version
+PS3="What type of package manager do you use? "
+select option in apt-get yum
+do
+    case $option in
+        apt-get) 
+            pkg=apt-get;
+            break;;
+        yum) 
+            pkg=yum;
+            break;;
+        quit)
+            break;;
+     esac
+done
+PS3="What Web Server would you like to use? "
+select option in apache2-httpd nginx
+do
+    case $option in
+        apache2-httpd) 
+            websrv=apache2;
+            break;;
+        nginx) 
+            websrv=nginx;
+            break;;
+        quit)
+            break;;
+     esac
+done
+PS3="What Database server would you like to use? "
+select option in mysql mariadb
+do
+    case $option in
+        mysql) 
+            db=mysql-server;
+            break;;
+        mariadb) 
+            db=mariadb-server;
+            break;;
+        quit)
+            break;;
+     esac
+done
+  read -p "Install IonCube Loader (Yy/Nn)? " -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    ion=true
+    else
+    ion=false
+fi
+echo
+echo -n "new MySQL root Password:" 
+read -s password
+echo
+echo "You will be installing $websrv , $db , php , and Ioncube (if selected) on a $pkg based server."
+}
+spinner()
+{
+    local pid=$!
+    local delay=0.75
+    local spinstr='|/-\'
+    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+        local temp=${spinstr#?}
+        printf " [%c]  " "$spinstr"
+        local spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+        printf "\b\b\b\b\b\b"
+    done
+    printf "    \b\b\b\b"
 }
 
-endmsg() {
+setup() {
+    mkdir -p /var/webister
+    mkdir -p /var/webister/80
+    cp -r system /var/www/html/interface
+    chmod -R 777 /var/www/html
+    cp inc/startftp.php /var/webister/
+    sudo pip install pyftpdlib
+    sudo cp inc/ftpserv.py /var/webister/
+    cp inc/service /etc/init.d/webister
+    chmod 777 /etc/init.d/webister
+    chmod +x /etc/init.d/webister
+    sudo cp inc/service.php /var/webister/
+    sudo cp inc/billingconnect.php /var/webister/
+    sudo cp inc/restore.sql /var/webister/
+    sudo cp -r inc/migrations /var/webister/
+    sudo cp inc/virtualhost.sh /usr/local/bin/wvhost
+    sudo chmod +x /usr/local/bin/wvhost
+    echo 'apache ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
+    wvhost admin.com 80
+    mysqladmin -u root -p'' password '$password' 
+    php inc/install.php $password
+    chmod -R 777 /var/webister/
+    /etc/init.d/webister
+    service $websrv start
+    service mysql start
+}
+
+finish () {
     
+        
 echo -e "\nThe installation is now complete."
 echo -e "###############################################################################"
 
-echo "Your system has installed IntISP $VERSION"
-echo "The system has detected which has been installed (This may not be correct)"
-check () {
-   if [ -n "$(command -v "$1")" ]; then
-echo -e "$1: OK"
-else
-echo -e "$1: Not Installed, you may have issues."
-fi
-}
-check php
-check mysql
-check $webserver
+echo "Your system has installed IntISP $version"
 echo "The default username and password is admin"
 echo "Visit the control panel http://localhost/interface."
 echo -e "###############################################################################"
-echo -e "###############################################################################"
 exit 0
-    }
-echo "_______ _________        _______________ _______ ________ __________"
-echo "___    |______  /______ ___  ____/___  / ___    |___  __  ___  ____/"
-echo "__  /| |_  __  / _  __  /_  /     __  /  __  /| |__  /_/ /__  __/   "
-echo "_  ___ |/ /_/ /  / /_/ / / /___   _  /____  ___ |_  _  _/ _  /___   "
-echo "/_/  |_| __ _/    __ _/   ____/   /_____//_/  |_|/_/ |_|  /_____/   "
-
-echo "You are installing adaclare intisp version $VERSION"
-echo "
-
-Licensed under the Adaclare Custom Licence; you may not use this file except in compliance with the License.
-
-We follow these licences:
-http://www.apache.org/licenses/LICENSE-2.0
-https://opensource.org/licenses/MIT
-
-Copyright (C) 2018 Adaclare Technologies <http://www.adaclare.com>
-Everyone is permitted to use and distribute verbatim copies
-of this license document, but changing it is not allowed.
-
-IntISP/Webister is free software: you can redistribute it and/or modify
-it under the terms of the Adaclare Custom Licence as published by
-Adaclare Technologies. HOWEVER you are not allowed to distribute
-our software AT ALL.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. IF ANYTHING BREAKS I AM NOT RESPONSIBLE FOR IT.
-
-
-"
-echo -n MySQL Password: 
-read PASS
-# FQDN
-fqdn
-
-# Create Database
-BLAH=$(mysql -u root -p"$PASS" -e "CREATE DATABASE webister;") & showLoading "Creating Database"
-BLAH=$(service mysql start) & showLoading "Starting MySQL Server"
-
-direct & showLoading "Copying Files"
-ftp & showLoading "Setting Up FTP"
-vhost & showLoading "Configuring VHOST"
-services & showLoading "Starting Services"
-endmsg
+}
+check () {
+   if [ -n "$(command -v "$1")" ]; then
+echo "The installation has completed."
+setup
+finish
+exit 0
+else
+echo "Install Not Detected"
+fi
+}
+installreq() {
+    echo "Installing Linux Apache, PHP, and MySQL for IntISP"
+echo "We are currently finding the best method to install for your computer.."
+echo "This may take a while, Please do not turn off your computer and please be"
+echo "Patient..."
+echo "If you see any errors please ignore them as they are completely normal."
+    $pkg update
+    $pkg install $db $websrv curl python3 python-pip php php-cli php-fpm php-json php-mysql php-curl php-mail php-zip
+    check php
+    $pkg install $db $websrv curl python3 python-pip php php*-cli php*-fpm php*-json php*-mysql php*-curl php*-mail php*-zip
+    check php
+    $pkg install $db $websrv curl python3 python-pip php7 php7-cli php7-fpm php7-json php7-mysql php7-curl php7-mail php7-zip
+    echo "Cannot install PHP SQL Server or Web Server. Please try again or reinstall your Operating System."
+    exit 1;
+}
+intro
+questions
+installreq & spinner
