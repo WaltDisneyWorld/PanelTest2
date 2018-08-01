@@ -107,16 +107,13 @@ setup() {
     chmod +x /etc/init.d/webister
     sudo cp inc/service.php /var/webister/
     sudo cp inc/billingconnect.php /var/webister/
-    sudo cp inc/restore.sql /var/webister/
-    sudo cp -r inc/migrations /var/webister/
     sudo cp inc/virtualhost.sh /usr/local/bin/wvhost
     sudo chmod +x /usr/local/bin/wvhost
     echo 'apache ALL=NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
     wvhost admin.com 80
-    mysqladmin -u root -p'' password '$password' 
-    php inc/install.php $password
+    mysql -uroot -e "CREATE DATABASE webister"
+    mysqladmin -u root password '$password' 
     chmod -R 777 /var/webister/
-    /etc/init.d/webister
     service $websrv start
     service mysql start
 }

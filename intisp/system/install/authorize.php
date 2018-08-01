@@ -79,7 +79,8 @@ file_get_contents("https://intisp.adaclare.com/api/?v=hulint9&n&u=" . urlencode(
         Activated your IntISP <?php echo file_get_contents("../data/version"); ?> Completed
       </h1>
       <p class="subtitle">
-        Your IntISP copy is now genuine and is completely valid.
+        Your IntISP copy is now genuine and is completely valid. It is ready to go. Please run this command<br>
+        sudo rm -rf /var/www/html/interface/install
       </p>
 
   <article class="message is-info">

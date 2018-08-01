@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!file_exists("data/register")) {
+    header("Location: install/");
+    die();
+}
 if (isset($_GET["reseller"])) {
     
     if (file_exists("data/reseller/" . $_GET["reseller"])) {

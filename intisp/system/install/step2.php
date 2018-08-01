@@ -1,4 +1,6 @@
 <?php
+session_start();
+$_SESSION["stp2"] = true;
 require("inc/top.php");
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,10 +38,39 @@ require("inc/top.php");
   </div>
 </nav>
 <div class="container">
-        <h1>Welcome to your new IntISP Installer</h1>
-     <p>This setup will guide your through the installation of the IntISP Control Panel. Before proceeding please make sure you accept the Terms and Conditions of Adaclare Technologies. You configured your database details using the simple installer or you are using this script as a demo. You have a valid IntISP registration which Adaclare Technologies.</p>
-     <a href="step2.php"  class="btn btn-dark">Next</a>
-    </div>
+    <?php if (isset($_GET["err"])) {
+      ?>
+      <div class="alert alert-danger">Cannot connect to the MySQL Details provided. Is MySQL running?</div>
+      <?php
+    }
+    ?>
+       <h1>Database Details</h1>
+       <p>Please enter the database details below, some fields are already filled in, you may need to create the Database named webister which can be found on our documentation.</p>
+       <form method="POST" action="writeConfig.php">
+            <div class="form-group">
+    <label for="exampleInputtext1">Database Hostname</label>
+    <input name="db_host" type="text" class="form-control" value="localhost" disabled required>
+ 
+  </div>
+  <div class="form-group">
+    <label for="exampleInputtext1">Database Name</label>
+    <input name="db_name" type="text" class="form-control" value="webister" disabled required>
+
+  </div>
+ <div class="form-group">
+    <label for="exampleInputtext1">Database Username</label>
+    <input name="db_user" type="text" class="form-control" value="root" disabled required>
+
+  </div>
+ <div class="form-group">
+    <label for="exampleInputtext1">Database Password</label>
+    <input name="db_pass" type="password" class="form-control">
+  
+  </div>
+  <a href="index.php" class="btn btn-primary">Back</a>
+  <button type="submit" class="btn btn-primary">Next</button>
+</form>
+     </div>
 <?php
 require("inc/bottom.php");
 ?>

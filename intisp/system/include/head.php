@@ -4,11 +4,6 @@ ini_set("session.cookie_lifetime","360");
 session_start();
 include 'config.php';
 
-if (!file_exists("data/register")) {
-    header("Location: install/");
-    die();
-}
-if (file_exists("install/authorize.php")) unlink("install/authorize.php");
 $key = file_get_contents("https://intisp.adaclare.com/api/valid/" . file_get_contents("data/register"));
 if ($key == "") {
     header("Location: install/");
