@@ -160,4 +160,4 @@ echo "If you see any errors please ignore them as they are completely normal."
 }
 intro
 questions
-installreq & spinner
+installreq
