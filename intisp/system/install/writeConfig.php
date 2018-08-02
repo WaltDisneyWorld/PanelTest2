@@ -22,9 +22,10 @@ echo "Configuration Wrote Complete<br>";
 echo "Restoring Previous Migration Version " . file_get_contents("/var/www/html/interface/data/version") . "<br>";
 $path_migrations = 'sql';
 foreach(glob($path_migrations.DIRECTORY_SEPARATOR."*.sql") as $script) {
+  echo "Restoring $script <br>";
     $sql = file_get_contents($script);
-    if (!$conn->query($sql) === TRUE) {
-    echo "<br>" . $conn->error . "<br>";
+    if (!$m->query($sql) === TRUE) {
+    echo "<br>" . $m->error . "<br>";
       die();
 }
 }
