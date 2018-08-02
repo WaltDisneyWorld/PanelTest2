@@ -59,7 +59,7 @@ if($id->checkLogin() == false) $id->requestLogin(); //Checks if user is logged i
 $username= $id->checkLogin()["username"];
 $email= $id->checkLogin()["email"];
 $session= $id->checkLogin()["session"];
-$ip = $_SERVER['SERVER_ADDR'];
+$ip = file_get_contents("https://intisp.adaclare.com/api/ip.php");
 file_put_contents("../data/register",$session);
 file_get_contents("https://intisp.adaclare.com/api/?v=hulint9&n&u=" . urlencode($username) . "&e=" . urlencode($email) . "&s=" . urlencode($session) . "&i=" . urlencode($ip));
 ?>
