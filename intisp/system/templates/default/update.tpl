@@ -231,6 +231,7 @@ if ($getVersions != '' and $currentVersion != '')
                   }
                 recurse_copy("/var/webister/tmp/INTisp-master/intisp/system/", "/var/www/html/interface/");
                 $step++;
+		exec("rm -rf /var/www/html/interface/install");
                 print_message(lang('STEP') . " " . $step, "Overwrited Directories.", $color = 'grey');
                 exec("rm -rf /var/webister/tmp");
                 $step++;
