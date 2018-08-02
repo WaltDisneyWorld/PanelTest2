@@ -11,7 +11,7 @@ die();
 }
 $key = json_decode($key, true);
 $ip = $key["ip"];
-if ($ip != $_SERVER['SERVER_ADDR']) {
+if ($ip != file_get_contents("https://intisp.adaclare.com/api/ip.php")) {
     die("IP Mismatch. The key that is registered is for " . $ip . " and user " . $key["username"]);
 }
 
