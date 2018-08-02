@@ -19,9 +19,16 @@ $".'salt'."   = '".$salt."';
 
 ");
 echo "Configuration Wrote Complete<br>";
-  $source = file_get_contents("sql/restore.sql");
-        mysqli_multi_query($m, $source);
-echo "MySQL Restore Completed Version V" . file_get_contents("../data/version") . "<br>";
+echo "Restoring Previous Migration Version " . file_get_contents("/var/www/html/interface/data/version") . "<br>";
+$path_migrations = 'sql';
+foreach(glob($path_migrations.DIRECTORY_SEPARATOR."*.sql") as $script) {
+    $sql = file_get_contents($script);
+    if (!$conn->query($sql) === TRUE) {
+    echo "<br>" . $conn->error . "<br>";
+      die();
+}
+}
+echo "Restore Complete V" . file_get_contents("/var/www/html/interface/data/version") . "<br>";
 $sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '".sha1('admin'.$salt)."', '', '', '80')";
 $m->query($sql);
 echo "Admin User Created<br>";
