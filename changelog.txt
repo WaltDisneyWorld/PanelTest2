@@ -1,16 +1,12 @@
-Version 9.0.0 - Release 19.06.2018
-INF - The moon version of IntISP is more flexible then the last few versions. It is recommended to run on Ubuntu 18+, Ubuntu 17+, Lubuntu. Debian requires a manual installation which is for advanced users. INTisp Support for WHMCS has been added, users are now able to manage there services by using the IntISP control panel.
+Version 10.0.0 - Release 01.08.2018
+INF - The apollo edition of IntISP will add more support for different operating systems. Abiity to use Centos/Redhat/Ubuntu/Debian ,Nginx/Apache, Ability to pick when to install Ioncube.
 FIX - Security Fixes
 FIX - Fixed lots of bugs
 FIX - Using new Structure for code
-FIX - Fixed Cant send email bug
-ADD - Added Ioncube support for encrypted PHP Scripts.
-ADD - Changed Installation
-ADD - Added WHMCS
-ADD - New Features Coming Soon
-UPD - Removed Installer
-UPD - Switched File Manager to Net2ftp
-FTR - Cron Jobs
+FIX - Fixed Installer
+ADD - Installer GUI
+ADD - Changed Installation Again
+ADD - CRON JOBS
 FTR - New Control Panel Themes
 FTR - PHP.ini editor from inside the control panel
 FTR - User Spy
