@@ -32,11 +32,11 @@
 		exit
 	else
 	if [ ! -d /var/webister/$1 ]; then
-        echo " == Creating www in /var/webister"
-        mkdir /var/webister/$2/cgi-bin
+        	echo " == Creating www in /var/webister"
+        	mkdir /var/webister/$2/cgi-bin
 		chmod 0700 /var/webister/$2
-        chown -R www-data:www-data /var/webister/$2
-        chmod -R 777 /var/webister/$2
+        	chown -R www-data:www-data /var/webister/$2
+        	chmod -R 775 /var/webister/$2
 	fi
 if [ -n "$2" ]; then
 alias="ServerAlias $1"
@@ -45,16 +45,17 @@ echo "
 <VirtualHost *:80>
        ServerAdmin admin@$1
        ServerName  testserv.adaclare.com
-ServerAlias $1
-            # Indexes + Directory Root.
+       ServerAlias $1
+       # Indexes + Directory Root.
        DirectoryIndex index.html index.php
        DocumentRoot /var/webister/$2
    <Directory "/var/webister/$2">
+   	# Apache 2.2
         # AllowOverride All      # Deprecated
         # Order Allow,Deny       # Deprecated
         # Allow from all         # Deprecated
 
-        # --New way of doing it
+        # --New way of doing it Apache 2.4
         Require all granted
     </Directory>
 
