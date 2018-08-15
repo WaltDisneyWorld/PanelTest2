@@ -34,11 +34,11 @@ die();
  * @copyright 2017 Adaclare
  */
 if (!isset($_GET['page'])) {
-    include "templates/default/main.tpl";
+    include "templates/default/main.tpl.php";
     die();
 }
-if (file_exists("templates/default/" . $_GET['page'].'.tpl')) {
-    include "templates/default/" . $_GET['page'].'.tpl';
+if (file_exists("templates/default/" . $_GET['page'].'.tpl.php')) {
+    include "templates/default/" . $_GET['page'].'.tpl.php';
     die();
 }  
     header('HTTP/1.0 404 Not Found'); ?>

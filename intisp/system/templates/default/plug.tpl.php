@@ -1,7 +1,7 @@
 
 <?php 
 require 'include/head.php';
-require 'templates/default/phphooks.inc.tpl';
+require 'templates/default/phphooks.inc.tpl.php';
 onlyadmin();
 $plugin_list    = new phphooks();
 $plugin_headers = $plugin_list->get_plugins_header();
