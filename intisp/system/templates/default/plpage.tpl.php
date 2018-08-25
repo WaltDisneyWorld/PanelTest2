@@ -9,6 +9,7 @@
  */
 
 require "include/head.php";
+$safe = false;
 require "plugins/" . $_GET["pl"];
 if ($menu_only_admin) {
     onlyadmin();
