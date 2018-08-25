@@ -17,6 +17,13 @@ IntISP is a hosting control panel that is designed to be light and fast. It uses
 - [Request](https://feathub.com/INTisp/INTisp)
 - [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?token=Ea_rrJDbgtQPpP7fa1R8N_SuEQgxg2ZtaT77NZYhUJ7sZCJxxacpOionaVcz5erevcOpbG)
 
+## Table of Contents
+
+- [Installation](#Installation)
+- [Security Fixes](#Security Fixes)
+- [Support](#support)
+- [Contributing](#contributing)
+
 
 
 ### Security Fixes
