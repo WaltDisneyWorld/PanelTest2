@@ -73,6 +73,13 @@ then
     else
     ion=false
 fi
+  read -p "Install Reminna Speed Tweaks (Yy/Nn)? " -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    reminna=true
+    else
+    reminna=false
+fi
 echo
 echo -n "new MySQL root Password:"
 read -s password
@@ -112,6 +119,10 @@ intdaemon start
     #cp inc/service /etc/init.d/webister
     #chmod 777 /etc/init.d/webister
     #chmod +x /etc/init.d/webister
+     if [ "$reminna" = true ]; then
+    wget https://gist.githubusercontent.com/alwaysontop617/bdbec3e586eb03664661e5e968a0098e/raw/e3e9e33c9463fe8c581d398afc920ea0534732f1/reminna.plugin.php
+mv reminna.plugin.php /var/www/html/interface/plugins/
+ fi
     #sudo cp inc/service.php /var/webister/
     #sudo cp inc/billingconnect.php /var/webister/
     sudo cp inc/virtualhost.sh /usr/local/bin/wvhost
