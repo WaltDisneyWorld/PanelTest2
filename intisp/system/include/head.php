@@ -8,6 +8,7 @@ function failed($msg) {
  This version of IntISP is not activated. Error Message: <?php echo $msg; ?>
  Please contact Support!
  <?php
+	die();
 }
 require("include/verify.php");
 $results = check_license(file_get_contents("data/register"));
