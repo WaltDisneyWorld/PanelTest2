@@ -10,9 +10,11 @@ Author URI: https://www.youtube.com/
 $menu            = TRUE;
 $menu_name       ="Example Plugin";
 $menu_only_admin = TRUE;
+if (!$safe) {
 function page() {
    ?>
    <h1>Welcome</h1>
    <p>This is a demo plugin of somethings that you can do with our plugin system.</p>
    <?php
+}
 }
