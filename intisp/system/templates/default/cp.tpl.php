@@ -227,6 +227,7 @@ if (ismasterreseller()) {
                                         <?php
                                         $scan = scandir("plugins/");
                                         foreach ($scan as $file) {
+                                          $safe = true;
                                             include "plugins/" . $file;
                                             if ($menu) {
                                                 echo '<a type="button" class="sys btn btn-large btn-default" href="index.php?page=plpage&pl=' . urlencode($file) . '" class="btn btn-default"><i class="fa fa-5x fa-puzzle-piece"></i><hr>' . $menu_name . '</a>';
