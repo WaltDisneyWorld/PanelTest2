@@ -3,16 +3,31 @@ error_reporting(0);
 ini_set("session.cookie_lifetime","360");
 session_start();
 include 'config.php';
-
-$key = file_get_contents("https://intisp.adaclare.com/api/valid/" . file_get_contents("data/register"));
-if ($key == "") {
-    header("Location: install/");
-die();
+function failed($msg) {
+ ?>
+ This version of IntISP is not activated. Error Message: <?php echo $msg; ?>
+ Please contact Support!
+ <?php
 }
-$key = json_decode($key, true);
-$ip = $key["ip"];
-if ($ip != file_get_contents("https://intisp.adaclare.com/api/ip.php")) {
-    die("IP Mismatch. The key that is registered is for " . $ip . " and user " . $key["username"]);
+require("include/verify.php");
+$results = check_license(file_get_contents("data/register"));
+switch ($results['status']) {
+    case "Active":
+        // get new local key and save it somewhere
+        $localkeydata = $results['localkey'];
+        break;
+    case "Invalid":
+        failed("License key is Invalid");
+        break;
+    case "Expired":
+        failed("License key is Expired");
+        break;
+    case "Suspended":
+        failed("License key is Suspended");
+        break;
+    default:
+        failed("Invalid Response");
+        break;
 }
 
 function ismasterreseller() {

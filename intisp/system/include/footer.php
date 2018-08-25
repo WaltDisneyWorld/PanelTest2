@@ -1,5 +1,26 @@
 <?php
 //Database connection
+include 'config.php';
+
+$con    = mysqli_connect($host, $user, $pass, $data);
+$sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
+$result = mysqli_query($con, $sql);
+ while ($row = mysqli_fetch_row($result)) {
+     $myp = $row[5];
+ }
+   mysqli_free_result($result);
+    mysqli_close($con);
+    $con    = mysqli_connect($host, $user, $pass, $data);
+$sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
+$result = mysqli_query($con, $sql);
+ while ($row = mysqli_fetch_row($result)) {
+     $quote = $row[4];
+     if ($quote == '') {
+         $quote = '∞';
+     }
+ }
+   mysqli_free_result($result);
+    mysqli_close($con);
 $con    = mysqli_connect($host, $user, $pass, $data);
 ?>
 <br>  <br>  <br>  <br>  <br>  <br>  <br>         
@@ -72,8 +93,7 @@ $result = mysqli_query($con, $sql);
 		  <?php
 		  if ($_SESSION['user'] == 'admin') {
     echo ' <li>Serial Number: <span class="tag is-dark pull-right">' . file_get_contents("data/register") . '</span></li><li><br></li>
-     <li>Registered to: <span class="tag is-dark pull-right">' . json_decode(file_get_contents("https://intisp.adaclare.com/api/valid/" . file_get_contents("data/register")),true)["username"] . '</span></li>
-     <li>Email Registered: <span class="tag is-dark pull-right">' . json_decode(file_get_contents("https://intisp.adaclare.com/api/valid/" . file_get_contents("data/register")),true)["email"] . '</span></li><li><br></li>';
+<li><br></li>';
 }
 		  ?>
    <li>Status: 

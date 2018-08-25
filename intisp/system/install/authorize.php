@@ -1,67 +1,30 @@
 <?php
-session_start();
-/*
-Offical Client for AdaclareID 2.0 Oauth
-*/
-  function buildLink($apiurl,$api_security,$command,$callback = "", $session = "") {
-        global $apiurl,$api_security;
-        return ($apiurl . "?security=" . $api_security . "&command=" . $command . "&callback=" . $callback . "&session=" . $session);
-    }
-class adaclareID {
-   public $apiurl,$api_security;
-    function setInfo($api_url,$api_security_id) {
-        global $apiurl,$api_security;
-        $apiurl = $api_url;
-        $api_security = $api_security_id;
-    }
-    function sendTestPayload () {
-        global $apiurl,$api_security;
-        $output = file_get_contents(buildLink($apiurl,$api_security,"status"));
-        if ($output == '200:"Online"') return true;
-        return false;
-    }
-    function requestLogin() {
-        global $apiurl,$api_security;
-         if (isset($_SESSION["loginauth01"])) {
-        $output = file_get_contents(buildLink($apiurl,$api_security,"check","",$_SESSION["loginauth01"]));
-        if ($output != '401:"Not Authorized"') {
-        
-            return true;
-        }}
-        if (isset($_GET["session"]))
-        {
-            $_SESSION["loginauth01"] = $_GET["session"];
-           
-            return true;
-            
-        } else {
-        $actual_link = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        header("Location: " . buildLink($apiurl,$api_security,"authorize",$actual_link));
-        die();
-        }
-    }
-    function checkLogin () {
-        global $apiurl,$api_security;
-      
-        if (!isset($_SESSION["loginauth01"])) return false;
-        $output = file_get_contents(buildLink($apiurl,$api_security,"check","",$_SESSION["loginauth01"]));
-        if ($output == '401:"Not Authorized"') return false;
-        $output = json_decode($output, true);
-        return $output;
-        
-    }
- 
+function failed($msg) {
+  header("Location: after.php?e=" . urlencode($msg));
+  die();
 }
- $id = new adaclareID(); //Registers the Class
-$id->setInfo("https://www.adaclare.com/login/index/server.php","adaclareIsNetworking"); //Sets the required Variables to connect to the API.
-if(!$id->sendTestPayload()) die("Networking Error Detected or cannot connect to Oauth API"); //Checks if the api can connect
-if($id->checkLogin() == false) $id->requestLogin(); //Checks if user is logged in
-$username= $id->checkLogin()["username"];
-$email= $id->checkLogin()["email"];
-$session= $id->checkLogin()["session"];
-$ip = file_get_contents("https://intisp.adaclare.com/api/ip.php");
-file_put_contents("../data/register",$session);
-file_get_contents("https://intisp.adaclare.com/api/?v=hulint9&n&u=" . urlencode($username) . "&e=" . urlencode($email) . "&s=" . urlencode($session) . "&i=" . urlencode($ip));
+session_start();
+require("../include/verify.php");
+$results = check_license($_POST["key"]);
+switch ($results['status']) {
+    case "Active":
+        // get new local key and save it somewhere
+        $localkeydata = $results['localkey'];
+        break;
+    case "Invalid":
+        failed("License key is Invalid");
+        break;
+    case "Expired":
+        failed("License key is Expired");
+        break;
+    case "Suspended":
+        failed("License key is Suspended");
+        break;
+    default:
+        failed("Invalid Response");
+        break;
+}
+file_put_contents("../data/register",$_POST["key"]);
 ?>
 <!DOCTYPE html>
 <html>
@@ -85,7 +48,7 @@ file_get_contents("https://intisp.adaclare.com/api/?v=hulint9&n&u=" . urlencode(
 
   <article class="message is-info">
   <div class="message-body">
-The Serial Number <?php echo $session; ?> was added to this IntISP server. You will soon recieve a confirmation email. This IntISP server is currently maintained by <?php echo $username; ?> (<?php echo $email; ?>).
+The Serial Number <?php echo $_POST["key"]; ?> was added to this IntISP server.
   </div>
 </article>
   </div>

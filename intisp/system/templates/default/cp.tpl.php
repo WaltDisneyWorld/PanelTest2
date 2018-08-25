@@ -220,6 +220,7 @@ if (ismasterreseller()) {
                                             <?php
                                             if (ismasterreseller()) {
                                             ?>
+                                              <a type="button" href="https://host.adaclare.com/submitticket.php" class="sys btn btn-default"><i class="fa fa-5x fa-life-ring"></i><hr>Support</a> 
                                              <a type="button" href="index.php?page=systemcheck" class="sys btn btn-default"><i class="fa fa-5x fa-info-circle"></i><hr>System Checklist</a>
                                             <?php
                                             } ?>

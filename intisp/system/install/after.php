@@ -53,16 +53,28 @@ if (!isset($_SESSION["stp9"])) die();
         Activate IntISP <?php echo file_get_contents("../data/version"); ?>
       </h1>
       <p class="subtitle">
-        IntISP is free software, to activate your copy you will need to authorize with the adaclareID Servers.
+        IntISP is free software, to activate your copy you will need to grab an open source license. Visit <a href="https://host.adaclare.com/cart.php?a=add&pid=33">here</a>.
       </p>
 
   <article class="message is-info">
   <div class="message-body">
 Please make sure that you accept our terms and conditions found on our <a href="https://www.adaclare.com">site</a>.
   </div>
+  
 </article>
+<?php
+if (isset($_GET["e"])) {
+  ?>
+  Cannot Activate IntISP.<br> <?php echo $_GET["e"]; ?>.
+  <Br><Br><Br>
+  <?php
+}
+?>
+   <form method="POST" action="authorize.php">
+     Serial Number: <input type="text" name="key" placeholder="IntISP-XXXXXXXXXX"><br>
+     <input type="submit" value="Activate">
+   </form>
   </div>
-      <a href="authorize.php" class="button is-link">Login and Activate</a>
 
   </section>
   

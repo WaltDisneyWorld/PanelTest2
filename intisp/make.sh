@@ -99,23 +99,12 @@ setup() {
     mkdir -p /var/webister/80
     cp -r system /var/www/html/interface
     chmod -R 777 /var/www/html
-    wget https://ci.adaclare.com/job/IntISP%20Daemon/lastSuccessfulBuild/artifact/build/ftpserver
-    wget https://ci.adaclare.com/job/IntISP%20Daemon/lastSuccessfulBuild/artifact/build/intdaemon
-    wget https://ci.adaclare.com/job/IntISP%20Daemon/lastSuccessfulBuild/artifact/build/miniserv
-    wget https://ci.adaclare.com/job/IntISP%20Daemon/ws/requirements.txt
+   git clone https://github.com/INTisp/IntISP-Daemon.git
+   pip install --upgrade pip
+   cd IntISP-Daemon && make pip && make build && make install
     if [ "$ion" = true ]; then
 bash eng_ioncube.sh
  fi
-    mkdir /etc/intdaemon
-chmod +x ftpserver
-chmod +x miniserv
-chmod +x intdaemon
-mv ftpserver /etc/intdaemon/ftpserver
-mv miniserv /etc/intdaemon/miniserv
-mv intdaemon /usr/bin/intdaemon
-pip install -r requirements.txt
-wget https://ci.adaclare.com/job/IntISP%20Daemon/ws/restart.sh
-mv restart.sh /etc/intdaemon/restart.sh
 intdaemon start
 #cp inc/startftp.php /var/webister/
     #sudo pip install pyftpdlib
@@ -138,7 +127,40 @@ intdaemon start
 
 finish () {
 
+echo "Testing your system to make sure IntISP isnt broken..."
+echo "1/3 System"
+command -v php >/dev/null 2>&1 || { echo >&2 "I require php but it's not installed.  Aborting."; exit 1; }
+echo "PHP     INSTALLED"
+command -v mysql >/dev/null 2>&1 || { echo >&2 "I require mysql but it's not installed.  Aborting."; exit 1; }
+echo "MYSQL     INSTALLED"
+command -v a2ensite >/dev/null 2>&1 || { echo >&2 "I require apache but it's not installed.  Aborting."; exit 1; }
+echo "APACHE     INSTALLED"
+command -v python >/dev/null 2>&1 || { echo >&2 "I require python but it's not installed.  Aborting."; exit 1; }
+echo "PYTHON     INSTALLED"
+echo "2/3 Files"
+if [ ! -f /var/www/html/interface/configdatabase.php ]; then
+    echo "Database config not found!"
+    else
+    echo "DATABASE CONFIG     OK"
+fi
 
+if [ ! -f /var/www/html/interface/data/register ]; then
+    echo "SERIAL # config not found!"
+    else
+    echo "SERIAL # CONFIG     OK"
+fi
+if [ ! -f /usr/local/bin/wvhost ]; then
+    echo "WVHOST not found!"
+    else
+    echo "WVHOST     OK"
+fi
+echo "3/3 Daemon"
+if lsof -Pi :8080 -sTCP:LISTEN -t >/dev/null ; then
+    echo "WEBSERVER: RUNNING"
+else
+    echo "WEBSERVER: NOT RUNNING"
+fi
+echo "If everything is ok, intisp is running fine. The issue may be with the daemon. Please give our support this message if you have any issues."
 echo -e "\nThe installation is now complete."
 echo -e "###############################################################################"
 echo "You cannot start using IntISP until The daemon is running"
@@ -150,6 +172,7 @@ echo "Your system has installed IntISP $version"
 echo "The default username and password is admin"
 echo "Visit the control panel http://localhost/interface."
 echo -e "###############################################################################"
+
 exit 0
 }
 check () {
