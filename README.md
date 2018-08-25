@@ -54,6 +54,9 @@ To install IntISP all you have to type is:
 $ sudo apt-get update && sudo apt-get install git make && git clone https://github.com/INTisp/INTisp.git && cd INTisp && sudo make
 ```
 
+[![Install Video](https://img.youtube.com/vi/gUFmGJM_6QU/0.jpg)](https://www.youtube.com/watch?v=gUFmGJM_6QU)
+
+
 ## Installation of demo
 
 You will need to copy the demo folder to the root of your server and follow the directions.
