@@ -1,5 +1,5 @@
 
-# IntISP Web Hosting Platform
+# IntISP Web Hosting and Reseller Services
 
 ![cpanel](https://github.com/INTisp/INTisp/blob/master/screenshots/LogoMakr_9GhXUB.png?raw=true)
 
