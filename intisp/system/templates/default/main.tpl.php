@@ -63,7 +63,7 @@
         <div class="form-group nomargin">
           <div class="input-group">
             <span class="input-group-addon"></span>
-            <input type="text" class="form-control" name="pass" placeholder="Enter Password">
+            <input type="password" class="form-control" name="pass" placeholder="Enter Password">
           </div>
         </div>
         <div><br></div>
