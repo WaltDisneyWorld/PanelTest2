@@ -80,5 +80,6 @@ foreach ( $plugin_headers as $plugin_header ) {
  </div>
   </div>
   </div>
-  </div>
+
+ 
 <?php require 'include/footer.php'; ?>

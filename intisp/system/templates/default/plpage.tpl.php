@@ -10,9 +10,13 @@
 
 require "include/head.php";
 $safe = false;
+$noshow = true;
 require "plugins/" . $_GET["pl"];
 if ($menu_only_admin) {
     onlyadmin();
 }
 page();
+?>
+ 
+<?php
 require "include/footer.php";

@@ -1,7 +1,6 @@
-<?php
-//Database connection
-include 'config.php';
-
+               <?php
+               require 'config.php';
+       
 $con    = mysqli_connect($host, $user, $pass, $data);
 $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
@@ -10,7 +9,8 @@ $result = mysqli_query($con, $sql);
  }
    mysqli_free_result($result);
     mysqli_close($con);
-    $con    = mysqli_connect($host, $user, $pass, $data);
+ 
+$con    = mysqli_connect($host, $user, $pass, $data);
 $sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
@@ -21,28 +21,31 @@ $result = mysqli_query($con, $sql);
  }
    mysqli_free_result($result);
     mysqli_close($con);
-$con    = mysqli_connect($host, $user, $pass, $data);
-?>
-<br>  <br>  <br>  <br>  <br>  <br>  <br>         
-                       
-                    </section>
-                    <section class="col-lg-3" data-step="6" data-intro="This will show info about your server and the way it works.">
-                        <div class="list list-info" style="padding-left:0px">
+     $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+               ?>
+          </div><!-- row -->
 
-   
- <form class="navbar-form" role="search">
+        </div><!-- col-md-9 -->
+        <div class="col-md-3 col-lg-4 dash-right">
+          <div class="row">
+            <div class="col-sm- col-md-12 col-lg-12">
+                <?php 
+                if (!isset($noshow)) { ?>
+              <form class="navbar-form" role="search">
                 <div class="input-group">
              <h1><?php echo $_SESSION['user']; ?></h1>
              
                 </div>
             </form>
                         </div>
+                        
                     <div class="list list-info">
-					<div class="panel panel-default">
-  <div class="panel-heading">Notice</div>
+					<div class="panel panel-primary list-announcement">
+  
   <div class="panel-body">
                                       <?php echo file_get_contents('data/head'); ?>
 									  </div>
+                    </div>
                     </div>
                         <div class="list list-info">
     <div class="account-information">
@@ -112,7 +115,7 @@ $result = mysqli_query($con, $sql);
 	   <style>
 	   .progress, .progress-bar-striped, .progress-bar {height: 10px !important;}
 	   </style>
-    <li>	Disk Space (<?php echo GetDirectorySize('/var/webister/'.$myp); ?>/<?php echo $quote; ?>):
+    <li>	Disk Space (<?php echo GetDirectorySize('/var/webister/'.$myp); ?>/<?php echo $quote; ?>):<br>
       
 
 
@@ -196,23 +199,20 @@ if ($result = mysqli_query($con, $sql)) {
 	</div>
   
 </div> 
- 
-</section>
                 </div>
-            </section>
-        </div>
-           
-      
-<footer class="footer">
-  <div class="content has-text-centered">
-    <p>
-      Copyright Adaclare Technologies <div class="pull-right">
-    Powered By Bing Translate
-    </div> 
-    </p>
-  </div>
-</footer>
+              </div>
+            </div><!-- col-md-12 -->
+         <?php
+                }?>
 
+        </div><!-- col-md-3 -->
+      </div><!-- row -->
+
+    </div><!-- contentpanel -->
+
+  </div><!-- mainpanel -->
+
+</section>
 <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -248,6 +248,22 @@ if ($result = mysqli_query($con, $sql)) {
   </div>
   </div>
 </div>
-<script src="public/assets/js/bootstrap.min.js"></script>
+<script src="public/lib/jquery/jquery.js"></script>
+<script src="public/lib/jquery-ui/jquery-ui.js"></script>
+<script src="public/lib/bootstrap/js/bootstrap.js"></script>
+<script src="public/lib/jquery-toggles/toggles.js"></script>
+
+
+<script src="public/lib/raphael/raphael.js"></script>
+
+<script src="public/lib/flot/jquery.flot.js"></script>
+<script src="public/lib/flot/jquery.flot.resize.js"></script>
+<script src="public/lib/flot-spline/jquery.flot.spline.js"></script>
+
+<script src="public/lib/jquery-knob/jquery.knob.js"></script>
+
+<script src="public/js/custom.js"></script>
+
+
 </body>
 </html>

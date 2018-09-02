@@ -42,7 +42,7 @@ VALUES ('" .$uniqueid ."','" .$_SESSION['user'] . "','" .$email ."','" . $passwo
                 </div>
             </div>
         </div>
-  </div>
+  
 <?php
 require 'include/footer.php';
 ?>

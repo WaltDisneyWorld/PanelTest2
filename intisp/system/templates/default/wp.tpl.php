@@ -50,5 +50,7 @@ if (isset($_GET['yes'])) {
                         mysqli_close($con);
     ?></h2>
     <br>WordPress is web software you can use to create a beautiful website, blog, or app. We like to say that WordPress is both free and priceless at the same time.</br>
-    <a href="?page=wp&yes" class="btn btn-primary">Install it now</a>
+    <a href="?page=wp&yes" class="btn btn-primary">Install it now</a>  </div>
+  </div>
+  </div>
 <?php require 'include/footer.php'; ?>

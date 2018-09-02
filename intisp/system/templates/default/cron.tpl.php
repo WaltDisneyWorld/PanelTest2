@@ -65,5 +65,7 @@ echo "Cron Job has been Created";
     ?>
 	
 	</tbody></table>
-
+  </div>
+  </div>
+  </div>
 <?php require 'include/footer.php'; ?>

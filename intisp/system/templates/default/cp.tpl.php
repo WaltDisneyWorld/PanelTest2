@@ -10,7 +10,6 @@
   
 </style>
  
-                  
 <div>
      <script>
 $(document).ready(function(){
@@ -242,6 +241,12 @@ if (ismasterreseller()) {
         } ?>
 
 <br>
+<?php
+     if ($_SESSION['user'] != 'admin') {   
+?>
+<div>
+<?php } ?>
+          
 <script>
 $(document).ready(function(){
   $("#show").hide();
@@ -273,41 +278,6 @@ $(document).ready(function(){
                                     
                                                          </li>
   </ul>  
-                      
- <div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="memberModalLabel">Thank you for signing in!</h4>
-      </div>
-      <div class="modal-body">
-        <p>We thank you for trying our software. We hope you enjoy our new interface.<BR>
-        We recommend that you do the welcome tour so you can understand all the features of webisters.</p>
 
-        <p>Once this box closes you will never see this again, unless you update this software.</p>
-        <p>Please recommend this software to others, so we can spread the word.</p>
-      </div>
-      <div class="modal-footer">
-        <a type="button" class="btn btn-primary"  href="javascript:void(0);" onclick="javascript:introJs().start();" data-dismiss="modal">You Welcome</a>
-      </div>
-    </div>
-  </div>
-</div>
-<?php
-if (!file_exists("data/lock")) { 
-    file_put_contents("data/lock", "data/lock");
-?>
-         <script type="text/javascript">
-    $(window).load(function(){
-        $('#memberModal').modal('show');
-    });
-</script>
-<?php
-}
-?>
 
-        
-
-          
 <?php require 'include/footer.php'; ?>

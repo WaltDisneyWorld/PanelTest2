@@ -45,7 +45,7 @@ if (isset($_GET["a"])) {
   </div>
   </div>
   </div>
-  </div>
+  
 <?php
 require 'include/footer.php';
 ?>

@@ -2,6 +2,7 @@
 ini_set('max_execution_time', 60);
 error_reporting(E_ALL);
 function redodie($a) {
+  echo "</div></div></div>";
 	require 'include/footer.php';
 	die();
 }
@@ -323,7 +324,7 @@ function human_filesize($bytes, $decimals = 2)
     );
     return @round($bytes / pow(1024, ($i = floor(log($bytes, 1024)))), $decimals) . ' ' . $unit[$i];
   }
-?>
+?></div></div></div>
 <?php
 require 'include/footer.php';
 ?>

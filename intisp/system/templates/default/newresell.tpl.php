@@ -210,7 +210,8 @@ onlyadmin();onlymasterreseller();
     <input type="text" class="form-control" name="passx" id="formGroupExampleInput" placeholder="">
   </fieldset>
 <button type="submit" class="btn btn-primary">Add User</button>
-</form>			
+</form>		
+</div></div></div>
 <?php
 require 'include/footer.php';
 ?>

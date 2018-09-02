@@ -7,7 +7,9 @@
                     <div class="col-md-12">
 
                         <h2 class="page-title">Terminal</h2>
-<iframe src="features/term/index.php" width="1000px" height="500px" frameBorder="0"></iframe>
+<iframe src="features/term/index.php" width="800px" height="500px" frameBorder="0"></iframe>  </div>
+  </div>
+  </div>
 <?php
 require 'include/footer.php';
 ?>

@@ -1,5 +1,6 @@
 <?php 
 session_start();
+$noshow = true;
 require 'include/head.php';
 if (isset($_POST["domain"])) {
     if (file_exists("data/u/names/" . $_POST["domain"])) {
@@ -29,18 +30,18 @@ if (isset($_POST["domain"])) {
 <h1>Welcome to Webister U</h1>
 <p>Since your web hosting organization has choose webister. You may not like the port numbers. This tool will allow you to change your url from (Ex: example.com:8432/) to (example.com/u.php&i=watever). Once you reserved one, it will remain permanent.</p>
 <p>Your host may decide to place ads on your site though.</p>
-<div class="container">
-    <div class="row">
-        <div class="span12">
-            <form id="custom-search-form" method="POST" action="#" class="form-search form-horizontal pull-right">
+
+            <form method="POST" action="#" >
                 <div class="input-append span12">
                     <input type="text" name="domain" class="search-query" placeholder="">
                     <button type="submit" class="btn">Claim</button>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
+ 
+ 
+
+ 
+
 <?php
 require 'include/footer.php';
 ?>

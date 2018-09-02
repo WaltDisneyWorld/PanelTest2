@@ -1348,7 +1348,9 @@ if ($res['result'] == "high" || $res["result"] == "critical") {
 	  </tbody>
 </table>
 </div>
-
+  </div>
+  </div>
+  </div>
 <?php
 }
 ?>

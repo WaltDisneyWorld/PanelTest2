@@ -3,6 +3,14 @@ error_reporting(0);
 ini_set("session.cookie_lifetime","360");
 session_start();
 include 'config.php';
+ function isSSL()
+    {
+        if( !empty( $_SERVER['https'] ) )
+            return TRUE;
+        if( !empty( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' )
+            return TRUE;
+        return FALSE;
+    }
 function failed($msg) {
  ?>
  This version of IntISP is not activated. Error Message: <?php echo $msg; ?>
@@ -113,43 +121,42 @@ $result = mysqli_query($con, $sql);
             ?>
          
 <?php } ?>
-	<meta charset="UTF-8">
-	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">	
-	<title>IntISP</title>
-	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-          
-            <script src="public/assets/js/jquery.min.js"></script>
-     
-            <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-            <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-            <!--[if lt IE 9]>
-              <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-              <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-            <![endif]-->   
-              <?php if (file_Get_contents("data/theme") == "default") { ?>
-				<link rel="stylesheet" href="public/assets/css/bootstrap.min.css">
-      <link rel="stylesheet" href="public/assets/css/bulma.min.css">
-            <?php } ?>
-              <?php if (file_Get_contents("data/theme") == "modern") { ?>
-            <link rel="stylesheet" type="text/css" href="public/assets/css/modern.min.css">
-            <?php } ?>
-            <?php if (file_Get_contents("data/theme") == "dark") { ?>
-            <link rel="stylesheet" type="text/css" href="public/assets/css/dark.min.css">
-            <?php } ?>
-         <style>
-      .modal-backdrop {
-  z-index: -1;
-}
-      </style>
-            </head>
-    <body class="skin-blue dashboard">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--<link rel="shortcut icon" href="../images/favicon.png" type="image/png">-->
+
+  <title>IntISP Control Panel</title>
+<script src="public/assets/js/jquery.min.js"></script>
+  <link rel="stylesheet" href="public/lib/Hover/hover.css">
+  <link rel="stylesheet" href="public/lib/fontawesome/css/font-awesome.css">
+  <link rel="stylesheet" href="public/lib/weather-icons/css/weather-icons.css">
+  <link rel="stylesheet" href="public/lib/ionicons/css/ionicons.css">
+  <link rel="stylesheet" href="public/lib/jquery-toggles/toggles-full.css">
 
 
-   <div id="cpanel">
-    <nav class="navbar is-transparent">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="index.php?page=cp">
-    <h1><?php
+  <link rel="stylesheet" href="public/css/styles.css">
+
+  <script src="public/lib/modernizr/modernizr.js"></script>
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="../public/lib/html5shiv/html5shiv.js"></script>
+  <script src="../public/lib/respond/respond.src.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+    
+<header>
+  <div class="headerpanel">
+
+    <div class="logopanel">
+      <h2><a href="index.php?page=cp"><?php
 include 'config.php';
     $mysqli = new mysqli();
     $con    = mysqli_connect("$host", "$user", "$pass", "$data");
@@ -164,86 +171,170 @@ if ($result = mysqli_query($con, $sql)) {
   mysqli_free_result($result);
 }
 mysqli_close($con);
-?></h1>
-    </a>
-    <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
+?></a></h2>
+    </div><!-- logopanel -->
 
-  <div id="navbarExampleTransparentExample" class="navbar-menu">
-    <div class="navbar-start" >
-      <div class="navbar-item">
-          <?php echo file_get_contents("data/version"); ?>
-        </div>
-      <div class="navbar-item"><a href="<?php echo file_get_contents("data/upbutton"); ?>" class="fa fa-arrow-up"> Upgrade</a>
-           
-           </div>
+    <div class="headerbar">
+    
+      <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
+
+      <div class="searchpanel">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search for...">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+          </span>
+        </div><!-- input-group -->
       </div>
-    </div>
-
-    <div class="navbar-end" style="background-color:#<?php echo file_get_contents("data/color"); ?>;">
-   <div class="navbar-item"><a href="index.php?page=cp"><i style="color:white" class="fa fa-1x fa-home"></i></a></li>
-            <div class="navbar-item"><a href="index.php?page=FileManager"><i style="color:white" class="fa fa-1x fa-file"></i></a></div>
-           <div class="navbar-item"><a href="adminer-4.2.4.php?server=localhost"><i style="color:white" class="fa fa-1x fa-database"></i></a></div>
-          <div class="navbar-item"><a href="index.php?page=mail"><span class="badge">
-             <?php
-    $count = 0;
-$con       = mysqli_connect($host, $user, $pass, $data);
-$sql       = 'SELECT * FROM mail';
-$result    = mysqli_query($con, $sql);
- while ($row = mysqli_fetch_row($result)) {
-     $count = $count + 1;
- }
-   mysqli_free_result($result);
-    mysqli_close($con);
-    echo $count;
-    ?>
-             
-             
       
-         </span></a></div>
-         <?php
-			  function isSSL()
-    {
-        if( !empty( $_SERVER['https'] ) )
-            return TRUE;
-        if( !empty( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' )
-            return TRUE;
-        return FALSE;
-    }
-			if (!isSSL()) {
-				?>
-				   <div class="navbar-item"><A><i  style="color:white" class="fa fa-1x fa-unlock"></i></A></div>
-				<?php
-			} else {
-			?>
-				   <div class="navbar-item"><A><i style="color:white" class="fa fa-1x fa-lock"></i></A></div>
-			<?php
-			}
-			?>
-        <div class="navbar-item"><a href="" data-toggle="modal" data-target="#myModal"><i style="color:white" class="fa fa-1x fa-user"></i></a></div>
-         <div class="navbar-item"><a href="index.php?page=logout"><i style="color:white" class="fa fa-1x fa fa-sign-out"></i></a></div>
-            </div>
-       
-      </div>
-    </div>
-</nav>
+      <div class="header-right">
+        <ul class="headermenu">
+          <li>
+            <div id="noticePanel" class="btn-group">
+                       <button onclick="location.href='index.php?page=cp';" class="btn btn-notice" data-toggle="dropdown">
+             <i style="color:white" class="fa fa-home"></i>
+              </button>
+                          <button onclick="location.href='index.php?page=FileManager';" class="btn btn-notice" data-toggle="dropdown">
+             <i style="color:white" class="fa fa-file"></i>
+              </button>
+                <button onclick="location.href='adminer-4.2.4.php?server=localhost';" class="btn btn-notice" data-toggle="dropdown">
+             <i style="color:white" class="fa fa-database"></i>
+              </button>
+              <button data-toggle="modal" data-target="#myModal" class="btn btn-notice" data-toggle="dropdown">
+             <i style="color:white" class="fa fa-user"></i>
+              </button>
+            <button onclick="location.href='index.php?page=logout';" class="btn btn-notice" data-toggle="dropdown">
+             <i style="color:white" class="fa fa-sign-out"></i>
+              </button> 
+              </div>
+              </li>
+              </ul>
+              </div>
+          </div><!-- header-right -->
+    </div><!-- headerbar -->
+  </div><!-- header-->
+</header>
 
- 
-            <section class="content">
+<section>
+    
+  <div class="leftpanel">
+    <div class="leftpanelinner">
 
-                <div class="row">
-                    <section class="col-lg-9">
-        
+      <!-- ################## LEFT PANEL PROFILE ################## -->
+          <div class="media leftpanel-profile">
+        <div class="media-left">
+     
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading"><?php echo $_SESSION['user']; ?> </h4>
+          <span><?php
+          if (isMasterReseller()) {
+              if ($_SESSION['user'] == 'admin') {
+                   echo "Root User";
+              } else {
+              echo "Client";     
+              }
              
-                   
-                     
-                     
-                      
-                       <?php
+          } else {
+              if ($_SESSION['user'] == 'admitn') {
+               echo "Master Reseller";   
+              } else {
+                  echo "Client";
+              }
+          }
+          ?></span>
+        </div>
+      </div><!-- leftpanel-profile -->
+
+
+          </li>
+        </ul>
+      </div><!-- leftpanel-userinfo -->
+       <div class="tab-content">
+
+        <!-- ################# MAIN MENU ################### -->
+
+        <div class="tab-pane active" id="mainmenu">
+                   <ul class="nav nav-pills nav-stacked nav-quirk">
+               <li class="active"><a href="index.php?page=cp"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+               </ul>
+        <?php 
+  if (file_get_contents("data/whmurl") != "") {
+  $whmurl = file_get_contents("data/whmurl");
+  ?>
+          <h5 class="sidebar-title">Billing and Support</h5>
+       <ul class="nav nav-pills nav-stacked nav-quirk">
+               <li><a href="<?php echo $whmurl; ?>/clientarea.php"><i class="fa fa fa-newspaper-o"></i> <span>News</span></a></li>
+               <li><a href="<?php echo $whmurl; ?>/clientarea.php"><i class="fa fa fa-credit-card"></i> <span>Billing</span></a></li>
+               <li><a href="<?php echo $whmurl; ?>/index.php?rp=/knowledgebase"><i class="fa fa-question-circle"></i> <span>Assistance</span></a></li>
+               <li><a href="<?php echo $whmurl; ?>/clientarea.php?action=emails"><i class="fa fa fa-envelope-o"></i> <span>Email History</span></a></li>
+               </ul>
+               <?php } ?>  <?php if ($_SESSION['user'] == 'admin') {
+    ?>
+
+               <h5 class="sidebar-title">Servers</h5>
+       <ul class="nav nav-pills nav-stacked nav-quirk">
+               <li><a href="index.php?page=newserv"><i class="fa fa fa-plus"></i> <span>New Server</span></a></li>
+                  <?php
+                                            if (ismasterreseller()) {
+                                            ?>
+               <li><a href="index.php?page=newresell"><i class="fa fa fa-plus"></i> <span>New Reseller</span></a></li>
+               <?php } ?>
+                  <?php if (file_get_contents("data/cloudflare") != "") {
+                                            ?>
+               <li><a href="index.php?page=cloudflare"><i class="fa fa fa-cloud"></i> <span>Cloudflare</span></a></li>
+               <?php } ?>
+          <li><a href="index.php?page=list#"><i class="fa fa fa-user"></i> <span>Users</span></a></li>
+             <li><a href="index.php?page=plans"><i class="fa fa fa-columns"></i> <span>Plans</span></a></li>
+               <?php
+                                                                            if (ismasterreseller()) {
+                                                                            ?>
+              <li><a href="adminer-4.2.4.php?server=localhost&username=<?php echo urlencode($user); ?>&password=<?php echo urlencode($pass); ?>"><i class="fa fa fa-database"></i> <span>All Databases</span></a></li>
+              <?php } ?>
+               </ul>
+                      <h5 class="sidebar-title">System</h5>
+       <ul class="nav nav-pills nav-stacked nav-quirk">
+           <?php
+if (ismasterreseller()) {
+    ?>
+               <li><a href="index.php?page=settings"><i class="fa fa fa-sliders"></i> <span>Settings</span></a></li>
+               <li><a href="index.php?page=update"><i class="fa fa fa-upload"></i> <span>Updates</span></a></li>
+               <?php } ?>
+               <li><a href="index.php?page=plug"><i class="fa fa fa-puzzle-piece"></i> <span>Plugins</span></a></li>
+          <li><a href="index.php?page=terminal"><i class="fa fa fa-terminal"></i> <span>Terminal</span></a></li>
+            <?php
+                                            if (ismasterreseller()) {
+                                            ?>
+             <li><a href="index.php?page=mail"><i class="fa fa fa-envelope-o"></i> <span>Messages</span></a></li>
+              <li><a href="index.php?page=systemcheck"><i class="fa fa fa-info-circle"></i> <span>System Checklist</span></a></li>
+              <?php } ?>
+               </ul><?php } ?>
+                      <h5 class="sidebar-title">My Server</h5>
+       <ul class="nav nav-pills nav-stacked nav-quirk">
+               <li><a href="index.php?page=FileManager"><i class="fa fa fa-file"></i> <span>Files</span></a></li>
+               <li><a href="index.php?page=cron"><i class="fa fa fa-clock-o"></i> <span>Cron Jobs</span></a></li>
+               <li><a href="adminer-4.2.4.php?server=localhost"><i class="fa fa fa-database"></i> <span>Database</span></a></li>
+          <li><a href="index.php?page=wp"><i class="fa fa fa-wordpress"></i> <span>Wordpress</span></a></li>
+             <li><a href="index.php?page=phpinfo"><i class="fa fa fa-code"></i> <span>PHP Info</span></a></li>
+              <li><a href="<?php echo file_get_contents("data/forum"); ?>"><i class="fa fa fa-file"></i> <span>Forum</span></a></li>
+              <li><a href="<?php echo file_get_contents("data/support"); ?>"><i class="fa fa fa-life-ring"></i> <span>Support</span></a></li>
+               </ul>
+               </div>
+              </div>
+              </div>
+              
+            </div>
+     </div><!-- tab-pane -->
+
+
+      </div><!-- tab-content -->
+
+    </div><!-- leftpanelinner -->
+  </div><!-- leftpanel -->
+
+
+  <div class="mainpanel">
+   <?php
                        if (!isSSL()) {
                            ?>
                            <div class="notification is-danger">
@@ -262,3 +353,70 @@ $result    = mysqli_query($con, $sql);
                            } 
                            }
                            ?> 
+               <div class="contentpanel">
+
+      <div class="row">
+        <div class="col-md-9 col-lg-8 dash-left">
+              <?php if ($_SESSION['user'] == 'admin') {
+    ?>
+      <div class="panel panel-site-traffic">
+            <div class="panel-heading">
+              <ul class="panel-options">
+              
+              </ul>
+              <h4 class="panel-title text-success">System Stats</h4>
+              <p class="nomargin"></p>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-6 col-sm-4">
+                  <div class="pull-left">
+                    <div class="icon icon ion-stats-bars"></div>
+                  </div>
+                  <div class="pull-left">
+                    <h4 class="panel-title">Users/Servers</h4>
+                    <h3><?php
+                                            $count  = 0;
+                                            $con    = mysqli_connect($host, $user, $pass, $data);
+                                            $sql    = 'SELECT * FROM users';
+                                            $result = mysqli_query($con, $sql);
+                                            while ($row = mysqli_fetch_row($result)) {
+                                                $count = $count + 1;
+                                            }
+                                            mysqli_free_result($result);
+                                            mysqli_close($con);
+                                            echo $count;
+    ?></h3>
+                    
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4">
+                  <div class="pull-left">
+                    <div class="icon icon ion-eye"></div>
+                  </div>
+                  <h4 class="panel-title">Failed Logins</h4>
+                  <h3><?php
+                                            $count  = 0;
+                                            $con    = mysqli_connect($host, $user, $pass, $data);
+                                            $sql    = 'SELECT * FROM failedlogin';
+                                            $result = mysqli_query($con, $sql);
+                                            while ($row = mysqli_fetch_row($result)) {
+                                                $count = $count + 1;
+                                            }
+                                            mysqli_free_result($result);
+                                            mysqli_close($con);
+                                            echo $count;
+    ?></h3>
+                 
+                </div>
+                <div class="col-xs-6 col-sm-4">
+                  <div class="pull-left">
+                    <div class="icon icon ion-clock"></div>
+                  </div>
+                  <h4 class="panel-title">Time on Server</h4>
+                  <h3><?php echo date("h:i"); ?></h3>
+             
+                </div>
+              </div><!-- row -->
+              </div></div>
+          <?php } ?>
