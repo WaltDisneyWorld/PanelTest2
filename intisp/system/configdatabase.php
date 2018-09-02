@@ -3,5 +3,5 @@ $host = 'localhost';
 $user   = 'root';
 $pass   = 'test';
 $data   = 'webister';
-$salt   = '61319498324975406585499585862945';
+$salt   = '17177469915389045940850086213627';
 
