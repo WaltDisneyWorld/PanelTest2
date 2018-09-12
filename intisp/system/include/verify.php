@@ -6,7 +6,7 @@ function check_license($licensekey, $localkey='') {
     // -----------------------------------
 
     // Enter the url to your WHMCS installation here
-    $whmcsurl = 'https://host.adaclare.com/';
+    $whmcsurl = 'https://host.delinz.com/';
     // Must match what is specified in the MD5 Hash Verification field
     // of the licensing product that will be used with this check.
     $licensing_secret_key = 'pineapple';
