@@ -77,7 +77,14 @@ if (!isset($codes[$status][1])) {
       } else {
           echo "Configuration Does Not Exist. Please <a href='install'>click here</a> to run the installer. Before Contacting support please finish the setup wizard. This may be the problem.";
       }
-      ?>
+      ?><br>
+      <b>MySQLi: <?php
+      if (!function_exists('mysqli_init') && !extension_loaded('mysqli')) {
+    echo 'We need MySQLi?';
+} else {
+    echo 'OK';
+}
+      ?></b>
 <h3 style="color:white;">You may contact support <a href="https://host.delinz.com/submitticket.php?step=2&deptid=1">here</a></h3>
 You will need to have your Serial Number Ready.<br>
 License Issue? Please check <a href="https://host.delinz.com/index.php?m=licensing">this</a> 
