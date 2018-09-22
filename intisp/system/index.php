@@ -1,6 +1,27 @@
 <?php
-function error_found(){
-  header("Location: error.php");
+function error_found($errstr,$errorno,$errline,$errfile){
+    $error = "";
+    switch ($errno) {
+    case E_USER_ERROR:
+        $error .= "<b>My ERROR</b> [$errno] $errstr<br />\n";
+        $error .= "  Fatal error on line $errline in file $errfile";
+        $error .= ", PHP " . PHP_VERSION . " (" . PHP_OS . ")<br />\n";
+        $error .= "Aborting...<br />\n";
+        break;
+
+    case E_USER_WARNING:
+        $error .= "<b>My WARNING</b> [$errno] $errstr<br />\n";
+        break;
+
+    case E_USER_NOTICE:
+        $error .= "<b>My NOTICE</b> [$errno] $errstr<br />\n";
+        break;
+
+    default:
+        $error .= "Unknown error type: [$errno] $errstr<br />\n";
+        break;
+    }
+  header("Location: error.php?error=" . urlencode($error));
 }
 set_error_handler('error_found');
 set_exception_handler('error_found');
