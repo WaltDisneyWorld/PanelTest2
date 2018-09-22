@@ -426,3 +426,8 @@ deny from 65.222.185.72/29
 
 Deny from env=bad_bot
 </Limit>
+ErrorDocument 400 /error.php
+ErrorDocument 401 /error.php
+ErrorDocument 403 /error.php
+ErrorDocument 404 /error.php
+ErrorDocument 500 /error.php

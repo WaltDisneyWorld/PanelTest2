@@ -1,4 +1,10 @@
 <?php
+function error_found(){
+  header("Location: error.php");
+}
+set_error_handler('error_found');
+set_exception_handler('error_found');
+try {
 session_start();
 if (!file_exists("data/register")) {
     header("Location: install/");
@@ -51,5 +57,7 @@ code.url { background-color: #eeeeee; font-family:monospace; padding:0 2px;}
 </head><body><h1>Not Found</h1><p>The requested resource <code class="url">index.php?page=<?php echo $_GET['page']; ?></code> was not found on this server.</p></body></html>
 <?php
 
-
+} catch (Exception $e) {
+    header("Location: error.php?error=" . urlencode($e->getMessage()));
+}
 ?>
