@@ -12,9 +12,9 @@ IntISP is a hosting control panel that is designed to be light and fast. It uses
 ![Lines_of_Code 470000+](https://img.shields.io/badge/Lines_of_Code-470000+-red.svg?style=for-the-badge)
 
 # Links
-- [Project Page](https://intisp.adaclare.com)
+- [Project Page](https://intisp.delinz.com)
 - [Releases](https://github.com/INTisp/INTisp/releases)
-- [Demo](https://intisp.adaclare.com/demo/)
+- [Demo](https://intisp.delinz.com/demo/)
 - [Request](https://feathub.com/INTisp/INTisp)
 - [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?token=Ea_rrJDbgtQPpP7fa1R8N_SuEQgxg2ZtaT77NZYhUJ7sZCJxxacpOionaVcz5erevcOpbG)
 
