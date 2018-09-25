@@ -9,6 +9,7 @@ IntISP is a hosting control panel that is designed to be light and fast. It uses
 ![cpanel](https://j.gifs.com/qjWAjD.gif)
 
 [![CircleCI](https://circleci.com/gh/INTisp/INTisp/tree/master.svg?style=svg)](https://circleci.com/gh/INTisp/INTisp/tree/master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ba5db9bff49f405fbedc4b3872813f69)](https://www.codacy.com/app/alwaysontop617_2/INTisp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=INTisp/INTisp&amp;utm_campaign=Badge_Grade)
+![Lines_of_Code 470000+](https://img.shields.io/badge/Lines_of_Code-470000+-red.svg?style=for-the-badge)
 
 # Links
 - [Project Page](https://intisp.adaclare.com)
