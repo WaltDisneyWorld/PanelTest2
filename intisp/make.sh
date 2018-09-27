@@ -15,7 +15,7 @@ intro () {
        echo "NOTICE! YUM SYSTEMS MAY NOT BE FULLY COMPATIBLE WITH INTISP RIGHT NOW!!"
 }
 questions () {
-    read -p "Do you agree to Adaclare Technologies Terms of Service and MIT Licences (Yy/Nn)? " -n 1 -r
+    read -p "Do you agree to Adaclare Technologies Terms of Service and Apache Licences (Yy/Nn)? " -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     echo
