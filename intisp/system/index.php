@@ -1,5 +1,12 @@
 <?php
-function error_found($errstr,$errorno,$errline,$errfile){
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
+if (file_exists("vendor/autoload")) {
+
+require "vendor/autoload.php";
+}
+
+/* function error_found($errstr,$errorno,$errline,$errfile){
     $error = "";
     switch ($errno) {
     case E_USER_ERROR:
@@ -24,10 +31,10 @@ function error_found($errstr,$errorno,$errline,$errfile){
   header("Location: error.php?error=" . urlencode($error));
 }
 set_error_handler('error_found');
-set_exception_handler('error_found');
+set_exception_handler('error_found'); */
 try {
 session_start();
-if (!file_exists("data/register")) {
+if (!file_exists("configdatabase.php")) {
     header("Location: install/");
     die();
 }

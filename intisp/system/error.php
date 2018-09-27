@@ -60,15 +60,7 @@ if (!isset($codes[$status][1])) {
       <p>Status Code: 500</p><br>
       <b>Error Code: <?php echo sha1($error); ?></b><br>
       <b>Error Message: <?php echo $error; ?></b><br>
-      <b>License Key: <?php 
-      
-      if (file_exists("data/register")) {
-      echo file_get_contents("data/register");
-      } else {
-       echo "Unknown License. System was not activated";   
-      }
-      
-      ?></b>
+     
       <br>
       <b>Config Exists: <?php
       

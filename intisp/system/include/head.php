@@ -16,10 +16,27 @@ function failed($msg) {
  This version of IntISP is not activated. Error Message: <?php echo $msg; ?>
  Please contact Support!
  <?php
+ throw new Exception("This version of IntISP is not activated. Delinz Activation Server said: " . $msg);
 	die();
 }
 require("include/verify.php");
-$results = check_license(file_get_contents("data/register"));
+
+  $keys = "";
+    $mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'register' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+            $keys = $row[0];
+        }
+          // Free result set
+          mysqli_free_result($result);
+    }
+    mysqli_close($con);
+
+$results = check_license($keys);
 switch ($results['status']) {
     case "Active":
         // get new local key and save it somewhere
@@ -259,8 +276,24 @@ mysqli_close($con);
                <li class="active"><a href="index.php?page=cp"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
                </ul>
         <?php 
-  if (file_get_contents("data/whmurl") != "") {
-  $whmurl = file_get_contents("data/whmurl");
+     $whmurl = "";
+    require 'config.php';
+    $mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'whmurl' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+         $whmurl = $row[0];
+        }
+          // Free result set
+          mysqli_free_result($result);
+    }
+
+
+  if ($whmurl != "") {
+ 
   ?>
           <h5 class="sidebar-title">Billing and Support</h5>
        <ul class="nav nav-pills nav-stacked nav-quirk">

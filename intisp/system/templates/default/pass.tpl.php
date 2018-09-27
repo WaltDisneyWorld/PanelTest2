@@ -7,11 +7,14 @@ error_reporting(E_ALL);
  * https://github.com/INTisp
  *
  */
-
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
+require "vendor/autoload.php";
 require 'config.php';
+ $key = Key::loadFromAsciiSafeString($salt);
 //die('update Administrators set username="' .addslashes($_POST["username"]) .'", password="' . md5(addslashes($_POST["password_ch"])) .'" where username=' . $_POST["username"]);
     $con = mysqli_connect($host, $user, $pass, $data);
-    $sql = 'update users set username="'.$_POST['username'].'", password="'.sha1($_POST['password'] . $salt).'" where username="'.$_POST['username'].'"';
+    $sql = 'update users set username="'.$_POST['username'].'", password="'.Crypto::encrypt($_POST["password"], $key).'" where username="'.$_POST['username'].'"';
     mysqli_query($con, $sql);
    $query = sprintf("SET PASSWORD FOR %s@localhost = PASSWORD('%s');", $_POST['username'], $_POST['password']);
     mysqli_query($con, $query);

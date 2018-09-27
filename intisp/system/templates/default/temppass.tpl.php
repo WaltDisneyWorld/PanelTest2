@@ -4,7 +4,22 @@ if (!isset($_SESSION['user'])) {
     header('Location: index.php?page=main');
     die();
 }
-echo file_get_contents('data/loginhead');
+
+    require 'config.php';
+    $mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'loginhead' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+            printf($row[0]);
+        }
+          // Free result set
+          mysqli_free_result($result);
+    }
+    mysqli_close($con);
+
 ?>
 
 
@@ -465,7 +480,22 @@ input {
 <!-- Mixins-->
 <!-- Pen Title-->
 <div class="pen-title">
-  <img src="<?php echo file_get_contents('data/logo'); ?>" alt="Logo">
+  <img src="<?php
+    require 'config.php';
+    $mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'logo' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+            printf($row[0]);
+        }
+          // Free result set
+          mysqli_free_result($result);
+    }
+    mysqli_close($con);
+?>" alt="Logo">
 </div>
 <div class="container">
   <div class="card"></div>
@@ -487,6 +517,21 @@ input {
 </div>
 </div>
 </div>
-<?php echo file_get_contents('data/loginfoot'); ?>
+<?php
+    require 'config.php';
+    $mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'loginfoot' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+            printf($row[0]);
+        }
+          // Free result set
+          mysqli_free_result($result);
+    }
+    mysqli_close($con);
+?>
 </body>
 </html>

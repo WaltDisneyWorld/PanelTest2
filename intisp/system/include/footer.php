@@ -43,7 +43,22 @@ $result = mysqli_query($con, $sql);
 					<div class="panel panel-primary list-announcement">
   
   <div class="panel-body">
-                                      <?php echo file_get_contents('data/head'); ?>
+                                     <?php
+
+    $mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'head' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+            printf($row[0]);
+        }
+          // Free result set
+          mysqli_free_result($result);
+    }
+    mysqli_close($con);
+?>
 									  </div>
                     </div>
                     </div>
@@ -85,17 +100,38 @@ $result = mysqli_query($con, $sql);
     <li>FTP Hostname: <span class="tag is-info pull-right"><?php echo gethostbyname(gethostname()); ?></li>
     <li>FTP Username: <span class="tag is-info pull-right"><?php echo $_SESSION['user']; ?></span></li>
     <li>FTP Password: <input type="text" class="pull-right"  style="width:100px" value="<?php
-$sql    = 'SELECT * FROM users WHERE username = "'.$_SESSION['user'].'"';
+     $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+$sql    = 'SELECT password FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
-     echo $row[2];  
+     echo $row[0];  
  }
    mysqli_free_result($result);
     mysqli_close($con);
     ?>" disabled></li><li><br></li>
 		  <?php
 		  if ($_SESSION['user'] == 'admin') {
-    echo ' <li>Serial Number: <span class="tag is-dark pull-right">' . file_get_contents("data/register") . '</span></li><li><br></li>
+		      
+$key = "";
+    $mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'register' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+          $key = $row[0];
+        }
+          // Free result set
+          mysqli_free_result($result);
+    }
+    mysqli_close($con);
+
+    echo ' <li>Serial Number: <span class="tag is-dark pull-right">
+    
+    ' . $key . '
+    
+    </span></li><li><br></li>
 <li><br></li>';
 }
 		  ?>

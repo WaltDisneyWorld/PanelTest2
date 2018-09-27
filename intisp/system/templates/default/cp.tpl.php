@@ -84,9 +84,23 @@ $(document).ready(function(){
                                      </li>
   </ul> 
   
-  <?php 
-  if (file_get_contents("data/whmurl") != "") {
-  $whmurl = file_get_contents("data/whmurl");
+ <?php
+ $whmurl = "";
+    require 'config.php';
+    $mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'whmurl' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+          $whmurl = $row[0];
+        }
+          // Free result set
+          mysqli_free_result($result);
+    }
+    mysqli_close($con);
+  if ($whmurl != "") {
   ?>
   <script>
 $(document).ready(function(){
@@ -273,8 +287,35 @@ $(document).ready(function(){
                                         <a  type="button" href="index.php?page=phpinfo" class="serv btn btn-default"><i class="fa fa-5x fa-code"></i><hr>PHP Info</a>
                                         <a  type="button" href="index.php?page=ucreate" class="serv btn btn-default"><i class="fa fa-5x fa-university"></i><hr>Webister U</a>
                                         <a  type="button" href="index.php?page=mobiapp" class="serv btn btn-default"><i class="fa fa-5x fa-mobile"></i><hr>Mobile App</a>
-                                          <a id="serv"  type="button" href="<?php echo file_get_contents("data/forum"); ?>" class="serv btn btn-large btn-warning"><i class="fa fa-5x fa-file"></i><hr>Forum</a>
-                                        <a type="button" href="<?php echo file_get_contents("data/support"); ?>" class="serv btn btn-large btn-danger"><i class="fa fa-5x fa-life-ring"></i><hr>Support</a>
+                                          <a id="serv"  type="button" href="<?php
+    require 'config.php';
+    $mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'forum' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+            printf($row[0]);
+        }
+          // Free result set
+          mysqli_free_result($result);
+    }
+
+?>" class="serv btn btn-large btn-warning"><i class="fa fa-5x fa-file"></i><hr>Forum</a>
+                                        <a type="button" href="<?php
+   
+    $sql = "SELECT value FROM settings WHERE code =  'support' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+            printf($row[0]);
+        }
+          // Free result set
+          mysqli_free_result($result);
+    }
+    mysqli_close($con);
+?>" class="serv btn btn-large btn-danger"><i class="fa fa-5x fa-life-ring"></i><hr>Support</a>
                                     
                                                          </li>
   </ul>  
