@@ -57,16 +57,20 @@ switch ($results['status']) {
 }
 
 function ismasterreseller() {
+    require("configdatabase.php");
+    $tc = $data;
     require "config.php";
-    if ($data == "webister") {
+    if ($data == $tc) {
         return TRUE;
     }  
         return FALSE;
     
 }
 function onlymasterreseller() {
+     require("configdatabase.php");
+    $tc = $data;
     require "config.php";
-    if ($data == "webister") {
+    if ($data == $tc) {
         
     } else {
         die();
