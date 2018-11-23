@@ -4,7 +4,7 @@
 
 ## Installation of Pro Version
 
-This will install the newer version of IntISP on your computer. This version is not open source.
+This will install the newer version of IntISP on your computer. This version is not open source. This version supports both Centos and Ubuntu 32bit and 64bit.
 
 ```sh
 $ sudo wget https://httpupdate.enyrx.com/latest && sudo bash latest
