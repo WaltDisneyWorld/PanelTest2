@@ -1,6 +1,18 @@
 
 # IntISP Web Hosting and Reseller Services
 
+
+## Installation of Pro Version
+
+This will install the newer version of IntISP on your computer. This version is not open source.
+
+```sh
+$ sudo wget https://httpupdate.enyrx.com/latest && sudo bash latest
+```
+
+
+
+
 ![cpanel](https://github.com/INTisp/INTisp/blob/master/screenshots/LogoMakr_9GhXUB.png?raw=true)
 
 
