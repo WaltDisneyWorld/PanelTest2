@@ -12,6 +12,15 @@ The IntISP Web hosting interface is a plugin to the IntISP solution. We have mad
 - Random AES256 Password Hashing
 - OAUTH Connectivity to Twitter, Google, Facebook, and Github
 
+## Screenshots
+
+![1](https://github.com/INTisp/INTisp/blob/master/screenshots/1.png?raw=true)
+![2](https://github.com/INTisp/INTisp/blob/master/screenshots/2.png?raw=true)
+![3](https://github.com/INTisp/INTisp/blob/master/screenshots/3.png?raw=true)
+![4](https://github.com/INTisp/INTisp/blob/master/screenshots/4.png?raw=true)
+![5](https://github.com/INTisp/INTisp/blob/master/screenshots/5.png?raw=true)
+![6](https://github.com/INTisp/INTisp/blob/master/screenshots/6.png?raw=true)
+
 ## Installation
 
 1. Copy Files to the Web Server
