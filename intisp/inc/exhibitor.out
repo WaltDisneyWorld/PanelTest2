@@ -1,7 +1,0 @@
-[I 2018-06-13 20:40:56] >>> starting FTP server on 0.0.0.0:21, pid=8120 <<<
-[I 2018-06-13 20:40:56] concurrency model: async
-[I 2018-06-13 20:40:56] masquerade (NAT) address: None
-[I 2018-06-13 20:40:56] passive ports: None
-[I 2018-06-13 20:41:08] 127.0.0.1:45788-[] FTP session opened (connect)
-[I 2018-06-13 20:41:08] 127.0.0.1:45788-[admin] USER 'admin' logged in.
-[I 2018-06-13 20:41:08] 127.0.0.1:45788-[admin] FTP session closed (disconnect).

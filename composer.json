@@ -1,0 +1,12 @@
+{
+    "require": {
+        "samayo/bulletproof": "4.0.*",
+        "defuse/php-encryption": "^2.2",
+        "phpmailer/phpmailer": "^6.0",
+        "lusitanian/oauth": "^0.8.11",
+        "symfony/http-foundation": "^4.2",
+        "league/oauth2-google": "^3.0",
+        "hayageek/oauth2-yahoo": "^2.0",
+        "stevenmaguire/oauth2-microsoft": "^2.2"
+    }
+}
