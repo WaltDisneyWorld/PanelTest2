@@ -3,12 +3,12 @@
             <div class="container-fluid">
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12" >
 
                         <h2 class="page-title"><?php echo $lang_21; ?></h2>
                         <div class="container">
 
-  <ul class="nav nav-tabs">
+  <ul class="nav nav-tabs" style="width:539px">
     <li class="active"><a href="#home">System Settings</a></li>
     <li><a href="#menu1">Branding</a></li>
     <li><a href="#menu2">Email</a></li>
@@ -16,7 +16,7 @@
     <li><a href="#menu4">Oauth</a></li>
   </ul>
    <form method="POST" action="action.php?action=options">
-  <div class="tab-content">
+  <div class="tab-content" style="width:70%">
     <div id="home" class="tab-pane fade in active">
       <h3>Default</h3>
       <label>username</label><br/>
@@ -109,7 +109,7 @@
       </select>
       </fieldset>
    <label for="formGroupExampleInput"><?php echo $lang_68; ?></label><Br>
-   <textarea style="width:900px;height:500px;" name="head"><?php
+   <textarea style="width:400px;height:500px;" name="head"><?php
 
     $sql = "SELECT value FROM settings WHERE code =  'head' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {

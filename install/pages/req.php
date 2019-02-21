@@ -42,13 +42,19 @@ if (!defined('HOMEBASE')) die("Direct Access is Not Allowed");
 } else {
     displayReq("Writable Configuration File","config.php cannot be written. Please try creating a config.php file",false);
 }
+if (is_writable("../cache")) {
+    displayReq("Writable Cache Directory","The cache folder can be written to.",true);
+} else {
+    displayReq("Writable Cache Directory","The cache folder cannot be written to. Please verify the permissions and make sure the directory cache exists.",false);
+}
+
         if (file_exists("../vendor")) {
     displayReq("Composer Installation","Composer has been installed and setup.",true);
 } else {
     displayReq("Composer Installation","Composer has not been installed. Please make sure you extract the vendor.zip or run composer install",false);
 }
     preg_match("#^\d+(\.\d+)*#", PHP_VERSION, $match);
-if(version_compare($match[0], '5.5.9', '>=')) {
+if(version_compare($match[0], '7.0.0', '>=')) {
   displayReq("PHP VERSION","Your php version " . $match[0] . " matched the requirement.",true);
 
 } else {

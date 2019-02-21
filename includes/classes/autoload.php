@@ -22,9 +22,10 @@ if ($debug) {
 }
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
-if (file_exists("vendor/autoload")) {
-require "vendor/autoload.php";
-}
+
+
+
+
 if (isset($_GET["reseller"])) {
     
     if (file_exists("data/reseller/" . $_GET["reseller"])) {
@@ -45,6 +46,20 @@ die();
     }
 }
 function loadINTisp() {
+    $template_name = "default";
+    require_once 'vendor/autoload.php';
+$loader = new \Twig\Loader\FilesystemLoader('templates/' . $template_name);
+ if ($debug) {
+    
+    $twig = new \Twig\Environment($loader, [
+    'cache' => 'cache',
+]);
+} else {
+    $twig = new \Twig\Environment($loader);
+    
+}
+
+
     $HOME = true;
 if (!isset($_GET['page'])) {
  if (isset($_SESSION["user"])) {
@@ -128,14 +143,6 @@ if ($_GET["page"] == "newserv") {
      include "includes/views/cron.tpl.php";
     die();
 }
- header('HTTP/1.0 404 Not Found'); ?>
-<!doctype html><html><head><title>404 Not Found</title><style>
-body { background-color: #fcfcfc; color: #333333; margin: 0; padding:0; }
-h1 { font-size: 1.5em; font-weight: normal; background-color: #9999cc; min-height:2em; line-height:2em; border-bottom: 1px inset black; margin: 0; }
-h1, p { padding-left: 10px; }
-code.url { background-color: #eeeeee; font-family:monospace; padding:0 2px;}
-</style>
-</head><body><h1>Not Found</h1><p>The requested resource <code class="url">index.php?page=<?php echo $_GET['page']; ?></code> was not found on this server.</p></body></html>
-<?php
-
+header("Location: ?page=cp");
+die();
 }

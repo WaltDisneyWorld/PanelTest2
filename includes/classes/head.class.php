@@ -1,4 +1,5 @@
 <?php
+
 if (!isset($HOME)) die();
 if (isset($_GET["rec"])) {
     $_SESSION["singlechk"] = null;
@@ -106,52 +107,8 @@ $result = mysqli_query($con, $sql);
         if ($cp == "cp") {
             ?>
          
-<?php } ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <!--<link rel="shortcut icon" href="../images/favicon.png" type="image/png">-->
+<?php } 
 
-  <title>IntISP Control Panel</title>
-<script src="public/assets/js/jquery.min.js"></script>
-  <link rel="stylesheet" href="public/lib/Hover/hover.css">
-  <link rel="stylesheet" href="public/lib/fontawesome/css/font-awesome.css">
-  <link rel="stylesheet" href="public/lib/weather-icons/css/weather-icons.css">
-  <link rel="stylesheet" href="public/lib/ionicons/css/ionicons.css">
-  <link rel="stylesheet" href="public/lib/jquery-toggles/toggles-full.css">
-
-  <link rel="stylesheet" href="public/css/styles.css">
-
-  <script src="public/lib/modernizr/modernizr.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-  <script src="../public/lib/html5shiv/html5shiv.js"></script>
-  <script src="../public/lib/respond/respond.src.js"></script>
-  <![endif]-->
-  
-<link rel="Stylesheet" type="text/css" href="public/textedit/style/jHtmlArea.css" />
-</head>
-
-<body>
-
-<header>
- 
-  <div class="headerpanel">
-
-    <div class="logopanel">
-       
-      <h2><a href="index.php?page=cp">IntISP <?php echo $intisp_ver; ?></a></h2>
-
-    </div><!-- logopanel -->
-
-    <div class="headerbar">
-    
-    <div class="logopanel" ><h2 style="color:White;"><?php
 include 'config.php';
     $mysqli = new mysqli();
     $con    = mysqli_connect("$host", "$user", "$pass", "$data");
@@ -160,100 +117,27 @@ include 'config.php';
 if ($result = mysqli_query($con, $sql)) {
     // Fetch one and one row
   while ($row = mysqli_fetch_row($result)) {
-      printf($row[0]);
+      $site_title = $row[0];
   }
   // Free result set
   mysqli_free_result($result);
 }
 mysqli_close($con);
-?></h2></div>
-
-     
-      <style>
-          .btn-group .btn-group+.btn-group, .btn-group .btn-group+.btn:not(.btn-default), .btn-group .btn:not(.btn-default)+.btn-group, .btn-group .btn:not(.btn-default)+.btn:not(.btn-default) {
-border: 0px;              
-          }
-      </style>
-      <div class="header-right">
-        <ul class="headermenu">
-            
-          <li>
-            <div id="noticePanel" class="btn-group">
-                       <button onclick="location.href='index.php?page=cp';" class="btn btn-notice" data-toggle="dropdown">
-             <i style="color:white" class="fa fa-home"></i>
-              </button>
-                          <button onclick="location.href='index.php?page=FileManager';" class="btn btn-notice" data-toggle="dropdown">
-             <i style="color:white" class="fa fa-file"></i>
-              </button>
-                <button onclick="location.href='thirdparty/phpmyadmin/index.php';" class="btn btn-notice" data-toggle="dropdown">
-             <i style="color:white" class="fa fa-database"></i>
-              </button>
-              <button data-toggle="modal" data-target="#myModal" class="btn btn-notice" data-toggle="dropdown">
-             <i style="color:white" class="fa fa-user"></i>
-              </button>
-            <button onclick="location.href='action.php?action=exit';" class="btn btn-notice" data-toggle="dropdown">
-             <i style="color:white" class="fa fa-sign-out"></i>
-              </button> 
-              </div>
-              </li>
-              </ul>
-              </div>
-          </div><!-- header-right -->
-    </div><!-- headerbar -->
-  </div><!-- header-->
-</header>
-
-<section>
-    
-  <div class="leftpanel">
-    <div class="leftpanelinner">
-
-      <!-- ################## LEFT PANEL PROFILE ################## -->
-          <div class="media leftpanel-profile" style="background-color: #262b36;">
-        <div class="media-left" style="background-color: #262b36;">
-     
-        </div>
-         <div class="media-body" style="background-color: #262b36;">
-          <h4 class="media-heading">
-              <?php echo $edition; ?>
-              </h4>
-              </div>
-        <br>
-        <div class="media-body">
-          <h4 class="media-heading"><?php echo $_SESSION['user']; ?> </h4>
-          <span><?php
-          if (isMasterReseller()) {
+ if (isMasterReseller()) {
               if ($_SESSION['user'] == 'admin') {
-                   echo $lang_4;
+                   $usertype =  $lang_4;
               } else {
-              echo $lang_5;   
+              $usertype =  $lang_5;   
               }
              
           } else {
               if ($_SESSION['user'] == 'admitn') {
-               echo $lang_6;  
+               $usertype =  $lang_6;  
               } else {
-                  echo $lang_7;
+                  $usertype =  $lang_7;
               }
           }
-          ?></span>
-        </div>
-      </div><!-- leftpanel-profile -->
-
-
-          </li>
-        </ul>
-      </div><!-- leftpanel-userinfo -->
-       <div class="tab-content">
-
-        <!-- ################# MAIN MENU ################### -->
-
-        <div class="tab-pane active" id="mainmenu">
-                   <ul class="nav nav-pills nav-stacked nav-quirk">
-               <li <?php if ($_GET["page"] == "cp") echo 'class="active"'; ?>><a href="index.php?page=cp"><i class="fa fa-home"></i> <span><?php echo $lang_8; ?></span></a></li>
-               </ul>
-        <?php 
-     $whmurl = "";
+           $whmurl = "";
     require 'config.php';
     $mysqli = new mysqli();
     $con    = mysqli_connect("$host", "$user", "$pass", "$data");
@@ -267,87 +151,78 @@ border: 0px;
           // Free result set
           mysqli_free_result($result);
     }
+       $menu_builder = "";
+   
+   if ($_SESSION['user'] == 'admin') {
+   
 
-
-  if ($whmurl != "") {
- 
-  ?>
-          <h5 class="sidebar-title"><?php echo $lang_9; ?></h5>
-       <ul class="nav nav-pills nav-stacked nav-quirk">
-               <li><a href="<?php echo $whmurl; ?>/clientarea.php"><i class="fa fa fa-newspaper-o"></i> <span><?php echo $lang_10; ?></span></a></li>
-               <li><a href="<?php echo $whmurl; ?>/clientarea.php"><i class="fa fa fa-credit-card"></i> <span><?php echo $lang_11; ?></span></a></li>
-               <li><a href="<?php echo $whmurl; ?>/index.php?rp=/knowledgebase"><i class="fa fa-question-circle"></i> <span><?php echo $lang_12; ?></span></a></li>
-               <li><a href="<?php echo $whmurl; ?>/clientarea.php?action=emails"><i class="fa fa fa-envelope-o"></i> <span><?php echo $lang_13; ?></span></a></li>
-               </ul>
-               <?php } ?>  <?php if ($_SESSION['user'] == 'admin') {
-    ?>
-
-               <h5 class="sidebar-title"><?php echo $lang_14; ?></h5>
-       <ul class="nav nav-pills nav-stacked nav-quirk">
-               <li <?php if ($_GET["page"] == "newserv") echo 'class="active"'; ?>><a href="index.php?page=newserv"><i class="fa fa fa-plus"></i> <span><?php echo $lang_15; ?></span></a></li>
-                  <?php
+              $menu_builder .=  '<h5 class="sidebar-title">' . $lang_14 . '</h5>';
+      $menu_builder .=  '<ul class="nav nav-pills nav-stacked nav-quirk">';
+            
+            
+            
+               $menu_builder .=  '<li'; if ($_GET["page"] == "newserv") $menu_builder .=  ' class="active"';
+               $menu_builder .=  '><a href="index.php?page=newserv"><i class="fa fa fa-plus"></i> <span>' . $lang_15 . '</span></a></li>';
+                
                                             if (ismasterreseller()) {
-                                            ?>
-               <li <?php if ($_GET["page"] == "newresell") echo 'class="active"'; ?>><a href="index.php?page=newresell"><i class="fa fa fa-plus"></i> <span><?php echo $lang_16; ?></span></a></li>
-               <?php } ?>
-                  <?php if (file_get_contents("data/cloudflare") != "") {
-                                            ?>
-               <li <?php if ($_GET["page"] == "cloudflare") echo 'class="active"'; ?>><a href="index.php?page=cloudflare"><i class="fa fa fa-cloud"></i> <span><?php echo $lang_17; ?></span></a></li>
-               <?php } ?>
-          <li <?php if ($_GET["page"] == "list") echo 'class="active"'; ?>><a href="index.php?page=list#"><i class="fa fa fa-user"></i> <span><?php echo $lang_18; ?></span></a></li>
-                  <?php
+                                            
+              $menu_builder .=  '<li'; if ($_GET["page"] == "newresell")  $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="index.php?page=newresell"><i class="fa fa fa-plus"></i> <span>' . $lang_16 . '</span></a></li>';
+               }
+             if (file_get_contents("data/cloudflare") != "") {
+                                            
+               $menu_builder .=  '<li'; if ($_GET["page"] == "cloudflare")  $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=cloudflare"><i class="fa fa fa-cloud"></i> <span>' . $lang_17 . '</span></a></li>';
+               }
+          $menu_builder .= '<li'; if ($_GET["page"] == "list")  $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=list#"><i class="fa fa fa-user"></i> <span>' . $lang_18 . '</span></a></li>';
+                  
                                                                             if (ismasterreseller()) {
-                                                                            ?>
-              <li><a href="thirdparty/phpmyadmin/index.php?server=localhost&pma_username=<?php echo urlencode($user); ?>&pma_password=<?php echo urlencode($pass); ?>"><i class="fa fa fa-database"></i> <span><?php echo $lang_20; ?></span></a></li>
-              <?php } ?>
-               </ul>
+                                                                            
+              $menu_builder .= '<li><a href="thirdparty/phpmyadmin/index.php?server=localhost&pma_username=' . urlencode($user) . '&pma_password=' . urlencode($pass) . '"><i class="fa fa fa-database"></i> <span>' . $lang_20 . '</span></a></li>';
+              } 
+              $menu_builder .=' </ul>
                       <h5 class="sidebar-title">System</h5>
-       <ul class="nav nav-pills nav-stacked nav-quirk">
-           <?php
+       <ul class="nav nav-pills nav-stacked nav-quirk">';
+        
 if (ismasterreseller()) {
-    ?>
-               <li <?php if ($_GET["page"] == "settings") echo 'class="active"'; ?>><a href="index.php?page=settings"><i class="fa fa fa-sliders"></i> <span><?php echo $lang_21; ?></span></a></li>
-              <li <?php if ($_GET["page"] == "fman") echo 'class="active"'; ?>><a href="index.php?page=fman"><i class="fa fa fa-sliders"></i> <span>Root File Manager</span></a></li>
+    
+               $menu_builder .=  '<li';  if ($_GET["page"] == "settings") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=settings"><i class="fa fa fa-sliders"></i> <span>' .  $lang_21 . '</span></a></li>';
+              $menu_builder .=  '<li';  if ($_GET["page"] == "fman") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=fman"><i class="fa fa fa-sliders"></i> <span>Root File Manager</span></a></li>';
              
-               <li <?php if ($_GET["page"] == "update") echo 'class="active"'; ?>><a href="index.php?page=update"><i class="fa fa fa-upload"></i> <span><?php echo $lang_22; ?></span></a></li>
-               <?php } ?>
-               <li <?php if ($_GET["page"] == "plug") echo 'class="active"'; ?>><a href="index.php?page=plug"><i class="fa fa fa-puzzle-piece"></i> <span><?php echo $lang_23; ?></span></a></li>
-          <li <?php if ($_GET["page"] == "terminal") echo 'class="active"'; ?>><a href="index.php?page=terminal"><i class="fa fa fa-terminal"></i> <span><?php echo $lang_24; ?></span></a></li>
-            <?php
+               $menu_builder .=  '<li';  if ($_GET["page"] == "update") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=update"><i class="fa fa fa-upload"></i> <span>' . $lang_22 . '</span></a></li>';
+                } 
+            $menu_builder .='<li'; if ($_GET["page"] == "plug") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=plug"><i class="fa fa fa-puzzle-piece"></i> <span>' . $lang_23 . '</span></a></li>';
+           $menu_builder .='<li';  if ($_GET["page"] == "terminal") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=terminal"><i class="fa fa fa-terminal"></i> <span>' . $lang_24 . '</span></a></li>';
+            
                                             if (ismasterreseller()) {
-                                            ?>
-             <li <?php if ($_GET["page"] == "mail") echo 'class="active"'; ?>><a href="index.php?page=mail"><i class="fa fa fa-envelope-o"></i> <span><?php echo $lang_25; ?></span></a></li>
-                <?php } ?>
-               </ul><?php } ?>
-                      <h5 class="sidebar-title">My Server</h5>
-       <ul class="nav nav-pills nav-stacked nav-quirk">
-               <li <?php if ($_GET["page"] == "FileManager") echo 'class="active"'; ?>><a href="index.php?page=FileManager"><i class="fa fa fa-file"></i> <span><?php echo $lang_26; ?></span></a></li>
-               <li <?php if ($_GET["page"] == "cron") echo 'class="active"'; ?>><a href="index.php?page=cron"><i class="fa fa fa-clock-o"></i> <span><?php echo $lang_27; ?></span></a></li>
-               <li><a href="thirdparty/phpmyadmin/index.php"><i class="fa fa fa-database"></i> <span><?php echo $lang_28; ?></span></a></li>
-             <li><a href="index.php?page=phpinfo"><i class="fa fa fa-code"></i> <span><?php echo $lang_29; ?></span></a></li>
-              <li><a href="<?php echo file_get_contents("data/forum"); ?>"><i class="fa fa fa-file"></i> <span><?php echo $lang_30; ?></span></a></li>
-              <li><a href="<?php echo file_get_contents("data/support"); ?>"><i class="fa fa fa-life-ring"></i> <span><?php echo $lang_31; ?></span></a></li>
-               </ul>
-               </div>
-              </div>
-              </div>
-              
-            </div>
-     </div><!-- tab-pane -->
+                                            
+            $menu_builder .='<li';  if ($_GET["page"] == "mail") $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="index.php?page=mail"><i class="fa fa fa-envelope-o"></i> <span>' . $lang_25 . '</span></a></li>';
+                } 
+               $menu_builder .='</ul>';
+                }
+                     $menu_builder .=' <h5 class="sidebar-title">My Server</h5>
+       <ul class="nav nav-pills nav-stacked nav-quirk">';
+       
+               $menu_builder .='<li'; if ($_GET["page"] == "FileManager")  $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="index.php?page=FileManager"><i class="fa fa fa-file"></i> <span>' . $lang_26 . '</span></a></li>';
+               $menu_builder .='<li'; if ($_GET["page"] == "cron")  $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="index.php?page=cron"><i class="fa fa fa-clock-o"></i> <span>' . $lang_27 . '</span></a></li>';
+           $menu_builder .= '    <li><a href="thirdparty/phpmyadmin/index.php"><i class="fa fa fa-database"></i> <span>' . $lang_28 . '</span></a></li>
+             <li><a href="index.php?page=phpinfo"><i class="fa fa fa-code"></i> <span>' . $lang_29 . '</span></a></li>
+                     </ul>';
+echo $twig->render('head.tpl', ['template_dir' => 'templates/' . $template_name,
+'intisp_ver' => $intisp_ver,
+'site_title' => $site_title,
+"edition" => $edition,
+"usertype" => $usertype,
+"username" => $_SESSION['user'],
+"page" => $_GET["page"],
+"lang_8"=> $lang_8,
+"lang_9"=> $lang_9,
+"lang_10"=> $lang_10,
+"lang_11"=> $lang_11,
+"lang_12"=> $lang_12,
+"lang_13"=> $lang_13,
+"whmurl"=>$whmurl,
+"menu"=>$menu_builder]);
 
-
-      </div><!-- tab-content -->
-
-    </div><!-- leftpanelinner -->
-  </div><!-- leftpanel -->
-  <style>
-      .page-title {
-          border-top: 0px;
-          border-bottom: 0px;
-      }
-  </style>
-  <div class="mainpanel">
-<?php if (!$failsafe_offline) { if ($intisp_ver != file_get_contents("https://httpupdate.enyrx.com/version")) {
+ if (!$failsafe_offline) { if ($intisp_ver != file_get_contents("https://httpupdate.enyrx.com/version")) {
     echo $lang_32;
 
 }

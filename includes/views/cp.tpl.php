@@ -156,9 +156,9 @@ $(document).ready(function(){
   <ul id="myUL" class="list-group" data-step="2" data-intro="Here you can control the power options of webister and the computer it's running on.">
   <li class="list-group-item notification is-dark"><a id="chide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="cshow" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> <?php echo $lang_43; ?></li>
   <li class="list-group-item">            
-                                      <a type="button" href="action.php?action=action&act=restart" class="csys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/pc.svg"><hr><?php echo $lang_44; ?></a>
-                                      <a type="button" href="action.php?action=action&act=server" class="csys btn btn-default"><img style="width:50px;height:50px;" src="public/assets/img/icons/list.svg"><hr><?php echo $lang_44; ?></a>
-                                      <a type="button" href="action.php?action=action&act=mysql" class="csys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/db.svg"><hr><?php echo $lang_44; ?></a></li>
+                                      <a type="button" href="action.php?action=action&act=restart" class="csys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/pc.svg"><hr><?php echo $lang_44; ?></a>
+                                      <a type="button" href="action.php?action=action&act=server" class="csys btn btn-default"><img style="width:50px;height:50px;" src="includes/img/icons/list.svg"><hr><?php echo $lang_44; ?></a>
+                                      <a type="button" href="action.php?action=action&act=mysql" class="csys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/db.svg"><hr><?php echo $lang_44; ?></a></li>
   </li>
   </ul>
     <?php
@@ -185,11 +185,11 @@ $(document).ready(function(){
   <li class="list-group-item notification is-dark"><a id="bhide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="bshow" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> <?php echo $lang_45; ?></li>
   <li class="list-group-item">  
 
-                                        <a type="button" href="index.php?page=newserv" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/add.svg"><hr><?php echo $lang_15; ?></a>
+                                        <a type="button" href="index.php?page=newserv" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_15; ?></a>
                                             <?php
                                             if (ismasterreseller()) {
                                             ?>
-                                             <a type="button" href="index.php?page=newresell" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/add.svg"><hr><?php echo $lang_16; ?></a>
+                                             <a type="button" href="index.php?page=newresell" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_16; ?></a>
                                             <?php
                                             } ?>
                                         <?php if (file_get_contents("data/cloudflare") != "") {
@@ -197,13 +197,13 @@ $(document).ready(function(){
                                         
                                           <a type="button" href="index.php?page=cloudflare" class="svr btn btn-default"><i class="fa fa-5x fa-cloud"></i><hr><?php echo $lang_17; ?></a>
                                         <?php } ?>
-                                        <a type="button" href="index.php?page=list#" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/list.svg"><hr><?php echo $lang_18; ?></a>
+                                        <a type="button" href="index.php?page=list#" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/list.svg"><hr><?php echo $lang_18; ?></a>
                                                                              <?php
                                                                             if (ismasterreseller()) {
                                                                             ?>
                                                                                    
                                                                                          
-                                                                                                                  <a type="button" href="thirdparty/phpmyadmin/index.php?pma_username=<?php echo urlencode($user); ?>&pma_password=<?php echo urlencode($pass); ?>" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/bd.svg"><hr> <?php echo $lang_20; ?></a>
+                                                                                                                  <a type="button" href="thirdparty/phpmyadmin/index.php?pma_username=<?php echo urlencode($user); ?>&pma_password=<?php echo urlencode($pass); ?>" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/bd.svg"><hr> <?php echo $lang_20; ?></a>
                                                                             <?php
                                                                             } ?>
                                          </li>
@@ -229,21 +229,21 @@ $(document).ready(function(){
 <?php
 if (ismasterreseller()) {
     ?>
-                                <a type="button" href="index.php?page=settings" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/settings.svg"><hr><?php echo $lang_21; ?></a> 
-                            <a type="button" href="index.php?page=fman" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/file.svg"><hr>Root File Manager</a> 
+                                <a type="button" href="index.php?page=settings" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/settings.svg"><hr><?php echo $lang_21; ?></a> 
+                            <a type="button" href="index.php?page=fman" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/file.svg"><hr>Root File Manager</a> 
                                 
-                                <a type="button" href="index.php?page=update" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/update.svg"><hr><?php echo $lang_22; ?></a> <?php
+                                <a type="button" href="index.php?page=update" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/update.svg"><hr><?php echo $lang_22; ?></a> <?php
 } ?>
-                                  <a type="button" href="index.php?page=plug" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/plugins.svg"><hr><?php echo $lang_23; ?></a>
-                                        <a type="button" href="index.php?page=terminal" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/term.svg"><hr><?php echo $lang_24; ?></a>
-                                        <a  type="button" href="index.php?page=activation" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/active.png"><hr>My License</a>
-                                        <a  type="button" href="index.php?page=manage7" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/manage7.png"><hr>Manage7</a>
-                                                                                      <a type="button" href="index.php?page=mail" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/mail.svg"><hr><?php echo $lang_25; ?></a>
+                                  <a type="button" href="index.php?page=plug" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/plugins.svg"><hr><?php echo $lang_23; ?></a>
+                                        <a type="button" href="index.php?page=terminal" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/term.svg"><hr><?php echo $lang_24; ?></a>
+                                        <a  type="button" href="index.php?page=activation" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/active.png"><hr>My License</a>
+                                        <a  type="button" href="index.php?page=manage7" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/manage7.png"><hr>Manage7</a>
+                                                                                      <a type="button" href="index.php?page=mail" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/mail.svg"><hr><?php echo $lang_25; ?></a>
                                       
                                             <?php
                                             if (ismasterreseller()) {
                                             ?>
-                                              <a type="button" href="https://host.adaclare.com/submitticket.php" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/support.svg"><hr><?php echo $lang_31; ?></a> 
+                                              <a type="button" href="https://host.adaclare.com/submitticket.php" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/support.svg"><hr><?php echo $lang_31; ?></a> 
                    
                                             <?php
                                             } ?>
@@ -253,7 +253,7 @@ if (ismasterreseller()) {
                                           $safe = true;
                                             include "plugins/" . $file;
                                             if ($menu) {
-                                                echo '<a type="button" class="sys btn btn-large btn-default" href="index.php?page=plpage&pl=' . urlencode($file) . '" class="btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/p.svg"><hr>' . $menu_name . '</a>';
+                                                echo '<a type="button" class="sys btn btn-large btn-default" href="index.php?page=plpage&pl=' . urlencode($file) . '" class="btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/p.svg"><hr>' . $menu_name . '</a>';
                                             }
                                         }
                                         ?>
@@ -290,10 +290,10 @@ $(document).ready(function(){
   <li class="list-group-item notification is-dark"><a id="hide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="show" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> <?php echo $lang_47; ?></li>
   <li class="list-group-item">  
 
-                                        <a  type="button" href="index.php?page=FileManager" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/file.svg"><hr><?php echo $lang_26; ?></a>
-    <a    type="button" href="index.php?page=cron" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/cron.svg"><hr><?php echo $lang_27; ?></a>
-                                        <a    type="button" href="thirdparty/phpmyadmin/index.php" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/dx.svg"><hr><?php echo $lang_28; ?></a>
-                                              <a  type="button" href="index.php?page=phpinfo" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="public/assets/img/icons/php.svg"><hr><?php echo $lang_29; ?></a>
+                                        <a  type="button" href="index.php?page=FileManager" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/file.svg"><hr><?php echo $lang_26; ?></a>
+    <a    type="button" href="index.php?page=cron" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/cron.svg"><hr><?php echo $lang_27; ?></a>
+                                        <a    type="button" href="thirdparty/phpmyadmin/index.php" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/dx.svg"><hr><?php echo $lang_28; ?></a>
+                                              <a  type="button" href="index.php?page=phpinfo" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/php.svg"><hr><?php echo $lang_29; ?></a>
                                                                                  
                                                                                  
                                                                                    <a id="serv"  type="button" href="<?php
@@ -311,7 +311,7 @@ $(document).ready(function(){
           mysqli_free_result($result);
     }
 
-?>" class="serv btn btn-large btn-warning"><img style="width:50px;height:50px;"  src="public/assets/img/icons/forum.svg"><hr><?php echo $lang_30; ?></a>
+?>" class="serv btn btn-large btn-warning"><img style="width:50px;height:50px;"  src="includes/img/icons/forum.svg"><hr><?php echo $lang_30; ?></a>
                                         <a type="button" href="<?php
    
     $sql = "SELECT value FROM settings WHERE code =  'support' LIMIT 0 , 30";
@@ -324,7 +324,7 @@ $(document).ready(function(){
           mysqli_free_result($result);
     }
     mysqli_close($con);
-?>" class="serv btn btn-large btn-warning"><img style="width:50px;height:50px;"  src="public/assets/img/icons/support.svg"><hr><?php echo $lang_31; ?></a>
+?>" class="serv btn btn-large btn-warning"><img style="width:50px;height:50px;"  src="includes/img/icons/support.svg"><hr><?php echo $lang_31; ?></a>
                                     
                                                          </li>
   </ul>  
