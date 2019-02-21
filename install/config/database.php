@@ -1,4 +1,5 @@
 <?php
+$debug = false;
 $host = '%HOSTNAME%';
 $user   = '%USERNAME%';
 $pass   = '%PASSWORD%';

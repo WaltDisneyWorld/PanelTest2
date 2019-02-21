@@ -3,6 +3,8 @@
 if (!isset($HOME)) die();
 
 if (!isset($_GET["action"])) die();
+   require 'config.php';
+   if ($debug) {
   require( 'includes/classes/php_error.class.php' );
      $options = array(
             'snippet_num_lines' => 3,
@@ -14,6 +16,14 @@ if (!isset($_GET["action"])) die();
             'error_reporting_on' => E_ALL
     );
         php_error\reportErrors($options);
+   } else {
+        function error() {
+  require("includes/error.php");
+  die();
+ }
+ set_error_handler(error());
+ set_exception_handler(error());
+   }
 $_ACT = $_GET["action"];
 if ($_ACT == "login") {
     require("includes/classes/doLogin.class.php");
@@ -34,7 +44,7 @@ if ($_ACT == "options") {
     }
 }
 onlyadmin();
-   require 'config.php';
+
 require 'includes/classes/mail.class.php';
 //die('update Administrators set username="' .addslashes($_POST["username"]) .'", password="' . md5(addslashes($_POST["password_ch"])) .'" where username=' . $_POST["username"]);
     $con = mysqli_connect($host, $user, $pass, $data);

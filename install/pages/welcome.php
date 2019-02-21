@@ -7,5 +7,5 @@ You will need your database details and a valid IntISP Activation Key in order t
 otherwise you will get stuck in the installer.</p>
 <br><br>
 <div class="buttons has-addons">
-  <a href="?pg=license" class="button">Continue</a>
+  <a href="?pg=req" class="button">Continue</a>
 </div>

@@ -49,7 +49,7 @@ This EULA agreement, and any dispute arising out of or in connection with this E
          > I Accept
 <br><br>
 <div class="buttons has-addons">
-    <a href="index.php" class="button">Back</a>
+    <a href="?pg=req" class="button">Back</a>
   <input type="submit" class="button" value="Continue">
 </div>
 </form>

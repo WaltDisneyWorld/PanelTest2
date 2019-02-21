@@ -58,6 +58,20 @@ session_start();
     Welcome
   </a>
   <a class="panel-block <?php
+    if (isset($_GET["pg"]) && $_GET["pg"] == "req") {
+      ?>
+      is-active
+      <?php
+    }
+    
+    
+    ?>">
+    <span class="panel-icon">
+      <i class="fas fa-book" aria-hidden="true"></i>
+    </span>
+    Requirements
+  </a>
+  <a class="panel-block <?php
     if (isset($_GET["pg"]) && $_GET["pg"] == "license") {
       ?>
       is-active
@@ -110,6 +124,9 @@ session_start();
        } ?>
        
          <?php
+          if (isset($_GET["pg"]) && $_GET["pg"] == "req") {
+       require("pages/req.php"); 
+       }
    if (isset($_GET["pg"]) && $_GET["pg"] == "license") {
        require("pages/license.php"); 
        } ?>
