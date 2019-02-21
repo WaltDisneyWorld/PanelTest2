@@ -1,6 +1,6 @@
 <?php
 
-$intisp_ver = "12.2";
+$intisp_ver = "13";
 if (!isset($tempxaaa)) {
 require_once("includes/classes/license.class.php");
 
@@ -66,7 +66,7 @@ if ($edition == "Host") {
 if ($edition == "Dev") {
     $edition = "Developer Edition";
 }
-$logging = true;
+$logging = $debug;
 function updatePassword($pass) {
      global $logging;
      if ($logging) {

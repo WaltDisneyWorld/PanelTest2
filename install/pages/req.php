@@ -67,6 +67,11 @@ if (function_exists('mail')) {
 } else {
     displayReq("MySQLi","PHP Mail may not be working right now.",false);
 }
+if (function_exists('curl_version')) {
+    displayReq("PHP CURL","PHP CURL is installed.",true);
+} else {
+    displayReq("PHP CURL","PHP CURL is not installed. Please install it before continuing.",false);
+}
       ?>
       
      

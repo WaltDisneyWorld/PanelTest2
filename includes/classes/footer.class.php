@@ -248,7 +248,9 @@ if ($result = mysqli_query($con, $sql)) {
 <script src="public/lib/jquery-knob/jquery.knob.js"></script>
 
 <script src="public/js/custom.js"></script>
-
-
+<script type="text/javascript" src="public/textedit/scripts/jHtmlArea-0.8.js"></script>
+<script>
+    $('textarea').htmlarea();
+</script>
 </body>
 </html>

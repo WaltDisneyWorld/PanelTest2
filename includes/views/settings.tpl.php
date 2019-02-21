@@ -109,7 +109,7 @@
       </select>
       </fieldset>
    <label for="formGroupExampleInput"><?php echo $lang_68; ?></label><Br>
-   <textarea style="width:500px;height:500px;" name="head"><?php
+   <textarea style="width:900px;height:500px;" name="head"><?php
 
     $sql = "SELECT value FROM settings WHERE code =  'head' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {
@@ -256,30 +256,30 @@
     }
 
 ?>
-    <input type="radio" name="smtp_security" value="0" <?php 
+    <label><input type="radio" name="smtp_security" value="0" <?php 
     if ($wew == 0) {
       ?>
       checked="true"
       <?php
     }
     
-    ?>> None<br>
-<input type="radio" name="smtp_security" value="1" <?php 
+    ?>> None</label><br>
+<label><input type="radio" name="smtp_security" value="1" <?php 
     if ($wew == 1) {
       ?>
       checked="true"
       <?php
     }
     
-    ?>> SSL<br>
-<input type="radio" name="smtp_security" value="2" <?php 
+    ?>> SSL</label><br>
+<label><input type="radio" name="smtp_security" value="2" <?php 
     if ($wew == 2) {
       ?>
       checked="true"
       <?php
     }
     
-    ?>> TLS
+    ?>> TLS</label>
   </fieldset>
   
   

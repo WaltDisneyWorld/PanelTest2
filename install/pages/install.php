@@ -78,9 +78,9 @@ $sql = "INSERT INTO settings (id, code, value) VALUES ('16', 'smtp_port', '22')"
 $m->query($sql);
 $sql = "INSERT INTO settings (id, code, value) VALUES ('17', 'smtp_security', '0')";
 $m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('18', 'smtp_username', 'test')";
+$sql = "INSERT INTO settings (id, code, value) VALUES ('18', 'smtp_username', '')";
 $m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('19', 'smtp_password', 'test')";
+$sql = "INSERT INTO settings (id, code, value) VALUES ('19', 'smtp_password', '')";
 $m->query($sql);
 function ae($c,$f) {
     global $m;

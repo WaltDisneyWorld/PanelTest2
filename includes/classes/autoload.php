@@ -1,7 +1,11 @@
 <?php
 if (!isset($HOME)) die();
 if (file_exists("config.php")) require("config.php");
-if (file_exists("config.php") && $debug) {
+if (!file_exists("config.php")) {
+    header("Location: install/");
+    die();
+}
+if ($debug) {
   require( 'includes/classes/php_error.class.php' );
      $options = array(
             'snippet_num_lines' => 3,
@@ -14,21 +18,12 @@ if (file_exists("config.php") && $debug) {
     );
         php_error\reportErrors($options);
 } else {
- function error() {
-  require("includes/error.php");
-  die();
- }
- set_error_handler(error());
- set_exception_handler(error());
+
 }
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
 if (file_exists("vendor/autoload")) {
 require "vendor/autoload.php";
-}
-if (!file_exists("config.php")) {
-    header("Location: install/");
-    die();
 }
 if (isset($_GET["reseller"])) {
     

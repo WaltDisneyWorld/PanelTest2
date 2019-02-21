@@ -124,7 +124,6 @@ $result = mysqli_query($con, $sql);
   <link rel="stylesheet" href="public/lib/ionicons/css/ionicons.css">
   <link rel="stylesheet" href="public/lib/jquery-toggles/toggles-full.css">
 
-
   <link rel="stylesheet" href="public/css/styles.css">
 
   <script src="public/lib/modernizr/modernizr.js"></script>
@@ -134,15 +133,25 @@ $result = mysqli_query($con, $sql);
   <script src="../public/lib/html5shiv/html5shiv.js"></script>
   <script src="../public/lib/respond/respond.src.js"></script>
   <![endif]-->
+  
+<link rel="Stylesheet" type="text/css" href="public/textedit/style/jHtmlArea.css" />
 </head>
 
 <body>
 
 <header>
+ 
   <div class="headerpanel">
 
     <div class="logopanel">
-      <h2><a href="index.php?page=cp"><?php
+       
+      <h2><a href="index.php?page=cp">IntISP <?php echo $intisp_ver; ?></a></h2>
+
+    </div><!-- logopanel -->
+
+    <div class="headerbar">
+    
+    <div class="logopanel" ><h2 style="color:White;"><?php
 include 'config.php';
     $mysqli = new mysqli();
     $con    = mysqli_connect("$host", "$user", "$pass", "$data");
@@ -157,16 +166,14 @@ if ($result = mysqli_query($con, $sql)) {
   mysqli_free_result($result);
 }
 mysqli_close($con);
-?></a></h2>
-
-    </div><!-- logopanel -->
-
-    <div class="headerbar">
-    
-      <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
+?></h2></div>
 
      
-      
+      <style>
+          .btn-group .btn-group+.btn-group, .btn-group .btn-group+.btn:not(.btn-default), .btn-group .btn:not(.btn-default)+.btn-group, .btn-group .btn:not(.btn-default)+.btn:not(.btn-default) {
+border: 0px;              
+          }
+      </style>
       <div class="header-right">
         <ul class="headermenu">
             
@@ -202,12 +209,12 @@ mysqli_close($con);
     <div class="leftpanelinner">
 
       <!-- ################## LEFT PANEL PROFILE ################## -->
-          <div class="media leftpanel-profile">
-        <div class="media-left">
+          <div class="media leftpanel-profile" style="background-color: #262b36;">
+        <div class="media-left" style="background-color: #262b36;">
      
         </div>
-         <div class="media-body">
-          <h4 class="media-heading">IntISP <?php echo $intisp_ver; ?><br>
+         <div class="media-body" style="background-color: #262b36;">
+          <h4 class="media-heading">
               <?php echo $edition; ?>
               </h4>
               </div>
@@ -333,6 +340,12 @@ if (ismasterreseller()) {
 
     </div><!-- leftpanelinner -->
   </div><!-- leftpanel -->
+  <style>
+      .page-title {
+          border-top: 0px;
+          border-bottom: 0px;
+      }
+  </style>
   <div class="mainpanel">
 <?php if (!$failsafe_offline) { if ($intisp_ver != file_get_contents("https://httpupdate.enyrx.com/version")) {
     echo $lang_32;
@@ -353,13 +366,17 @@ if (ismasterreseller()) {
 
       <div class="row">
         <div class="col-md-10 col-lg-10 dash-left">
-              <?php if ($_SESSION['user'] == 'admin') {
+            
+              <?php if ($_GET["page"] == "cp") { 
+              if ($_SESSION['user'] == 'admin') {
+                  
     ?>
-   
+  
           <?php } if ($dev_edition) {
            echo $lang_39;   
           }
 
+  
           if (getEdition($keys)["ID"] == 1) {
               ?>
                    <div class="alert alert-warning" role="alert">
@@ -379,3 +396,5 @@ if (ismasterreseller()) {
 </div>
           <?php
           }
+              
+}
