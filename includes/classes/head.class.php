@@ -67,7 +67,7 @@ function onlyadmin() {
      }
 }
 if (!isset($_SESSION['user'])) {
-    header('Location: index.php');
+    header('Location: /');
     die();
 }
 $con    = mysqli_connect($host, $user, $pass, $data);
@@ -162,17 +162,17 @@ mysqli_close($con);
             
             
                $menu_builder .=  '<li'; if ($_GET["page"] == "newserv") $menu_builder .=  ' class="active"';
-               $menu_builder .=  '><a href="index.php?page=newserv"><i class="fa fa fa-plus"></i> <span>' . $lang_15 . '</span></a></li>';
+               $menu_builder .=  '><a href="/newserv"><i class="fa fa fa-plus"></i> <span>' . $lang_15 . '</span></a></li>';
                 
                                             if (ismasterreseller()) {
                                             
-              $menu_builder .=  '<li'; if ($_GET["page"] == "newresell")  $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="index.php?page=newresell"><i class="fa fa fa-plus"></i> <span>' . $lang_16 . '</span></a></li>';
+              $menu_builder .=  '<li'; if ($_GET["page"] == "newresell")  $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="/newresell"><i class="fa fa fa-plus"></i> <span>' . $lang_16 . '</span></a></li>';
                }
              if (file_get_contents("data/cloudflare") != "") {
                                             
-               $menu_builder .=  '<li'; if ($_GET["page"] == "cloudflare")  $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=cloudflare"><i class="fa fa fa-cloud"></i> <span>' . $lang_17 . '</span></a></li>';
+               $menu_builder .=  '<li'; if ($_GET["page"] == "cloudflare")  $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="/cloudflare"><i class="fa fa fa-cloud"></i> <span>' . $lang_17 . '</span></a></li>';
                }
-          $menu_builder .= '<li'; if ($_GET["page"] == "list")  $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=list#"><i class="fa fa fa-user"></i> <span>' . $lang_18 . '</span></a></li>';
+          $menu_builder .= '<li'; if ($_GET["page"] == "list")  $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="/list#"><i class="fa fa fa-user"></i> <span>' . $lang_18 . '</span></a></li>';
                   
                                                                             if (ismasterreseller()) {
                                                                             
@@ -184,27 +184,27 @@ mysqli_close($con);
         
 if (ismasterreseller()) {
     
-               $menu_builder .=  '<li';  if ($_GET["page"] == "settings") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=settings"><i class="fa fa fa-sliders"></i> <span>' .  $lang_21 . '</span></a></li>';
-              $menu_builder .=  '<li';  if ($_GET["page"] == "fman") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=fman"><i class="fa fa fa-sliders"></i> <span>Root File Manager</span></a></li>';
+               $menu_builder .=  '<li';  if ($_GET["page"] == "settings") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="/settings"><i class="fa fa fa-sliders"></i> <span>' .  $lang_21 . '</span></a></li>';
+              $menu_builder .=  '<li';  if ($_GET["page"] == "fman") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="/fman"><i class="fa fa fa-sliders"></i> <span>Root File Manager</span></a></li>';
              
-               $menu_builder .=  '<li';  if ($_GET["page"] == "update") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=update"><i class="fa fa fa-upload"></i> <span>' . $lang_22 . '</span></a></li>';
+               $menu_builder .=  '<li';  if ($_GET["page"] == "update") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="/update"><i class="fa fa fa-upload"></i> <span>' . $lang_22 . '</span></a></li>';
                 } 
-            $menu_builder .='<li'; if ($_GET["page"] == "plug") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=plug"><i class="fa fa fa-puzzle-piece"></i> <span>' . $lang_23 . '</span></a></li>';
-           $menu_builder .='<li';  if ($_GET["page"] == "terminal") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="index.php?page=terminal"><i class="fa fa fa-terminal"></i> <span>' . $lang_24 . '</span></a></li>';
+            $menu_builder .='<li'; if ($_GET["page"] == "plug") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="/plug"><i class="fa fa fa-puzzle-piece"></i> <span>' . $lang_23 . '</span></a></li>';
+           $menu_builder .='<li';  if ($_GET["page"] == "terminal") $menu_builder .=  ' class="active"'; $menu_builder .=  '><a href="/terminal"><i class="fa fa fa-terminal"></i> <span>' . $lang_24 . '</span></a></li>';
             
                                             if (ismasterreseller()) {
                                             
-            $menu_builder .='<li';  if ($_GET["page"] == "mail") $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="index.php?page=mail"><i class="fa fa fa-envelope-o"></i> <span>' . $lang_25 . '</span></a></li>';
+            $menu_builder .='<li';  if ($_GET["page"] == "mail") $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="/mail"><i class="fa fa fa-envelope-o"></i> <span>' . $lang_25 . '</span></a></li>';
                 } 
                $menu_builder .='</ul>';
                 }
                      $menu_builder .=' <h5 class="sidebar-title">My Server</h5>
        <ul class="nav nav-pills nav-stacked nav-quirk">';
        
-               $menu_builder .='<li'; if ($_GET["page"] == "FileManager")  $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="index.php?page=FileManager"><i class="fa fa fa-file"></i> <span>' . $lang_26 . '</span></a></li>';
-               $menu_builder .='<li'; if ($_GET["page"] == "cron")  $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="index.php?page=cron"><i class="fa fa fa-clock-o"></i> <span>' . $lang_27 . '</span></a></li>';
+               $menu_builder .='<li'; if ($_GET["page"] == "FileManager")  $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="/FileManager"><i class="fa fa fa-file"></i> <span>' . $lang_26 . '</span></a></li>';
+               $menu_builder .='<li'; if ($_GET["page"] == "cron")  $menu_builder .=  ' class="active"';  $menu_builder .=  '><a href="/cron"><i class="fa fa fa-clock-o"></i> <span>' . $lang_27 . '</span></a></li>';
            $menu_builder .= '    <li><a href="thirdparty/phpmyadmin/index.php"><i class="fa fa fa-database"></i> <span>' . $lang_28 . '</span></a></li>
-             <li><a href="index.php?page=phpinfo"><i class="fa fa fa-code"></i> <span>' . $lang_29 . '</span></a></li>
+             <li><a href="/phpinfo"><i class="fa fa fa-code"></i> <span>' . $lang_29 . '</span></a></li>
                      </ul>';
 echo $twig->render('head.tpl', ['template_dir' => 'templates/' . $template_name,
 'intisp_ver' => $intisp_ver,

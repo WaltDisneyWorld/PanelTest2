@@ -108,7 +108,7 @@ ae("facebook",26);
     <p>This email is automatically sent out everytime a setting is changed. To disable this feature please visit the control panel and set the email to nothing.
     "
     );
-    header('Location: index.php?page=settings');
+    header('Location: /settings');
 }
 if ($_ACT == "exit") {
     unset($_SESSION["user"]);

@@ -204,7 +204,7 @@ if ($getVersions != '' and $currentVersion != '')
             else
               {
                 print_message(lang('OK'), lang('Update Ready'), $color = 'green');
-                print_message('', '<a class="btn btn-primary" href="?page=update&doUpdate=true">' . lang('Install Now?') . '</a><br><br><br><br><br> <a class="btn btn-danger" href="?page=update&doUpdate=true&force">Emergency Recovery?</a>');
+                print_message('', '<a class="btn btn-primary" href="/update?doUpdate=true">' . lang('Install Now?') . '</a><br><br><br><br><br> <a class="btn btn-danger" href="/update?doUpdate=true&force">Emergency Recovery?</a>');
               }
             break;
           }
@@ -223,7 +223,7 @@ if ($getVersions != '' and $currentVersion != '')
       {
         print_message(lang('INFO'), lang('The Newest Version Of The Script Is Version') . ' ' . $currentVersion, $color = 'green');
         print_message(lang('OK'), lang('This Is The Latest Version!'), $color = 'green');
-        print_message('', '<a class="btn btn-primary" href="?page=update&check_for_updates=true">' . lang('Check For Updates?') . '</a><br><br><br><br><br> <a class="btn btn-danger" href="?page=update&doUpdate=true&force">Emergency Recovery?</a>');
+        print_message('', '<a class="btn btn-primary" href="/update?check_for_updates=true">' . lang('Check For Updates?') . '</a><br><br><br><br><br> <a class="btn btn-danger" href="/update?doUpdate=true&force">Emergency Recovery?</a>');
       }
   }
 else if ($getVersions == '' OR $currentVersion == '')

@@ -45,11 +45,14 @@ code.url { background-color: #eeeeee; font-family:monospace; padding:0 2px;}
 die();
     }
 }
-function loadINTisp() {
-    $template_name = "default";
+function int_route($file) {
+        $template_name = "default";
+    require("config.php");
     require_once 'vendor/autoload.php';
+   
+ 
 $loader = new \Twig\Loader\FilesystemLoader('templates/' . $template_name);
- if ($debug) {
+ if (!$debug) {
     
     $twig = new \Twig\Environment($loader, [
     'cache' => 'cache',
@@ -61,88 +64,76 @@ $loader = new \Twig\Loader\FilesystemLoader('templates/' . $template_name);
 
 
     $HOME = true;
-if (!isset($_GET['page'])) {
- if (isset($_SESSION["user"])) {
-  header("Location: ?page=cp");
+    include($file);
+}
+function loadINTisp() {
+
+        require("config.php");
+    require_once 'vendor/autoload.php';
+     $router = new \Bramus\Router\Router();
+   
+  $router->get('/', function() {
+
+     if (isset($_SESSION["user"])) {
+     int_route("includes/views/cp.tpl.php");
  } else {
- 
- 
-    include "includes/views/login.tpl.php";
+    int_route("includes/views/login.tpl.php");
     die();
 }
-}
-if ($_GET["page"] == "temppass") {
-     include "includes/views/temppass.tpl.php";
-    die();
-}
-if ($_GET["page"] == "activation") {
-     include "includes/views/activation.tpl.php";
-    die();
-}
-if ($_GET["page"] == "wizard") {
-     include "includes/views/wizard.tpl.php";
-    die();
-}
-if ($_GET["page"] == "manage7") {
-     include "includes/views/manage7.tpl.php";
-    die();
-}
-if ($_GET["page"] == "fman") {
-     include "includes/views/fman.tpl.php";
-    die();
-}
-if ($_GET["page"] == "cp") {
-     include "includes/views/cp.tpl.php";
-    die();
-}
-if ($_GET["page"] == "newserv") {
-     include "includes/views/newserv.tpl.php";
-    die();
-}
- if ($_GET["page"] == "list") {
-     include "includes/views/list.tpl.php";
-    die();
-}
- if ($_GET["page"] == "plans") {
-     include "includes/views/plans.tpl.php";
-    die();
-}
- if ($_GET["page"] == "settings") {
-     include "includes/views/settings.tpl.php";
-    die();
-}
- if ($_GET["page"] == "update") {
-     include "includes/views/update.tpl.php";
-    die();
-}
- if ($_GET["page"] == "plug") {
-     include "includes/views/plugin.tpl.php";
-    die();
-}
- if ($_GET["page"] == "terminal") {
-     include "includes/views/terminal.tpl.php";
-    die();
-}
- if ($_GET["page"] == "mail") {
-     include "includes/views/mail.tpl.php";
-    die();
-}
- if ($_GET["page"] == "plpage") {
-     include "includes/views/plpage.tpl.php";
-    die();
-}
- if ($_GET["page"] == "FileManager") {
-     include "includes/views/FileManager.tpl.php";
-    die();
-}
- if ($_GET["page"] == "phpinfo") {
-     include "includes/views/phpinfo.tpl.php";
-    die();
-}
- if ($_GET["page"] == "cron") {
-     include "includes/views/cron.tpl.php";
-    die();
-}
-header("Location: ?page=cp");
-die();
+});
+$router->get('/temppass', function() {
+    int_route("includes/views/temppass.tpl.php");
+});
+$router->get('/activation', function() {
+int_route("includes/views/activation.tpl.php");
+});
+$router->get('/wizard', function() {
+     int_route("includes/views/wizard.tpl.php");
+});
+$router->get('/manage7', function() {
+     int_route("includes/views/manage7.tpl.php");
+});
+$router->get('/fman', function() {
+     int_route("includes/views/fman.tpl.php");
+});
+$router->get('/cp', function() {
+     int_route("includes/views/cp.tpl.php");
+});
+$router->get('/newserv', function() {
+     int_route("includes/views/newserv.tpl.php");
+});
+$router->get('/list', function() {
+     int_route("includes/views/list.tpl.php");
+});
+$router->get('/plans', function() {
+     int_route("includes/views/plans.tpl.php");
+});
+$router->get('/settings', function() {
+     int_route("includes/views/settings.tpl.php");
+});
+$router->get('/update', function() {
+     int_route("includes/views/update.tpl.php");
+});
+$router->get('/plug', function() {
+     int_route("includes/views/plugin.tpl.php");
+});
+$router->get('/terminal', function() {
+     int_route("includes/views/terminal.tpl.php");
+});
+$router->get('/mail', function() {
+     int_route("includes/views/mail.tpl.php");
+});
+$router->get('/plpage', function() {
+     int_route("includes/views/plpage.tpl.php");
+});
+$router->get('/FileManager', function() {
+     int_route("includes/views/FileManager.tpl.php");
+});
+$router->get('/phpinfo', function() {
+     int_route("includes/views/phpinfo.tpl.php");
+});
+$router->get('/cron', function() {
+    int_route("includes/views/cron.tpl.php");
+});
+$router->run();
 }

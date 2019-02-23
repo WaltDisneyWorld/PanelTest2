@@ -48,7 +48,7 @@ require_once("includes/classes/communication.class.php");
 provserverclient($port, $disk, $username, $password);
       
         $returnval = $returnval.'<br>Done!';
-        header('Location: index.php?page=newserv&pa='.urlencode($returnval));
+        header('Location: /newserv&pa='.urlencode($returnval));
     }
     newserv($_POST['pstart'], $_POST['disk'], $_POST['username'], $_POST['pend']);
     
@@ -74,7 +74,7 @@ onlyadmin();
                         <p><?php if (isset($_GET['pa'])) {
                             echo ''.$_GET['pa'].'';
 } ?></p>
-              <?php echo $lang_60; ?>  <form method="POST" action="?page=newserv&yes">
+              <?php echo $lang_60; ?>  <form method="POST" action="/newserv?yes">
   <fieldset class="form-group">
     <label for="formGroupExampleInput"><?php echo $lang_55; ?></label>
     <input type="text" class="form-control" name="username" id="formGroupExampleInput" placeholder="" required="required">

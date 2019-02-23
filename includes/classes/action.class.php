@@ -20,22 +20,22 @@ function onlyadmin()
 onlyadmin();
 require("includes/classes/communication.class.php");
 if (!isset($_SESSION['user'])) {
-    header('Location: index.php?page=main');
+    header('Location: /main');
     die();
 }
 
 if ($_GET['act'] == 'restart') {
    pwrmgmnt("restart");
-    header('Location: index.php?page=cp');
+    header('Location: /cp');
     die();
 }
 if ($_GET['act'] == 'mysql') {
     pwrmgmnt("mysql");
-    header('Location: index.php?page=cp');
+    header('Location: /cp');
     die();
 }
 if ($_GET['act'] == 'server') {
     pwrmgmnt("server");
-    header('Location: index.php?page=cp');
+    header('Location: /cp');
     die();
 }
