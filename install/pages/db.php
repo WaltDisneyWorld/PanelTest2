@@ -41,6 +41,7 @@ if ($e == 0) {
 		$new  = str_replace("%USERNAME%",$_POST['username'],$new);
 		$new  = str_replace("%PASSWORD%",$_POST['password'],$new);
 		$new  = str_replace("%DATABASE%",$_POST['database'],$new);
+		$new  = str_replace("%WEBROOT%",$_POST['webroot'],$new);
 		$new  = str_replace("%LANG%","en",$new);
   file_put_contents("../config.php",$new);
   if (!file_exists("../config.php")) {
@@ -103,12 +104,24 @@ if ($e == 0) {
     <p>The database password should be whatever the password is for root.</p>
   </div>
 </div>
+	
 
 <div class="field">
   <label class="label">Database Name</label>
   <div class="control">
     <input name="database" class="input is-rounded" type="text" placeholder="intisp" style="width:400px">
     <p>You will need to make sure that the database exists.</p>
+  </div>
+</div>
+	
+<div class="field">
+  <label class="label">Site URL</label>
+  <div class="control">
+	  <?php $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 
+                "https" : "http") . "://" . $_SERVER['HTTP_HOST'] .  
+                $_SERVER['REQUEST_URI']; ?>
+    <input name="webroot" class="input is-rounded" type="text" value="<?php echo substr($link, 0, -24); ?>" style="width:400px">
+    <p>The website URL where IntISP is installed.</p>
   </div>
 </div><Br><br>
 

@@ -19,23 +19,24 @@ function onlyadmin()
 }
 onlyadmin();
 require("includes/classes/communication.class.php");
+require("config.php");
 if (!isset($_SESSION['user'])) {
-    header('Location: /main');
+    header('Location: ' . $webroot . '/cp');
     die();
 }
 
 if ($_GET['act'] == 'restart') {
    pwrmgmnt("restart");
-    header('Location: /cp');
+    header('Location: ' . $webroot . '/cp');
     die();
 }
 if ($_GET['act'] == 'mysql') {
     pwrmgmnt("mysql");
-    header('Location: /cp');
+    header('Location: ' . $webroot . '/cp');
     die();
 }
 if ($_GET['act'] == 'server') {
     pwrmgmnt("server");
-    header('Location: /cp');
+    header('Location: ' . $webroot . '/cp');
     die();
 }

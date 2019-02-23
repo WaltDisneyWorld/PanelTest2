@@ -1,11 +1,12 @@
 <?php
 if (!isset($HOME)) die();
+ require 'config.php';
 if (!isset($_SESSION['user'])) {
-    header('Location: index.php?page=main');
+    header('Location: ' . $webroot . '/');
     die();
 }
 
-    require 'config.php';
+   
     $mysqli = new mysqli();
     $con    = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
@@ -19,7 +20,6 @@ if (!isset($_SESSION['user'])) {
           mysqli_free_result($result);
     }
     mysqli_close($con);
-
 ?>
 
 
@@ -34,11 +34,11 @@ if (!isset($_SESSION['user'])) {
 
   <title>IntISP Login</title>
 
-  <link rel="stylesheet" href="public/lib/fontawesome/css/font-awesome.css">
+  <link rel="stylesheet" href="templates/default/public/lib/fontawesome/css/font-awesome.css">
 
-  <link rel="stylesheet" href="public/css/styles.css">
+  <link rel="stylesheet" href="templates/default/public/css/styles.css">
 
-  <script src="public/lib/modernizr/modernizr.js"></script>
+  <script src="templates/default/public/lib/modernizr/modernizr.js"></script>
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
   <script src="public/lib/html5shiv/html5shiv.js"></script>
@@ -53,7 +53,7 @@ if (!isset($_SESSION['user'])) {
 
   <div class="panel signin">
     <div class="panel-heading">
-      <h1><img src="public/assets/img/image.png"></h1>
+      <h1><img src="templates/default/public/assets/img/image.png"></h1>
       <h4 class="panel-title"><?php
     require 'config.php';
     $mysqli = new mysqli();

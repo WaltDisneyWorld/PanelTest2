@@ -24,4 +24,4 @@ require 'config.php';
    updatePassword(Crypto::encrypt($_POST["password"], $key));
    
    
-    header('Location: /cp#');
+    header('Location: ' . $webroot .'/cp#');

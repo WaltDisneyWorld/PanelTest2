@@ -8,7 +8,7 @@
   <!--<link rel="shortcut icon" href="../images/favicon.png" type="image/png">-->
 
   <title>IntISP Control Panel</title>
-<script src="public/assets/js/jquery.min.js"></script>
+<script src="{{ template_dir }}/public/assets/js/jquery.min.js"></script>
   <link rel="stylesheet" href="{{ template_dir }}/public/lib/Hover/hover.css">
   <link rel="stylesheet" href="{{ template_dir }}/public/lib/fontawesome/css/font-awesome.css">
   <link rel="stylesheet" href="{{ template_dir }}/public/lib/weather-icons/css/weather-icons.css">
@@ -53,10 +53,10 @@ border: 0px;
             
           <li>
             <div id="noticePanel" class="btn-group">
-                       <button onclick="location.href='index.php?page=cp';" class="btn btn-notice" data-toggle="dropdown">
+                       <button onclick="location.href='{{ webroot }}/cp';" class="btn btn-notice" data-toggle="dropdown">
              <i style="color:white" class="fa fa-home"></i>
               </button>
-                          <button onclick="location.href='index.php?page=FileManager';" class="btn btn-notice" data-toggle="dropdown">
+                          <button onclick="location.href='{{ webroot }}/FileManager';" class="btn btn-notice" data-toggle="dropdown">
              <i style="color:white" class="fa fa-file"></i>
               </button>
                 <button onclick="location.href='thirdparty/phpmyadmin/index.php';" class="btn btn-notice" data-toggle="dropdown">
@@ -108,9 +108,9 @@ border: 0px;
         <div class="tab-pane active" id="mainmenu">
                    <ul class="nav nav-pills nav-stacked nav-quirk">
            {% if page == "cp" %}
-   <li class="active"><a href="index.php?page=cp"><i class="fa fa-home"></i> <span>{{ lang_8 }}</span></a></li>
+   <li class="active"><a href="{{ webroot }}/cp"><i class="fa fa-home"></i> <span>{{ lang_8 }}</span></a></li>
    {% else %}
-   <li><a href="index.php?page=cp"><i class="fa fa-home"></i> <span>{{ lang_8 }}</span></a></li>
+   <li><a href="{{ webroot }}/cp"><i class="fa fa-home"></i> <span>{{ lang_8 }}</span></a></li>
 {% endif %}
 </ul>
 {% if not whmurl == "" %}

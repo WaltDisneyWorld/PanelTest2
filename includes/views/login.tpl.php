@@ -111,7 +111,11 @@ require("includes/lang/" . $lang . ".php");
         } if ($twitter) {    $oauth_cred .= '<a href="action.php?action=login&oauth=twitter" class="btn btn-danger" style="background-color:#00aced;width:100%;"><i class="fa fa-twitter"></i> Twitter</a>  <br> <br>';
             } if ($google) {    $oauth_cred .= '<a href="action.php?action=login&oauth=google" class="btn btn-danger" style="background-color:#dd4b39;width:100%;"><i class="fa fa-google"></i> Google</a>';
          } 
-       
+       if (isset($_SESSION["reseller"])) {
+		   $reseller = $_SESSION["reseller"];
+	   } else {
+		  $reseller = "";
+	   }
 echo $twig->render('login.tpl', ['template_dir' => 'templates/' . $template_name,
 "site_title"=> $site_title,
 "alerts"=>$alerts,
@@ -121,6 +125,6 @@ echo $twig->render('login.tpl', ['template_dir' => 'templates/' . $template_name
 "lang_70"=> $lang_70,
 "oauth"=> $oauth_cred,
 "reseller" => isset($_SESSION["reseller"]),
-"the_reseller"=> $_SESSION["reseller"]]);
+"the_reseller"=> $reseller]);
 
         

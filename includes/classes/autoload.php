@@ -18,7 +18,7 @@ if ($debug) {
     );
         php_error\reportErrors($options);
 } else {
-
+error_reporting(0);
 }
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
@@ -45,7 +45,7 @@ code.url { background-color: #eeeeee; font-family:monospace; padding:0 2px;}
 die();
     }
 }
-function int_route($file) {
+function int_route($file,$CP = false) {
         $template_name = "default";
     require("config.php");
     require_once 'vendor/autoload.php';
@@ -73,9 +73,8 @@ function loadINTisp() {
      $router = new \Bramus\Router\Router();
    
   $router->get('/', function() {
-
      if (isset($_SESSION["user"])) {
-     int_route("includes/views/cp.tpl.php");
+     int_route("includes/views/cp.tpl.php",true);
  } else {
     int_route("includes/views/login.tpl.php");
     die();
@@ -97,7 +96,7 @@ $router->get('/fman', function() {
      int_route("includes/views/fman.tpl.php");
 });
 $router->get('/cp', function() {
-     int_route("includes/views/cp.tpl.php");
+     int_route("includes/views/cp.tpl.php",true);
 });
 $router->get('/newserv', function() {
      int_route("includes/views/newserv.tpl.php");

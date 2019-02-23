@@ -49,11 +49,11 @@ if ($check_user > 0) {
     }
     mysqli_close($con);
     $_SESSION["user"] = $theuser;
-        header('Location: /cp');
+        header('Location: ' . $webroot . '/cp');
     die();
 }
 else {
-    header("Location: /?errorx");
+    header("Location: ' . $webroot . '/?errorx");
 }
     die();
 }
@@ -89,10 +89,10 @@ $pass = Crypto::decrypt($row[0], $key);
 if ($pass == $_POST["pass"]) {
     $_SESSION["user"] = $_POST["user"];
             if ($_POST['pass'] == 'admin') {
-        header('Location: /temppass');
+        header('Location: ' . $webroot . '/temppass');
         die();
     }
-    header('Location: /cp');
+    header('Location: ' . $webroot . '/cp');
     die();
 } else {
       include 'config.php';
@@ -115,7 +115,7 @@ if ($_POST["user"] == "admin") {
     
     ");
 }
-    header('Location: /?error');
+    header('Location: ' . $webroot . '/?error');
     die();
 
 
@@ -155,6 +155,6 @@ if ($_POST["user"] == "admin") {
 }
 
 
-  header('Location: /?error');
+  header('Location: ' . $webroot . '/?error');
     die();
 

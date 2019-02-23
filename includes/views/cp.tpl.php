@@ -181,23 +181,24 @@ $(document).ready(function(){
     });
 });
 </script>
+
 <ul class="list-group" data-step="3" data-intro="Here is where you can create new servers and control different servers.">
   <li class="list-group-item notification is-dark"><a id="bhide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="bshow" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> <?php echo $lang_45; ?></li>
   <li class="list-group-item">  
 
-                                        <a type="button" href="/newserv" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_15; ?></a>
+                                        <a type="button" href="<?php echo $webroot; ?>/newserv" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_15; ?></a>
                                             <?php
                                             if (ismasterreseller()) {
                                             ?>
-                                             <a type="button" href="/newresell" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_16; ?></a>
+                                             <a type="button" href="<?php echo $webroot; ?>/newresell" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_16; ?></a>
                                             <?php
                                             } ?>
                                         <?php if (file_get_contents("data/cloudflare") != "") {
                                             ?>
                                         
-                                          <a type="button" href="/cloudflare" class="svr btn btn-default"><i class="fa fa-5x fa-cloud"></i><hr><?php echo $lang_17; ?></a>
+                                          <a type="button" href="<?php echo $webroot; ?>/cloudflare" class="svr btn btn-default"><i class="fa fa-5x fa-cloud"></i><hr><?php echo $lang_17; ?></a>
                                         <?php } ?>
-                                        <a type="button" href="/list#" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/list.svg"><hr><?php echo $lang_18; ?></a>
+                                        <a type="button" href="<?php echo $webroot; ?>/list#" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/list.svg"><hr><?php echo $lang_18; ?></a>
                                                                              <?php
                                                                             if (ismasterreseller()) {
                                                                             ?>
@@ -229,16 +230,16 @@ $(document).ready(function(){
 <?php
 if (ismasterreseller()) {
     ?>
-                                <a type="button" href="/settings" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/settings.svg"><hr><?php echo $lang_21; ?></a> 
-                            <a type="button" href="/fman" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/file.svg"><hr>Root File Manager</a> 
+                                <a type="button" href="<?php echo $webroot; ?>/settings" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/settings.svg"><hr><?php echo $lang_21; ?></a> 
+                            <a type="button" href="<?php echo $webroot; ?>/fman" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/file.svg"><hr>Root File Manager</a> 
                                 
-                                <a type="button" href="/update" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/update.svg"><hr><?php echo $lang_22; ?></a> <?php
+                                <a type="button" href="<?php echo $webroot; ?>/update" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/update.svg"><hr><?php echo $lang_22; ?></a> <?php
 } ?>
-                                  <a type="button" href="/plug" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/plugins.svg"><hr><?php echo $lang_23; ?></a>
-                                        <a type="button" href="/terminal" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/term.svg"><hr><?php echo $lang_24; ?></a>
-                                        <a  type="button" href="/activation" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/active.png"><hr>My License</a>
-                                        <a  type="button" href="/manage7" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/manage7.png"><hr>Manage7</a>
-                                                                                      <a type="button" href="/mail" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/mail.svg"><hr><?php echo $lang_25; ?></a>
+                                  <a type="button" href="<?php echo $webroot; ?>/plug" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/plugins.svg"><hr><?php echo $lang_23; ?></a>
+                                        <a type="button" href="<?php echo $webroot; ?>/terminal" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/term.svg"><hr><?php echo $lang_24; ?></a>
+                                        <a  type="button" href="<?php echo $webroot; ?>/activation" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/active.png"><hr>My License</a>
+                                        <a  type="button" href="<?php echo $webroot; ?>/manage7" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/manage7.png"><hr>Manage7</a>
+                                                                                      <a type="button" href="<?php echo $webroot; ?>/mail" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/mail.svg"><hr><?php echo $lang_25; ?></a>
                                       
                                             <?php
                                             if (ismasterreseller()) {
@@ -253,7 +254,7 @@ if (ismasterreseller()) {
                                           $safe = true;
                                             include "plugins/" . $file;
                                             if ($menu) {
-                                                echo '<a type="button" class="sys btn btn-large btn-default" href="/plpage&pl=' . urlencode($file) . '" class="btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/p.svg"><hr>' . $menu_name . '</a>';
+                                                echo '<a type="button" class="sys btn btn-large btn-default" href="' . $webroot . '/plpage&pl=' . urlencode($file) . '" class="btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/p.svg"><hr>' . $menu_name . '</a>';
                                             }
                                         }
                                         ?>
@@ -290,10 +291,10 @@ $(document).ready(function(){
   <li class="list-group-item notification is-dark"><a id="hide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="show" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> <?php echo $lang_47; ?></li>
   <li class="list-group-item">  
 
-                                        <a  type="button" href="/FileManager" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/file.svg"><hr><?php echo $lang_26; ?></a>
-    <a    type="button" href="/cron" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/cron.svg"><hr><?php echo $lang_27; ?></a>
+                                        <a  type="button" href="<?php echo $webroot; ?>/FileManager" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/file.svg"><hr><?php echo $lang_26; ?></a>
+    <a    type="button" href="<?php echo $webroot; ?>/cron" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/cron.svg"><hr><?php echo $lang_27; ?></a>
                                         <a    type="button" href="thirdparty/phpmyadmin/index.php" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/dx.svg"><hr><?php echo $lang_28; ?></a>
-                                              <a  type="button" href="/phpinfo" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/php.svg"><hr><?php echo $lang_29; ?></a>
+                                              <a  type="button" href="<?php echo $webroot; ?>/phpinfo" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/php.svg"><hr><?php echo $lang_29; ?></a>
                                                                                  
                                                                                  
                                                                                    <a id="serv"  type="button" href="<?php

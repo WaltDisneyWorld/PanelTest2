@@ -28,7 +28,7 @@
 	    <div id="wrapper">
 			<div id="inner-wrapper">
 				<div id="header" style="width:100%">
-					<div id="home_btn"><a href="?page=cp" title="Home"></a></div>
+					<div id="home_btn"><a href="{{webroot}}/cp" title="Home"></a></div>
 					<div id="logout_btn"><a href="action.php?action=exit" title="Log out"></a></div>
 					<div id="myaccount_btn"><a  data-toggle="modal" data-target="#myModal" title="My account"></a></div>
 					<div id="logo"></div>

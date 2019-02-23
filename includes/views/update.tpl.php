@@ -4,12 +4,10 @@ require 'includes/classes/head.class.php';
 onlyadmin();
 ini_set('max_execution_time', 60);
 error_reporting(0);
-function redodie($a) {
+function redodie($a ="") {
 
-  echo "</div></div></div>";
   $HOME = true;
-	require 'includes/classes/footer.class.php';
-	die();
+
 }
 ?>
  <div class="content-wrapper">
@@ -27,7 +25,11 @@ if ($failsafe_offline) {
  <p>The update servers could not be contacted. Please check if the activation servers are working.</p>
 </div>
   <?php
-  redodie();
+   echo "</div></div></div>";
+  $HOME = true;
+	require 'includes/classes/footer.class.php';
+	die();
+
 }
 
 
@@ -47,7 +49,11 @@ print '
 ';
 if (version_compare(phpversion(), '4.1') < 0)
   {
-    redodie(print_message(lang('ERROR'), lang('PHP 4.1 or greater is required.'), $color = 'red'));
+     echo "</div></div></div>";
+  $HOME = true;
+	require 'includes/classes/footer.class.php';
+	die();
+
   }
 @set_time_limit(0);
 @ini_set('max_execution_time', 0);
@@ -118,7 +124,11 @@ if ($getVersions != '' and $currentVersion != '')
                     else
                       {
                         print_message(lang('ERROR'), lang('Could Not Create Dir') . ' ' . lang('Operation Aborted'), $color = 'red');
-                        redodie('</body></html>');
+                        echo "</div></div></div>";
+  $HOME = true;
+	require 'includes/classes/footer.class.php';
+	die();
+
                       }
                   }
                 else
@@ -154,7 +164,11 @@ if ($getVersions != '' and $currentVersion != '')
                     else
                       {
                         print_message(lang('ERROR'), lang('Could Not Create Dir') . ' ' . lang('Operation Aborted'), $color = 'red');
-                        redodie('</body></html>');
+                         echo "</div></div></div>";
+  $HOME = true;
+	require 'includes/classes/footer.class.php';
+	die();
+
                       }
                   }
                 $master = 'includes/tmp/';
@@ -167,7 +181,11 @@ if ($getVersions != '' and $currentVersion != '')
                 else
                   {
                     print_message(lang('ERROR'), lang('Could Not Read File') . ' master.zip. ' . lang('Operation Aborted'), $color = 'red');
-                    redodie('</body></html>');
+                     echo "</div></div></div>";
+  $HOME = true;
+	require 'includes/classes/footer.class.php';
+	die();
+
                   }
 				
                 unlink("includes/master.zip");
@@ -204,7 +222,7 @@ if ($getVersions != '' and $currentVersion != '')
             else
               {
                 print_message(lang('OK'), lang('Update Ready'), $color = 'green');
-                print_message('', '<a class="btn btn-primary" href="/update?doUpdate=true">' . lang('Install Now?') . '</a><br><br><br><br><br> <a class="btn btn-danger" href="/update?doUpdate=true&force">Emergency Recovery?</a>');
+                print_message('', '<a class="btn btn-primary" href="' . $webroot . '/update?doUpdate=true">' . lang('Install Now?') . '</a><br><br><br><br><br> <a class="btn btn-danger" href="' . $webroot . '/update?doUpdate=true&force">Emergency Recovery?</a>');
               }
             break;
           }
@@ -223,14 +241,18 @@ if ($getVersions != '' and $currentVersion != '')
       {
         print_message(lang('INFO'), lang('The Newest Version Of The Script Is Version') . ' ' . $currentVersion, $color = 'green');
         print_message(lang('OK'), lang('This Is The Latest Version!'), $color = 'green');
-        print_message('', '<a class="btn btn-primary" href="/update?check_for_updates=true">' . lang('Check For Updates?') . '</a><br><br><br><br><br> <a class="btn btn-danger" href="/update?doUpdate=true&force">Emergency Recovery?</a>');
+        print_message('', '<a class="btn btn-primary" href="' . $webroot . '/update?check_for_updates=true">' . lang('Check For Updates?') . '</a><br><br><br><br><br> <a class="btn btn-danger" href="' . $webroot . '/update?doUpdate=true&force">Emergency Recovery?</a>');
       }
   }
 else if ($getVersions == '' OR $currentVersion == '')
   {
     print_message(lang('ERROR'), lang('Could Not Find Latest Releases. Operation Aborted'), $color = 'red');
   }
-redodie('</body></html>');
+ echo "</div></div></div>";
+  $HOME = true;
+	require 'includes/classes/footer.class.php';
+	die();
+
 function print_message($headline, $message, $color = '')
   {
     switch ($color)

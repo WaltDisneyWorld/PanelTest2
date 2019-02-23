@@ -1,5 +1,6 @@
 <?php
 session_start();
+error_reporting(0);
 if (!isset($_SESSION["user"])) die();
     require_once(dirname(__FILE__) . "/application/api/constants.php");
     includeMonstaConfig();

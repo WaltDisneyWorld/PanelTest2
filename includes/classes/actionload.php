@@ -17,7 +17,7 @@ if (!isset($_GET["action"])) die();
     );
         php_error\reportErrors($options);
    } else {
-
+error_reporting(0);
    }
 $_ACT = $_GET["action"];
 if ($_ACT == "login") {

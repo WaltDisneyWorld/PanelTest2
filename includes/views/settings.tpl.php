@@ -7,22 +7,25 @@
 
                         <h2 class="page-title"><?php echo $lang_21; ?></h2>
                         <div class="container">
-
+<style>
+							.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+								pointer-events: none;
+}</style>
   <ul class="nav nav-tabs" style="width:539px">
-    <li class="active"><a href="#home">System Settings</a></li>
-    <li><a href="#menu1">Branding</a></li>
+    <li><a class="isDisabled">System Settings</a></li>
+    <li  class="active"><a href="#menu1">Branding</a></li>
     <li><a href="#menu2">Email</a></li>
     <li><a href="#menu3">Misc</a></li>
     <li><a href="#menu4">Oauth</a></li>
   </ul>
    <form method="POST" action="action.php?action=options">
   <div class="tab-content" style="width:70%">
-    <div id="home" class="tab-pane fade in active">
-      <h3>Default</h3>
-      <label>username</label><br/>
-      <input name="username" type="text" >
-    </div>
-    <div id="menu1" class="tab-pane fade">
+
+    <div id="menu1" class="tab-pane fade in active">
       <h3>Branding</h3>
    <fieldset class="form-group">
     <label for="formGroupExampleInput"><?php echo $lang_64; ?></label>

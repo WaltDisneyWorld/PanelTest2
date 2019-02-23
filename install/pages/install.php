@@ -51,7 +51,7 @@ $sql = "INSERT INTO settings (id, code, value) VALUES ('3', 'color', '000000')";
 $m->query($sql);
 $sql = "INSERT INTO settings (id, code, value) VALUES ('4', 'forum', 'https://forum.delinz.com')";
 $m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('5', 'head', '" . '<center><a href="https://github.com/INTisp/INTisp"><img src="public/assets/img/wall.jpg"></a></center>
+$sql = "INSERT INTO settings (id, code, value) VALUES ('5', 'head', '" . '<center><a href="https://github.com/INTisp/INTisp"><img src="templates/default/public/assets/img/wall.jpg"></a></center>
 '. "')";
 $m->query($sql);
 $sql = "INSERT INTO settings (id, code, value) VALUES ('6', 'loginfoot', '')";
@@ -119,4 +119,4 @@ Please make sure to delete the installation folder as anyone can overwrite this 
 </div>
 <br><br>
 
-<a href="../index.php" class="button">Login to IntISP Now</a>
+<a href="../" class="button">Login to IntISP Now</a>
