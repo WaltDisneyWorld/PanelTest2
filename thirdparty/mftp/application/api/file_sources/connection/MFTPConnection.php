@@ -5,19 +5,23 @@
     require_once(dirname(__FILE__) . '/mftp_functions.php');
     require_once(dirname(__FILE__) . '/FTPConnectionBase.php');
 
-    class MFTPConnection extends FTPConnectionBase {
-        protected function handleConnect() {
+    class MFTPConnection extends FTPConnectionBase
+    {
+        protected function handleConnect()
+        {
             $connectionOrFalse = mftp_connect($this->configuration->getHost(), $this->configuration->getPort());
 
-            if($connectionOrFalse === false)
+            if ($connectionOrFalse === false) {
                 mftpLog(LOG_WARNING, "MFTP failed to connect to '{$this->configuration->getHost()}:{$this->configuration->getPort()}'");
-            else
+            } else {
                 mftpLog(LOG_DEBUG, "MFTP connected to '{$this->configuration->getHost()}:{$this->configuration->getPort()}'");
+            }
 
             return $connectionOrFalse;
         }
 
-        protected function configureUTF8() {
+        protected function configureUTF8()
+        {
             $features = $this->getServerFeatures();
             if (array_search("UTF8", $features) !== false) {
                 mftp_utf8_on($this->connection);
@@ -26,7 +30,8 @@
             }
         }
 
-        protected function handleChangeDirectory($newDirectory) {
+        protected function handleChangeDirectory($newDirectory)
+        {
             try {
                 mftp_chdir($this->connection, $newDirectory);
 
@@ -40,7 +45,8 @@
             }
         }
 
-        protected function handleGetCurrentDirectory() {
+        protected function handleGetCurrentDirectory()
+        {
             $path = mftp_pwd($this->connection);
 
             mftpLog(LOG_DEBUG, "MFTP pwd is: '$path'");
@@ -48,7 +54,8 @@
             return $path;
         }
 
-        function handleRawDirectoryList($listArgs) {
+        public function handleRawDirectoryList($listArgs)
+        {
             try {
                 $rawList = mftp_rawlist($this->connection, $listArgs);
 
@@ -62,7 +69,8 @@
             }
         }
 
-        protected function rawGetSysType() {
+        protected function rawGetSysType()
+        {
             try {
                 $sysType = mftp_get_systype($this->connection);
             } catch (MFTPException $sysTypeException) {
@@ -76,31 +84,40 @@
             return $sysType;
         }
 
-        protected function handleDisconnect() {
+        protected function handleDisconnect()
+        {
             return mftp_disconnect($this->connection);
         }
 
-        protected function handleAuthentication() {
+        protected function handleAuthentication()
+        {
             try {
-                if($this->configuration->isSSLMode())
+                if ($this->configuration->isSSLMode()) {
                     mftp_enable_ssl($this->connection);
+                }
 
-                mftp_login($this->connection, $this->configuration->getUsername(),
-                    $this->configuration->getPassword());
+                mftp_login(
+                    $this->connection,
+                    $this->configuration->getUsername(),
+                    $this->configuration->getPassword()
+                );
 
                 mftpLog(LOG_INFO, "MFTP login success '{$this->configuration->getUsername()}@{$this->configuration->getHost()}'");
 
                 return true;
-            } catch(MFTPAuthenticationRequiresTlsException $tlsException) {
-              throw new LocalizableException("The server you are connecting to requires TLS/SSL to be enabled.",
-                  LocalizableExceptionDefinition::$TLS_REQUIRED_ERROR);
+            } catch (MFTPAuthenticationRequiresTlsException $tlsException) {
+                throw new LocalizableException(
+                  "The server you are connecting to requires TLS/SSL to be enabled.",
+                  LocalizableExceptionDefinition::$TLS_REQUIRED_ERROR
+              );
             } catch (MFTPAuthenticationException $e) {
                 mftpLog(LOG_WARNING, "MFTP authentication failed for '{$this->configuration->getUsername()}': {$e->getMessage()}");
                 return false;
             }
         }
 
-        protected function handlePassiveModeSet($passiveMode) {
+        protected function handlePassiveModeSet($passiveMode)
+        {
             mftp_pasv($this->connection, $passiveMode);
 
             mftpLog(LOG_DEBUG, "MFTP passive mode set to '$passiveMode'");
@@ -108,10 +125,15 @@
             return true;
         }
 
-        protected function handleDownloadFile($transferOperation) {
+        protected function handleDownloadFile($transferOperation)
+        {
             try {
-                mftp_get($this->connection, $transferOperation->getLocalPath(),
-                    $transferOperation->getRemotePath(), $transferOperation->getTransferMode());
+                mftp_get(
+                    $this->connection,
+                    $transferOperation->getLocalPath(),
+                    $transferOperation->getRemotePath(),
+                    $transferOperation->getTransferMode()
+                );
 
                 mftpLog(LOG_DEBUG, "MFTP got '{$transferOperation->getRemotePath()}' to '{$transferOperation->getLocalPath()}'");
 
@@ -123,14 +145,19 @@
             }
         }
 
-        protected function handleUploadFile($transferOperation) {
+        protected function handleUploadFile($transferOperation)
+        {
             try {
-                mftp_put($this->connection, $transferOperation->getRemotePath(),
-                    $transferOperation->getLocalPath(), $transferOperation->getTransferMode(),
+                mftp_put(
+                    $this->connection,
+                    $transferOperation->getRemotePath(),
+                    $transferOperation->getLocalPath(),
+                    $transferOperation->getTransferMode(),
                     MFTP_UPLOAD_PROGRESS_CALLBACK_TIME_SECONDS,
-                    function ($totalBytes){
+                    function ($totalBytes) {
                         outputStreamKeepAlive();
-                    });
+                    }
+                );
 
                 mftpLog(LOG_DEBUG, "MFTP put '{$transferOperation->getLocalPath()}' to '{$transferOperation->getRemotePath()}'");
 
@@ -142,12 +169,15 @@
 
                 return false;
             } catch (MFTPQuotaExceededException $quotaExceededException) {
-                throw new LocalizableException("Could not upload the file as the account quota has been exceeded.",
-                    LocalizableExceptionDefinition::$QUOTA_EXCEEDED_MESSAGE);
+                throw new LocalizableException(
+                    "Could not upload the file as the account quota has been exceeded.",
+                    LocalizableExceptionDefinition::$QUOTA_EXCEEDED_MESSAGE
+                );
             }
         }
 
-        protected function handleDeleteFile($remotePath) {
+        protected function handleDeleteFile($remotePath)
+        {
             try {
                 mftp_delete($this->connection, $remotePath);
 
@@ -161,7 +191,8 @@
             }
         }
 
-        protected function handleMakeDirectory($remotePath) {
+        protected function handleMakeDirectory($remotePath)
+        {
             try {
                 mftp_mkdir($this->connection, $remotePath);
 
@@ -174,7 +205,8 @@
             }
         }
 
-        protected function handleDeleteDirectory($remotePath) {
+        protected function handleDeleteDirectory($remotePath)
+        {
             try {
                 mftp_rmdir($this->connection, $remotePath);
 
@@ -188,7 +220,8 @@
             }
         }
 
-        protected function handleRename($source, $destination) {
+        protected function handleRename($source, $destination)
+        {
             try {
                 mftp_rename($this->connection, $source, $destination);
 
@@ -204,7 +237,8 @@
             }
         }
 
-        protected function handleChangePermissions($mode, $remotePath) {
+        protected function handleChangePermissions($mode, $remotePath)
+        {
             try {
                 mftp_chmod($this->connection, $mode, $remotePath);
 
@@ -214,24 +248,30 @@
             } catch (MFTPRemoteFileException $remoteException) {
                 $this->setLastError($remoteException->getMessage(), $remotePath);
 
-                mftpLog(LOG_WARNING, sprintf("MFTP failed to chmod '%s' to '%o': %s", $remotePath, $mode,
-                    $remoteException->getMessage()));
+                mftpLog(LOG_WARNING, sprintf(
+                    "MFTP failed to chmod '%s' to '%o': %s",
+                    $remotePath,
+                    $mode,
+                    $remoteException->getMessage()
+                ));
 
                 return false;
             }
         }
 
-        protected function getServerFeatures() {
+        protected function getServerFeatures()
+        {
             $cachedFeatures = $this->getCapabilitiesArrayValue("FEATURES");
 
-            if(!is_null($cachedFeatures)) {
-                if(is_null($this->connection->features))
+            if (!is_null($cachedFeatures)) {
+                if (is_null($this->connection->features)) {
                     $this->connection->features = $cachedFeatures;
+                }
                 return $cachedFeatures;
             }
-            if(!$this->isAuthenticated())
+            if (!$this->isAuthenticated()) {
                 return mftp_features($this->connection);
-            else {
+            } else {
                 mftpLog(LOG_INFO, "Attempting to get FEAT after authentication");
                 return array(); // some FTP servers (ws_ftp) don't support getting FEAT after auth. default to empty array
             }

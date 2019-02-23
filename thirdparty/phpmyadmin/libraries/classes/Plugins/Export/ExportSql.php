@@ -206,7 +206,8 @@ class ExportSql extends ExportPlugin
 
             // what to dump (structure/data/both)
             $subgroup = new OptionsPropertySubgroup(
-                "dump_table", __("Dump table")
+                "dump_table",
+                __("Dump table")
             );
             $leaf = new RadioPropertyItem('structure_or_data');
             $leaf->setValues(
@@ -225,7 +226,8 @@ class ExportSql extends ExportPlugin
             // structure options main group
             if (!$hide_structure) {
                 $structureOptions = new OptionsPropertyMainGroup(
-                    "structure", __('Object creation options')
+                    "structure",
+                    __('Object creation options')
                 );
                 $structureOptions->setForce('data');
 
@@ -343,7 +345,8 @@ class ExportSql extends ExportPlugin
 
             // begin Data options
             $dataOptions = new OptionsPropertyMainGroup(
-                "data", __('Data creation options')
+                "data",
+                __('Data creation options')
             );
             $dataOptions->setForce('structure');
             $leaf = new BoolPropertyItem(
@@ -485,7 +488,12 @@ class ExportSql extends ExportPlugin
      * @return string SQL query
      */
     protected function _exportRoutineSQL(
-        $db, array $aliases, $type, $name, array $routines, $delimiter
+        $db,
+        array $aliases,
+        $type,
+        $name,
+        array $routines,
+        $delimiter
     ) {
         global $crlf;
 
@@ -1101,7 +1109,6 @@ class ExportSql extends ExportPlugin
 
                 // special case, designer pages and their coordinates
                 if ($type == 'pdf_pages') {
-
                     $sql_query = "SELECT `page_nr`, `page_descr` FROM "
                         . Util::backquote($cfgRelation['db'])
                         . "." . Util::backquote($cfgRelation[$type])
@@ -1570,7 +1577,6 @@ class ExportSql extends ExportPlugin
             // Views have no constraints, indexes, etc. They do not require any
             // analysis.
             if (!$view) {
-
                 if (empty($sql_backquotes)) {
                     // Option "Enclose table and column names with backquotes"
                     // was checked.
@@ -1649,7 +1655,6 @@ class ExportSql extends ExportPlugin
                 // Also, AUTO_INCREMENT attribute is removed.
                 /** @var CreateDefinition $field */
                 foreach ($statement->fields as $key => $field) {
-
                     if ($field->isConstraint) {
                         // Creating the parts that add constraints.
                         $constraints[] = $field::build($field);
@@ -1663,7 +1668,9 @@ class ExportSql extends ExportPlugin
                         } else {
                             if (empty($GLOBALS['sql_if_not_exists'])) {
                                 $indexes[] = str_replace(
-                                    'COMMENT=\'', 'COMMENT \'', $field::build($field)
+                                    'COMMENT=\'',
+                                    'COMMENT \'',
+                                    $field::build($field)
                                 );
                                 unset($statement->fields[$key]);
                             }
@@ -1685,7 +1692,6 @@ class ExportSql extends ExportPlugin
                         if ($field->options->has('AUTO_INCREMENT')
                             && empty($GLOBALS['sql_if_not_exists'])
                         ) {
-
                             $auto_increment[] = $field::build($field);
                             $field->options->remove('AUTO_INCREMENT');
                         }
@@ -2126,7 +2132,7 @@ class ExportSql extends ExportPlugin
                 __('Stand-in structure for view') . ' ' . $formatted_table_name
             )
                 . $this->_exportComment(
-                __('(See below for the actual view)')
+                    __('(See below for the actual view)')
             )
                 . $this->_exportComment();
             // export a stand-in definition to resolve view dependencies
@@ -2431,7 +2437,6 @@ class ExportSql extends ExportPlugin
             if (isset($GLOBALS['sql_type'])
                 && $GLOBALS['sql_type'] == 'UPDATE'
             ) {
-
                 $insert_line = $schema_insert;
                 for ($i = 0; $i < $fields_cnt; $i++) {
                     if (0 == $i) {
@@ -2482,7 +2487,7 @@ class ExportSql extends ExportPlugin
                         }
                     }
                     $query_size += mb_strlen($insert_line);
-                    // Other inserts case
+                // Other inserts case
                 } else {
                     $insert_line = $schema_insert
                         . '(' . implode(', ', $values) . ')';

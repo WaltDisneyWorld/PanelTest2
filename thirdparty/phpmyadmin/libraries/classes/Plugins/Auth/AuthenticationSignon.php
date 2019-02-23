@@ -86,7 +86,7 @@ class AuthenticationSignon extends AuthenticationPlugin
             }
             include $script_name;
 
-            list ($this->user, $this->password)
+            list($this->user, $this->password)
                 = get_login_credentials($GLOBALS['cfg']['Server']['user']);
         } elseif (isset($_COOKIE[$session_name])) { /* Does session exist? */
             /* End current session */
@@ -98,7 +98,7 @@ class AuthenticationSignon extends AuthenticationPlugin
             }
 
             /* Sanitize cookie params */
-            $defaultCookieParams = function($key){
+            $defaultCookieParams = function ($key) {
                 switch ($key) {
                     case 'lifetime': return 0;
                     case 'path': return '/';
@@ -109,8 +109,9 @@ class AuthenticationSignon extends AuthenticationPlugin
                 return null;
             };
             foreach (array('lifetime', 'path', 'domain', 'secure', 'httponly') as $key) {
-                if (!isset($session_cookie_params[$key]))
+                if (!isset($session_cookie_params[$key])) {
                     $session_cookie_params[$key] = $defaultCookieParams($key);
+                }
             }
 
             /* Load single signon session */

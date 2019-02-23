@@ -11,7 +11,8 @@
      *        and should be converted to JSON first of all.
      * @return string Indented version of the original JSON string
      */
-    function json_format($json) {
+    function json_format($json)
+    {
         if (!is_string($json)) {
             if (phpversion() && phpversion() >= 5.4) {
                 return json_encode($json, JSON_PRETTY_PRINT);
@@ -55,14 +56,14 @@
             }
             // If this character is the end of an element,
             // output a new line and indent the next line
-            else if ($outOfQuotes && ($char === '}' || $char === ']')) {
+            elseif ($outOfQuotes && ($char === '}' || $char === ']')) {
                 $result .= $newLine;
                 $pos--;
                 for ($j = 0; $j < $pos; $j++) {
                     $result .= $indentStr;
                 }
             } // eat all non-essential whitespace in the input as we do our own here and it would only mess up our process
-            else if ($outOfQuotes && false !== strpos(" \t\r\n", $char)) {
+            elseif ($outOfQuotes && false !== strpos(" \t\r\n", $char)) {
                 continue;
             }
 
@@ -75,7 +76,7 @@
 
             // If the last character was the beginning of an element,
             // output a new line and indent the next line
-            else if ($outOfQuotes && ($char === ',' || $char === '{' || $char === '[')) {
+            elseif ($outOfQuotes && ($char === ',' || $char === '{' || $char === '[')) {
                 $result .= $newLine;
                 if ($char === '{' || $char === '[') {
                     $pos++;
@@ -89,4 +90,3 @@
 
         return $result;
     }
-

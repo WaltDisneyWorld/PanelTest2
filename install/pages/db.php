@@ -1,6 +1,8 @@
 <?php
-if (!defined('HOMEBASE')) die("Direct Access is Not Allowed");
-if (!isset( $_SESSION["install_db"])) {
+if (!defined('HOMEBASE')) {
+    die("Direct Access is Not Allowed");
+}
+if (!isset($_SESSION["install_db"])) {
     ?>
      <script>window.location.href = "index.php?pg=license";</script>
         <a href="index.php?pg=license">Click here</a> if you are not redirected.
@@ -12,54 +14,51 @@ if (!isset( $_SESSION["install_db"])) {
 
 <?php
 if (isset($_GET["c"])) {
-  $e = 0;
-  require("../includes/classes/license.class.php");
-if (getEdition($_POST["key"]) == false) {
-$e = 1;
-  ?>
+    $e = 0;
+    require("../includes/classes/license.class.php");
+    if (getEdition($_POST["key"]) == false) {
+        $e = 1; ?>
    <div class="notification is-danger">
  The License information provided may be not be valid.
 </div>
   <?php
-} else {
-  $_SESSION["act"] = $_POST["key"];
-}
-if ($e == 0) {
-  $mysqli_connection = new MySQLi($_POST["host"], $_POST["username"], $_POST["password"], $_POST["database"]);
-if ($mysqli_connection->connect_error) {
-  $e = 1;
-   ?>
+    } else {
+        $_SESSION["act"] = $_POST["key"];
+    }
+    if ($e == 0) {
+        $mysqli_connection = new MySQLi($_POST["host"], $_POST["username"], $_POST["password"], $_POST["database"]);
+        if ($mysqli_connection->connect_error) {
+            $e = 1; ?>
     <div class="notification is-danger">
  We were unable to connect to the database given. Please validate the credentials and make sure they are correct.
 </div>
    <?php
-}
-}
-if ($e == 0) {
-  $config = file_get_contents("config/database.php");
-	$new  = str_replace("%HOSTNAME%",$_POST['host'],$config);
-		$new  = str_replace("%USERNAME%",$_POST['username'],$new);
-		$new  = str_replace("%PASSWORD%",$_POST['password'],$new);
-		$new  = str_replace("%DATABASE%",$_POST['database'],$new);
-		$new  = str_replace("%WEBROOT%",$_POST['webroot'],$new);
-		$new  = str_replace("%LANG%","en",$new);
-  file_put_contents("../config.php",$new);
-  if (!file_exists("../config.php")) {
-    $e = 1;
-    ?>
+        }
+    }
+    if ($e == 0) {
+        $config = file_get_contents("config/database.php");
+        $new  = str_replace("%HOSTNAME%", $_POST['host'], $config);
+        $new  = str_replace("%USERNAME%", $_POST['username'], $new);
+        $new  = str_replace("%PASSWORD%", $_POST['password'], $new);
+        $new  = str_replace("%DATABASE%", $_POST['database'], $new);
+        $new  = str_replace("%WEBROOT%", $_POST['webroot'], $new);
+        $new  = str_replace("%LANG%", "en", $new);
+        file_put_contents("../config.php", $new);
+        if (!file_exists("../config.php")) {
+            $e = 1; ?>
     
      <div class="notification is-danger">
  We were unable to write the configuration file. Please make sure the permissions are set up correctly.
 </div>
 <?php
-  }
-  if ($e == 0) {
-    ?>
+        }
+        if ($e == 0) {
+            ?>
      <script>window.location.href = "index.php?pg=installation";</script>
         <a href="index.php?pg=installation">Click here</a> if you are not redirected.
     <?php
-  }
-}
+        }
+    }
 }
 ?>
   
@@ -117,8 +116,8 @@ if ($e == 0) {
 <div class="field">
   <label class="label">Site URL</label>
   <div class="control">
-	  <?php $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 
-                "https" : "http") . "://" . $_SERVER['HTTP_HOST'] .  
+	  <?php $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
+                "https" : "http") . "://" . $_SERVER['HTTP_HOST'] .
                 $_SERVER['REQUEST_URI']; ?>
     <input name="webroot" class="input is-rounded" type="text" value="<?php echo substr($link, 0, -24); ?>" style="width:400px">
     <p>The website URL where IntISP is installed.</p>

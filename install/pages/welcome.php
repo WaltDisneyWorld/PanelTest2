@@ -1,5 +1,7 @@
 <?php
-if (!defined('HOMEBASE')) die("Direct Access is Not Allowed");
+if (!defined('HOMEBASE')) {
+    die("Direct Access is Not Allowed");
+}
 ?>
 <h1 class="title">Welcome to the IntISP Installation Tool</h1>
 <p>This will install the IntISP suite on your server. Please read the directions carefully so you can have a sucessful installation.

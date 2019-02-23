@@ -1,5 +1,7 @@
 <?php
-if (!isset($HOME)) die();
+if (!isset($HOME)) {
+    die();
+}
  require 'config.php';
 if (!isset($_SESSION['user'])) {
     header('Location: ' . $webroot . '/');
@@ -16,8 +18,8 @@ if (!isset($_SESSION['user'])) {
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
     mysqli_close($con);
 ?>
@@ -65,8 +67,8 @@ if (!isset($_SESSION['user'])) {
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
     mysqli_close($con);
 ?></h4>  
@@ -103,8 +105,8 @@ if (!isset($_SESSION['user'])) {
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
     mysqli_close($con);
 ?>

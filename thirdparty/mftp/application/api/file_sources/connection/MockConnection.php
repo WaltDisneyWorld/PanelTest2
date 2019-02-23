@@ -3,16 +3,19 @@
     require_once(dirname(__FILE__) . '/ConnectionBase.php');
     require_once(dirname(__FILE__) . '/../connection/StatOutputListItem.php');
 
-    class MockStatOutputListItem extends StatOutputListItem {
-        public function __construct($name, $fileStat) {
+    class MockStatOutputListItem extends StatOutputListItem
+    {
+        public function __construct($name, $fileStat)
+        {
             parent::__construct($name, $fileStat);
-            if($name == 'src')
+            if ($name == 'src') {
                 $this->link = true;
+            }
         }
-
     }
 
-    class MockConnection extends ConnectionBase {
+    class MockConnection extends ConnectionBase
+    {
         protected $protocolName = 'Mock';
 
         private $fixtures = array(
@@ -154,11 +157,13 @@
             )
         );
 
-        public function __construct($configuration) {
+        public function __construct($configuration)
+        {
             parent::__construct($configuration);
         }
 
-        private function checkFileNotFound($remotePath) {
+        private function checkFileNotFound($remotePath)
+        {
             if (!array_key_exists($remotePath, $this->fixtures)) {
                 @trigger_error("No such file or directory $remotePath");
                 return false;
@@ -167,94 +172,108 @@
             return true;
         }
 
-        protected function handleConnect() {
+        protected function handleConnect()
+        {
             return $this->configuration->isValidHost();
         }
 
-        protected function handleDisconnect() {
+        protected function handleDisconnect()
+        {
             return true;
         }
 
-        protected function handleAuthentication() {
+        protected function handleAuthentication()
+        {
             $mockUsernameLength = strlen(MOCK_DEFAULT_USERNAME);
 
             return substr($this->configuration->getUsername(), 0, $mockUsernameLength) == MOCK_DEFAULT_USERNAME
             && $this->configuration->getPassword() == MOCK_DEFAULT_PASSWORD;
         }
 
-        protected function postAuthentication() {
+        protected function postAuthentication()
+        {
             // pass
         }
 
-        protected function handleListDirectory($path, $showHidden) {
-            if($path == "/to-copy")
+        protected function handleListDirectory($path, $showHidden)
+        {
+            if ($path == "/to-copy") {
                 throw new Exception("This is not a directory");
+            }
 
             $dirList = array();
 
-            if($path == '/local-fixtures/')
+            if ($path == '/local-fixtures/') {
                 $dirSource = $this->localFixturesList;
-            else
+            } else {
                 $dirSource = $this->linkedFixturesList;
+            }
 
             foreach ($dirSource as $entry) {
-                if (!$showHidden && substr($entry['name'], 0, 1) == '.')
+                if (!$showHidden && substr($entry['name'], 0, 1) == '.') {
                     continue;
+                }
 
                 $dirList[] = new MockStatOutputListItem($entry['name'], $entry);
-
             }
 
             return $dirList;
         }
 
-        protected function handleDownloadFile($transferOperation) {
+        protected function handleDownloadFile($transferOperation)
+        {
             if ($transferOperation->getRemotePath() == '/local-fixtures/no-perms') {
                 $this->setPermissionDeniedError();
                 return false;
             }
 
-            if (!$this->checkFileNotFound($transferOperation->getRemotePath()))
+            if (!$this->checkFileNotFound($transferOperation->getRemotePath())) {
                 return false;
+            }
 
             file_put_contents($transferOperation->getLocalPath(), $this->fixtures[$transferOperation->getRemotePath()]);
 
             return true;
         }
 
-        protected function handleUploadFile($transferOperation) {
-            if($transferOperation->getRemotePath() == '/local-fixtures/no-perms') {
+        protected function handleUploadFile($transferOperation)
+        {
+            if ($transferOperation->getRemotePath() == '/local-fixtures/no-perms') {
                 $this->setPermissionDeniedError();
                 return false;
             }
 
             $fileContents = @file_get_contents($transferOperation->getLocalPath());
-            if($fileContents === FALSE)
-                return FALSE;
+            if ($fileContents === false) {
+                return false;
+            }
             $this->fixtures[$transferOperation->getRemotePath()] = $fileContents;
             return true;
         }
 
-        protected function handleDeleteFile($remotePath) {
-            if($remotePath == '/local-fixtures/readonly/file') {
+        protected function handleDeleteFile($remotePath)
+        {
+            if ($remotePath == '/local-fixtures/readonly/file') {
                 $this->setPermissionDeniedError();
                 return false;
             }
 
-            if (!$this->checkFileNotFound($remotePath))
+            if (!$this->checkFileNotFound($remotePath)) {
                 return false;
+            }
 
             unset($this->fixtures[$remotePath]);
             return true;
         }
 
-        protected function handleMakeDirectory($remotePath) {
+        protected function handleMakeDirectory($remotePath)
+        {
             if ($remotePath == '/local-fixtures/readonly/bad-dir') {
                 $this->setPermissionDeniedError();
                 return false;
             }
 
-            if ($remotePath == "/local-fixtures"){
+            if ($remotePath == "/local-fixtures") {
                 @trigger_error("File exists");
                 return false;
             }
@@ -262,13 +281,14 @@
             return true;
         }
 
-        protected function handleDeleteDirectory($remotePath) {
-            if($remotePath == '/idontexist') {
+        protected function handleDeleteDirectory($remotePath)
+        {
+            if ($remotePath == '/idontexist') {
                 $this->checkFileNotFound($remotePath);
                 return false;
             }
 
-            if($remotePath == '/local-fixtures/readonly/directory') {
+            if ($remotePath == '/local-fixtures/readonly/directory') {
                 $this->setPermissionDeniedError();
                 return false;
             }
@@ -276,58 +296,68 @@
             return true;
         }
 
-        protected function handleRename($source, $destination) {
+        protected function handleRename($source, $destination)
+        {
             $res = $this->handleCopy($source, $destination);
-            if($res === false)
+            if ($res === false) {
                 return false;
+            }
             unset($this->fixtures[$source]);
             return true;
         }
 
-        protected function handleChangePermissions($mode, $remotePath) {
+        protected function handleChangePermissions($mode, $remotePath)
+        {
             if ($remotePath == '/idontexist') {
                 @trigger_error("Unknown error");
                 return false;
             }
 
-            if($remotePath == '/local-fixtures/perm-update')
+            if ($remotePath == '/local-fixtures/perm-update') {
                 $this->localFixturesList[0]['mode'] = $mode;
-            else if(!$this->checkFileNotFound($remotePath))
+            } elseif (!$this->checkFileNotFound($remotePath)) {
                 return false;
+            }
 
             return true;
         }
 
-        protected function handleCopy($source, $destination) {
-            if($source == '/local-fixtures/readonly/file') {
+        protected function handleCopy($source, $destination)
+        {
+            if ($source == '/local-fixtures/readonly/file') {
                 $this->setPermissionDeniedError();
                 return false;
             }
 
-            if(!$this->checkFileNotFound($source))
+            if (!$this->checkFileNotFound($source)) {
                 return false;
+            }
 
             $contents = $this->fixtures[$source];
             $this->fixtures[$destination] = $contents;
             return true;
         }
 
-        public function deleteDirectory($remotePath) {
+        public function deleteDirectory($remotePath)
+        {
             $this->ensureConnectedAndAuthenticated('DELETE_DIRECTORY_OPERATION');
-            if(!$this->handleDeleteDirectory($remotePath))
+            if (!$this->handleDeleteDirectory($remotePath)) {
                 $this->handleOperationError('DELETE_DIRECTORY_OPERATION', $remotePath, $this->getLastError());
-            
+            }
         }
 
-        private function setPermissionDeniedError() {
+        private function setPermissionDeniedError()
+        {
             @trigger_error("Permission denied");
         }
 
-        protected function handleGetFileInfo($remotePath) {
+        protected function handleGetFileInfo($remotePath)
+        {
             // TODO: Implement handleGetFileInfo() method.
         }
 
-        protected function handleGetCurrentDirectory() {
+        protected function handleGetCurrentDirectory()
+        {
             return "/";
         }
     }

@@ -204,7 +204,9 @@ if (isset($ret_message)) {
  */
 if (isset($_POST['change_copy'])) {
     $queries = Privileges::getDbSpecificPrivsQueriesForChangeOrCopyUser(
-        $queries, $username, $hostname
+        $queries,
+        $username,
+        $hostname
     );
 }
 
@@ -258,7 +260,7 @@ if (! empty($_POST['changeUserGroup']) && $cfgRelation['menuswork']
  * Revokes Privileges
  */
 if (isset($_POST['revokeall'])) {
-    list ($message, $sql_query) = Privileges::getMessageAndSqlQueryForPrivilegesRevoke(
+    list($message, $sql_query) = Privileges::getMessageAndSqlQueryForPrivilegesRevoke(
         (isset($dbname) ? $dbname : ''),
         (isset($tablename)
             ? $tablename
@@ -274,7 +276,9 @@ if (isset($_POST['revokeall'])) {
  */
 if (isset($_POST['change_pw'])) {
     $message = Privileges::updatePassword(
-        $err_url, $username, $hostname
+        $err_url,
+        $username,
+        $hostname
     );
 }
 
@@ -412,7 +416,8 @@ if (isset($_GET['adduser'])) {
         // check the privileges for a particular table.
         $response->addHTML(
             Privileges::getHtmlForSpecificTablePrivileges(
-                $_GET['checkprivsdb'], $_GET['checkprivstable']
+                $_GET['checkprivsdb'],
+                $_GET['checkprivstable']
             )
         );
     } else {
@@ -440,7 +445,10 @@ if (isset($_GET['adduser'])) {
     } elseif (!empty($routinename)) {
         $response->addHTML(
             Privileges::getHtmlForRoutineSpecificPrivileges(
-                $username, $hostname, $dbname, $routinename,
+                $username,
+                $hostname,
+                $dbname,
+                $routinename,
                 (isset($url_dbname) ? $url_dbname : '')
             )
         );
@@ -455,7 +463,8 @@ if (isset($_GET['adduser'])) {
             Privileges::getHtmlForUserProperties(
                 (isset($dbname_is_wildcard) ? $dbname_is_wildcard : ''),
                 (isset($url_dbname) ? $url_dbname : ''),
-                $username, $hostname,
+                $username,
+                $hostname,
                 (isset($dbname) ? $dbname : ''),
                 (isset($tablename) ? $tablename : '')
             )

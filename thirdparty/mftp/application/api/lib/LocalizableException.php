@@ -1,6 +1,7 @@
 <?php
 
-    abstract class LocalizableExceptionDefinition {
+    abstract class LocalizableExceptionDefinition
+    {
         public static $FETCH_IN_PROGRESS_ERROR = "FETCH_IN_PROGRESS_ERROR";
         public static $FETCH_FAILED_ERROR = "FETCH_FAILED_ERROR";
         public static $PRIVATE_KEY_LOAD_ERROR = "PRIVATE_KEY_LOAD_ERROR";
@@ -118,25 +119,30 @@
         LocalizableExceptionDefinition::$FILE_CHANGED_ON_SERVER
     );
 
-    abstract class LocalizableExceptionCodeLookup {
-        static function codeToName($errorCode) {
+    abstract class LocalizableExceptionCodeLookup
+    {
+        public static function codeToName($errorCode)
+        {
             global $EXCEPTION_CODE_MAP;
             return $EXCEPTION_CODE_MAP[$errorCode];
         }
 
-        static function nameToCode($errorName) {
+        public static function nameToCode($errorName)
+        {
             global $EXCEPTION_CODE_MAP;
             return array_search($errorName, $EXCEPTION_CODE_MAP);
         }
     }
 
-    class LocalizableException extends Exception {
+    class LocalizableException extends Exception
+    {
         /**
          * @var array
          */
         private $context;
 
-        public function __construct($message, $errorName, $context = null, $previous = null) {
+        public function __construct($message, $errorName, $context = null, $previous = null)
+        {
             $code = LocalizableExceptionCodeLookup::nameToCode($errorName);
 
             parent::__construct($message, $code, $previous);
@@ -147,7 +153,8 @@
         /**
          * @return array
          */
-        public function getContext() {
+        public function getContext()
+        {
             return $this->context;
         }
     }

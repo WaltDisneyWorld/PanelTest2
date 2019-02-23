@@ -1,5 +1,7 @@
 <?php
-if (!isset($HOME)) die();
+if (!isset($HOME)) {
+    die();
+}
 /*
  * Adaclare IntISP System
  * Copyright Adaclare Technologies 2007-2018
@@ -9,10 +11,9 @@ if (!isset($HOME)) die();
  */
 
 
-function onlyadmin() 
+function onlyadmin()
 {
     if ($_SESSION['user'] == 'admin') {
-         
     } else {
         die();
     }
@@ -26,7 +27,7 @@ if (!isset($_SESSION['user'])) {
 }
 
 if ($_GET['act'] == 'restart') {
-   pwrmgmnt("restart");
+    pwrmgmnt("restart");
     header('Location: ' . $webroot . '/cp');
     die();
 }

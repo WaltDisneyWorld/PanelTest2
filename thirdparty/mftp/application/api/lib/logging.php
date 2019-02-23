@@ -4,7 +4,8 @@
 
     includeMonstaConfig();
 
-    function _mftpLogPriorityToText($priority) {
+    function _mftpLogPriorityToText($priority)
+    {
         switch ($priority) {
             case LOG_EMERG:
                 return "EMERG";
@@ -27,41 +28,50 @@
         }
     }
 
-    function _mftpLogToFile($path, $priority, $message) {
+    function _mftpLogToFile($path, $priority, $message)
+    {
         $handle = @fopen($path, "a");
-        if ($handle === false)
+        if ($handle === false) {
             return;
+        }
 
         fprintf($handle, "[%s] (%s) %s\n", _mftpLogPriorityToText($priority), date("c"), $message);
 
         fclose($handle);
     }
 
-    function _mftpLogToSyslog($priority, $message) {
+    function _mftpLogToSyslog($priority, $message)
+    {
         $facility = defined("MFTP_LOG_SYSLOG_FACILITY") ? MFTP_LOG_SYSLOG_FACILITY : LOG_USER;
 
-        if(!@openlog("MONSTAFTP", LOG_ODELAY, $facility))
+        if (!@openlog("MONSTAFTP", LOG_ODELAY, $facility)) {
             return;
+        }
 
         syslog($priority, $message);
 
         closelog();
     }
 
-    function _mftpShouldLogToFile() {
+    function _mftpShouldLogToFile()
+    {
         return defined("MFTP_LOG_TO_FILE") && MFTP_LOG_TO_FILE
         && defined("MFTP_LOG_FILE_PATH") && !is_null(MFTP_LOG_FILE_PATH)
         && defined("MFTP_LOG_LEVEL_THRESHOLD");
     }
 
-    function _mftpShouldLogToSyslog() {
+    function _mftpShouldLogToSyslog()
+    {
         return defined("MFTP_LOG_TO_SYSLOG") && MFTP_LOG_TO_SYSLOG;
     }
 
-    function mftpLog($priority, $message) {
-        if (_mftpShouldLogToFile() && $priority <= MFTP_LOG_LEVEL_THRESHOLD)
+    function mftpLog($priority, $message)
+    {
+        if (_mftpShouldLogToFile() && $priority <= MFTP_LOG_LEVEL_THRESHOLD) {
             _mftpLogToFile(MFTP_LOG_FILE_PATH, $priority, $message);
+        }
 
-        if(_mftpShouldLogToSyslog())
+        if (_mftpShouldLogToSyslog()) {
             _mftpLogToSyslog($priority, $message);
+        }
     }

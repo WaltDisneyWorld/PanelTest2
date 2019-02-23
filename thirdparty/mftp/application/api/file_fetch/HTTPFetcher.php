@@ -3,25 +3,32 @@
     require_once(dirname(__FILE__) . "/../lib/LocalizableException.php");
     require_once(dirname(__FILE__) . "/../lib/helpers.php");
 
-    class HTTPFetcher {
+    class HTTPFetcher
+    {
         private $fetchRequest = null;
         private $tempSavePath = null;
 
-        public function fetch($fetchRequest) {
-            if ($this->fetchRequest != null)
-                throw new LocalizableException("Can not fetch a request as one is already in progress.",
-                    LocalizableExceptionDefinition::$FETCH_IN_PROGRESS_ERROR);
+        public function fetch($fetchRequest)
+        {
+            if ($this->fetchRequest != null) {
+                throw new LocalizableException(
+                    "Can not fetch a request as one is already in progress.",
+                    LocalizableExceptionDefinition::$FETCH_IN_PROGRESS_ERROR
+                );
+            }
 
             $this->fetchRequest = $fetchRequest;
             $this->generateTempSavePath();
             return $this->performFetchRequest();
         }
 
-        public function getTempSavePath() {
+        public function getTempSavePath()
+        {
             return $this->tempSavePath;
         }
 
-        private function performFetchRequest() {
+        private function performFetchRequest()
+        {
             $fp = fopen($this->tempSavePath, 'w+');
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $this->fetchRequest->getURL());
@@ -35,19 +42,24 @@
             curl_close($ch);
             fclose($fp);
 
-            if ($success === false)
-                throw new LocalizableException("File fetch failed: " . $curlError,
+            if ($success === false) {
+                throw new LocalizableException(
+                    "File fetch failed: " . $curlError,
                     LocalizableExceptionDefinition::$FETCH_FAILED_ERROR,
-                    array('cause' => $curlError, 'url' => $this->fetchRequest->getURL()));
+                    array('cause' => $curlError, 'url' => $this->fetchRequest->getURL())
+                );
+            }
 
             return $effectiveUrl;
         }
 
-        private function generateTempSavePath() {
+        private function generateTempSavePath()
+        {
             $this->tempSavePath = tempnam(getMonstaSharedTransferDirectory(), 'http_fetch');
         }
 
-        public function cleanUp() {
+        public function cleanUp()
+        {
             @unlink($this->tempSavePath);
             $this->fetchRequest = null;
         }

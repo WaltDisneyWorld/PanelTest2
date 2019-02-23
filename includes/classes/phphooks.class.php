@@ -7,7 +7,9 @@
  * https://github.com/INTisp
  *
  */
- if (!isset($HOME)) die();
+ if (!isset($HOME)) {
+     die();
+ }
 
 define('PLUGINS_FOLDER', 'plugins/');
 class phphooks
@@ -18,32 +20,32 @@ class phphooks
      *
      * @var array
      */
-    var $active_plugins = NULL;
+    public $active_plugins = null;
     
     /**
      * all plugins header information array.
      *
      * @var array
      */
-    var $plugins_header = array ();
+    public $plugins_header = array();
     
     /**
      * hooks data
      *
      * @var array
      */
-    var $hooks = array ();
+    public $hooks = array();
     
     /**
      * register hook name/tag, so plugin developers can attach functions to hooks
      *
      * @package phphooks
      * @since   1.0
-     *       
+     *
      * @param string $tag.
      *                     The name of the hook.
      */
-    function set_hook($tag) 
+    public function set_hook($tag)
     {
         $this->hooks [$tag] = '';
     }
@@ -53,13 +55,13 @@ class phphooks
      *
      * @package phphooks
      * @since   1.0
-     *       
+     *
      * @param array $tags.
      *                     The name of the hooks.
      */
-    function set_hooks($tags) 
+    public function set_hooks($tags)
     {
-        foreach ( $tags as $tag ) {
+        foreach ($tags as $tag) {
             $this->set_hook($tag);
         }
     }
@@ -69,11 +71,11 @@ class phphooks
      *
      * @package phphooks
      * @since   1.0
-     *       
+     *
      * @param string $tag.
      *                     The name of the hook.
      */
-    function unset_hook($tag) 
+    public function unset_hook($tag)
     {
         unset($this->hooks [$tag]);
     }
@@ -83,13 +85,13 @@ class phphooks
      *
      * @package phphooks
      * @since   1.0
-     *       
+     *
      * @param array $tags.
      *                     The name of the hooks.
      */
-    function unset_hooks($tags) 
+    public function unset_hooks($tags)
     {
-        foreach ( $tags as $tag ) {
+        foreach ($tags as $tag) {
             $this->developer_unset_hook($tag);
         }
     }
@@ -99,20 +101,19 @@ class phphooks
      *
      * @package phphooks
      * @since   1.0
-     *       
+     *
      * @param string $from_folder
      *                            optional. load plugins from folder, if no argument is supplied, a 'plugins/' constant will be used
      */
-    function load_plugins($from_folder = PLUGINS_FOLDER) 
+    public function load_plugins($from_folder = PLUGINS_FOLDER)
     {
         if (isset($this->active_plugins) && $handle = @opendir($from_folder)) {
-            
-            while ( $file = readdir($handle) ) {
+            while ($file = readdir($handle)) {
                 if (is_file($from_folder . $file)) {
                     if (in_array($file, $this->active_plugins) && strpos($from_folder . $file, '.plugin.php')) {
                         include_once $from_folder . $file;
                     }
-                } else if ((is_dir($from_folder . $file)) && ($file != '.') && ($file != '..')) {
+                } elseif ((is_dir($from_folder . $file)) && ($file != '.') && ($file != '..')) {
                     $this->load_plugins($from_folder . $file . '/');
                 }
             }
@@ -130,11 +131,10 @@ class phphooks
      *                             optional. load plugins from folder, if no argument is supplied, a 'plugins/' constant will be used
      * @return array. return the all plugins ,which is stored in the plugin folder, header information.
      */
-    function get_plugins_header($from_folder = PLUGINS_FOLDER) 
+    public function get_plugins_header($from_folder = PLUGINS_FOLDER)
     {
         if ($handle = @opendir($from_folder)) {
-            
-            while ( $file = readdir($handle) ) {
+            while ($file = readdir($handle)) {
                 if (is_file($from_folder . $file)) {
                     if (strpos($from_folder . $file, '.plugin.php')) {
                         $fp = fopen($from_folder . $file, 'r');
@@ -149,22 +149,23 @@ class phphooks
                         preg_match('|Author:(.*)$|mi', $plugin_data, $author_name);
                         preg_match('|Author URI:(.*)$|mi', $plugin_data, $author_uri);
                         
-                        foreach ( array (
+                        foreach (array(
                           'name',
                           'uri',
                           'version',
                           'description',
                           'author_name',
-                          'author_uri' 
-                        ) as $field ) {
-                            if (! empty(${$field}))
-                             ${$field
+                          'author_uri'
+                        ) as $field) {
+                            if (! empty(${$field})) {
+                                ${$field
                             } = trim(${$field} [1]);
-                            else
-                             ${$field
+                            } else {
+                                ${$field
                             } = '';
+                            }
                         }
-                        $plugin_data = array (
+                        $plugin_data = array(
                           'filename' => $file,
                           'Name' => $name,
                           'Title' => $name,
@@ -172,11 +173,11 @@ class phphooks
                           'Description' => $description,
                           'Author' => $author_name,
                           'AuthorURI' => $author_uri,
-                          'Version' => $version 
+                          'Version' => $version
                         );
                         $this->plugins_header [] = $plugin_data;
                     }
-                } else if ((is_dir($from_folder . $file)) && ($file != '.') && ($file != '..')) {
+                } elseif ((is_dir($from_folder . $file)) && ($file != '.') && ($file != '..')) {
                     $this->get_plugins_header($from_folder . $file . '/');
                 }
             }
@@ -191,7 +192,7 @@ class phphooks
      *
      * @package phphooks
      * @since   1.0
-     *       
+     *
      * @param string $tag.
      *                          The name of the hook.
      * @param string $function.
@@ -199,13 +200,12 @@ class phphooks
      * @param int    $priority
      *                          optional. Used to specify the order in which the functions associated with a particular action are executed.(range 0~20, 0 first call, 20 last call)
      */
-    function add_hook($tag, $function, $priority = 10) 
+    public function add_hook($tag, $function, $priority = 10)
     {
         if (! isset($this->hooks [$tag])) {
             die("There is no such place ($tag) for hooks.");
-        }  
-            $this->hooks [$tag] [$priority] [] = $function;
-        
+        }
+        $this->hooks [$tag] [$priority] [] = $function;
     }
     
     /**
@@ -213,11 +213,11 @@ class phphooks
      *
      * @package phphooks
      * @since   1.0
-     *       
+     *
      * @param string $tag
      *                    The name of the hook.
      */
-    function hook_exist($tag) 
+    public function hook_exist($tag)
     {
         return (isset($this->hooks [$tag]) && is_array($this->hooks [$tag]));
     }
@@ -227,20 +227,20 @@ class phphooks
      *
      * @package phphooks
      * @since   1.0
-     *       
+     *
      * @param  string    $tag.
      *                         The name of the hook.
      * @param  mix       $args
      *                         optional.The arguments the function accept (default none)
      * @return optional.
      */
-    function execute_hook($tag, $args = '') 
+    public function execute_hook($tag, $args = '')
     {
         if (isset($this->hooks [$tag])) {
             $these_hooks = $this->hooks [$tag];
-            for($i = 0; $i <= 20; $i ++) {
+            for ($i = 0; $i <= 20; $i ++) {
                 if (isset($these_hooks [$i])) {
-                    foreach ( $these_hooks [$i] as $hook ) {
+                    foreach ($these_hooks [$i] as $hook) {
                         if (isset($result)) {
                             $args [] = $result;
                         }
@@ -262,29 +262,28 @@ class phphooks
      *
      * @package phphooks
      * @since   1.0
-     *       
+     *
      * @param  string $tag.
      *                      The name of the hook.
      * @param  mix    $args
      *                      optional.The arguments the function accept to filter(default none)
      * @return array. The $args filter result.
      */
-    function filter_hook($tag, $args = '') 
+    public function filter_hook($tag, $args = '')
     {
         $result = $args;
         if (isset($this->hooks [$tag])) {
             $these_hooks = $this->hooks [$tag];
-            for($i = 0; $i <= 20; $i ++) {
+            for ($i = 0; $i <= 20; $i ++) {
                 if (isset($these_hooks [$i])) {
-                    foreach ( $these_hooks [$i] as $hook ) {
+                    foreach ($these_hooks [$i] as $hook) {
                         $args   = $result;
                         $result = call_user_func($hook, $args);
                     }
                 }
             }
             return $result;
-        }  
-            die("There is no such place ($tag) for hooks.");
-        
+        }
+        die("There is no such place ($tag) for hooks.");
     }
 }

@@ -1,6 +1,8 @@
 
-<?php 
-if (!isset($HOME)) die();
+<?php
+if (!isset($HOME)) {
+    die();
+}
 require 'includes/classes/head.class.php';
 require 'includes/classes/phphooks.class.php';
 onlyadmin();
@@ -35,40 +37,31 @@ $plugin_headers = $plugin_list->get_plugins_header();
 
     <tbody class="plugins">
 <?php
-foreach ( $plugin_headers as $plugin_header ) {
-    $action = FALSE;
-    foreach ( $result_rows as $result_row ) {
+foreach ($plugin_headers as $plugin_header) {
+    $action = false;
+    foreach ($result_rows as $result_row) {
         if ($plugin_header ['filename'] == $result_row ['filename'] && $result_row ['action'] == 1) {
-            $action = TRUE;
+            $action = true;
         }
-    }
-    ?>
+    } ?>
         <tr <?php
         if ($action) {
             echo "class='active'";
-        }
-    ?>>
+        } ?>>
             <td class='name'><a
                 href="<?php
-                echo $plugin_header ['PluginURI'];
-    ?>"
+                echo $plugin_header ['PluginURI']; ?>"
                 title="<?php
-                echo $plugin_header ['Title'];
-    ?>"><?php
-    echo $plugin_header ['Name'];
-    ?></a></td>
+                echo $plugin_header ['Title']; ?>"><?php
+    echo $plugin_header ['Name']; ?></a></td>
             <td class='vers'><?php
-            echo $plugin_header ['Version'];
-    ?></td>
+            echo $plugin_header ['Version']; ?></td>
             <td class='desc'>
                 <p class="nopadbot"><?php
-                echo $plugin_header ['Description'];
-    ?> by <a href="<?php
-    echo $plugin_header ['AuthorURI'];
-    ?>"
+                echo $plugin_header ['Description']; ?> by <a href="<?php
+    echo $plugin_header ['AuthorURI']; ?>"
                         title="Visit author homepage"><?php
-                        echo $plugin_header ['Author'];
-    ?></a>.
+                        echo $plugin_header ['Author']; ?></a>.
                 </p>
             </td>
         

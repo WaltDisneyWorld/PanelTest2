@@ -1,17 +1,21 @@
 <?php
     require_once(dirname(__FILE__) . "/../constants.php");
 
-    class SystemVars {
-        public static function getMaxFileUploadBytes() {
-            if(defined("MFTP_MAX_UPLOAD_SIZE"))
+    class SystemVars
+    {
+        public static function getMaxFileUploadBytes()
+        {
+            if (defined("MFTP_MAX_UPLOAD_SIZE")) {
                 $maxFileSize = MFTP_MAX_UPLOAD_SIZE;
-            else
-                $maxFileSize = formattedSizeToBytes(ini_get('memory_limit'));  // legacy for old config
+            } else {
+                $maxFileSize = formattedSizeToBytes(ini_get('memory_limit'));
+            }  // legacy for old config
 
             return $maxFileSize;
         }
 
-        public static function getSystemVarsArray() {
+        public static function getSystemVarsArray()
+        {
             return array(
                 "maxFileUpload" => self::getMaxFileUploadBytes(),
                 "version" => MONSTA_VERSION,

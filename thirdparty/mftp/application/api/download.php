@@ -7,13 +7,15 @@
 
     session_start();
 
-    if (!isset($_GET['fileKey']))
+    if (!isset($_GET['fileKey'])) {
         exitWith404("fileKey not supplied in request.");
+    }
 
     $fileKey = $_GET['fileKey'];
 
-    if (!isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $fileKey]))
+    if (!isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $fileKey])) {
         exitWith404("fileKey not found in session.");
+    }
 
     $fileInfo = $_SESSION[MFTP_SESSION_KEY_PREFIX . $fileKey];
 
@@ -26,8 +28,9 @@
 
     $fileSize = filesize($sourcePath);
 
-    if ($fileSize === false)
+    if ($fileSize === false) {
         die("File has no size");
+    }
 
     header("Content-Type: application/octet-stream");
     header("Content-Disposition: attachment; filename=\"" . $escapedOutputFileName . "\"");

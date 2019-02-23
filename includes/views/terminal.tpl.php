@@ -1,5 +1,7 @@
-<?php 
-if (!isset($HOME)) die();
+<?php
+if (!isset($HOME)) {
+    die();
+}
 require 'includes/classes/head.class.php';
 onlyadmin();
 ?>

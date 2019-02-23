@@ -4,13 +4,15 @@
     require_once(dirname(__FILE__) . '/StringPermissionSet.php');
     require_once(dirname(__FILE__) . '/../DateTransformer.php');
 
-    abstract class PermLevelStartIndex {
+    abstract class PermLevelStartIndex
+    {
         const Owner = 1;
         const Group = 4;
         const Other = 7;
     }
 
-    abstract class PermissionsFlagIndex {
+    abstract class PermissionsFlagIndex
+    {
         const Directory = 0;
         const OwnerRead = 1;
         const OwnerWrite = 2;
@@ -23,7 +25,8 @@
         const OtherExecute = 9;
     }
 
-    abstract class FTPListColumnIndex {
+    abstract class FTPListColumnIndex
+    {
         const Permissions = 0;
         const LinkCount = 1;
         const OwnerUserName = 2;
@@ -33,8 +36,10 @@
         const FileName = 6;
     }
 
-    class FTPListItem extends ListItem {
-        public function __construct($itemLine) {
+    class FTPListItem extends ListItem
+    {
+        public function __construct($itemLine)
+        {
             if (!preg_match(MFTP_UNIX_LIST_FORMAT, $itemLine, $matches)) {
                 throw new UnexpectedValueException("FTP list item was not in the correct format.");
             }
@@ -47,13 +52,15 @@
             $this->parseFileSize($matches[FTPListColumnIndex::FileSize + 1]);
             $this->parseModificationDate($matches[FTPListColumnIndex::ModificationDate + 1]);
 
-            if($this->isLink())
+            if ($this->isLink()) {
                 $this->name = $this->parseNameWithLink($matches[FTPListColumnIndex::FileName + 1]);
-            else
+            } else {
                 $this->name = attemptToUtf8String($matches[FTPListColumnIndex::FileName + 1]);
+            }
         }
 
-        private function parsePermissionsFlags($permissionsFlags) {
+        private function parsePermissionsFlags($permissionsFlags)
+        {
             $this->directory = substr($permissionsFlags, PermissionsFlagIndex::Directory, 1) == 'd';
             $this->link = substr($permissionsFlags, PermissionsFlagIndex::Directory, 1) == 'l';
 
@@ -62,15 +69,18 @@
             $this->otherPermissions = new StringPermissionSet(substr($permissionsFlags, PermLevelStartIndex::Other, 3));
         }
 
-        private function parseLinkCount($linkCount) {
+        private function parseLinkCount($linkCount)
+        {
             $this->linkCount = intval($linkCount);
         }
 
-        private function parseFileSize($fileSize) {
+        private function parseFileSize($fileSize)
+        {
             $this->size = intval($fileSize);
         }
 
-        private function parseModificationDate($modificationDate) {
+        private function parseModificationDate($modificationDate)
+        {
             /* doing this manually instead of using built in parsing as it's seems more portable and easier */
             $splitDate = preg_split('/\s+/', $modificationDate);
             $dateTransformer = DateTransformer::getTransformer();  // instead of strptime as it is not on windows
@@ -78,7 +88,7 @@
 
             $modificationDay = intval($splitDate[1]);
 
-            if (strpos($splitDate[2], ':') !== FALSE) {
+            if (strpos($splitDate[2], ':') !== false) {
                 /* if there is a : in the date it contains a time and therefore is of current year (or december previous year maybe) */
                 $modificationYear = intval(date('Y'));
                 $splitTime = explode(':', $splitDate[2]);
@@ -90,8 +100,14 @@
                 $modificationMinute = 0;
             }
 
-            $this->modificationDate = mktime($modificationHour, $modificationMinute, 0, $modificationMonth,
-                $modificationDay, $modificationYear);
+            $this->modificationDate = mktime(
+                $modificationHour,
+                $modificationMinute,
+                0,
+                $modificationMonth,
+                $modificationDay,
+                $modificationYear
+            );
 
             if ($this->modificationDate > time() + (86400 * 2)) {
                 // it appears to be far in the future, we are probably in january and this is a date from december last
@@ -101,7 +117,8 @@
             }
         }
 
-        private function parseNameWithLink($nameWithLink){
+        private function parseNameWithLink($nameWithLink)
+        {
             $splitName = explode(" -> ", $nameWithLink);
             return $splitName[0];
         }

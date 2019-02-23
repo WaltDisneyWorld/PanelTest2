@@ -4,7 +4,8 @@
     require_once(dirname(__FILE__) . '/ConfigurationBase.php');
     require_once(dirname(__FILE__) . '/../Validation.php');
 
-    class FTPConfiguration implements ConfigurationBase {
+    class FTPConfiguration implements ConfigurationBase
+    {
         /**
          * @var string
          */
@@ -44,8 +45,15 @@
          * @param null bool $sslMode
          * @param null int $port
          */
-        public function __construct($host, $username, $password, $initialDirectory = '', $passiveMode = null,
-                                    $sslMode = null, $port = null) {
+        public function __construct(
+            $host,
+            $username,
+            $password,
+            $initialDirectory = '',
+            $passiveMode = null,
+            $sslMode = null,
+            $port = null
+        ) {
             Validation::validateNonEmptyString($host, 'host');
             Validation::validateNonEmptyString($username, 'username');
             Validation::validateString($password, true);
@@ -63,53 +71,61 @@
         /**
          * @return string
          */
-        public function getHost() {
+        public function getHost()
+        {
             return $this->host;
         }
 
         /**
          * @return string
          */
-        public function getUsername() {
+        public function getUsername()
+        {
             return $this->username;
         }
 
         /**
          * @return string
          */
-        public function getPassword() {
+        public function getPassword()
+        {
             return $this->password;
         }
 
         /**
          * @return string
          */
-        public function getInitialDirectory() {
+        public function getInitialDirectory()
+        {
             return $this->initialDirectory;
         }
 
         /**
          * @return int
          */
-        public function getPort() {
+        public function getPort()
+        {
             return $this->port;
         }
 
         /**
          * @return bool
          */
-        public function isPassiveMode() {
+        public function isPassiveMode()
+        {
             return $this->passiveMode;
         }
 
         /**
          * @return boolean
          */
-        public function isSSLMode() {
+        public function isSSLMode()
+        {
             return $this->sslMode;
         }
 
-        public function getRemoteUsername() {
+        public function getRemoteUsername()
+        {
             return $this->getUsername();
         }
     }

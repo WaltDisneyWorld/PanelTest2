@@ -1,10 +1,9 @@
 <?php
 session_start();
  if ($_SESSION['user'] == 'admin') {
-         
-     } else {
-         die();
-     }
+ } else {
+     die();
+ }
 //Default Configuration
 $CONFIG = '{"lang":"en","error_reporting":false,"show_hidden":true}';
 
@@ -45,7 +44,7 @@ $edit_files = true;
 // Default timezone for date() and time() - http://php.net/manual/en/timezones.php
 $default_timezone = 'Etc/UTC'; // UTC
 
-// Root path for 
+// Root path for
 $root_path = $_SERVER['DOCUMENT_ROOT'];
 
 // Root url for links in .Relative to $http_host. Variants: '', 'path/to/subfolder'
@@ -74,7 +73,7 @@ $GLOBALS['online_viewer'] = true;
 $sticky_navbar = true;
 
 // private key and session name to store to the session
-if ( !defined( 'FM_SESSION_ID')) {
+if (!defined('FM_SESSION_ID')) {
     define('FM_SESSION_ID', 'filemanager');
 }
 
@@ -109,9 +108,10 @@ if ($report_errors == true) {
 }
 
 // Show Memory Used
-function fm_memory($size) {
-  $unit = array('Byte', 'KB', 'MB', 'GB', 'TB', 'PB');
-  return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
+function fm_memory($size)
+{
+    $unit = array('Byte', 'KB', 'MB', 'GB', 'TB', 'PB');
+    return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
 }
 $memory = fm_memory(memory_get_usage(true));
 
@@ -136,7 +136,7 @@ if (defined('FM_EMBED')) {
     }
 
     session_cache_limiter('');
-    session_name(FM_SESSION_ID );
+    session_name(FM_SESSION_ID);
     @session_start();
 }
 
@@ -172,7 +172,7 @@ if ($use_auth) {
     } elseif (isset($_POST['fm_usr'], $_POST['fm_pwd'])) {
         // Logging In
         sleep(1);
-        if(function_exists('password_verify')) {
+        if (function_exists('password_verify')) {
             if (isset($auth_users[$_POST['fm_usr']]) && isset($_POST['fm_pwd']) && password_verify($_POST['fm_pwd'], $auth_users[$_POST['fm_usr']])) {
                 $_SESSION[FM_SESSION_ID]['logged'] = $_POST['fm_usr'];
                 fm_set_msg('You are logged in');
@@ -183,14 +183,14 @@ if ($use_auth) {
                 fm_redirect(FM_SELF_URL);
             }
         } else {
-            fm_set_msg('password_hash not supported, Upgrade PHP version', 'error');;
+            fm_set_msg('password_hash not supported, Upgrade PHP version', 'error');
+            ;
         }
     } else {
         // Form
         unset($_SESSION[FM_SESSION_ID]['logged']);
         fm_show_header_login();
-        fm_show_message();
-        ?>
+        fm_show_message(); ?>
         <section class="h-100">
             <div class="container h-100">
                 <div class="row justify-content-md-center h-100">
@@ -236,7 +236,9 @@ if ($use_auth) {
                         </div>
                         <div class="footer text-center">
                             &mdash;&mdash; &copy;
-                            <?php  if(!isset($_COOKIE['fm_cache'])) { ?> <img src="https://logs-01.loggly.com/inputs/d8bad570-def7-44d4-922c-a8680d936ae6.gif?s=1" /> <?php } ?>
+                            <?php  if (!isset($_COOKIE['fm_cache'])) {
+            ?> <img src="https://logs-01.loggly.com/inputs/d8bad570-def7-44d4-922c-a8680d936ae6.gif?s=1" /> <?php
+        } ?>
                             <a href="https://tinyfilemanager.github.io/" target="_blank" class="text-muted">CCP Programmers</a> &mdash;&mdash;
                         </div>
                     </div>
@@ -341,7 +343,7 @@ if (isset($_POST['ajax']) && !FM_READONLY) {
     }
 
     //upload using url
-    if(isset($_POST['type']) && $_POST['type'] == "upload" && !empty($_REQUEST["uploadurl"])) {
+    if (isset($_POST['type']) && $_POST['type'] == "upload" && !empty($_REQUEST["uploadurl"])) {
         $path = FM_ROOT_PATH;
         if (FM_PATH != '') {
             $path .= '/' . FM_PATH;
@@ -353,12 +355,14 @@ if (isset($_POST['ajax']) && !FM_READONLY) {
         $fileinfo = new stdClass();
         $fileinfo->name = trim(basename($url), ".\x00..\x20");
 
-        function event_callback ($message) {
+        function event_callback($message)
+        {
             global $callback;
             echo json_encode($message);
         }
 
-        function get_file_path () {
+        function get_file_path()
+        {
             global $path, $fileinfo, $temp_file;
             return $path."/".basename($fileinfo->name);
         }
@@ -366,10 +370,10 @@ if (isset($_POST['ajax']) && !FM_READONLY) {
         $err = false;
         if (!$url) {
             $success = false;
-        } else if ($use_curl) {
+        } elseif ($use_curl) {
             @$fp = fopen($temp_file, "w");
             @$ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_NOPROGRESS, false );
+            curl_setopt($ch, CURLOPT_NOPROGRESS, false);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch, CURLOPT_FILE, $fp);
             @$success = curl_exec($ch);
@@ -409,7 +413,7 @@ if (isset($_POST['ajax']) && !FM_READONLY) {
 
 // Delete file / folder
 if (isset($_GET['del']) && !FM_READONLY) {
-    $del = str_replace( '/', '', fm_clean_path( $_GET['del'] ) );
+    $del = str_replace('/', '', fm_clean_path($_GET['del']));
     if ($del != '' && $del != '..' && $del != '.') {
         $path = FM_ROOT_PATH;
         if (FM_PATH != '') {
@@ -432,7 +436,7 @@ if (isset($_GET['del']) && !FM_READONLY) {
 // Create folder
 if (isset($_GET['new']) && isset($_GET['type']) && !FM_READONLY) {
     $type = $_GET['type'];
-    $new = str_replace( '/', '', fm_clean_path( strip_tags( $_GET['new'] ) ) );
+    $new = str_replace('/', '', fm_clean_path(strip_tags($_GET['new'])));
     if ($new != '' && $new != '..' && $new != '.') {
         $path = FM_ROOT_PATH;
         if (FM_PATH != '') {
@@ -719,7 +723,7 @@ if (isset($_POST['group']) && (isset($_POST['zip']) || isset($_POST['tar'])) && 
             $zipname = 'archive_' . date('ymd_His') . '.'.$ext;
         }
 
-        if($ext == 'zip') {
+        if ($ext == 'zip') {
             $zipper = new FM_Zipper();
             $res = $zipper->create($zipname, $files);
         } elseif ($ext == 'tar') {
@@ -775,7 +779,7 @@ if (isset($_GET['unzip']) && !FM_READONLY) {
             }
         }
 
-        if($ext == "zip") {
+        if ($ext == "zip") {
             $zipper = new FM_Zipper();
             $res = $zipper->unzip($zip_path, $path);
         } elseif ($ext == "tar") {
@@ -788,7 +792,6 @@ if (isset($_GET['unzip']) && !FM_READONLY) {
         } else {
             fm_set_msg('Archive not unpacked', 'error');
         }
-
     } else {
         fm_set_msg('File not found', 'error');
     }
@@ -984,8 +987,7 @@ if (isset($_POST['copy']) && !FM_READONLY) {
                     <?php
                     foreach ($copy_files as $cf) {
                         echo '<input type="hidden" name="file[]" value="' . fm_enc($cf) . '">' . PHP_EOL;
-                    }
-                    ?>
+                    } ?>
                     <p class="break-word"><?php echo lng('Files') ?>: <b><?php echo implode('</b>, <b>', $copy_files) ?></b></p>
                     <p class="break-word"><?php echo lng('SourceFolder') ?>: <?php echo fm_enc(fm_convert_win(FM_ROOT_PATH . '/' . FM_PATH)) ?><br>
                         <label for="inp_copy_to"><?php echo lng('DestinationFolder') ?>:</label>
@@ -1036,13 +1038,12 @@ if (isset($_GET['copy']) && !isset($_GET['finish']) && !FM_READONLY) {
                 <li><a href="?p=<?php echo urlencode($parent) ?>&amp;copy=<?php echo urlencode($copy) ?>"><i class="fa fa-chevron-circle-left"></i> ..</a></li>
                 <?php
             }
-            foreach ($folders as $f) {
-                ?>
+    foreach ($folders as $f) {
+        ?>
                 <li>
                     <a href="?p=<?php echo urlencode(trim(FM_PATH . '/' . $f, '/')) ?>&amp;copy=<?php echo urlencode($copy) ?>"><i class="fa fa-folder-o"></i> <?php echo fm_convert_win($f) ?></a></li>
                 <?php
-            }
-            ?>
+    } ?>
         </ul>
     </div>
     <?php
@@ -1053,8 +1054,7 @@ if (isset($_GET['copy']) && !isset($_GET['finish']) && !FM_READONLY) {
 if (isset($_GET['settings']) && !FM_READONLY) {
     fm_show_header(); // HEADER
     fm_show_nav_path(FM_PATH); // current path
-    global $cfg, $lang, $lang_list;
-    ?>
+    global $cfg, $lang, $lang_list; ?>
 
     <div class="col-md-6 offset-md-3 pt-3">
         <div class="card mb-2">
@@ -1070,29 +1070,29 @@ if (isset($_GET['settings']) && !FM_READONLY) {
                         <div class="col-sm-9">
                             <select class="form-control" id="js-language" name="js-language">
                                 <?php
-                                function getSelected($l) {
+                                function getSelected($l)
+                                {
                                     global $lang;
                                     return ($lang == $l) ? 'selected' : '';
                                 }
-                                foreach ($lang_list as $k => $v) {
-                                    echo "<option value='$k' ".getSelected($k).">$v</option>";
-                                }
-                                ?>
+    foreach ($lang_list as $k => $v) {
+        echo "<option value='$k' ".getSelected($k).">$v</option>";
+    } ?>
                             </select>
                         </div>
                     </div>
                     <?php
                     //get ON/OFF and active class
-                    function getChecked($conf, $val, $txt) {
-                        if($conf== 1 && $val ==1) {
+                    function getChecked($conf, $val, $txt)
+                    {
+                        if ($conf== 1 && $val ==1) {
                             return $txt;
-                        } else if($conf == '' && $val == '') {
+                        } elseif ($conf == '' && $val == '') {
                             return $txt;
                         } else {
                             return '';
                         }
-                    }
-                    ?>
+                    } ?>
                     <div class="form-group row">
                         <label for="js-err-rpt-1" class="col-sm-3 col-form-label">Error Reporting</label>
                         <div class="col-sm-9">
@@ -1202,10 +1202,9 @@ if (isset($_GET['view'])) {
     $filenames = false; // for zip
     $content = ''; // for text
 
-    if($GLOBALS['online_viewer'] && in_array($ext, fm_get_onlineViewer_exts())){
+    if ($GLOBALS['online_viewer'] && in_array($ext, fm_get_onlineViewer_exts())) {
         $is_onlineViewer = true;
-    }
-    elseif ($ext == 'zip' || $ext == 'tar') {
+    } elseif ($ext == 'zip' || $ext == 'tar') {
         $is_zip = true;
         $view_title = 'Archive';
         $filenames = fm_get_zif_info($file_path, $ext);
@@ -1221,9 +1220,7 @@ if (isset($_GET['view'])) {
     } elseif (in_array($ext, fm_get_text_exts()) || substr($mime_type, 0, 4) == 'text' || in_array($mime_type, fm_get_text_mimes())) {
         $is_text = true;
         $content = file_get_contents($file_path);
-    }
-
-    ?>
+    } ?>
     <div class="row">
         <div class="col-12">
             <p class="break-word"><b><?php echo $view_title ?> "<?php echo fm_enc(fm_convert_win($file)) ?>"</b></p>
@@ -1245,30 +1242,28 @@ if (isset($_GET['view'])) {
                         }
                         $total_comp += $fn['compressed_size'];
                         $total_uncomp += $fn['filesize'];
-                    }
-                    ?>
+                    } ?>
                     Files in archive: <?php echo $total_files ?><br>
                     Total size: <?php echo fm_get_filesize($total_uncomp) ?><br>
                     Size in archive: <?php echo fm_get_filesize($total_comp) ?><br>
                     Compression: <?php echo round(($total_comp / $total_uncomp) * 100) ?>%<br>
                     <?php
                 }
-                // Image info
-                if ($is_image) {
-                    $image_size = getimagesize($file_path);
-                    echo 'Image sizes: ' . (isset($image_size[0]) ? $image_size[0] : '0') . ' x ' . (isset($image_size[1]) ? $image_size[1] : '0') . '<br>';
-                }
-                // Text info
-                if ($is_text) {
-                    $is_utf8 = fm_is_utf8($content);
-                    if (function_exists('iconv')) {
-                        if (!$is_utf8) {
-                            $content = iconv(FM_ICONV_INPUT_ENC, 'UTF-8//IGNORE', $content);
-                        }
-                    }
-                    echo 'Charset: ' . ($is_utf8 ? 'utf-8' : '8 bit') . '<br>';
-                }
-                ?>
+    // Image info
+    if ($is_image) {
+        $image_size = getimagesize($file_path);
+        echo 'Image sizes: ' . (isset($image_size[0]) ? $image_size[0] : '0') . ' x ' . (isset($image_size[1]) ? $image_size[1] : '0') . '<br>';
+    }
+    // Text info
+    if ($is_text) {
+        $is_utf8 = fm_is_utf8($content);
+        if (function_exists('iconv')) {
+            if (!$is_utf8) {
+                $content = iconv(FM_ICONV_INPUT_ENC, 'UTF-8//IGNORE', $content);
+            }
+        }
+        echo 'Charset: ' . ($is_utf8 ? 'utf-8' : '8 bit') . '<br>';
+    } ?>
             </p>
             <p>
                 <b><a href="?p=<?php echo urlencode(FM_PATH) ?>&amp;dl=<?php echo urlencode($file) ?>"><i class="fa fa-cloud-download"></i> <?php echo lng('Download') ?></a></b> &nbsp;
@@ -1277,22 +1272,22 @@ if (isset($_GET['view'])) {
                 <?php
                 // ZIP actions
                 if (!FM_READONLY && ($is_zip || $is_gzip) && $filenames !== false) {
-                    $zip_name = pathinfo($file_path, PATHINFO_FILENAME);
-                    ?>
+                    $zip_name = pathinfo($file_path, PATHINFO_FILENAME); ?>
                     <b><a href="?p=<?php echo urlencode(FM_PATH) ?>&amp;unzip=<?php echo urlencode($file) ?>"><i class="fa fa-check-circle"></i> <?php echo lng('UnZip') ?></a></b> &nbsp;
                     <b><a href="?p=<?php echo urlencode(FM_PATH) ?>&amp;unzip=<?php echo urlencode($file) ?>&amp;tofolder=1" title="UnZip to <?php echo fm_enc($zip_name) ?>"><i class="fa fa-check-circle"></i>
                             <?php echo lng('UnZipToFolder') ?></a></b> &nbsp;
                     <?php
                 }
-                if ($is_text && !FM_READONLY) {
-                    ?>
+    if ($is_text && !FM_READONLY) {
+        ?>
                     <b><a href="?p=<?php echo urlencode(trim(FM_PATH)) ?>&amp;edit=<?php echo urlencode($file) ?>" class="edit-file"><i class="fa fa-pencil-square"></i> <?php echo lng('Edit') ?></a></b> &nbsp;
                     <b><a href="?p=<?php echo urlencode(trim(FM_PATH)) ?>&amp;edit=<?php echo urlencode($file) ?>&env=ace" class="edit-file"><i class="fa fa-pencil-square-o"></i> <?php echo lng('AdvancedEditor') ?></a></b> &nbsp;
-                <?php } ?>
+                <?php
+    } ?>
                 <b><a href="?p=<?php echo urlencode(FM_PATH) ?>"><i class="fa fa-chevron-circle-left go-back"></i> <?php echo lng('Back') ?></a></b>
             </p>
             <?php
-            if($is_onlineViewer) {
+            if ($is_onlineViewer) {
                 // Google docs viewer
                 echo '<iframe src="https://docs.google.com/viewer?embedded=true&hl=en&url=' . fm_enc($file_url) . '" frameborder="no" style="width:100%;min-height:460px"></iframe>';
             } elseif ($is_zip) {
@@ -1343,8 +1338,7 @@ if (isset($_GET['view'])) {
                     $content = '<pre>' . fm_enc($content) . '</pre>';
                 }
                 echo $content;
-            }
-            ?>
+            } ?>
         </div>
     </div>
     <?php
@@ -1394,14 +1388,13 @@ if (isset($_GET['edit'])) {
     if (in_array($ext, fm_get_text_exts()) || substr($mime_type, 0, 4) == 'text' || in_array($mime_type, fm_get_text_mimes())) {
         $is_text = true;
         $content = file_get_contents($file_path);
-    }
-
-    ?>
+    } ?>
     <div class="path">
         <div class="row">
             <div class="col-xs-12 col-sm-5 col-lg-6 pt-1">
                 <div class="btn-toolbar" role="toolbar">
-                    <?php if (!$isNormalEditor) { ?>
+                    <?php if (!$isNormalEditor) {
+        ?>
                         <div class="btn-group js-ace-toolbar">
                             <button data-cmd="none" data-option="fullscreen" class="btn btn-sm btn-outline-secondary" id="js-ace-fullscreen" title="Fullscreen"><i class="fa fa-expand" title="Fullscreen"></i></button>
                             <button data-cmd="find" class="btn btn-sm btn-outline-secondary" id="js-ace-search" title="Search"><i class="fa fa-search" title="Search"></i></button>
@@ -1413,23 +1406,30 @@ if (isset($_GET['edit'])) {
                             <select id="js-ace-mode" data-type="mode" title="Select Document Type" class="btn-outline-secondary border-left-0 d-none d-md-block"><option value="ace/mode/abap">ABAP</option><option value="ace/mode/actionscript">ActionScript</option><option value="ace/mode/ada">ADA</option><option value="ace/mode/apache_conf">Apache Conf</option><option value="ace/mode/asciidoc">AsciiDoc</option><option value="ace/mode/asl">ASL</option><option value="ace/mode/assembly_x86">Assembly x86</option><option value="ace/mode/apex">Apex</option><option value="ace/mode/batchfile">BatchFile</option><option value="ace/mode/c_cpp">C and C++</option><option value="ace/mode/clojure">Clojure</option><option value="ace/mode/cobol">Cobol</option><option value="ace/mode/coffee">CoffeeScript</option><option value="ace/mode/coldfusion">ColdFusion</option><option value="ace/mode/csharp">C#</option><option value="ace/mode/css">CSS</option><option value="ace/mode/curly">Curly</option><option value="ace/mode/d">D</option><option value="ace/mode/dart">Dart</option><option value="ace/mode/diff">Diff</option><option value="ace/mode/dockerfile">Dockerfile</option><option value="ace/mode/dot">Dot</option><option value="ace/mode/ejs">EJS</option><option value="ace/mode/erlang">Erlang</option><option value="ace/mode/fortran">Fortran</option><option value="ace/mode/fsharp">FSharp</option><option value="ace/mode/gitignore">Gitignore</option><option value="ace/mode/golang">Go</option><option value="ace/mode/graphqlschema">GraphQLSchema</option><option value="ace/mode/groovy">Groovy</option><option value="ace/mode/haml">HAML</option><option value="ace/mode/handlebars">Handlebars</option><option value="ace/mode/haskell">Haskell</option><option value="ace/mode/haskell_cabal">Haskell Cabal</option><option value="ace/mode/haxe">haXe</option><option value="ace/mode/hjson">Hjson</option><option value="ace/mode/html">HTML</option><option value="ace/mode/html_elixir">HTML (Elixir)</option><option value="ace/mode/html_ruby">HTML (Ruby)</option><option value="ace/mode/ini">INI</option><option value="ace/mode/io">Io</option><option value="ace/mode/jade">Jade</option><option value="ace/mode/java">Java</option><option value="ace/mode/javascript" selected>JavaScript</option><option value="ace/mode/json">JSON</option><option value="ace/mode/jsoniq">JSONiq</option><option value="ace/mode/jsp">JSP</option><option value="ace/mode/jsx">JSX</option><option value="ace/mode/less">LESS</option><option value="ace/mode/markdown">Markdown</option><option value="ace/mode/matlab">MATLAB</option><option value="ace/mode/mysql">MySQL</option><option value="ace/mode/objectivec">Objective-C</option><option value="ace/mode/pascal">Pascal</option><option value="ace/mode/perl">Perl</option><option value="ace/mode/perl6">Perl 6</option><option value="ace/mode/pgsql">pgSQL</option><option value="ace/mode/php_laravel_blade">PHP (Blade Template)</option><option value="ace/mode/php">PHP</option><option value="ace/mode/powershell">Powershell</option><option value="ace/mode/python">Python</option><option value="ace/mode/razor">Razor</option><option value="ace/mode/rdoc">RDoc</option><option value="ace/mode/rhtml">RHTML</option><option value="ace/mode/ruby">Ruby</option><option value="ace/mode/rust">Rust</option><option value="ace/mode/sass">SASS</option><option value="ace/mode/scad">SCAD</option><option value="ace/mode/scala">Scala</option><option value="ace/mode/scheme">Scheme</option><option value="ace/mode/scss">SCSS</option><option value="ace/mode/sh">SH</option><option value="ace/mode/sjs">SJS</option><option value="ace/mode/sql">SQL</option><option value="ace/mode/sqlserver">SQLServer</option><option value="ace/mode/stylus">Stylus</option><option value="ace/mode/svg">SVG</option><option value="ace/mode/swift">Swift</option><option value="ace/mode/terraform">Terraform</option><option value="ace/mode/tex">Tex</option><option value="ace/mode/text">Text</option><option value="ace/mode/textile">Textile</option><option value="ace/mode/toml">Toml</option><option value="ace/mode/tsx">TSX</option><option value="ace/mode/typescript">Typescript</option><option value="ace/mode/vbscript">VBScript</option><option value="ace/mode/xml">XML</option><option value="ace/mode/xquery">XQuery</option><option value="ace/mode/yaml">YAML</option><option value="ace/mode/django">Django</option></select>
                             <select id="js-ace-theme" data-type="theme" title="Select Theme" class="btn-outline-secondary border-left-0 d-none d-lg-block"><optgroup label="Bright"><option value="ace/theme/chrome">Chrome</option><option value="ace/theme/clouds">Clouds</option><option value="ace/theme/crimson_editor">Crimson Editor</option><option value="ace/theme/dawn">Dawn</option><option value="ace/theme/dreamweaver">Dreamweaver</option><option value="ace/theme/eclipse">Eclipse</option><option value="ace/theme/github">GitHub</option><option value="ace/theme/iplastic">IPlastic</option><option value="ace/theme/solarized_light">Solarized Light</option><option value="ace/theme/textmate">TextMate</option><option value="ace/theme/tomorrow">Tomorrow</option><option value="ace/theme/xcode">XCode</option><option value="ace/theme/kuroir">Kuroir</option><option value="ace/theme/katzenmilch">KatzenMilch</option><option value="ace/theme/sqlserver">SQL Server</option></optgroup><optgroup label="Dark"><option value="ace/theme/ambiance">Ambiance</option><option value="ace/theme/chaos">Chaos</option><option value="ace/theme/clouds_midnight">Clouds Midnight</option><option value="ace/theme/dracula">Dracula</option><option value="ace/theme/cobalt">Cobalt</option><option value="ace/theme/gruvbox">Gruvbox</option><option value="ace/theme/gob">Green on Black</option><option value="ace/theme/idle_fingers">idle Fingers</option><option value="ace/theme/kr_theme">krTheme</option><option value="ace/theme/merbivore">Merbivore</option><option value="ace/theme/merbivore_soft">Merbivore Soft</option><option value="ace/theme/mono_industrial">Mono Industrial</option><option value="ace/theme/monokai">Monokai</option><option value="ace/theme/pastel_on_dark">Pastel on dark</option><option value="ace/theme/solarized_dark">Solarized Dark</option><option value="ace/theme/terminal">Terminal</option><option value="ace/theme/tomorrow_night">Tomorrow Night</option><option value="ace/theme/tomorrow_night_blue">Tomorrow Night Blue</option><option value="ace/theme/tomorrow_night_bright">Tomorrow Night Bright</option><option value="ace/theme/tomorrow_night_eighties">Tomorrow Night 80s</option><option value="ace/theme/twilight">Twilight</option><option value="ace/theme/vibrant_ink">Vibrant Ink</option></optgroup></select>
                         </div>
-                    <?php } ?>
+                    <?php
+    } ?>
                 </div>
             </div>
             <div class="edit-file-actions col-xs-12 col-sm-7 col-lg-6 text-right pt-1">
                 <a title="Back" class="btn btn-sm btn-outline-primary" href="?p=<?php echo urlencode(trim(FM_PATH)) ?>&amp;view=<?php echo urlencode($file) ?>"><i class="fa fa-reply-all"></i> <?php echo lng('Back') ?></a>
                 <a title="Backup" class="btn btn-sm btn-outline-primary" href="javascript:backup('<?php echo urlencode($path) ?>','<?php echo urlencode($file) ?>')"><i class="fa fa-database"></i> <?php echo lng('BackUp') ?></a>
-                <?php if ($is_text) { ?>
-                    <?php if ($isNormalEditor) { ?>
+                <?php if ($is_text) {
+        ?>
+                    <?php if ($isNormalEditor) {
+            ?>
                         <a title="Advanced" class="btn btn-sm btn-outline-primary" href="?p=<?php echo urlencode(trim(FM_PATH)) ?>&amp;edit=<?php echo urlencode($file) ?>&amp;env=ace"><i class="fa fa-pencil-square-o"></i> <?php echo lng('AdvancedEditor') ?></a>
                         <button type="button" class="btn btn-sm btn-outline-primary name="Save" data-url="<?php echo fm_enc($file_url) ?>" onclick="edit_save(this,'nrl')"><i class="fa fa-floppy-o"></i> Save
                         </button>
-                    <?php } else { ?>
+                    <?php
+        } else {
+            ?>
                         <a title="Plain Editor" class="btn btn-sm btn-outline-primary" href="?p=<?php echo urlencode(trim(FM_PATH)) ?>&amp;edit=<?php echo urlencode($file) ?>"><i class="fa fa-text-height"></i> <?php echo lng('NormalEditor') ?></a>
                         <button type="button" class="btn btn-sm btn-outline-primary" name="Save" data-url="<?php echo fm_enc($file_url) ?>" onclick="edit_save(this,'ace')"><i class="fa fa-floppy-o"></i> <?php echo lng('Save') ?>
                         </button>
-                    <?php } ?>
-                <?php } ?>
+                    <?php
+        } ?>
+                <?php
+    } ?>
             </div>
         </div>
         <?php
@@ -1439,8 +1439,7 @@ if (isset($_GET['edit'])) {
             echo '<div id="editor" contenteditable="true">' . htmlspecialchars($content) . '</div>';
         } else {
             fm_set_msg('FILE EXTENSION HAS NOT SUPPORTED', 'error');
-        }
-        ?>
+        } ?>
     </div>
     <?php
     fm_show_footer();
@@ -1463,9 +1462,7 @@ if (isset($_GET['chmod']) && !FM_READONLY && !FM_IS_WIN) {
     $file_url = FM_ROOT_URL . (FM_PATH != '' ? '/' . FM_PATH : '') . '/' . $file;
     $file_path = $path . '/' . $file;
 
-    $mode = fileperms($path . '/' . $file);
-
-    ?>
+    $mode = fileperms($path . '/' . $file); ?>
     <div class="path">
         <div class="card mb-2">
             <h6 class="card-header">
@@ -1563,10 +1560,12 @@ $all_files_size = 0;
                     <td class="border-0"></td>
                     <td class="border-0"></td>
                     <td class="border-0"></td>
-                    <?php if (!FM_IS_WIN) { ?>
+                    <?php if (!FM_IS_WIN) {
+                    ?>
                         <td class="border-0"></td>
                         <td class="border-0"></td>
-                    <?php } ?>
+                    <?php
+                } ?>
                 </tr>
                 <?php
             }
@@ -1582,8 +1581,7 @@ $all_files_size = 0;
                 } else {
                     $owner = array('name' => '?');
                     $group = array('name' => '?');
-                }
-                ?>
+                } ?>
                 <tr>
                     <?php if (!FM_READONLY): ?>
                         <td class="custom-checkbox-td">
@@ -1631,8 +1629,7 @@ $all_files_size = 0;
                 } else {
                     $owner = array('name' => '?');
                     $group = array('name' => '?');
-                }
-                ?>
+                } ?>
                 <tr>
                     <?php if (!FM_READONLY): ?>
                         <td class="custom-checkbox-td">
@@ -1801,7 +1798,9 @@ function fm_rename($old, $new)
     $ext = pathinfo($new, PATHINFO_EXTENSION);
     $isFileAllowed = ($allowed) ? in_array($ext, $allowed) : true;
 
-    if(!$isFileAllowed) return false;
+    if (!$isFileAllowed) {
+        return false;
+    }
 
     return (!file_exists($new) && file_exists($old)) ? rename($old, $new) : null;
 }
@@ -1974,7 +1973,8 @@ function fm_get_filesize($size)
  * @param string $path
  * @return array|bool
  */
-function fm_get_zif_info($path, $ext) {
+function fm_get_zif_info($path, $ext)
+{
     if ($ext == 'zip' && function_exists('zip_open')) {
         $arch = zip_open($path);
         if ($arch) {
@@ -1993,10 +1993,10 @@ function fm_get_zif_info($path, $ext) {
             zip_close($arch);
             return $filenames;
         }
-    } elseif($ext == 'tar' && class_exists('PharData')) {
+    } elseif ($ext == 'tar' && class_exists('PharData')) {
         $archive = new PharData($path);
         $filenames = array();
-        foreach(new RecursiveIteratorIterator($archive) as $file) {
+        foreach (new RecursiveIteratorIterator($archive) as $file) {
             $parent_info = $file->getPathInfo();
             $zip_name = str_replace("phar://".$path, '', $file->getPathName());
             $zip_name = substr($zip_name, ($pos = strpos($zip_name, '/')) !== false ? $pos + 1 : 0);
@@ -2540,54 +2540,57 @@ class FM_Zipper_Tar
  * Save Configuration
  */
  class FM_Config
-{
-     var $data;
+ {
+     public $data;
 
-    function __construct()
-    {
-        global $root_path, $root_url, $CONFIG;
-        $fm_url = $root_url.$_SERVER["PHP_SELF"];
-        $this->data = array(
+     public function __construct()
+     {
+         global $root_path, $root_url, $CONFIG;
+         $fm_url = $root_url.$_SERVER["PHP_SELF"];
+         $this->data = array(
             'lang' => 'en',
             'error_reporting' => true,
             'show_hidden' => true
         );
-        $data = false;
-        if (strlen($CONFIG)) {
-            $data = fm_object_to_array(json_decode($CONFIG));
-        } else {
-            $msg = 'Tiny <br>Error: Cannot load configuration';
-            if (substr($fm_url, -1) == '/') {
-                $fm_url = rtrim($fm_url, '/');
-                $msg .= '<br>';
-                $msg .= '<br>Seems like you have a trailing slash on the URL.';
-                $msg .= '<br>Try this link: <a href="' . $fm_url . '">' . $fm_url . '</a>';
-            }
-            die($msg);
-        }
-        if (is_array($data) && count($data)) $this->data = $data;
-        else $this->save();
-    }
+         $data = false;
+         if (strlen($CONFIG)) {
+             $data = fm_object_to_array(json_decode($CONFIG));
+         } else {
+             $msg = 'Tiny <br>Error: Cannot load configuration';
+             if (substr($fm_url, -1) == '/') {
+                 $fm_url = rtrim($fm_url, '/');
+                 $msg .= '<br>';
+                 $msg .= '<br>Seems like you have a trailing slash on the URL.';
+                 $msg .= '<br>Try this link: <a href="' . $fm_url . '">' . $fm_url . '</a>';
+             }
+             die($msg);
+         }
+         if (is_array($data) && count($data)) {
+             $this->data = $data;
+         } else {
+             $this->save();
+         }
+     }
 
-    function save()
-    {
-        global $root_path;
-        $fm_file = $root_path.$_SERVER["PHP_SELF"];
-        $var_name = '$CONFIG';
-        $var_value = var_export(json_encode($this->data), true);
-        $config_string = "<?php" . chr(13) . chr(10) . "//Default Configuration".chr(13) . chr(10)."$var_name = $var_value;" . chr(13) . chr(10);
-        if (file_exists($fm_file)) {
-            $lines = file($fm_file);
-            if ($fh = @fopen($fm_file, "w")) {
-                @fputs($fh, $config_string, strlen($config_string));
-                for ($x = 3; $x < count($lines); $x++) {
-                    @fputs($fh, $lines[$x], strlen($lines[$x]));
-                }
-                @fclose($fh);
-            }
-        }
-    }
-}
+     public function save()
+     {
+         global $root_path;
+         $fm_file = $root_path.$_SERVER["PHP_SELF"];
+         $var_name = '$CONFIG';
+         $var_value = var_export(json_encode($this->data), true);
+         $config_string = "<?php" . chr(13) . chr(10) . "//Default Configuration".chr(13) . chr(10)."$var_name = $var_value;" . chr(13) . chr(10);
+         if (file_exists($fm_file)) {
+             $lines = file($fm_file);
+             if ($fh = @fopen($fm_file, "w")) {
+                 @fputs($fh, $config_string, strlen($config_string));
+                 for ($x = 3; $x < count($lines); $x++) {
+                     @fputs($fh, $lines[$x], strlen($lines[$x]));
+                 }
+                 @fclose($fh);
+             }
+         }
+     }
+ }
 
 //--- templates functions
 
@@ -2598,8 +2601,7 @@ class FM_Zipper_Tar
 function fm_show_nav_path($path)
 {
     global $lang, $sticky_navbar;
-    $isStickyNavBar = $sticky_navbar ? 'fixed-top' : '';
-    ?>
+    $isStickyNavBar = $sticky_navbar ? 'fixed-top' : ''; ?>
     <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4 main-nav <?php echo $isStickyNavBar ?>">
         <a class="navbar-brand" href=""> <?php echo lng('AppTitle') ?> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -2609,22 +2611,21 @@ function fm_show_nav_path($path)
 
             <?php
             $path = fm_clean_path($path);
-            $root_url = "<a href='?p='><i class='fa fa-home' aria-hidden='true' title='" . FM_ROOT_PATH . "'></i></a>";
-            $sep = '<i class="bread-crumb"> / </i>';
-            if ($path != '') {
-                $exploded = explode('/', $path);
-                $count = count($exploded);
-                $array = array();
-                $parent = '';
-                for ($i = 0; $i < $count; $i++) {
-                    $parent = trim($parent . '/' . $exploded[$i], '/');
-                    $parent_enc = urlencode($parent);
-                    $array[] = "<a href='?p={$parent_enc}'>" . fm_enc(fm_convert_win($exploded[$i])) . "</a>";
-                }
-                $root_url .= $sep . implode($sep, $array);
-            }
-            echo '<div class="col-xs-6 col-sm-5">' . $root_url . '</div>';
-            ?>
+    $root_url = "<a href='?p='><i class='fa fa-home' aria-hidden='true' title='" . FM_ROOT_PATH . "'></i></a>";
+    $sep = '<i class="bread-crumb"> / </i>';
+    if ($path != '') {
+        $exploded = explode('/', $path);
+        $count = count($exploded);
+        $array = array();
+        $parent = '';
+        for ($i = 0; $i < $count; $i++) {
+            $parent = trim($parent . '/' . $exploded[$i], '/');
+            $parent_enc = urlencode($parent);
+            $array[] = "<a href='?p={$parent_enc}'>" . fm_enc(fm_convert_win($exploded[$i])) . "</a>";
+        }
+        $root_url .= $sep . implode($sep, $array);
+    }
+    echo '<div class="col-xs-6 col-sm-5">' . $root_url . '</div>'; ?>
 
             <div class="col-xs-6 col-sm-7 text-right">
                 <ul class="navbar-nav mr-auto float-right">
@@ -2646,7 +2647,9 @@ function fm_show_nav_path($path)
                     <?php endif; ?>
                     <?php if (FM_USE_AUTH): ?>
                     <li class="nav-item avatar dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-user-circle"></i> <?php if(isset($_SESSION[FM_SESSION_ID]['logged'])) { echo $_SESSION[FM_SESSION_ID]['logged']; } ?></a>
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-user-circle"></i> <?php if (isset($_SESSION[FM_SESSION_ID]['logged'])) {
+        echo $_SESSION[FM_SESSION_ID]['logged'];
+    } ?></a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink-5">
                             <?php if (!FM_READONLY): ?>
                             <a title="<?php echo lng('Settings') ?>" class="dropdown-item nav-link" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;settings=1"><i class="fa fa-cog" aria-hidden="true"></i> <?php echo lng('Settings') ?></a>
@@ -2680,14 +2683,13 @@ function fm_show_message()
  */
 function fm_show_header_login()
 {
-$sprites_ver = '20160315';
-header("Content-Type: text/html; charset=utf-8");
-header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
-header("Pragma: no-cache");
+    $sprites_ver = '20160315';
+    header("Content-Type: text/html; charset=utf-8");
+    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+    header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: no-cache");
 
-global $lang;
-?>
+    global $lang; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2728,36 +2730,35 @@ global $lang;
 <div id="wrapper" class="container-fluid">
 
     <?php
-    }
+}
 
     /**
      * Show page footer in Login Form
      */
     function fm_show_footer_login()
     {
-    ?>
+        ?>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
 <?php
-}
+    }
 
 /**
  * Show Header after login
  */
 function fm_show_header()
 {
-$sprites_ver = '20160315';
-header("Content-Type: text/html; charset=utf-8");
-header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
-header("Pragma: no-cache");
+    $sprites_ver = '20160315';
+    header("Content-Type: text/html; charset=utf-8");
+    header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+    header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: no-cache");
 
-global $lang, $sticky_navbar;
-$isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
-?>
+    global $lang, $sticky_navbar;
+    $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal'; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -3137,14 +3138,14 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
     </div>
 
     <?php
-    }
+}
 
     /**
      * Show page footer
      */
     function fm_show_footer()
     {
-    ?>
+        ?>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -3307,7 +3308,7 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
 </body>
 </html>
 <?php
-}
+    }
 
 /**
  * Show image
@@ -3354,130 +3355,245 @@ function fm_show_image($img)
  * @param string $txt
  * @return string
  */
-function lng($txt) {
+function lng($txt)
+{
     global $lang;
 
     // English Language
-    $tr['en']['AppName']        = 'Tiny ';      $tr['en']['AppTitle']           = '';
-    $tr['en']['Login']          = 'Sign in';                $tr['en']['Username']           = 'Username';
-    $tr['en']['Password']       = 'Password';               $tr['en']['Logout']             = 'Sign Out';
-    $tr['en']['Move']           = 'Move';                   $tr['en']['Copy']               = 'Copy';
-    $tr['en']['Save']           = 'Save';                   $tr['en']['SelectAll']          = 'Select all';
-    $tr['en']['UnSelectAll']    = 'Unselect all';           $tr['en']['File']               = 'File';
-    $tr['en']['Back']           = 'Back';                   $tr['en']['Size']               = 'Size';
-    $tr['en']['Perms']          = 'Perms';                  $tr['en']['Modified']           = 'Modified';
-    $tr['en']['Owner']          = 'Owner';                  $tr['en']['Search']             = 'Search';
-    $tr['en']['NewItem']        = 'New Item';               $tr['en']['Folder']             = 'Folder';
-    $tr['en']['Delete']         = 'Delete';                 $tr['en']['Rename']             = 'Rename';
-    $tr['en']['CopyTo']         = 'Copy to';                $tr['en']['DirectLink']         = 'Direct link';
-    $tr['en']['UploadingFiles'] = 'Upload Files';           $tr['en']['ChangePermissions']  = 'Change Permissions';
-    $tr['en']['Copying']        = 'Copying';                $tr['en']['CreateNewItem']      = 'Create New Item';
-    $tr['en']['Name']           = 'Name';                   $tr['en']['AdvancedEditor']     = 'Advanced Editor';
-    $tr['en']['RememberMe']     = 'Remember Me';            $tr['en']['Actions']            = 'Actions';
-    $tr['en']['Upload']         = 'Upload';                 $tr['en']['Cancel']             = 'Cancel';
-    $tr['en']['InvertSelection']= 'Invert Selection';       $tr['en']['DestinationFolder']  = 'Destination Folder';
-    $tr['en']['ItemType']       = 'Item Type';              $tr['en']['ItemName']           = 'Item Name';
-    $tr['en']['CreateNow']      = 'Create Now';             $tr['en']['Download']           = 'Download';
-    $tr['en']['Open']           = 'Open';                   $tr['en']['UnZip']              = 'UnZip';
-    $tr['en']['UnZipToFolder']  = 'UnZip to folder';        $tr['en']['Edit']               = 'Edit';
-    $tr['en']['NormalEditor']   = 'Normal Editor';          $tr['en']['BackUp']             = 'Back Up';
-    $tr['en']['SourceFolder']   = 'Source Folder';          $tr['en']['Files']              = 'Files';
-    $tr['en']['Move']           = 'Move';                   $tr['en']['Change']             = 'Change';
-    $tr['en']['Settings']       = 'Settings';               $tr['en']['Language']           = 'Language';
-    $tr['en']['MemoryUsed']     = 'Memory used';            $tr['en']['PartitionSize']      = 'Partition size';
+    $tr['en']['AppName']        = 'Tiny ';
+    $tr['en']['AppTitle']           = '';
+    $tr['en']['Login']          = 'Sign in';
+    $tr['en']['Username']           = 'Username';
+    $tr['en']['Password']       = 'Password';
+    $tr['en']['Logout']             = 'Sign Out';
+    $tr['en']['Move']           = 'Move';
+    $tr['en']['Copy']               = 'Copy';
+    $tr['en']['Save']           = 'Save';
+    $tr['en']['SelectAll']          = 'Select all';
+    $tr['en']['UnSelectAll']    = 'Unselect all';
+    $tr['en']['File']               = 'File';
+    $tr['en']['Back']           = 'Back';
+    $tr['en']['Size']               = 'Size';
+    $tr['en']['Perms']          = 'Perms';
+    $tr['en']['Modified']           = 'Modified';
+    $tr['en']['Owner']          = 'Owner';
+    $tr['en']['Search']             = 'Search';
+    $tr['en']['NewItem']        = 'New Item';
+    $tr['en']['Folder']             = 'Folder';
+    $tr['en']['Delete']         = 'Delete';
+    $tr['en']['Rename']             = 'Rename';
+    $tr['en']['CopyTo']         = 'Copy to';
+    $tr['en']['DirectLink']         = 'Direct link';
+    $tr['en']['UploadingFiles'] = 'Upload Files';
+    $tr['en']['ChangePermissions']  = 'Change Permissions';
+    $tr['en']['Copying']        = 'Copying';
+    $tr['en']['CreateNewItem']      = 'Create New Item';
+    $tr['en']['Name']           = 'Name';
+    $tr['en']['AdvancedEditor']     = 'Advanced Editor';
+    $tr['en']['RememberMe']     = 'Remember Me';
+    $tr['en']['Actions']            = 'Actions';
+    $tr['en']['Upload']         = 'Upload';
+    $tr['en']['Cancel']             = 'Cancel';
+    $tr['en']['InvertSelection']= 'Invert Selection';
+    $tr['en']['DestinationFolder']  = 'Destination Folder';
+    $tr['en']['ItemType']       = 'Item Type';
+    $tr['en']['ItemName']           = 'Item Name';
+    $tr['en']['CreateNow']      = 'Create Now';
+    $tr['en']['Download']           = 'Download';
+    $tr['en']['Open']           = 'Open';
+    $tr['en']['UnZip']              = 'UnZip';
+    $tr['en']['UnZipToFolder']  = 'UnZip to folder';
+    $tr['en']['Edit']               = 'Edit';
+    $tr['en']['NormalEditor']   = 'Normal Editor';
+    $tr['en']['BackUp']             = 'Back Up';
+    $tr['en']['SourceFolder']   = 'Source Folder';
+    $tr['en']['Files']              = 'Files';
+    $tr['en']['Move']           = 'Move';
+    $tr['en']['Change']             = 'Change';
+    $tr['en']['Settings']       = 'Settings';
+    $tr['en']['Language']           = 'Language';
+    $tr['en']['MemoryUsed']     = 'Memory used';
+    $tr['en']['PartitionSize']      = 'Partition size';
 
 
     // French Language
-    $tr['fr']['AppName']        = 'Tiny ';      $tr['fr']['AppTitle']           = '';
-    $tr['fr']['Login']          = 'Connexion';              $tr['fr']['Username']           = 'Utilisateur';
-    $tr['fr']['Password']       = 'Mot de passe';           $tr['fr']['Logout']             = 'Déconnexion';
-    $tr['fr']['Move']           = 'Déplacer';               $tr['fr']['Copy']               = 'Copier';
-    $tr['fr']['Save']           = 'Sauvegarder';            $tr['fr']['SelectAll']          = 'Tout sélectionner';
-    $tr['fr']['UnSelectAll']    = 'Tout déselectionner';    $tr['fr']['File']               = 'Fichier';
-    $tr['fr']['Back']           = 'Retour';                 $tr['fr']['Size']               = 'Taille';
-    $tr['fr']['Perms']          = 'Perms';                  $tr['fr']['Modified']           = 'Modifié le';
-    $tr['fr']['Owner']          = 'Propriétaire';           $tr['fr']['Search']             = 'Recherche';
-    $tr['fr']['NewItem']        = 'Nouvel Élément';         $tr['fr']['Folder']             = 'Dossier';
-    $tr['fr']['Delete']         = 'Supprimer';              $tr['fr']['Rename']             = 'Renommer';
-    $tr['fr']['CopyTo']         = 'Copier vers';            $tr['fr']['DirectLink']         = 'Lien direct';
-    $tr['fr']['UploadingFiles'] = 'Envoyer des fichiers';   $tr['fr']['ChangePermissions']  = 'Modifier les permissions';
-    $tr['fr']['Copying']        = 'Copier';                 $tr['fr']['CreateNewItem']      = 'Créer un nouvel élément';
-    $tr['fr']['Name']           = 'Nom';                    $tr['fr']['AdvancedEditor']     = 'Editeur avancé';
-    $tr['fr']['RememberMe']     = 'Se rappeler de moi';     $tr['fr']['Actions']            = 'Actes';
-    $tr['fr']['Upload']         = 'Envoyer';                $tr['fr']['Cancel']             = 'Annuler';
-    $tr['fr']['InvertSelection']= 'Inverser la sélection';  $tr['fr']['DestinationFolder']  = 'Dossier destination';
-    $tr['fr']['ItemType']       = 'Type d\'élement';        $tr['fr']['ItemName']           = 'Nom de l\'élément';
-    $tr['fr']['CreateNow']      = 'Créer';                  $tr['fr']['Download']           = 'Télécharger';
-    $tr['fr']['Open']           = 'Ouvrir';                 $tr['fr']['UnZip']              = 'Décompressez';
-    $tr['fr']['UnZipToFolder']  = 'Décompresser dans un dossier';$tr['fr']['Edit']          = 'Editeur';
-    $tr['fr']['NormalEditor']   = 'Éditeur Normal';         $tr['fr']['BackUp']             = 'Sauvegarder';
-    $tr['fr']['SourceFolder']   = 'Dossier Source';         $tr['fr']['Files']              = 'Fichiers';
-    $tr['fr']['Move']           = 'Déplacer';               $tr['fr']['Change']             = 'Modifier';
-    $tr['fr']['Settings']       = 'Réglages';               $tr['fr']['Language']           = 'Langue';
-    $tr['fr']['MemoryUsed']     = 'Mémoire utilisée';       $tr['fr']['PartitionSize']      = 'Taille de la partition';
+    $tr['fr']['AppName']        = 'Tiny ';
+    $tr['fr']['AppTitle']           = '';
+    $tr['fr']['Login']          = 'Connexion';
+    $tr['fr']['Username']           = 'Utilisateur';
+    $tr['fr']['Password']       = 'Mot de passe';
+    $tr['fr']['Logout']             = 'Déconnexion';
+    $tr['fr']['Move']           = 'Déplacer';
+    $tr['fr']['Copy']               = 'Copier';
+    $tr['fr']['Save']           = 'Sauvegarder';
+    $tr['fr']['SelectAll']          = 'Tout sélectionner';
+    $tr['fr']['UnSelectAll']    = 'Tout déselectionner';
+    $tr['fr']['File']               = 'Fichier';
+    $tr['fr']['Back']           = 'Retour';
+    $tr['fr']['Size']               = 'Taille';
+    $tr['fr']['Perms']          = 'Perms';
+    $tr['fr']['Modified']           = 'Modifié le';
+    $tr['fr']['Owner']          = 'Propriétaire';
+    $tr['fr']['Search']             = 'Recherche';
+    $tr['fr']['NewItem']        = 'Nouvel Élément';
+    $tr['fr']['Folder']             = 'Dossier';
+    $tr['fr']['Delete']         = 'Supprimer';
+    $tr['fr']['Rename']             = 'Renommer';
+    $tr['fr']['CopyTo']         = 'Copier vers';
+    $tr['fr']['DirectLink']         = 'Lien direct';
+    $tr['fr']['UploadingFiles'] = 'Envoyer des fichiers';
+    $tr['fr']['ChangePermissions']  = 'Modifier les permissions';
+    $tr['fr']['Copying']        = 'Copier';
+    $tr['fr']['CreateNewItem']      = 'Créer un nouvel élément';
+    $tr['fr']['Name']           = 'Nom';
+    $tr['fr']['AdvancedEditor']     = 'Editeur avancé';
+    $tr['fr']['RememberMe']     = 'Se rappeler de moi';
+    $tr['fr']['Actions']            = 'Actes';
+    $tr['fr']['Upload']         = 'Envoyer';
+    $tr['fr']['Cancel']             = 'Annuler';
+    $tr['fr']['InvertSelection']= 'Inverser la sélection';
+    $tr['fr']['DestinationFolder']  = 'Dossier destination';
+    $tr['fr']['ItemType']       = 'Type d\'élement';
+    $tr['fr']['ItemName']           = 'Nom de l\'élément';
+    $tr['fr']['CreateNow']      = 'Créer';
+    $tr['fr']['Download']           = 'Télécharger';
+    $tr['fr']['Open']           = 'Ouvrir';
+    $tr['fr']['UnZip']              = 'Décompressez';
+    $tr['fr']['UnZipToFolder']  = 'Décompresser dans un dossier';
+    $tr['fr']['Edit']          = 'Editeur';
+    $tr['fr']['NormalEditor']   = 'Éditeur Normal';
+    $tr['fr']['BackUp']             = 'Sauvegarder';
+    $tr['fr']['SourceFolder']   = 'Dossier Source';
+    $tr['fr']['Files']              = 'Fichiers';
+    $tr['fr']['Move']           = 'Déplacer';
+    $tr['fr']['Change']             = 'Modifier';
+    $tr['fr']['Settings']       = 'Réglages';
+    $tr['fr']['Language']           = 'Langue';
+    $tr['fr']['MemoryUsed']     = 'Mémoire utilisée';
+    $tr['fr']['PartitionSize']      = 'Taille de la partition';
 
     // Italian Language
-    $tr['it']['AppName']        = 'Tiny ';      $tr['it']['AppTitle']           = '';
-    $tr['it']['Login']          = 'Connettiti';             $tr['it']['Username']           = 'Username';
-    $tr['it']['Password']       = 'Password';               $tr['it']['Logout']             = 'Disconnettiti';
-    $tr['it']['Move']           = 'Sposta';                 $tr['it']['Copy']               = 'Copia';
-    $tr['it']['Save']           = 'Salva';                  $tr['it']['SelectAll']          = 'Seleziona tutto';
-    $tr['it']['UnSelectAll']    = 'Deseleziona tutto';      $tr['it']['File']               = 'File';
-    $tr['it']['Back']           = 'Indietro';               $tr['it']['Size']               = 'Dimensione';
-    $tr['it']['Perms']          = 'Permessi';               $tr['it']['Modified']           = 'Modificato';
-    $tr['it']['Owner']          = 'Proprietario';           $tr['it']['Search']             = 'Cerca';
-    $tr['it']['NewItem']        = 'Nuovo Elemento';         $tr['it']['Folder']             = 'Cartella';
-    $tr['it']['Delete']         = 'Elimina';                $tr['it']['Rename']             = 'Rinomina';
-    $tr['it']['CopyTo']         = 'Copia su';               $tr['it']['DirectLink']         = 'Link diretto';
-    $tr['it']['UploadingFiles'] = 'Caricamento file';       $tr['it']['ChangePermissions']  = 'Modifica Permessi';
-    $tr['it']['Copying']        = 'Copia in corso';         $tr['it']['CreateNewItem']      = 'Crea Nuovo Elemento';
-    $tr['it']['Name']           = 'Nome';                   $tr['it']['AdvancedEditor']     = 'Editor Avanzato';
-    $tr['it']['RememberMe']     = 'Ricordami';              $tr['it']['Actions']            = 'Azioni';
-    $tr['it']['Upload']         = 'Carica';                 $tr['it']['Cancel']             = 'Annulla';
-    $tr['it']['InvertSelection']= 'Inverti Selezione';      $tr['it']['DestinationFolder']  = 'Cartella di Destinazione';
-    $tr['it']['ItemType']       = 'Tipo Elemento';          $tr['it']['ItemName']           = 'Nome Elemento';
-    $tr['it']['CreateNow']      = 'Crea Adesso';            $tr['it']['Download']           = 'Scarica';
-    $tr['it']['Open']           = 'Apri';                   $tr['it']['UnZip']              = 'Decomprimi';
-    $tr['it']['UnZipToFolder']  = 'Decomprimi su cartella'; $tr['it']['Edit']               = 'Modifica';
-    $tr['it']['NormalEditor']   = 'Editor Normale';         $tr['it']['BackUp']             = 'Back-Up';
-    $tr['it']['SourceFolder']   = 'Cartella di Origine';    $tr['it']['Files']              = 'File';
-    $tr['it']['Move']           = 'Sposta';                 $tr['it']['Change']             = 'Cambia';
-    $tr['it']['Settings']       = 'Impostazioni';           $tr['it']['Language']           = 'Lingua';
-    $tr['it']['MemoryUsed']     = 'Memoria utilizzata';     $tr['it']['PartitionSize']      = 'Dimensione della partizione';
+    $tr['it']['AppName']        = 'Tiny ';
+    $tr['it']['AppTitle']           = '';
+    $tr['it']['Login']          = 'Connettiti';
+    $tr['it']['Username']           = 'Username';
+    $tr['it']['Password']       = 'Password';
+    $tr['it']['Logout']             = 'Disconnettiti';
+    $tr['it']['Move']           = 'Sposta';
+    $tr['it']['Copy']               = 'Copia';
+    $tr['it']['Save']           = 'Salva';
+    $tr['it']['SelectAll']          = 'Seleziona tutto';
+    $tr['it']['UnSelectAll']    = 'Deseleziona tutto';
+    $tr['it']['File']               = 'File';
+    $tr['it']['Back']           = 'Indietro';
+    $tr['it']['Size']               = 'Dimensione';
+    $tr['it']['Perms']          = 'Permessi';
+    $tr['it']['Modified']           = 'Modificato';
+    $tr['it']['Owner']          = 'Proprietario';
+    $tr['it']['Search']             = 'Cerca';
+    $tr['it']['NewItem']        = 'Nuovo Elemento';
+    $tr['it']['Folder']             = 'Cartella';
+    $tr['it']['Delete']         = 'Elimina';
+    $tr['it']['Rename']             = 'Rinomina';
+    $tr['it']['CopyTo']         = 'Copia su';
+    $tr['it']['DirectLink']         = 'Link diretto';
+    $tr['it']['UploadingFiles'] = 'Caricamento file';
+    $tr['it']['ChangePermissions']  = 'Modifica Permessi';
+    $tr['it']['Copying']        = 'Copia in corso';
+    $tr['it']['CreateNewItem']      = 'Crea Nuovo Elemento';
+    $tr['it']['Name']           = 'Nome';
+    $tr['it']['AdvancedEditor']     = 'Editor Avanzato';
+    $tr['it']['RememberMe']     = 'Ricordami';
+    $tr['it']['Actions']            = 'Azioni';
+    $tr['it']['Upload']         = 'Carica';
+    $tr['it']['Cancel']             = 'Annulla';
+    $tr['it']['InvertSelection']= 'Inverti Selezione';
+    $tr['it']['DestinationFolder']  = 'Cartella di Destinazione';
+    $tr['it']['ItemType']       = 'Tipo Elemento';
+    $tr['it']['ItemName']           = 'Nome Elemento';
+    $tr['it']['CreateNow']      = 'Crea Adesso';
+    $tr['it']['Download']           = 'Scarica';
+    $tr['it']['Open']           = 'Apri';
+    $tr['it']['UnZip']              = 'Decomprimi';
+    $tr['it']['UnZipToFolder']  = 'Decomprimi su cartella';
+    $tr['it']['Edit']               = 'Modifica';
+    $tr['it']['NormalEditor']   = 'Editor Normale';
+    $tr['it']['BackUp']             = 'Back-Up';
+    $tr['it']['SourceFolder']   = 'Cartella di Origine';
+    $tr['it']['Files']              = 'File';
+    $tr['it']['Move']           = 'Sposta';
+    $tr['it']['Change']             = 'Cambia';
+    $tr['it']['Settings']       = 'Impostazioni';
+    $tr['it']['Language']           = 'Lingua';
+    $tr['it']['MemoryUsed']     = 'Memoria utilizzata';
+    $tr['it']['PartitionSize']      = 'Dimensione della partizione';
 
     // Russian Language
-    $tr['ru']['AppName']        = 'Файловый менеджер';            $tr['ru']['AppTitle']           = 'Файловый менеджер';
-    $tr['ru']['Login']          = 'Войти';                        $tr['ru']['Username']           = 'Пользователь';
-    $tr['ru']['Password']       = 'Пароль';                       $tr['ru']['Logout']             = 'Выйти';
-    $tr['ru']['Move']           = 'Переместить';                  $tr['ru']['Copy']               = 'Копировать';
-    $tr['ru']['Save']           = 'Сохранить';                    $tr['ru']['SelectAll']          = 'Выбрать всё';
-    $tr['ru']['UnSelectAll']    = 'Отменить выбор';               $tr['ru']['File']               = 'Файл';
-    $tr['ru']['Back']           = 'Вернуться';                    $tr['ru']['Size']               = 'Размер';
-    $tr['ru']['Perms']          = 'Права доступа';                $tr['ru']['Modified']           = 'Обновление';
-    $tr['ru']['Owner']          = 'Создатель';                    $tr['ru']['Search']             = 'Поиск';
-    $tr['ru']['NewItem']        = 'Создать';                      $tr['ru']['Folder']             = 'Папка';
-    $tr['ru']['Delete']         = 'Удалить';                      $tr['ru']['Rename']             = 'Переименовать';
-    $tr['ru']['CopyTo']         = 'Скопировать в';                $tr['ru']['DirectLink']         = 'Ссылка';
-    $tr['ru']['UploadingFiles'] = 'Загрузка файлов';              $tr['ru']['ChangePermissions']  = 'Изменить права';
-    $tr['ru']['Copying']        = 'Копировать';                   $tr['ru']['CreateNewItem']      = 'Создать новый';
-    $tr['ru']['Name']           = 'Имя';                          $tr['ru']['AdvancedEditor']     = 'Улучшеный редактор';
-    $tr['ru']['RememberMe']     = 'Запомнить меня';               $tr['ru']['Actions']            = 'Действия';
-    $tr['ru']['Upload']         = 'Загрузить';                    $tr['ru']['Cancel']             = 'Отмена';
-    $tr['ru']['InvertSelection']= 'Обратная выборка';             $tr['ru']['DestinationFolder']  = 'Папка назначения';
-    $tr['ru']['ItemType']       = 'Тип элемента';                 $tr['ru']['ItemName']           = 'Имя элемента';
-    $tr['ru']['CreateNow']      = 'Создать сейчас';               $tr['ru']['Download']           = 'Загрузка';
-    $tr['ru']['Open']           = 'Открыть';                      $tr['ru']['UnZip']              = 'Разархивировать';
-    $tr['ru']['UnZipToFolder']  = 'Разархивировать в папку';      $tr['ru']['Edit']               = 'Редактировать';
-    $tr['ru']['NormalEditor']   = 'Стандартный редактор';         $tr['ru']['BackUp']             = 'Back Up';
-    $tr['ru']['SourceFolder']   = 'Путь папки';                   $tr['ru']['Files']              = 'Файлы';
-    $tr['ru']['Move']           = 'Переместить';                  $tr['ru']['Change']             = 'Изменения';
-    $tr['ru']['Settings']       = 'Свойства';                     $tr['ru']['Language']           = 'Язык';
-    $tr['ru']['MemoryUsed']     = 'Используемая память';          $tr['ru']['PartitionSize']      = 'Размер раздела';
+    $tr['ru']['AppName']        = 'Файловый менеджер';
+    $tr['ru']['AppTitle']           = 'Файловый менеджер';
+    $tr['ru']['Login']          = 'Войти';
+    $tr['ru']['Username']           = 'Пользователь';
+    $tr['ru']['Password']       = 'Пароль';
+    $tr['ru']['Logout']             = 'Выйти';
+    $tr['ru']['Move']           = 'Переместить';
+    $tr['ru']['Copy']               = 'Копировать';
+    $tr['ru']['Save']           = 'Сохранить';
+    $tr['ru']['SelectAll']          = 'Выбрать всё';
+    $tr['ru']['UnSelectAll']    = 'Отменить выбор';
+    $tr['ru']['File']               = 'Файл';
+    $tr['ru']['Back']           = 'Вернуться';
+    $tr['ru']['Size']               = 'Размер';
+    $tr['ru']['Perms']          = 'Права доступа';
+    $tr['ru']['Modified']           = 'Обновление';
+    $tr['ru']['Owner']          = 'Создатель';
+    $tr['ru']['Search']             = 'Поиск';
+    $tr['ru']['NewItem']        = 'Создать';
+    $tr['ru']['Folder']             = 'Папка';
+    $tr['ru']['Delete']         = 'Удалить';
+    $tr['ru']['Rename']             = 'Переименовать';
+    $tr['ru']['CopyTo']         = 'Скопировать в';
+    $tr['ru']['DirectLink']         = 'Ссылка';
+    $tr['ru']['UploadingFiles'] = 'Загрузка файлов';
+    $tr['ru']['ChangePermissions']  = 'Изменить права';
+    $tr['ru']['Copying']        = 'Копировать';
+    $tr['ru']['CreateNewItem']      = 'Создать новый';
+    $tr['ru']['Name']           = 'Имя';
+    $tr['ru']['AdvancedEditor']     = 'Улучшеный редактор';
+    $tr['ru']['RememberMe']     = 'Запомнить меня';
+    $tr['ru']['Actions']            = 'Действия';
+    $tr['ru']['Upload']         = 'Загрузить';
+    $tr['ru']['Cancel']             = 'Отмена';
+    $tr['ru']['InvertSelection']= 'Обратная выборка';
+    $tr['ru']['DestinationFolder']  = 'Папка назначения';
+    $tr['ru']['ItemType']       = 'Тип элемента';
+    $tr['ru']['ItemName']           = 'Имя элемента';
+    $tr['ru']['CreateNow']      = 'Создать сейчас';
+    $tr['ru']['Download']           = 'Загрузка';
+    $tr['ru']['Open']           = 'Открыть';
+    $tr['ru']['UnZip']              = 'Разархивировать';
+    $tr['ru']['UnZipToFolder']  = 'Разархивировать в папку';
+    $tr['ru']['Edit']               = 'Редактировать';
+    $tr['ru']['NormalEditor']   = 'Стандартный редактор';
+    $tr['ru']['BackUp']             = 'Back Up';
+    $tr['ru']['SourceFolder']   = 'Путь папки';
+    $tr['ru']['Files']              = 'Файлы';
+    $tr['ru']['Move']           = 'Переместить';
+    $tr['ru']['Change']             = 'Изменения';
+    $tr['ru']['Settings']       = 'Свойства';
+    $tr['ru']['Language']           = 'Язык';
+    $tr['ru']['MemoryUsed']     = 'Используемая память';
+    $tr['ru']['PartitionSize']      = 'Размер раздела';
 
-    if (!strlen($lang)) $lang = 'en';
-    if (isset($tr[$lang][$txt])) return fm_enc($tr[$lang][$txt]);
-    else if (isset($tr['en'][$txt])) return fm_enc($tr['en'][$txt]);
-    else return "$txt";
+    if (!strlen($lang)) {
+        $lang = 'en';
+    }
+    if (isset($tr[$lang][$txt])) {
+        return fm_enc($tr[$lang][$txt]);
+    } elseif (isset($tr['en'][$txt])) {
+        return fm_enc($tr['en'][$txt]);
+    } else {
+        return "$txt";
+    }
 }
 
 /**

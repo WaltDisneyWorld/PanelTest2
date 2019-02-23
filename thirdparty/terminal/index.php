@@ -8,15 +8,16 @@
 -->
 <?php
 session_start();
-function onlymasterreseller() {
-  return true;
+function onlymasterreseller()
+{
+    return true;
 }
-function onlyadmin() {
-     if ($_SESSION['user'] == 'admin') {
-         
-     } else {
-         die();
-     }
+function onlyadmin()
+{
+    if ($_SESSION['user'] == 'admin') {
+    } else {
+        die();
+    }
 }
 onlyadmin();
 onlymasterreseller();

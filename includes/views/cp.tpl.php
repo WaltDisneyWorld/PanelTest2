@@ -1,5 +1,7 @@
-<?php 
-if (!isset($HOME)) die();
+<?php
+if (!isset($HOME)) {
+    die();
+}
 require 'includes/classes/head.class.php';
 ?>
 
@@ -33,56 +35,50 @@ $(document).ready(function(){
   <li class="list-group-item">  
                                           <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
                                             $count  = 0;
-                                            $con    = mysqli_connect($host, $user, $pass, $data);
-                                            $sql    = 'SELECT * FROM users';
-                                            $result = mysqli_query($con, $sql);
-                                            while ($row = mysqli_fetch_row($result)) {
-                                                $count = $count + 1;
-                                            }
-                                            mysqli_free_result($result);
-                                            mysqli_close($con);
-                                            echo $count;
-    ?></h1><hr> <?php echo $lang_18; ?></a>
+    $con    = mysqli_connect($host, $user, $pass, $data);
+    $sql    = 'SELECT * FROM users';
+    $result = mysqli_query($con, $sql);
+    while ($row = mysqli_fetch_row($result)) {
+        $count = $count + 1;
+    }
+    mysqli_free_result($result);
+    mysqli_close($con);
+    echo $count; ?></h1><hr> <?php echo $lang_18; ?></a>
                                           <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
                                             $count  = 0;
-                                            $con    = mysqli_connect($host, $user, $pass, $data);
-                                            $sql    = 'SELECT * FROM failedlogin';
-                                            $result = mysqli_query($con, $sql);
-                                            while ($row = mysqli_fetch_row($result)) {
-                                                $count = $count + 1;
-                                            }
-                                            mysqli_free_result($result);
-                                            mysqli_close($con);
-                                            echo $count;
-    ?></h1><hr> <?php echo $lang_40; ?></a>
+    $con    = mysqli_connect($host, $user, $pass, $data);
+    $sql    = 'SELECT * FROM failedlogin';
+    $result = mysqli_query($con, $sql);
+    while ($row = mysqli_fetch_row($result)) {
+        $count = $count + 1;
+    }
+    mysqli_free_result($result);
+    mysqli_close($con);
+    echo $count; ?></h1><hr> <?php echo $lang_40; ?></a>
                                                                                 <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
                                                                                 $count  = 0;
-                                                                                $con    = mysqli_connect($host, $user, $pass, $data);
-                                                                                $sql    = 'SELECT * FROM users';
-                                                                                $result = mysqli_query($con, $sql);
-                                                                                while ($row = mysqli_fetch_row($result)) {
-                                                                                    $count = $count + 1;
-                                                                                }
-                                                                                mysqli_free_result($result);
-                                                                                mysqli_close($con);
-                                                                                echo $count;
-    ?></h1><hr> <?php echo $lang_14; ?></a>
+    $con    = mysqli_connect($host, $user, $pass, $data);
+    $sql    = 'SELECT * FROM users';
+    $result = mysqli_query($con, $sql);
+    while ($row = mysqli_fetch_row($result)) {
+        $count = $count + 1;
+    }
+    mysqli_free_result($result);
+    mysqli_close($con);
+    echo $count; ?></h1><hr> <?php echo $lang_14; ?></a>
                                                                                                                         <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;">
                                                                                                                             <?php
                                                                                                                             $count = 0;
-                                                                                                                            $scan  = scandir("plugins");
-                                                                                                                            foreach ($scan as $file) {
-                                                                                                                                $count = $count +1;
-                                                                                                                            }
-                                                                                                                            $count = $count - 2;
-                                                                                                                            echo $count;
-                                                                                                                            ?>
+    $scan  = scandir("plugins");
+    foreach ($scan as $file) {
+        $count = $count +1;
+    }
+    $count = $count - 2;
+    echo $count; ?>
                                                                                                                           
                                                                                                                         </h1><hr> <?php echo $lang_23; ?></a>
-                                          <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php 
-                                          echo $intisp_ver;
-                                          
-                                          ?></h1><hr> <?php echo $lang_41; ?></a>
+                                          <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
+                                          echo $intisp_ver; ?></h1><hr> <?php echo $lang_41; ?></a>
                                         
                                         
   
@@ -99,14 +95,14 @@ $(document).ready(function(){
     if ($result = mysqli_query($con, $sql)) {
         // Fetch one and one row
         while ($row = mysqli_fetch_row($result)) {
-          $whmurl = $row[0];
+            $whmurl = $row[0];
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
     mysqli_close($con);
-  if ($whmurl != "") {
-  ?>
+    if ($whmurl != "") {
+        ?>
   <script>
 $(document).ready(function(){
   $("#sxxhow").hide();
@@ -133,11 +129,12 @@ $(document).ready(function(){
                        
                                                          </li>
   </ul>  
-  <?php } ?>
+  <?php
+    } ?>
   
 <?php
 if (ismasterreseller()) {
-    ?>
+        ?>
     <script>
 $(document).ready(function(){
   $("#cshow").hide();
@@ -162,8 +159,7 @@ $(document).ready(function(){
   </li>
   </ul>
     <?php
-}
-    ?>
+    } ?>
     <script>
    
   
@@ -189,19 +185,20 @@ $(document).ready(function(){
                                         <a type="button" href="<?php echo $webroot; ?>/newserv" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_15; ?></a>
                                             <?php
                                             if (ismasterreseller()) {
-                                            ?>
+                                                ?>
                                              <a type="button" href="<?php echo $webroot; ?>/newresell" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_16; ?></a>
                                             <?php
                                             } ?>
                                         <?php if (file_get_contents("data/cloudflare") != "") {
-                                            ?>
+                                                ?>
                                         
                                           <a type="button" href="<?php echo $webroot; ?>/cloudflare" class="svr btn btn-default"><i class="fa fa-5x fa-cloud"></i><hr><?php echo $lang_17; ?></a>
-                                        <?php } ?>
+                                        <?php
+                                            } ?>
                                         <a type="button" href="<?php echo $webroot; ?>/list#" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/list.svg"><hr><?php echo $lang_18; ?></a>
                                                                              <?php
                                                                             if (ismasterreseller()) {
-                                                                            ?>
+                                                                                ?>
                                                                                    
                                                                                          
                                                                                                                   <a type="button" href="thirdparty/phpmyadmin/index.php?pma_username=<?php echo urlencode($user); ?>&pma_password=<?php echo urlencode($pass); ?>" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/bd.svg"><hr> <?php echo $lang_20; ?></a>
@@ -229,12 +226,12 @@ $(document).ready(function(){
   <li class="list-group-item">  
 <?php
 if (ismasterreseller()) {
-    ?>
+                                                                                ?>
                                 <a type="button" href="<?php echo $webroot; ?>/settings" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/settings.svg"><hr><?php echo $lang_21; ?></a> 
                             <a type="button" href="<?php echo $webroot; ?>/fman" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/file.svg"><hr>Root File Manager</a> 
                                 
                                 <a type="button" href="<?php echo $webroot; ?>/update" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/update.svg"><hr><?php echo $lang_22; ?></a> <?php
-} ?>
+                                                                            } ?>
                                   <a type="button" href="<?php echo $webroot; ?>/plug" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/plugins.svg"><hr><?php echo $lang_23; ?></a>
                                         <a type="button" href="<?php echo $webroot; ?>/terminal" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/term.svg"><hr><?php echo $lang_24; ?></a>
                                         <a  type="button" href="<?php echo $webroot; ?>/activation" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/active.png"><hr>My License</a>
@@ -243,34 +240,34 @@ if (ismasterreseller()) {
                                       
                                             <?php
                                             if (ismasterreseller()) {
-                                            ?>
+                                                ?>
                                               <a type="button" href="https://host.adaclare.com/submitticket.php" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/support.svg"><hr><?php echo $lang_31; ?></a> 
                    
                                             <?php
                                             } ?>
                                         <?php
                                         $scan = scandir("plugins/");
-                                        foreach ($scan as $file) {
-                                          $safe = true;
-                                            include "plugins/" . $file;
-                                            if ($menu) {
-                                                echo '<a type="button" class="sys btn btn-large btn-default" href="' . $webroot . '/plpage&pl=' . urlencode($file) . '" class="btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/p.svg"><hr>' . $menu_name . '</a>';
-                                            }
-                                        }
-                                        ?>
+    foreach ($scan as $file) {
+        $safe = true;
+        include "plugins/" . $file;
+        if ($menu) {
+            echo '<a type="button" class="sys btn btn-large btn-default" href="' . $webroot . '/plpage&pl=' . urlencode($file) . '" class="btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/p.svg"><hr>' . $menu_name . '</a>';
+        }
+    } ?>
                                        
                                          </li>
   </ul>  
                                
-            <?php 
-        } ?>
+            <?php
+} ?>
 
 <br>
 <?php
-     if ($_SESSION['user'] != 'admin') {   
-?>
+     if ($_SESSION['user'] != 'admin') {
+         ?>
 <div>
-<?php } ?>
+<?php
+     } ?>
           
 <script>
 $(document).ready(function(){
@@ -308,8 +305,8 @@ $(document).ready(function(){
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>" class="serv btn btn-large btn-warning"><img style="width:50px;height:50px;"  src="includes/img/icons/forum.svg"><hr><?php echo $lang_30; ?></a>
@@ -321,8 +318,8 @@ $(document).ready(function(){
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
     mysqli_close($con);
 ?>" class="serv btn btn-large btn-warning"><img style="width:50px;height:50px;"  src="includes/img/icons/support.svg"><hr><?php echo $lang_31; ?></a>

@@ -36,7 +36,8 @@ if ($db_is_system_schema) {
 $err_url_0 = 'index.php' . Url::getCommon();
 
 $err_url = PhpMyAdmin\Util::getScriptNameForOption(
-    $GLOBALS['cfg']['DefaultTabDatabase'], 'database'
+    $GLOBALS['cfg']['DefaultTabDatabase'],
+    'database'
 )
     . Url::getCommon(array('db' => $db));
 
@@ -99,8 +100,8 @@ if (isset($_REQUEST['submitcollation'])
         isset($_REQUEST['change_all_tables_collations']) &&
         $_REQUEST['change_all_tables_collations'] == 'on'
     ) {
-        list($tables, , , , , , , ,) = PhpMyAdmin\Util::getDbInfo($db, null);
-        foreach($tables as $tableName => $data) {
+        list($tables, , , , , , , , ) = PhpMyAdmin\Util::getDbInfo($db, null);
+        foreach ($tables as $tableName => $data) {
             $sql_query      = 'ALTER TABLE '
             . PhpMyAdmin\Util::backquote($db)
             . '.'
@@ -119,7 +120,6 @@ if (isset($_REQUEST['submitcollation'])
                 $operations = new Operations();
                 $operations->changeAllColumnsCollation($db, $tableName, $_REQUEST['db_collation']);
             }
-
         }
     }
     unset($db_charset);

@@ -2,18 +2,21 @@
 
     require_once(dirname(__FILE__) . "/ConnectionBase.php");
 
-    abstract class SFTPConnectionBase extends ConnectionBase {
+    abstract class SFTPConnectionBase extends ConnectionBase
+    {
         protected $protocolName = 'SFTP';
 
-        protected function handleAuthentication() {
-            if ($this->configuration->isAuthenticationModePassword())
+        protected function handleAuthentication()
+        {
+            if ($this->configuration->isAuthenticationModePassword()) {
                 return $this->authenticateByPassword();
-            else if ($this->configuration->isAuthenticationModePublicKeyFile())
+            } elseif ($this->configuration->isAuthenticationModePublicKeyFile()) {
                 return $this->authenticateByPublicKey();
-            else if ($this->configuration->isAuthenticationModeAgent())
+            } elseif ($this->configuration->isAuthenticationModeAgent()) {
                 return $this->authenticateByAgent();
-            else
+            } else {
                 throw new Exception(sprintf("Unknown %s authentication type.", $this->protocolName));
+            }
         }
 
         abstract protected function statRemoteFile($remotePath);
@@ -24,14 +27,18 @@
 
         abstract protected function authenticateByAgent();
 
-        protected function handleCopy($source, $destination) {
+        protected function handleCopy($source, $destination)
+        {
             /* SFTP does not provide built in copy functionality, so we copy file down to local and re-upload */
             $tempPath = tempnam(getMonstaSharedTransferDirectory(), 'sftp-temp');
             try {
                 $this->downloadFile(new SFTPTransferOperation($tempPath, $source));
                 $sourceStat = $this->statRemoteFile($source);
-                $this->uploadFile(new SFTPTransferOperation($tempPath, $destination,
-                    $sourceStat['mode'] & PERMISSION_BIT_MASK));
+                $this->uploadFile(new SFTPTransferOperation(
+                    $tempPath,
+                    $destination,
+                    $sourceStat['mode'] & PERMISSION_BIT_MASK
+                ));
             } catch (Exception $e) {
                 @unlink($tempPath);
                 throw $e;
@@ -41,7 +48,8 @@
             @unlink($tempPath);
         }
 
-        protected function handleGetFileInfo($remotePath) {
+        protected function handleGetFileInfo($remotePath)
+        {
             $fileName = monstaBasename($remotePath);
 
             $stat = $this->statRemoteFile($remotePath);

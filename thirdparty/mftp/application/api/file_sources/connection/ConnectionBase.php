@@ -5,7 +5,8 @@
     require_once(dirname(__FILE__) . '/RecursiveFileFinder.php');
     require_once(dirname(__FILE__) . '/../../lib/ServerCapabilities.php');
 
-    abstract class ConnectionBase {
+    abstract class ConnectionBase
+    {
 
         /**
          * @var boolean
@@ -116,28 +117,36 @@
 
         abstract protected function handleGetFileInfo($remotePath);
 
-        public function __construct($configuration) {
+        public function __construct($configuration)
+        {
             $this->configuration = $configuration;
             $this->connected = false;
             $this->authenticated = false;
             $this->currentDirectory = null;
         }
 
-        public function __destruct() {
-            if ($this->isConnected())
+        public function __destruct()
+        {
+            if ($this->isConnected()) {
                 $this->disconnect();
+            }
         }
 
-        public function connect() {
+        public function connect()
+        {
             $this->connection = $this->handleConnect();
-            if ($this->connection === false)
-                throw new FileSourceConnectionException(sprintf("%s connection to %s:%d failed.",
-                    $this->getProtocolName(), escapeIpAddress($this->configuration->getHost()),
-                    $this->configuration->getPort()), LocalizableExceptionDefinition::$CONNECTION_FAILURE_ERROR, array(
+            if ($this->connection === false) {
+                throw new FileSourceConnectionException(sprintf(
+                    "%s connection to %s:%d failed.",
+                    $this->getProtocolName(),
+                    escapeIpAddress($this->configuration->getHost()),
+                    $this->configuration->getPort()
+                ), LocalizableExceptionDefinition::$CONNECTION_FAILURE_ERROR, array(
                     'protocol' => $this->getProtocolName(),
                     'host' => escapeIpAddress($this->configuration->getHost()),
                     'port' => $this->configuration->getPort()
                 ));
+            }
 
             $this->connected = true;
 
@@ -145,14 +154,19 @@
             $this->postConnection();
         }
 
-        protected function postConnection() {
+        protected function postConnection()
+        {
             // overridden in subclasses
         }
 
-        public function disconnect() {
-            if (!$this->isConnected())
-                throw new FileSourceConnectionException("Can't disconnect a non-connected connection.",
-                    LocalizableExceptionDefinition::$UNCONNECTED_DISCONNECT_ERROR);
+        public function disconnect()
+        {
+            if (!$this->isConnected()) {
+                throw new FileSourceConnectionException(
+                    "Can't disconnect a non-connected connection.",
+                    LocalizableExceptionDefinition::$UNCONNECTED_DISCONNECT_ERROR
+                );
+            }
 
             $this->handleDisconnect();
 
@@ -161,17 +175,21 @@
             $this->connection = null;
         }
 
-        public function isConnected() {
+        public function isConnected()
+        {
             return $this->connected;
         }
 
-        public function isAuthenticated() {
+        public function isAuthenticated()
+        {
             return $this->authenticated;
         }
 
-        public function getCurrentDirectory() {
-            if (is_null($this->currentDirectory) && $this->isConnected() && $this->isAuthenticated())
+        public function getCurrentDirectory()
+        {
+            if (is_null($this->currentDirectory) && $this->isConnected() && $this->isAuthenticated()) {
                 $this->syncCurrentDirectory();
+            }
 
             return $this->currentDirectory;
         }
@@ -179,12 +197,14 @@
         /**
          * @return string
          */
-        public function getProtocolName() {
+        public function getProtocolName()
+        {
             return $this->protocolName;
         }
 
-        protected function getLastError() {
-            if(!is_null($this->lastError)) {
+        protected function getLastError()
+        {
+            if (!is_null($this->lastError)) {
                 $lastError = $this->lastError;
                 $this->lastError = null;
                 return $lastError;
@@ -193,22 +213,26 @@
             return error_get_last();
         }
 
-        protected function setLastError($message, $path = null) {
+        protected function setLastError($message, $path = null)
+        {
             $this->lastError = array(
                 "message" => $message,
             );
 
-            if (!is_null($path))
+            if (!is_null($path)) {
                 $this->lastError["path"] = $path;
+            }
         }
 
-        protected function handleOperationError($operationName, $path, $error, $secondaryPath = null) {
+        protected function handleOperationError($operationName, $path, $error, $secondaryPath = null)
+        {
             $errorPreface = sprintf("Error during %s %s", $this->getProtocolName(), $operationName);
 
-            if ($secondaryPath != null)
+            if ($secondaryPath != null) {
                 $formattedPath = sprintf('"%s" / "%s"', $path, $secondaryPath);
-            else
+            } else {
                 $formattedPath = sprintf('"%s"', $path);
+            }
 
             $localizableContext = array(
                 'protocol' => $this->getProtocolName(),
@@ -216,59 +240,88 @@
                 'path' => $formattedPath
             );
 
-            if (strpos($error['message'], "No such file or directory") !== FALSE
-                || strpos($error['message'], "file doesn't exist") !== FALSE
-                || strpos($error['message'], "does not exist") !== FALSE
-                || strpos($error['message'], "stat failed for") !== FALSE
-                || strpos($error['message'], "No such directory") !== FALSE
-                || strpos($error['message'], "No such file") !== FALSE
-            )
+            if (strpos($error['message'], "No such file or directory") !== false
+                || strpos($error['message'], "file doesn't exist") !== false
+                || strpos($error['message'], "does not exist") !== false
+                || strpos($error['message'], "stat failed for") !== false
+                || strpos($error['message'], "No such directory") !== false
+                || strpos($error['message'], "No such file") !== false
+            ) {
                 // latter is generated during rename, former for all others
-                throw new FileSourceFileDoesNotExistException(sprintf("%s, file not found: %s", $errorPreface,
-                    $formattedPath), LocalizableExceptionDefinition::$FILE_DOES_NOT_EXIST_ERROR, $localizableContext);
-            else if (strpos($error['message'], "Permission denied") !== FALSE
-                || strpos($error['message'], "failed to open stream: operation failed") !== FALSE)
-                throw new FileSourceFilePermissionException(sprintf("%s, permission denied at: %s", $errorPreface,
-                    $formattedPath), LocalizableExceptionDefinition::$FILE_PERMISSION_ERROR, $localizableContext);
-            else if (strpos($error['message'], "File exists") !== FALSE)
-                throw new FileSourceFileExistsException(sprintf("%s, file exists at: %s", $errorPreface,
-                    $formattedPath), LocalizableExceptionDefinition::$FILE_EXISTS_ERROR, $localizableContext);
-            else {
+                throw new FileSourceFileDoesNotExistException(sprintf(
+                    "%s, file not found: %s",
+                    $errorPreface,
+                    $formattedPath
+                ), LocalizableExceptionDefinition::$FILE_DOES_NOT_EXIST_ERROR, $localizableContext);
+            } elseif (strpos($error['message'], "Permission denied") !== false
+                || strpos($error['message'], "failed to open stream: operation failed") !== false) {
+                throw new FileSourceFilePermissionException(sprintf(
+                    "%s, permission denied at: %s",
+                    $errorPreface,
+                    $formattedPath
+                ), LocalizableExceptionDefinition::$FILE_PERMISSION_ERROR, $localizableContext);
+            } elseif (strpos($error['message'], "File exists") !== false) {
+                throw new FileSourceFileExistsException(sprintf(
+                    "%s, file exists at: %s",
+                    $errorPreface,
+                    $formattedPath
+                ), LocalizableExceptionDefinition::$FILE_EXISTS_ERROR, $localizableContext);
+            } else {
                 $localizableContext['message'] = $error['message'];
                 throw new FileSourceOperationException(
                     sprintf("%s, at %s: %s", $errorPreface, $formattedPath, $error['message']),
-                    LocalizableExceptionDefinition::$GENERAL_FILE_SOURCE_ERROR, $localizableContext);
+                    LocalizableExceptionDefinition::$GENERAL_FILE_SOURCE_ERROR,
+                    $localizableContext
+                );
             }
         }
 
-        protected function ensureConnectedAndAuthenticated($operationName) {
+        protected function ensureConnectedAndAuthenticated($operationName)
+        {
             $errorContext = array('operation' => $operationName, 'protocol' => $this->getProtocolName());
 
-            if (!$this->isConnected())
-                throw new FileSourceConnectionException(sprintf("Can't %s file before %s is connected.",
-                    $operationName, $this->getProtocolName()),
+            if (!$this->isConnected()) {
+                throw new FileSourceConnectionException(
+                    sprintf(
+                    "Can't %s file before %s is connected.",
+                    $operationName,
+                    $this->getProtocolName()
+                ),
                     LocalizableExceptionDefinition::$OPERATION_BEFORE_CONNECTION_ERROR,
-                    $errorContext);
+                    $errorContext
+                );
+            }
 
-            if (!$this->isAuthenticated())
+            if (!$this->isAuthenticated()) {
                 throw new FileSourceAuthenticationException(
                     sprintf("Can't %s file before authentication.", $operationName),
                     LocalizableExceptionDefinition::$OPERATION_BEFORE_AUTHENTICATION_ERROR,
-                    $errorContext);
+                    $errorContext
+                );
+            }
         }
 
-        public function authenticate() {
-            if (!$this->isConnected())
-                throw new FileSourceConnectionException("Attempting to authenticate before connection.",
-                    LocalizableExceptionDefinition::$AUTHENTICATION_BEFORE_CONNECTION_ERROR);
+        public function authenticate()
+        {
+            if (!$this->isConnected()) {
+                throw new FileSourceConnectionException(
+                    "Attempting to authenticate before connection.",
+                    LocalizableExceptionDefinition::$AUTHENTICATION_BEFORE_CONNECTION_ERROR
+                );
+            }
 
             $login_success = $this->handleAuthentication();
 
-            if (!$login_success)
-                throw new FileSourceAuthenticationException(sprintf("%s authentication failed.",
-                    $this->getProtocolName()),
+            if (!$login_success) {
+                throw new FileSourceAuthenticationException(
+                    sprintf(
+                    "%s authentication failed.",
+                    $this->getProtocolName()
+                ),
                     LocalizableExceptionDefinition::$AUTHENTICATION_FAILED_ERROR,
-                    array('protocol' => $this->getProtocolName()));
+                    array('protocol' => $this->getProtocolName())
+                );
+            }
 
             $this->authenticated = true;
             $this->postAuthentication();
@@ -281,12 +334,14 @@
          * @throws FileSourceAuthenticationException
          * @throws FileSourceConnectionException
          */
-        public function listDirectory($path, $showHidden = null) {
+        public function listDirectory($path, $showHidden = null)
+        {
             $this->ensureConnectedAndAuthenticated('LIST_DIRECTORY_OPERATION');
             return $this->handleListDirectory($path, is_null($showHidden) ? false : $showHidden);
         }
 
-        private function getPathsFromLastError($lastError, $defaultPrimaryPath, $defaultSecondaryPath = null) {
+        private function getPathsFromLastError($lastError, $defaultPrimaryPath, $defaultSecondaryPath = null)
+        {
             if (!is_null($lastError) && array_key_exists("path", $lastError)) {
                 $primaryPath = $lastError["path"];
                 $secondaryPath = null;
@@ -298,11 +353,15 @@
             return array($primaryPath, $secondaryPath);
         }
 
-        private function handleMultiTransferError($operationCode, $transferOperation) {
+        private function handleMultiTransferError($operationCode, $transferOperation)
+        {
             $lastError = $this->getLastError();
 
-            $paths = $this->getPathsFromLastError($lastError, $transferOperation->getLocalPath(),
-                $transferOperation->getRemotePath());
+            $paths = $this->getPathsFromLastError(
+                $lastError,
+                $transferOperation->getLocalPath(),
+                $transferOperation->getRemotePath()
+            );
 
             $this->handleOperationError($operationCode, $paths[0], $lastError, $paths[1]);
         }
@@ -316,11 +375,13 @@
          * @throws FileSourceFilePermissionException
          * @throws FileSourceOperationException
          */
-        public function downloadFile($transferOperation) {
+        public function downloadFile($transferOperation)
+        {
             $this->ensureConnectedAndAuthenticated('DOWNLOAD_OPERATION');
 
-            if (!$this->handleDownloadFile($transferOperation))
+            if (!$this->handleDownloadFile($transferOperation)) {
                 $this->handleMultiTransferError('DOWNLOAD_OPERATION', $transferOperation);
+            }
         }
 
         /**
@@ -333,7 +394,8 @@
          * @throws FileSourceFilePermissionException
          * @throws FileSourceOperationException
          */
-        public function uploadFile($transferOperation, $preserveRemotePermissions = false) {
+        public function uploadFile($transferOperation, $preserveRemotePermissions = false)
+        {
             $this->ensureConnectedAndAuthenticated('UPLOAD_OPERATION');
 
             $previousPermissions = null;
@@ -343,9 +405,9 @@
                 $previousPermissions = $fileInfo->getNumericPermissions();
             }
 
-            if (!$this->handleUploadFile($transferOperation))
+            if (!$this->handleUploadFile($transferOperation)) {
                 $this->handleMultiTransferError('UPLOAD_OPERATION', $transferOperation);
-            else if ($preserveRemotePermissions && $previousPermissions !== null) {
+            } elseif ($preserveRemotePermissions && $previousPermissions !== null) {
                 $this->changePermissions($previousPermissions, $transferOperation->getRemotePath());
             }
         }
@@ -359,11 +421,13 @@
          * @throws FileSourceFilePermissionException
          * @throws FileSourceOperationException
          */
-        public function deleteFile($remotePath) {
+        public function deleteFile($remotePath)
+        {
             $this->ensureConnectedAndAuthenticated('DELETE_FILE_OPERATION');
 
-            if (!$this->handleDeleteFile($remotePath))
+            if (!$this->handleDeleteFile($remotePath)) {
                 $this->handleOperationError('DELETE_FILE_OPERATION', $remotePath, $this->getLastError());
+            }
         }
 
         /**
@@ -375,14 +439,17 @@
          * @throws FileSourceFilePermissionException
          * @throws FileSourceOperationException
          */
-        public function makeDirectory($remotePath) {
+        public function makeDirectory($remotePath)
+        {
             $this->ensureConnectedAndAuthenticated('MAKE_DIRECTORY_OPERATION');
 
-            if (!$this->handleMakeDirectory($remotePath))
+            if (!$this->handleMakeDirectory($remotePath)) {
                 $this->handleOperationError('MAKE_DIRECTORY_OPERATION', $remotePath, $this->getLastError());
+            }
         }
 
-        private function performIntermediateDirectoryCreate($fullPath) {
+        private function performIntermediateDirectoryCreate($fullPath)
+        {
             try {
                 $this->makeDirectory($fullPath);
             } catch (FileSourceFileExistsException $f) {
@@ -398,7 +465,8 @@
          * @throws FileSourceFilePermissionException
          * @throws FileSourceOperationException
          */
-        public function makeDirectoryWithIntermediates($remotePath) {
+        public function makeDirectoryWithIntermediates($remotePath)
+        {
             $fullPath = '';
 
             $pathComponents = explode("/", $remotePath);
@@ -408,9 +476,10 @@
 
                 $fullPath = preg_replace("/^\\/+/", "/", $fullPath);
 
-                if ($fullPath == "/" || ($this->getCurrentDirectory() != null && PathOperations::isParentPath($fullPath, $this->getCurrentDirectory())))
+                if ($fullPath == "/" || ($this->getCurrentDirectory() != null && PathOperations::isParentPath($fullPath, $this->getCurrentDirectory()))) {
                     // / does not behave like other paths e.g. permission denied/does not exist so treat it special
                     continue;
+                }
 
                 try {
                     $this->listDirectory($fullPath);
@@ -423,7 +492,8 @@
         /**
          * @param $transferOperation
          */
-        public function uploadFileToNewDirectory($transferOperation) {
+        public function uploadFileToNewDirectory($transferOperation)
+        {
             $remotePath = $transferOperation->getRemotePath();
             $remoteDirectory = PathOperations::remoteDirname($remotePath);
             $this->makeDirectoryWithIntermediates($remoteDirectory);
@@ -439,34 +509,39 @@
          * @throws FileSourceFilePermissionException
          * @throws FileSourceOperationException
          */
-        public function deleteDirectory($remotePath) {
+        public function deleteDirectory($remotePath)
+        {
             $this->ensureConnectedAndAuthenticated('DELETE_DIRECTORY_OPERATION');
 
             $dirList = $this->listDirectory($remotePath, true);
 
             foreach ($dirList as $item) {
                 $childPath = PathOperations::join($remotePath, $item->getName());
-                if ($item->isDirectory())
+                if ($item->isDirectory()) {
                     $this->deleteDirectory($childPath);
-                else
+                } else {
                     $this->deleteFile($childPath);
+                }
             }
 
-            if (!$this->handleDeleteDirectory($remotePath))
+            if (!$this->handleDeleteDirectory($remotePath)) {
                 $this->handleOperationError('DELETE_DIRECTORY_OPERATION', $remotePath, $this->getLastError());
+            }
         }
 
-        public function deleteMultiple($remotePathsAndTypes) {
+        public function deleteMultiple($remotePathsAndTypes)
+        {
             $this->ensureConnectedAndAuthenticated('DELETE_MULTIPLE_OPERATION');
 
             foreach ($remotePathsAndTypes as $remotePathAndType) {
                 $remotePath = $remotePathAndType[0];
                 $isDirectory = $remotePathAndType[1];
 
-                if ($isDirectory)
+                if ($isDirectory) {
                     $this->deleteDirectory($remotePath);
-                else
+                } else {
                     $this->deleteFile($remotePath);
+                }
             }
         }
 
@@ -480,11 +555,13 @@
          * @throws FileSourceFilePermissionException
          * @throws FileSourceOperationException
          */
-        public function rename($source, $destination) {
+        public function rename($source, $destination)
+        {
             $this->ensureConnectedAndAuthenticated('RENAME_OPERATION');
 
-            if (!$this->handleRename($source, $destination))
+            if (!$this->handleRename($source, $destination)) {
                 $this->handleOperationError('RENAME_OPERATION', $source, $this->getLastError(), $destination);
+            }
         }
 
         /**
@@ -497,13 +574,15 @@
          * @throws FileSourceFilePermissionException
          * @throws FileSourceOperationException
          */
-        public function changePermissions($mode, $remotePath) {
+        public function changePermissions($mode, $remotePath)
+        {
             $this->ensureConnectedAndAuthenticated('CHANGE_PERMISSIONS_OPERATION');
 
             Validation::validatePermissionMask($mode, false);
 
-            if (!$this->handleChangePermissions($mode, $remotePath))
+            if (!$this->handleChangePermissions($mode, $remotePath)) {
                 $this->handleOperationError('CHANGE_PERMISSIONS_OPERATION', $remotePath, $this->getLastError());
+            }
         }
 
         /**
@@ -512,7 +591,8 @@
          * @throws FileSourceAuthenticationException
          * @throws FileSourceConnectionException
          */
-        public function copy($source, $destination) {
+        public function copy($source, $destination)
+        {
             $this->ensureConnectedAndAuthenticated('COPY_OPERATION');
 
             $isDirectory = false;
@@ -541,8 +621,9 @@
                 for ($i = 0; $i < sizeof($sources); ++$i) {
                     $sourcePath = $sources[$i][0];
 
-                    if (substr($sourcePath, 0, 1) == "/")
+                    if (substr($sourcePath, 0, 1) == "/") {
                         $sourcePath = substr($sourcePath, 1);
+                    }
 
                     $destinations[] = PathOperations::join($destination, $sourcePath);
                     $sources[$i][0] = PathOperations::join($source, $sourcePath);
@@ -571,9 +652,9 @@
                     $this->makeDirectoryWithIntermediates($destinationDir);
                 }
 
-                if ($sourceItem === null)
+                if ($sourceItem === null) {
                     $this->handleCopy($sourcePath, $destinationPath);
-                else {
+                } else {
                     if ($sourceItem->isDirectory()) {
                         if (array_search($destinationPath, $destinationDirs) === false) {
                             $destinationDirs[] = $destinationPath;
@@ -608,20 +689,23 @@
          * @param $remotePath string
          * @return int
          */
-        public function getFileSize($remotePath) {
+        public function getFileSize($remotePath)
+        {
             $directoryPath = PathOperations::remoteDirname($remotePath);
             $fileName = monstaBasename($remotePath);
             $directoryList = $this->listDirectory($directoryPath);
 
             foreach ($directoryList as $item) {
-                if ($item->getName() == $fileName)
+                if ($item->getName() == $fileName) {
                     return $item->getSize();
+                }
             }
 
             return -1;
         }
 
-        public function changeDirectory($newDirectory) {
+        public function changeDirectory($newDirectory)
+        {
             // for compatibility throughout the API; sometimes this does nothing
         }
 
@@ -629,32 +713,38 @@
          * @return bool
          * Some connections don't support CHMOD/permissions changing (namely FTP to Windows servers)
          */
-        public function supportsPermissionChange() {
+        public function supportsPermissionChange()
+        {
             return true;
         }
 
-        public function getConfiguration() {
+        public function getConfiguration()
+        {
             return $this->configuration;
         }
 
-        protected function syncCurrentDirectory() {
+        protected function syncCurrentDirectory()
+        {
             $this->ensureConnectedAndAuthenticated('GET_CWD_OPERATION');
 
             $this->currentDirectory = $this->handleGetCurrentDirectory();
         }
 
-        protected function handleGetCurrentDirectory() {
+        protected function handleGetCurrentDirectory()
+        {
             // only overridden if supported
             return null;
         }
 
-        protected function handleFetchServerCapabilities() {
+        protected function handleFetchServerCapabilities()
+        {
             // only overridden if supported
             return null;
         }
 
-        protected function getCapabilitiesArrayValue($capabilitiesKey) {
-            if(is_null($this->serverCapabilitiesArray)) {
+        protected function getCapabilitiesArrayValue($capabilitiesKey)
+        {
+            if (is_null($this->serverCapabilitiesArray)) {
                 return null;
             }
 
@@ -662,18 +752,26 @@
                 $this->serverCapabilitiesArray[$capabilitiesKey] : null;
         }
 
-        private function populateServerCapabilitiesArray() {
-            $serverCapabilities = new ServerCapabilities(PathOperations::join(MONSTA_CONFIG_DIR_PATH , "server_capabilities.php"));
+        private function populateServerCapabilitiesArray()
+        {
+            $serverCapabilities = new ServerCapabilities(PathOperations::join(MONSTA_CONFIG_DIR_PATH, "server_capabilities.php"));
 
-            $capabilitiesArray = $serverCapabilities->getServerCapabilities($this->getProtocolName(),
-                $this->configuration->getHost(), $this->configuration->getPort());
+            $capabilitiesArray = $serverCapabilities->getServerCapabilities(
+                $this->getProtocolName(),
+                $this->configuration->getHost(),
+                $this->configuration->getPort()
+            );
 
-            if(is_null($capabilitiesArray)) {
+            if (is_null($capabilitiesArray)) {
                 $capabilitiesArray = $this->handleFetchServerCapabilities();
 
-                if(!is_null($capabilitiesArray)) {
-                    $serverCapabilities->setServerCapabilities($this->getProtocolName(),
-                    $this->configuration->getHost(), $this->configuration->getPort(), $capabilitiesArray);
+                if (!is_null($capabilitiesArray)) {
+                    $serverCapabilities->setServerCapabilities(
+                        $this->getProtocolName(),
+                        $this->configuration->getHost(),
+                        $this->configuration->getPort(),
+                        $capabilitiesArray
+                    );
                 }
             }
 

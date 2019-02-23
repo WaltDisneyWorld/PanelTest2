@@ -1,7 +1,8 @@
 <?php
 
-function getEdition($key) {
-       return array(
+function getEdition($key)
+{
+    return array(
     "Key" => $key,
     "Type" => "dev",
     "Status" => "Active",
@@ -11,20 +12,28 @@ function getEdition($key) {
     $server_ip = file_get_contents("http://icanhazip.com");
     $server_ip = preg_replace('/\s+/', '', $server_ip);
     $key_ke = urlencode($key);
-     if (isset($_SESSION["chkx"])) {
-      return $_SESSION["chkx"];
+    if (isset($_SESSION["chkx"])) {
+        return $_SESSION["chkx"];
     }
-   $getSt = json_decode(file_get_contents("https://www.enyrx.com/testActivation.php?key=" . $key_ke . "&remote_ip=" . $server_ip),0);
+    $getSt = json_decode(file_get_contents("https://www.enyrx.com/testActivation.php?key=" . $key_ke . "&remote_ip=" . $server_ip), 0);
    
     if (!isset($getSt->exp_time)) {
         return false;
     }
  
-    if ($getSt->product == 1) $product = "Dev";
-     if ($getSt->product == 2) $product = "Standalone";
-    if ($getSt->product == 3) $product = "Shared";
-    if ($getSt->product == 4) $product = "Host";
-          $_SESSION["chkx"] = array(
+    if ($getSt->product == 1) {
+        $product = "Dev";
+    }
+    if ($getSt->product == 2) {
+        $product = "Standalone";
+    }
+    if ($getSt->product == 3) {
+        $product = "Shared";
+    }
+    if ($getSt->product == 4) {
+        $product = "Host";
+    }
+    $_SESSION["chkx"] = array(
     "Key" => $key,
     "Type" => $product,
     "Status" => "Active",
@@ -32,12 +41,11 @@ function getEdition($key) {
     "Exp" => $getSt->exp_time,
 );
 
-       return array(
+    return array(
     "Key" => $key,
     "Type" => $product,
     "Status" => "Active",
     "ID" => $getSt->product,
     "Exp" => $getSt->exp_time,
 );
-
 }

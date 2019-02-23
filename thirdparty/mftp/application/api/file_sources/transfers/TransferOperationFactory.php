@@ -4,8 +4,10 @@
     require_once(dirname(__FILE__) . '/FTPTransferOperation.php');
     require_once(dirname(__FILE__) . '/SFTPTransferOperation.php');
 
-    class TransferOperationFactory {
-        public static function getTransferOperation($connectionType, $rawConfiguration) {
+    class TransferOperationFactory
+    {
+        public static function getTransferOperation($connectionType, $rawConfiguration)
+        {
             Validation::validateNonEmptyString($rawConfiguration['localPath'], 'localPath');
             Validation::validateNonEmptyString($rawConfiguration['remotePath'], 'remotePath');
             switch ($connectionType) {
@@ -18,16 +20,22 @@
             }
         }
 
-        private static function getFTPTransferOperation($rawConfiguration) {
+        private static function getFTPTransferOperation($rawConfiguration)
+        {
             $transferModeName = isset($rawConfiguration['transferMode']) ? $rawConfiguration['transferMode'] : 'BINARY';
-            return new FTPTransferOperation($rawConfiguration['localPath'], $rawConfiguration['remotePath'],
-                FTPTransferMode::fromString($transferModeName));
-
+            return new FTPTransferOperation(
+                $rawConfiguration['localPath'],
+                $rawConfiguration['remotePath'],
+                FTPTransferMode::fromString($transferModeName)
+            );
         }
 
-        private static function getSFTPTransferOperation($rawConfiguration) {
-            return new SFTPTransferOperation($rawConfiguration['localPath'], $rawConfiguration['remotePath'],
-                Validation::getArrayValueOrNull($rawConfiguration, 'createMode'));
+        private static function getSFTPTransferOperation($rawConfiguration)
+        {
+            return new SFTPTransferOperation(
+                $rawConfiguration['localPath'],
+                $rawConfiguration['remotePath'],
+                Validation::getArrayValueOrNull($rawConfiguration, 'createMode')
+            );
         }
-
     }

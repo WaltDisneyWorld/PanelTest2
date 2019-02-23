@@ -2,7 +2,8 @@
 
     require_once(dirname(__FILE__) . '/../Validation.php');
 
-    class TransferOperation {
+    class TransferOperation
+    {
         /**
          * @var string
          */
@@ -12,7 +13,8 @@
          */
         private $remotePath;
 
-        public function __construct($localPath, $remotePath) {
+        public function __construct($localPath, $remotePath)
+        {
             $this->setLocalPath($localPath);
             $this->setRemotePath($remotePath);
         }
@@ -20,14 +22,16 @@
         /**
          * @return string
          */
-        public function getLocalPath() {
+        public function getLocalPath()
+        {
             return $this->localPath;
         }
 
         /**
          * @param string $localPath
          */
-        public function setLocalPath($localPath) {
+        public function setLocalPath($localPath)
+        {
             Validation::validateNonEmptyString($localPath);
             $this->localPath = $localPath;
         }
@@ -35,14 +39,16 @@
         /**
          * @return string
          */
-        public function getRemotePath() {
+        public function getRemotePath()
+        {
             return $this->remotePath;
         }
 
         /**
          * @param string $remotePath
          */
-        public function setRemotePath($remotePath) {
+        public function setRemotePath($remotePath)
+        {
             Validation::validateNonEmptyString($remotePath);
             $this->remotePath = $remotePath;
         }

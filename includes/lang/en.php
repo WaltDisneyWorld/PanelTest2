@@ -12,8 +12,8 @@ $lang_2 = 	 " has been suspended.  Possible reasons for this include:
 $lang_3 = 	"Please have a customer support representative install a new license key.            
 ";
 $lang_4 = "Root User";
-$lang_5 = "Client";  
-$lang_6 = "Master Reseller"; 
+$lang_5 = "Client";
+$lang_6 = "Master Reseller";
 $lang_7 = "Client";
 $lang_8 = "Dashboard";
 $lang_9 = "Billing and Support";
@@ -164,6 +164,3 @@ $lang['Download']                                                               
 $lang['Filesize']                                                                                        = 'Filesize';
 $lang['Changelog']                                                                                       = 'Changelog';
 $lang['Peak Memory Usage']                                                                               = 'Peak Memory Usage';
-
-
-?>

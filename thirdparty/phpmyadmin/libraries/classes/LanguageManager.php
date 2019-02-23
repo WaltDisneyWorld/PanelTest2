@@ -711,7 +711,6 @@ class LanguageManager
     public function availableLocales()
     {
         if (! $this->_available_locales) {
-
             if (empty($GLOBALS['cfg']['FilterLanguages'])) {
                 $this->_available_locales = $this->listLocaleDir();
             } else {
@@ -744,7 +743,7 @@ class LanguageManager
         if (! $this->_available_languages) {
             $this->_available_languages = array();
 
-            foreach($this->availableLocales() as $lang) {
+            foreach ($this->availableLocales() as $lang) {
                 $lang = strtolower($lang);
                 if (isset($this::$_language_data[$lang])) {
                     $data = $this::$_language_data[$lang];
@@ -778,8 +777,9 @@ class LanguageManager
     public function sortedLanguages()
     {
         $this->availableLanguages();
-        uasort($this->_available_languages, function($a, $b)
-            {
+        uasort(
+            $this->_available_languages,
+            function ($a, $b) {
                 return $a->cmp($b);
             }
         );

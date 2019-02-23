@@ -51,8 +51,9 @@
     $maxUploadSizeBytes = formattedSizeToBytes($configMaxFileSize);
 
     if ($currentMemoryLimit != -1) {
-        if ($maxUploadSizeBytes > $currentMemoryLimit)
+        if ($maxUploadSizeBytes > $currentMemoryLimit) {
             ini_set('memory_limit', $configMaxFileSize);
+        }
     }
 
     define("MFTP_MAX_UPLOAD_SIZE", $maxUploadSizeBytes);
@@ -61,9 +62,9 @@
 
     $proConfigurationPath = dirname(__FILE__) . "/../license/config_pro.php";
 
-    if(file_exists($proConfigurationPath))
+    if (file_exists($proConfigurationPath)) {
         require_once($proConfigurationPath);
-    else {
+    } else {
         define("AUTHENTICATION_FILE_PATH", "");
         define("MONSTA_LICENSE_PATH", "");
     }

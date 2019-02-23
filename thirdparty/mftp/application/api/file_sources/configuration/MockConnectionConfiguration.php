@@ -1,7 +1,8 @@
 <?php
     require_once(dirname(__FILE__) . '/ConfigurationBase.php');
 
-    class MockConnectionConfiguration implements ConfigurationBase {
+    class MockConnectionConfiguration implements ConfigurationBase
+    {
         /**
          * @var string
          */
@@ -22,7 +23,8 @@
          * @param null $password string
          * @param null $validHost bool
          */
-        public function __construct($username = null, $password = null, $validHost = null) {
+        public function __construct($username = null, $password = null, $validHost = null)
+        {
             $this->setUsername($username);
             $this->setPassword($password);
             $this->setValidHost($validHost);
@@ -31,64 +33,74 @@
         /**
          * @return string
          */
-        public function getUsername() {
+        public function getUsername()
+        {
             return $this->username;
         }
 
         /**
          * @param null string $username
          */
-        public function setUsername($username) {
+        public function setUsername($username)
+        {
             $this->username = is_null($username) ? MOCK_DEFAULT_USERNAME : $username;
         }
 
         /**
          * @return string
          */
-        public function getPassword() {
+        public function getPassword()
+        {
             return $this->password;
         }
 
         /**
          * @param null string $password
          */
-        public function setPassword($password) {
+        public function setPassword($password)
+        {
             $this->password = is_null($password) ? MOCK_DEFAULT_PASSWORD : $password;
         }
 
         /**
          * @return boolean
          */
-        public function isValidHost() {
+        public function isValidHost()
+        {
             return $this->validHost;
         }
 
         /**
          * @param null boolean $validHost
          */
-        public function setValidHost($validHost) {
+        public function setValidHost($validHost)
+        {
             $this->validHost = is_null($validHost) ? true : $validHost;
         }
 
         /**
          * @return string
          */
-        public function getHost() {
+        public function getHost()
+        {
             return 'host';
         }
 
         /**
          * @return int
          */
-        public function getPort() {
+        public function getPort()
+        {
             return 12345;
         }
 
-        public function getRemoteUsername() {
+        public function getRemoteUsername()
+        {
             return $this->username;
         }
 
-        public function getInitialDirectory() {
+        public function getInitialDirectory()
+        {
             return "/";
         }
     }

@@ -33,11 +33,13 @@
     define("MFTP_UNIX_LIST_FORMAT", '/^([A-Za-z+-]{10})\s+(\d+)\s+([^ ]+)\s+([^ ]+)\s+(\d+)\s+(.{12}) (.*)$/');
     define("MFTP_WIN_LIST_FORMAT", '/^(\d+)-(\d+)-(\d+)\s+(\d+):(\d+)(A|P)M(.{22})(.*)$/');
 
-    if (!defined("FTP_ASCII"))
+    if (!defined("FTP_ASCII")) {
         define("FTP_ASCII", 1);
+    }
 
-    if (!defined("FTP_BINARY"))
+    if (!defined("FTP_BINARY")) {
         define("FTP_BINARY", 2);
+    }
 
     define("MFTP_EXTRACT_UPLOAD_TIME_LIMIT_SECONDS", 50);
     define("MFTP_UPLOAD_PROGRESS_CALLBACK_TIME_SECONDS", 30);
@@ -49,7 +51,8 @@
     define("MFTP_TMP_UPLOAD_TIMEOUT_SECONDS", 86400);
     define("MFTP_CAPABILITY_CACHE_TIMEOUT_SECONDS", 86400);
 
-    function formattedSizeToBytes($formattedSize) {
+    function formattedSizeToBytes($formattedSize)
+    {
         $formattedSize = trim($formattedSize);
         $unit = strtolower(substr($formattedSize, -1));
         $multiplier = 1;
@@ -57,8 +60,10 @@
         switch ($unit) {
             case 'g':
                 $multiplier *= 1024;
+                // no break
             case 'm':
                 $multiplier *= 1024;
+                // no break
             case 'k':
                 $multiplier *= 1024;
         }
@@ -68,16 +73,19 @@
         return $size * $multiplier;
     }
 
-    function includeMonstaConfig() {
+    function includeMonstaConfig()
+    {
         $configDir = dirname(__FILE__) . "/../../settings/";
 
-        if (!defined("MONSTA_CONFIG_DIR_PATH"))
+        if (!defined("MONSTA_CONFIG_DIR_PATH")) {
             define("MONSTA_CONFIG_DIR_PATH", $configDir);
+        }
 
-        if (file_exists($configDir . "config_debug.php"))
+        if (file_exists($configDir . "config_debug.php")) {
             require_once($configDir . "config_debug.php");
-        else
+        } else {
             require_once($configDir . "config.php");
+        }
     }
 
     $vendorPath = dirname(__FILE__) . "/vendor/";
@@ -92,5 +100,6 @@
 
     $mftpAffiliateDefinitionPath = dirname(__FILE__) . "/affiliate.php";
 
-    if (file_exists($mftpAffiliateDefinitionPath))
+    if (file_exists($mftpAffiliateDefinitionPath)) {
         require_once($mftpAffiliateDefinitionPath);
+    }

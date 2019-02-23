@@ -1,5 +1,5 @@
 <?php
-error_reporting (0);
+error_reporting(0);
 $lang_1 = '<p> Su clave de licencia';
 $lang_2 = 'ha sido suspendido. Las posibles razones para esto incluyen: </p>
             <ul>
@@ -42,17 +42,17 @@ $lang_29 = 'PHP Info';
 $lang_30 = 'Foro';
 $lang_31 = 'Soporte';
 if (isset($failsafe_offline) && $failsafe_offline) {
-$lang_32 = "<div class =' alert-warning alert 'role =' alert '>
+    $lang_32 = "<div class =' alert-warning alert 'role =' alert '>
  <h4 class = 'alert-heading'> VX  Actualización IntISP lista para instalar. </h4>
 <p> Una actualización está lista para ser instalada, esta actualización puede solucionar problemas de instalación, recuperar problemas de seguridad y agregar nuevas funciones. </p>
 <a href='index.php?page=update' class='btn btn-primary'> Ejecutar actualización </a>
 </div> ";
 } else {
- $lang_32 = "<div class =' alert-warning alert 'role =' alert '>
+    $lang_32 = "<div class =' alert-warning alert 'role =' alert '>
  <h4 class = 'alert-heading'> V '. file_get_contents (' https://httpupdate.enyrx.com/version ').' Actualización IntISP lista para instalar. </h4>
 <p> Una actualización está lista para ser instalada, esta actualización puede solucionar problemas de instalación, recuperar problemas de seguridad y agregar nuevas funciones. </p>
 <a href='index.php?page=update' class='btn btn-primary'> Ejecutar actualización </a>
-</div> ";   
+</div> ";
 }
 $lang_33 = "<div class = 'alert alert-danger' role = 'alert'>
  <h4 class = 'alert-heading'> Conexión no segura </h4>
@@ -166,6 +166,3 @@ $lang['Download']                                                               
 $lang['Filesize']                                                                                        = 'Filesize';
 $lang['Changelog']                                                                                       = 'Changelog';
 $lang['Peak Memory Usage']                                                                               = 'Peak Memory Usage';
-
-
-?>

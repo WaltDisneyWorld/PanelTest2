@@ -1,20 +1,21 @@
 <?php
      use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
+
 require "vendor/autoload.php";
-if (!isset($HOME)) die();
+if (!isset($HOME)) {
+    die();
+}
 
 if (isset($_GET['yes'])) {
     function newserv($port, $disk, $username, $password)
     {
-
-
         $returnval = '';
     
         $returnval = $returnval.'<br>Creating User '.$username;
         
         include 'config.php';
-         $key = Key::loadFromAsciiSafeString($salt);
+        $key = Key::loadFromAsciiSafeString($salt);
         $con    = mysqli_connect($host, $user, $pass, $data);
         $sql    = 'SELECT * FROM users';
         $result = mysqli_query($con, $sql);
@@ -35,26 +36,27 @@ if (isset($_GET['yes'])) {
         $sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port)
 VALUES ('".rand(10000, 99999)."', '".$username."', '".Crypto::encrypt($password, $key) ."','0','".$disk."','".$port."')";
 
-   $con = mysqli_connect("$host", "$user", "$pass", "$data");
+        $con = mysqli_connect("$host", "$user", "$pass", "$data");
 
         $sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port)
 VALUES ('".rand(10000, 99999)."', '".$username."', '".Crypto::encrypt($password, $key) . "','0','".$disk."','".$port."')";
-$con->query($sql);
-        if ($conn->query($sql) === TRUE) {
-        }  
+        $con->query($sql);
+        if ($conn->query($sql) === true) {
+        }
         
         $conn->close();
-require_once("includes/classes/communication.class.php");
-provserverclient($port, $disk, $username, $password);
+        require_once("includes/classes/communication.class.php");
+        provserverclient($port, $disk, $username, $password);
       
         $returnval = $returnval.'<br>Done!';
         header('Location: /newserv&pa='.urlencode($returnval));
     }
     newserv($_POST['pstart'], $_POST['disk'], $_POST['username'], $_POST['pend']);
     
-       require("includes/classes/mail.class.php");
-            sendemailuser(
-                "New User", "
+    require("includes/classes/mail.class.php");
+    sendemailuser(
+                "New User",
+                "
     <b>A new user has been added to Webister</b>
     <p>There username is " . $_POST['username'] . "</p>
     <p>This email is automatically sent out everytime a setting is changed. To disable this feature please visit the control panel and set the email to nothing.</p>
@@ -72,7 +74,7 @@ onlyadmin();
 
                         <h2 class="page-title"><?php echo $lang_15; ?></h2>
                         <p><?php if (isset($_GET['pa'])) {
-                            echo ''.$_GET['pa'].'';
+    echo ''.$_GET['pa'].'';
 } ?></p>
               <?php echo $lang_60; ?>  <form method="POST" action="/newserv?yes">
   <fieldset class="form-group">

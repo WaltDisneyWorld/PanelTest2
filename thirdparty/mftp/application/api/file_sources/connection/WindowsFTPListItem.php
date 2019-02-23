@@ -4,7 +4,8 @@
     require_once(dirname(__FILE__) . '/FullAccessPermissionSet.php');
 
 
-    abstract class WindowsFTPListColumnIndex {
+    abstract class WindowsFTPListColumnIndex
+    {
         const Month = 0;
         const Day = 1;
         const Year = 2;
@@ -15,8 +16,10 @@
         const Name = 7;
     }
 
-    class WindowsFTPListItem extends ListItem {
-        public function __construct($itemLine) {
+    class WindowsFTPListItem extends ListItem
+    {
+        public function __construct($itemLine)
+        {
             if (!preg_match(MFTP_WIN_LIST_FORMAT, $itemLine, $matches)) {
                 throw new UnexpectedValueException("FTP list item was not in the correct format.");
             }
@@ -37,7 +40,8 @@
             $this->setupStaticItems();
         }
 
-        private function setupStaticItems() {
+        private function setupStaticItems()
+        {
             // these are the same for all files on windows servers
             $this->ownerPermissions = new FullAccessPermissionSet();
             $this->groupPermissions = new FullAccessPermissionSet();
@@ -50,17 +54,20 @@
             $this->linkCount = 1;
         }
 
-        private function parseModificationDate($minute, $hour, $amPm, $day, $month, $year) {
-            if ($amPm == "P")
+        private function parseModificationDate($minute, $hour, $amPm, $day, $month, $year)
+        {
+            if ($amPm == "P") {
                 $hour += 12;
+            }
 
             $this->modificationDate = mktime($hour, $minute, 0, $month, $day, $year);
         }
 
-        private function parseDirectoryOrSize($directoryOrSize) {
+        private function parseDirectoryOrSize($directoryOrSize)
+        {
             $directoryOrSize = trim($directoryOrSize);
 
-            if($directoryOrSize == "<DIR>") {
+            if ($directoryOrSize == "<DIR>") {
                 $this->size = 0;
                 $this->directory = true;
             } else {

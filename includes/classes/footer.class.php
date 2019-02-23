@@ -1,5 +1,7 @@
                <?php
-                  if (!isset($HOME)) die();
+                  if (!isset($HOME)) {
+                      die();
+                  }
              
                require 'config.php';
        
@@ -22,8 +24,8 @@ $result = mysqli_query($con, $sql);
         while ($row = mysqli_fetch_row($result)) {
             $header = $row[0];
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
     mysqli_close($con);
  
@@ -31,7 +33,7 @@ $result = mysqli_query($con, $sql);
 $sql    = 'SELECT password FROM users WHERE username = "'.$_SESSION['user'].'"';
 $result = mysqli_query($con, $sql);
  while ($row = mysqli_fetch_row($result)) {
-     $ftppass = $row[0];  
+     $ftppass = $row[0];
  }
    mysqli_free_result($result);
     mysqli_close($con);
@@ -43,10 +45,10 @@ $result = mysqli_query($con, $sql);
     if ($result = mysqli_query($con, $sql)) {
         // Fetch one and one row
         while ($row = mysqli_fetch_row($result)) {
-          $key = $row[0];
+            $key = $row[0];
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
     mysqli_close($con);
     $failed_login = "";
@@ -79,6 +81,6 @@ $microsoft = "	<script type='text/javascript'>setTimeout(function(){{var s=docum
                "failed_login" => $failed_login,
             "microsoft" => $microsoft]);
 
-		  ?>
+          ?>
 
 

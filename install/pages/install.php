@@ -1,11 +1,14 @@
 <?php
-if (!defined('HOMEBASE')) die("Direct Access is Not Allowed");
+if (!defined('HOMEBASE')) {
+    die("Direct Access is Not Allowed");
+}
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
+
 require "../vendor/autoload.php";
-@ini_set('zlib.output_compression',0);
+@ini_set('zlib.output_compression', 0);
 set_time_limit(0);
-if (!isset( $_SESSION["install_db"])) {
+if (!isset($_SESSION["install_db"])) {
     ?>
      <script>window.location.href = "index.php?pg=license";</script>
         <a href="index.php?pg=license">Click here</a> if you are not redirected.
@@ -17,8 +20,7 @@ if (!isset($_SESSION["act"])) {
      <script>window.location.href = "index.php?pg=db";</script>
         <a href="index.php?pg=db">Click here</a> if you are not redirected.
     <?php
-    die();  
-    
+    die();
 }
 ?>
 
@@ -32,13 +34,13 @@ if (!isset($_SESSION["act"])) {
     echo "Importing Database...\n";
      $m = new MySQLi($host, $user, $pass, $data);
     $path_migrations = "sql";
-	foreach(glob($path_migrations.DIRECTORY_SEPARATOR."*.sql") as $script) {
-    $sql = file_get_contents($script);
-    if (!$m->query($sql) === TRUE) {
-  die("MySQL Error! Cannot Continue");
+    foreach (glob($path_migrations.DIRECTORY_SEPARATOR."*.sql") as $script) {
+        $sql = file_get_contents($script);
+        if (!$m->query($sql) === true) {
+            die("MySQL Error! Cannot Continue");
+        }
     }
-	}
-    	$key = Key::createNewRandomKey();
+        $key = Key::createNewRandomKey();
         $salt = $key->saveToAsciiSafeString();
      $sql = "INSERT INTO mail (id, subject, message) VALUES ('1','Welcome To Webister','<b>We are glad that you decided to choose Webister.</b> <p>We hope you enjoy our awesome control panel. You will get messages/emails once you place your email address in the settings.</p><p>
 If you feel that there are some issues or you need fix your Webister, please remember to try updating it first. You can update this in our main control panel.</p>')";
@@ -82,18 +84,19 @@ $sql = "INSERT INTO settings (id, code, value) VALUES ('18', 'smtp_username', ''
 $m->query($sql);
 $sql = "INSERT INTO settings (id, code, value) VALUES ('19', 'smtp_password', '')";
 $m->query($sql);
-function ae($c,$f) {
+function ae($c, $f)
+{
     global $m;
     $sql = "INSERT INTO settings (id, code, value) VALUES ('$f', '" . $c . "_public', '')";
-$m->query($sql);
-$ds = $f + 1;
-$sql = "INSERT INTO settings (id, code, value) VALUES ('" . $ds . "', '" . $c . "_secret', '')";
-$m->query($sql);
+    $m->query($sql);
+    $ds = $f + 1;
+    $sql = "INSERT INTO settings (id, code, value) VALUES ('" . $ds . "', '" . $c . "_secret', '')";
+    $m->query($sql);
 }
-ae("github",20);
-ae("twitter",22);
-ae("google",24);
-ae("facebook",26);
+ae("github", 20);
+ae("twitter", 22);
+ae("google", 24);
+ae("facebook", 26);
 
 
 
@@ -102,15 +105,15 @@ $m->query($sql);
 $sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '". Crypto::encrypt("admin", $key) ."', '', '', '80')";
 $m->query($sql);
 
-		// Close the connection
-		$m->close();
-		
-		echo "Import Complete...\n";
-		echo "Updating Configuration...\n";
-		$c = file_get_contents("../config.php");
-		$c  = str_replace("%SALT%",$salt,$c);
-		file_put_contents("../config.php",$c);
-		echo "Configuration Updated. Installation Complete";
+        // Close the connection
+        $m->close();
+        
+        echo "Import Complete...\n";
+        echo "Updating Configuration...\n";
+        $c = file_get_contents("../config.php");
+        $c  = str_replace("%SALT%", $salt, $c);
+        file_put_contents("../config.php", $c);
+        echo "Configuration Updated. Installation Complete";
     ?>
     </textarea>
 <br>

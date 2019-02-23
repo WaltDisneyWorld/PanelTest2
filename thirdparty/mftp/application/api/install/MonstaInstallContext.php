@@ -1,7 +1,8 @@
 <?php
     require_once(dirname(__FILE__) . "/../lib/LocalizableException.php");
 
-    abstract class  MonstaInstallContext {
+    abstract class MonstaInstallContext
+    {
         protected static $archiveParentPath = "mftp/";
         protected static $archiveManifestPath = "README/UPDATE.txt";
         protected static $defaultManifest = array(
@@ -24,11 +25,13 @@
 
         abstract public function install($archivePath, $installDirectory);
 
-        protected static function getRelativeArchivePath($archiveFileName) {
+        protected static function getRelativeArchivePath($archiveFileName)
+        {
             return substr($archiveFileName, strlen(self::$archiveParentPath));
         }
 
-        protected static function listArchive($archiveHandle) {
+        protected static function listArchive($archiveHandle)
+        {
             $fileList = array();
 
             $archiveNumFiles = $archiveHandle->numFiles;
@@ -40,32 +43,40 @@
             return $fileList;
         }
 
-        protected function throwInvalidArchiveError($archivePath, $archiveHandle = null) {
-            if (!is_null($archiveHandle))
+        protected function throwInvalidArchiveError($archivePath, $archiveHandle = null)
+        {
+            if (!is_null($archiveHandle)) {
                 $archiveHandle->close();
+            }
 
-            throw new LocalizableException("$archivePath is unreadable or not a Monsta FTP install archive.",
-                LocalizableExceptionDefinition::$INSTALL_PATH_NOT_WRITABLE_ERROR, array("path" => $archivePath));
+            throw new LocalizableException(
+                "$archivePath is unreadable or not a Monsta FTP install archive.",
+                LocalizableExceptionDefinition::$INSTALL_PATH_NOT_WRITABLE_ERROR,
+                array("path" => $archivePath)
+            );
         }
 
-        private function testArchiveForDefaultManifest($archivePath, $archiveHandle) {
+        private function testArchiveForDefaultManifest($archivePath, $archiveHandle)
+        {
             foreach (self::$defaultManifest as $manifestItem) {
-                if(is_null($archiveHandle->getFromName(self::$archiveParentPath . $manifestItem))){
+                if (is_null($archiveHandle->getFromName(self::$archiveParentPath . $manifestItem))) {
                     $this->throwInvalidArchiveError($archivePath, $archiveHandle);
                 }
             }
         }
 
-        private function extractUpdateText($archiveHandle) {
+        private function extractUpdateText($archiveHandle)
+        {
             return $archiveHandle->getFromName(self::$archiveParentPath . self::$archiveManifestPath);
         }
 
-        private function getUpdateManifest($archivePath, $archiveHandle) {
+        private function getUpdateManifest($archivePath, $archiveHandle)
+        {
             $manifest = array();
 
             $updateText = $this->extractUpdateText($archiveHandle);
 
-            if ($updateText === FALSE) {
+            if ($updateText === false) {
                 $this->testArchiveForDefaultManifest($archivePath, $archiveHandle);
                 return self::$defaultManifest;
             }
@@ -73,43 +84,51 @@
             $manifestLines = explode("\n", $updateText);
 
             foreach ($manifestLines as $manifestLine) {
-                if (!preg_match('/^-/', $manifestLine))
+                if (!preg_match('/^-/', $manifestLine)) {
                     continue;
+                }
 
                 $manifest[] = trim(substr($manifestLine, 1));
             }
 
-            if (count($manifest) === 0)
+            if (count($manifest) === 0) {
                 $this->throwInvalidArchiveError($archivePath, $archiveHandle);
+            }
 
             return $manifest;
         }
 
-        private function getArchiveHandle($archivePath) {
+        private function getArchiveHandle($archivePath)
+        {
             $zip = new ZipArchive();
-            if ($zip->open($archivePath) === FALSE)
+            if ($zip->open($archivePath) === false) {
                 $this->throwInvalidArchiveError($archivePath);
+            }
 
             return $zip;
         }
 
-        protected function getArchiveHandleAndUpdateManifest($archivePath) {
+        protected function getArchiveHandleAndUpdateManifest($archivePath)
+        {
             $archiveHandle = $this->getArchiveHandle($archivePath);
             $updateManifest = $this->getUpdateManifest($archivePath, $archiveHandle);
             return array($archiveHandle, $updateManifest);
         }
 
-        protected function setWarning($warningCode, $warningMessage) {
+        protected function setWarning($warningCode, $warningMessage)
+        {
             $this->warningExists = true;
             $this->warningCode = $warningCode;
             $this->warningMessage = $warningMessage;
         }
 
-        public function getWarningExists() {
+        public function getWarningExists()
+        {
             return $this->warningExists;
         }
 
-        public function getWarning() {
+        public function getWarning()
+        {
             return array($this->warningCode, $this->warningMessage);
         }
     }

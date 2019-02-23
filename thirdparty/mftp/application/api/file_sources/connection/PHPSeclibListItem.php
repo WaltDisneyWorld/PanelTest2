@@ -2,8 +2,10 @@
     require_once(dirname(__FILE__) . "/ListItem.php");
     require_once(dirname(__FILE__) . '/IntegerPermissionSet.php');
 
-    class PHPSecliblistItem extends ListItem {
-        public function __construct($itemName, $itemStat) {
+    class PHPSecliblistItem extends ListItem
+    {
+        public function __construct($itemName, $itemStat)
+        {
             $this->name = $itemName;
 
             $itemType = isset($itemStat['type']) ? $itemStat['type'] : NET_SFTP_TYPE_REGULAR;

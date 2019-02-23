@@ -1,5 +1,6 @@
 <?php
-    class ProPackageIDGenerator {
+    class ProPackageIDGenerator
+    {
         private static $PRO_PACKAGE_ID_LENGTH = 16;
         /**
          * @var string
@@ -10,11 +11,13 @@
          * ProPackageIDGenerator constructor.
          * @param $salt string
          */
-        public function __construct($salt) {
+        public function __construct($salt)
+        {
             $this->salt = $salt;
         }
 
-        public function idFromEmail($email) {
+        public function idFromEmail($email)
+        {
             $hash = sha1($this->salt . strtolower($email), true);
             $encodedHash = base64_encode($hash);
             $plainTextEncoded = str_replace(array("=", "+", "/"), "", $encodedHash);

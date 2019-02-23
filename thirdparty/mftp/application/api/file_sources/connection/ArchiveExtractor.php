@@ -10,7 +10,8 @@
 
     use \wapmorgan\UnifiedArchive\UnifiedArchive;
 
-    function recursiveDirectoryDelete($dir) {
+    function recursiveDirectoryDelete($dir)
+    {
         if (!file_exists($dir)) {
             return true;
         }
@@ -27,13 +28,13 @@
             if (!recursiveDirectoryDelete($dir . DIRECTORY_SEPARATOR . $item)) {
                 return false;
             }
-
         }
 
         return rmdir($dir);
     }
 
-    class ArchiveExtractor {
+    class ArchiveExtractor
+    {
         private $archivePath;
         private $uploadDirectory;
         private $existingDirectories;
@@ -42,7 +43,8 @@
         private $archiveHandle;
         private $archiveExtension;
 
-        public function __construct($archivePath, $uploadDirectory) {
+        public function __construct($archivePath, $uploadDirectory)
+        {
             $this->archivePath = $archivePath;
             $this->uploadDirectory = $uploadDirectory;
             $this->existingDirectories = array();
@@ -51,40 +53,47 @@
             $this->archiveExtension = pathinfo($archivePath, PATHINFO_EXTENSION);
         }
 
-        private function getSessionKey() {
+        private function getSessionKey()
+        {
             return "archive_contents_" . md5($this->getArchivePath());
         }
 
-        private function getArchivePath() {
+        private function getArchivePath()
+        {
             return $this->archivePath;
         }
 
-        private function extractArchiveFilePath($fullFilePath) {
+        private function extractArchiveFilePath($fullFilePath)
+        {
             return $fullFilePath;
         }
 
-        private function setupArchiveHandle() {
-            if ($this->archiveHandle !== null)
+        private function setupArchiveHandle()
+        {
+            if ($this->archiveHandle !== null) {
                 return;
+            }
 
             $archivePath = $this->getArchivePath();
 
             $this->archiveHandle = UnifiedArchive::open($archivePath);
 
-            if (isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()]))
+            if (isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()])) {
                 $this->flatFileList = $_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()];
-            else {
+            } else {
                 $this->flatFileList = $this->archiveHandle->getFileNames();
                 $_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()] = $this->flatFileList;
             }
         }
 
-        public function getFileCount() {
+        public function getFileCount()
+        {
             $this->setupArchiveHandle();
             return count($this->flatFileList);
         }
 
-        private function getFileInfoAtIndex($fileIndex) {
+        private function getFileInfoAtIndex($fileIndex)
+        {
             $fileInfo = $this->archiveHandle->getFileData($this->flatFileList[$fileIndex]);
 
             $fileName = $fileInfo->filename;
@@ -94,7 +103,8 @@
             return array($fileName, $isDirectory);
         }
 
-        public function extractAndUpload($connection, $fileOffset, $stepCount) {
+        public function extractAndUpload($connection, $fileOffset, $stepCount)
+        {
             $connection->changeDirectory($this->uploadDirectory);
 
             $this->createExtractDirectory();
@@ -112,8 +122,9 @@
 
                     outputStreamKeepAlive();
 
-                    if (time() - $startTime >= MFTP_EXTRACT_UPLOAD_TIME_LIMIT_SECONDS)
+                    if (time() - $startTime >= MFTP_EXTRACT_UPLOAD_TIME_LIMIT_SECONDS) {
                         break;
+                    }
                 }
             } catch (Exception $e) {
                 recursiveDirectoryDelete($this->extractDirectory);
@@ -125,19 +136,24 @@
 
             $extractFinished = $this->getFileCount() == $fileOffset;
 
-            if ($extractFinished)
+            if ($extractFinished) {
                 $this->cleanup();
+            }
 
             return array($extractFinished, $itemsTransferred);
         }
 
-        private function cleanup() {
-            if (isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()]))
+        private function cleanup()
+        {
+            if (isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()])) {
                 unset($_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()]);
+            }
         }
 
-        private function getTransferOperation($connection, $localPath, $remotePath) {
-            return TransferOperationFactory::getTransferOperation(strtolower($connection->getProtocolName()),
+        private function getTransferOperation($connection, $localPath, $remotePath)
+        {
+            return TransferOperationFactory::getTransferOperation(
+                strtolower($connection->getProtocolName()),
                 array(
                     "localPath" => $localPath,
                     "remotePath" => $remotePath
@@ -145,54 +161,67 @@
             );
         }
 
-        private function createExtractDirectory() {
+        private function createExtractDirectory()
+        {
             $tempPath = tempnam(getMonstaSharedTransferDirectory(), monstaBasename($this->archivePath) . "extract-dir");
 
-            if (file_exists($tempPath))
+            if (file_exists($tempPath)) {
                 unlink($tempPath);
+            }
 
             mkdir($tempPath);
-            if (!is_dir($tempPath))
+            if (!is_dir($tempPath)) {
                 throw new Exception("Temp archive dir was not a dir");
+            }
 
             $this->extractDirectory = $tempPath;
         }
 
-        private function isPathTraversalPath($itemName) {
-            return strpos($itemName, "../") !== FALSE || strpos($itemName, "..\\") !== FALSE;
+        private function isPathTraversalPath($itemName)
+        {
+            return strpos($itemName, "../") !== false || strpos($itemName, "..\\") !== false;
         }
 
-        private function extractFileToDisk($archive, $extractDir, $itemPath) {
-            if ($this->archiveExtension == "gz")
-                $node = "/"; // gzip may only be extracted all at once
-            else
+        private function extractFileToDisk($archive, $extractDir, $itemPath)
+        {
+            if ($this->archiveExtension == "gz") {
+                $node = "/";
+            } // gzip may only be extracted all at once
+            else {
                 $node = "/" . $itemPath;
+            }
 
 
-            if ($archive->extractNode($extractDir, $node) === false)
+            if ($archive->extractNode($extractDir, $node) === false) {
                 throw new Exception("Unable to extract $node from archive");
+            }
         }
 
-        private function extractAndUploadItem($connection, $archive, $itemIndex) {
+        private function extractAndUploadItem($connection, $archive, $itemIndex)
+        {
             $itemInfo = $this->getFileInfoAtIndex($itemIndex);
 
-            if ($this->isPathTraversalPath($itemInfo[0]))
+            if ($this->isPathTraversalPath($itemInfo[0])) {
                 return;
+            }
 
             $itemIsDirectory = $itemInfo[1] === true;
 
             $archiveInternalPath = $this->extractArchiveFilePath($itemInfo[0]);
 
-            if (DIRECTORY_SEPARATOR == "\\")
-                $archiveInternalPath = str_replace("\\", "/", $archiveInternalPath); // fix in windows
+            if (DIRECTORY_SEPARATOR == "\\") {
+                $archiveInternalPath = str_replace("\\", "/", $archiveInternalPath);
+            } // fix in windows
 
-            if (!$itemIsDirectory)
+            if (!$itemIsDirectory) {
                 $this->extractFileToDisk($archive, $this->extractDirectory, $archiveInternalPath);
+            }
 
             $itemPath = PathOperations::join($this->extractDirectory, $archiveInternalPath);
 
-            if (is_null($itemInfo[1]) && is_dir($itemPath))
+            if (is_null($itemInfo[1]) && is_dir($itemPath)) {
                 return;
+            }
 
             $uploadPath = PathOperations::join($this->uploadDirectory, $archiveInternalPath);
 
@@ -203,8 +232,9 @@
                 $this->recordExistingDirectories(PathOperations::directoriesInPath($remoteDirectoryPath));
             }
 
-            if ($itemIsDirectory)
-                return; // directory was created so just return, don't upload it
+            if ($itemIsDirectory) {
+                return;
+            } // directory was created so just return, don't upload it
 
             $uploadOperation = $this->getTransferOperation($connection, $itemPath, $uploadPath);
 
@@ -219,19 +249,23 @@
             @unlink($itemPath);
         }
 
-        private function directoryRecordExists($directoryPath) {
+        private function directoryRecordExists($directoryPath)
+        {
             // this is not true directory exists function, just if we have created it or a subdirectory in this object
             return array_search(PathOperations::normalize($directoryPath), $this->existingDirectories) !== false;
         }
 
-        private function recordDirectoryExists($directoryPath) {
-            if ($this->directoryRecordExists($directoryPath))
+        private function recordDirectoryExists($directoryPath)
+        {
+            if ($this->directoryRecordExists($directoryPath)) {
                 return;
+            }
 
             $this->existingDirectories[] = PathOperations::normalize($directoryPath);
         }
 
-        private function recordExistingDirectories($existingDirectories) {
+        private function recordExistingDirectories($existingDirectories)
+        {
             foreach ($existingDirectories as $existingDirectory) {
                 $this->recordDirectoryExists($existingDirectory);
             }

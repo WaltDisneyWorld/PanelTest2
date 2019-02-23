@@ -22,7 +22,8 @@
     require_once(dirname(__FILE__) . '/../install/MonstaUpdateInstallContext.php');
     require_once(dirname(__FILE__) . '/../install/MonstaInstaller.php');
 
-    class RequestDispatcher {
+    class RequestDispatcher
+    {
         /**
          * @var ConnectionBase
          */
@@ -38,8 +39,13 @@
          */
         private $rawConfiguration;
 
-        public function __construct($connectionType, $rawConfiguration, $configurationFactory = null,
-                                    $connectionFactory = null, $skipConfiguration = false) {
+        public function __construct(
+            $connectionType,
+            $rawConfiguration,
+            $configurationFactory = null,
+            $connectionFactory = null,
+            $skipConfiguration = false
+        ) {
             $this->connectionType = $connectionType;
             /* allow factory objects to be passed in for testing with mocks */
             if ($skipConfiguration) {
@@ -53,7 +59,8 @@
             }
         }
 
-        public function dispatchRequest($actionName, $context = null) {
+        public function dispatchRequest($actionName, $context = null)
+        {
             if (in_array($actionName, array(
                 'listDirectory',
                 'downloadFile',
@@ -89,16 +96,18 @@
                 'downloadLatestVersionArchive',
                 'installLatestVersion'
             ))) {
-                if (!is_null($context))
+                if (!is_null($context)) {
                     return $this->$actionName($context);
-                else
+                } else {
                     return $this->$actionName();
+                }
             }
 
             throw new InvalidArgumentException("Unknown action $actionName");
         }
 
-        private function connectAndAuthenticate() {
+        private function connectAndAuthenticate()
+        {
             $sessionNeedsStarting = false;
 
             if (function_exists("session_status")) {
@@ -119,17 +128,24 @@
             $loginFailureResetTimeSeconds = defined("MFTP_LOGIN_FAILURES_RESET_TIME_MINUTES")
                 ? MFTP_LOGIN_FAILURES_RESET_TIME_MINUTES * 60 : 0;
 
-            if (!isset($_SESSION["MFTP_LOGIN_FAILURES"]))
+            if (!isset($_SESSION["MFTP_LOGIN_FAILURES"])) {
                 $_SESSION["MFTP_LOGIN_FAILURES"] = array();
+            }
 
-            $banManager = new UserBanManager($maxFailures, $loginFailureResetTimeSeconds,
-                $_SESSION["MFTP_LOGIN_FAILURES"]);
+            $banManager = new UserBanManager(
+                $maxFailures,
+                $loginFailureResetTimeSeconds,
+                $_SESSION["MFTP_LOGIN_FAILURES"]
+            );
 
             if ($banManager->hostAndUserBanned($configuration->getHost(), $configuration->getRemoteUsername())) {
-                throw new FileSourceAuthenticationException("Login and user has exceed maximum failures.",
-                    LocalizableExceptionDefinition::$LOGIN_FAILURE_EXCEEDED_ERROR, array(
+                throw new FileSourceAuthenticationException(
+                    "Login and user has exceed maximum failures.",
+                    LocalizableExceptionDefinition::$LOGIN_FAILURE_EXCEEDED_ERROR,
+                    array(
                         "banTimeMinutes" => MFTP_LOGIN_FAILURES_RESET_TIME_MINUTES
-                    ));
+                    )
+                );
             }
 
             $this->connection->connect();
@@ -137,8 +153,10 @@
             try {
                 $this->connection->authenticate();
             } catch (Exception $e) {
-                $banManager->recordHostAndUserLoginFailure($configuration->getHost(),
-                    $configuration->getRemoteUsername());
+                $banManager->recordHostAndUserLoginFailure(
+                    $configuration->getHost(),
+                    $configuration->getRemoteUsername()
+                );
 
                 $_SESSION["MFTP_LOGIN_FAILURES"] = $banManager->getStore();
 
@@ -156,26 +174,31 @@
             return null;
         }
 
-        public function disconnect() {
-            if ($this->connection != null && $this->connection->isConnected())
+        public function disconnect()
+        {
+            if ($this->connection != null && $this->connection->isConnected()) {
                 $this->connection->disconnect();
+            }
         }
 
-        public function listDirectory($context) {
+        public function listDirectory($context)
+        {
             $this->connectAndAuthenticate();
             $directoryList = $this->connection->listDirectory($context['path'], $context['showHidden']);
             $this->disconnect();
             return $directoryList;
         }
 
-        public function downloadFile($context) {
+        public function downloadFile($context)
+        {
             $this->connectAndAuthenticate();
             $transferOp = TransferOperationFactory::getTransferOperation($this->connectionType, $context);
             $this->connection->downloadFile($transferOp);
             $this->disconnect();
         }
 
-        public function downloadMultipleFiles($context) {
+        public function downloadMultipleFiles($context)
+        {
             $this->connectAndAuthenticate();
             $fileFinder = new RecursiveFileFinder($this->connection, $context['baseDirectory']);
             $foundFiles = $fileFinder->findFilesInPaths($context['items']);
@@ -187,14 +210,16 @@
             return $zipPath;
         }
 
-        public function uploadFile($context, $preserveRemotePermissions = false) {
+        public function uploadFile($context, $preserveRemotePermissions = false)
+        {
             $this->connectAndAuthenticate();
             $transferOp = TransferOperationFactory::getTransferOperation($this->connectionType, $context);
             $this->connection->uploadFile($transferOp, $preserveRemotePermissions);
             $this->disconnect();
         }
 
-        public function uploadFileToNewDirectory($context) {
+        public function uploadFileToNewDirectory($context)
+        {
             // This will first create the target directory if it doesn't exist and then upload to that directory
             $this->connectAndAuthenticate();
             $transferOp = TransferOperationFactory::getTransferOperation($this->connectionType, $context);
@@ -202,43 +227,50 @@
             $this->disconnect();
         }
 
-        public function deleteFile($context) {
+        public function deleteFile($context)
+        {
             $this->connectAndAuthenticate();
             $this->connection->deleteFile($context['remotePath']);
             $this->disconnect();
         }
 
-        public function makeDirectory($context) {
+        public function makeDirectory($context)
+        {
             $this->connectAndAuthenticate();
             $this->connection->makeDirectory($context['remotePath']);
             $this->disconnect();
         }
 
-        public function deleteDirectory($context) {
+        public function deleteDirectory($context)
+        {
             $this->connectAndAuthenticate();
             $this->connection->deleteDirectory($context['remotePath']);
             $this->disconnect();
         }
 
-        public function rename($context) {
+        public function rename($context)
+        {
             $this->connectAndAuthenticate();
             $this->connection->rename($context['source'], $context['destination']);
             $this->disconnect();
         }
 
-        public function changePermissions($context) {
+        public function changePermissions($context)
+        {
             $this->connectAndAuthenticate();
             $this->connection->changePermissions($context['mode'], $context['remotePath']);
             $this->disconnect();
         }
 
-        public function copy($context) {
+        public function copy($context)
+        {
             $this->connectAndAuthenticate();
             $this->connection->copy($context['source'], $context['destination']);
             $this->disconnect();
         }
 
-        public function testConnectAndAuthenticate($context) {
+        public function testConnectAndAuthenticate($context)
+        {
             $initialDirectory = $this->connectAndAuthenticate();
             $serverCapabilities = array("initialDirectory" => $initialDirectory);
 
@@ -251,42 +283,54 @@
             return array("serverCapabilities" => $serverCapabilities);
         }
 
-        public function checkSavedAuthExists() {
-            if ($this->readLicense() == null)
+        public function checkSavedAuthExists()
+        {
+            if ($this->readLicense() == null) {
                 return false;
+            }
 
             return AuthenticationStorage::configurationExists(AUTHENTICATION_FILE_PATH);
         }
 
-        public function writeSavedAuth($context) {
-            if ($this->readLicense() == null)
+        public function writeSavedAuth($context)
+        {
+            if ($this->readLicense() == null) {
                 return;
+            }
 
-            AuthenticationStorage::saveConfiguration(AUTHENTICATION_FILE_PATH, $context['password'],
-                $context['authData']);
+            AuthenticationStorage::saveConfiguration(
+                AUTHENTICATION_FILE_PATH,
+                $context['password'],
+                $context['authData']
+            );
         }
 
-        public function readSavedAuth($context) {
-            if ($this->readLicense() == null)
+        public function readSavedAuth($context)
+        {
+            if ($this->readLicense() == null) {
                 return array();
+            }
 
             return AuthenticationStorage::loadConfiguration(AUTHENTICATION_FILE_PATH, $context['password']);
         }
 
-        public function readLicense() {
+        public function readLicense()
+        {
             $keyPairSuite = new KeyPairSuite(PUBKEY_PATH);
             $licenseReader = new LicenseReader($keyPairSuite);
             return $licenseReader->readLicense(MONSTA_LICENSE_PATH);
         }
 
-        private function recordAffiliateSource($licenseEmail) {
+        private function recordAffiliateSource($licenseEmail)
+        {
             $affiliateChecker = new AffiliateChecker();
             $installUrl = getMonstaInstallUrl();
             $affiliateId = defined("MFTP_AFFILIATE_ID") ? MFTP_AFFILIATE_ID : "";
             return $affiliateChecker->recordAffiliateSource($affiliateId, $licenseEmail, $installUrl);
         }
 
-        public function updateLicense($context) {
+        public function updateLicense($context)
+        {
             $licenseContent = $context['license'];
             $licenseWriter = new LicenseWriter($licenseContent, PUBKEY_PATH, MONSTA_CONFIG_DIR_PATH . "../license/");
             $licenseData = $licenseWriter->getLicenseData();
@@ -298,7 +342,8 @@
             $licenseWriter->writeProFiles(dirname(__FILE__) . "/../resources/config_pro_template.php");
         }
 
-        public function getSystemVars() {
+        public function getSystemVars()
+        {
             $systemVars = SystemVars::getSystemVarsArray();
 
             $applicationSettings = new ApplicationSettings(APPLICATION_SETTINGS_PATH);
@@ -307,13 +352,15 @@
             return $systemVars;
         }
 
-        public function setApplicationSettings($context) {
+        public function setApplicationSettings($context)
+        {
             $applicationSettings = new ApplicationSettings(APPLICATION_SETTINGS_PATH);
             $applicationSettings->setFromArray($context['applicationSettings']);
             $applicationSettings->save();
         }
 
-        public function fetchRemoteFile($context) {
+        public function fetchRemoteFile($context)
+        {
             $fetchRequest = new HttpRemoteUploadFetchRequest($context['source'], $context['destination']);
             $fetcher = new HTTPFetcher();
             try {
@@ -335,13 +382,15 @@
             $fetcher->cleanUp();
         }
 
-        public function deleteMultiple($context) {
+        public function deleteMultiple($context)
+        {
             $this->connectAndAuthenticate();
             $this->connection->deleteMultiple($context['pathsAndTypes']);
             $this->disconnect();
         }
 
-        public function downloadForExtract($context) {
+        public function downloadForExtract($context)
+        {
             $this->connectAndAuthenticate();
 
             $remotePath = $context["remotePath"];
@@ -369,16 +418,19 @@
             return array("fileKey" => $fileKey, "fileCount" => $archiveFileCount);
         }
 
-        public function cleanUpExtract($context) {
+        public function cleanUpExtract($context)
+        {
             $fileKey = $context['fileKey'];
 
-            if (!isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $fileKey]))
+            if (!isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $fileKey])) {
                 exitWith404("File key $fileKey not found in session.");
+            }
 
             $fileData = $_SESSION[MFTP_SESSION_KEY_PREFIX . $fileKey];
 
-            if (!isset($fileData['archivePath']))
+            if (!isset($fileData['archivePath'])) {
                 exitWith404("archivePath not set in fileData.");
+            }
 
             $archivePath = $fileData['archivePath'];
 
@@ -387,16 +439,19 @@
             return true;
         }
 
-        public function extractArchive($context) {
-            if (!isset($context['fileKey']))
+        public function extractArchive($context)
+        {
+            if (!isset($context['fileKey'])) {
                 exitWith404("fileKey not found in context.");
+            }
 
             $fileKey = $context['fileKey'];
 
             $this->connectAndAuthenticate();
 
-            if (!isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $fileKey]))
+            if (!isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $fileKey])) {
                 exitWith404("$fileKey not found in session.");
+            }
 
             $fileInfo = $_SESSION[MFTP_SESSION_KEY_PREFIX . $fileKey];
 
@@ -406,8 +461,11 @@
             $extractor = new ArchiveExtractor($archivePath, $extractDirectory);
 
             try {
-                $transferResult = $extractor->extractAndUpload($this->connection,
-                    $context['fileIndexOffset'], $context['extractCount']);
+                $transferResult = $extractor->extractAndUpload(
+                    $this->connection,
+                    $context['fileIndexOffset'],
+                    $context['extractCount']
+                );
 
                 // $transferResult is array [isFinalTransfer(bool), itemsTransferred (in this iteration, not total)]
             } catch (Exception $e) {
@@ -424,18 +482,25 @@
             return $transferResult;
         }
 
-        public function reserveUploadContext($context) {
+        public function reserveUploadContext($context)
+        {
             $remotePath = $context['remotePath'];
 
             $localPath = getTempTransferPath($remotePath);
 
-            $sessionKey = MultiStageUploadHelper::storeUploadContext($this->connectionType, $context['actionName'],
-                $this->rawConfiguration, $localPath, $remotePath);
+            $sessionKey = MultiStageUploadHelper::storeUploadContext(
+                $this->connectionType,
+                $context['actionName'],
+                $this->rawConfiguration,
+                $localPath,
+                $remotePath
+            );
 
             return $sessionKey;
         }
 
-        public function transferUploadToRemote($context) {
+        public function transferUploadToRemote($context)
+        {
             $sessionKey = $context['sessionKey'];
             $uploadContext = MultiStageUploadHelper::getUploadContext($sessionKey);
 
@@ -459,17 +524,20 @@
             }
         }
 
-        public function getRemoteFileSize($context) {
+        public function getRemoteFileSize($context)
+        {
             $this->connectAndAuthenticate();
             return $this->connection->getFileSize($context['remotePath']);
         }
 
-        public function getDefaultPath() {
+        public function getDefaultPath()
+        {
             $this->connectAndAuthenticate();
             return $this->connection->getCurrentDirectory();
         }
 
-        public function resetPassword($context) {
+        public function resetPassword($context)
+        {
             if (!function_exists('mftpResetPasswordHandler')) {
                 throw new Exception("mftpResetPasswordHandler function is not defined.");
             }
@@ -477,7 +545,8 @@
             return mftpResetPasswordHandler($context['username'], $context['currentPassword'], $context['newPassword']);
         }
 
-        public function forgotPassword($context) {
+        public function forgotPassword($context)
+        {
             if (!function_exists('mftpForgotPasswordHandler')) {
                 throw new Exception("mftpForgotPasswordHandler function is not defined.");
             }
@@ -485,14 +554,19 @@
             return mftpForgotPasswordHandler($context['username']);
         }
 
-        public function validateSavedAuthPassword($context) {
+        public function validateSavedAuthPassword($context)
+        {
             return AuthenticationStorage::validateAuthenticationPassword(AUTHENTICATION_FILE_PATH, $context["password"]);
         }
 
-        public function downloadLatestVersionArchive($context) {
-            if (!AuthenticationStorage::validateAuthenticationPassword(AUTHENTICATION_FILE_PATH, $context["password"]))
-                throw new LocalizableException("Could not read configuration, the password is probably incorrect.",
-                    LocalizableExceptionDefinition::$PROBABLE_INCORRECT_PASSWORD_ERROR);
+        public function downloadLatestVersionArchive($context)
+        {
+            if (!AuthenticationStorage::validateAuthenticationPassword(AUTHENTICATION_FILE_PATH, $context["password"])) {
+                throw new LocalizableException(
+                    "Could not read configuration, the password is probably incorrect.",
+                    LocalizableExceptionDefinition::$PROBABLE_INCORRECT_PASSWORD_ERROR
+                );
+            }
 
             $archiveFetchRequest = new HttpFetchRequest(MFTP_LATEST_VERSION_ARCHIVE_PATH);
 
@@ -508,17 +582,22 @@
             return true;
         }
 
-        public function installLatestVersion($context) {
-            if (!AuthenticationStorage::validateAuthenticationPassword(AUTHENTICATION_FILE_PATH, $context["password"]))
-                throw new LocalizableException("Could not read configuration, the password is probably incorrect.",
-                    LocalizableExceptionDefinition::$PROBABLE_INCORRECT_PASSWORD_ERROR);
+        public function installLatestVersion($context)
+        {
+            if (!AuthenticationStorage::validateAuthenticationPassword(AUTHENTICATION_FILE_PATH, $context["password"])) {
+                throw new LocalizableException(
+                    "Could not read configuration, the password is probably incorrect.",
+                    LocalizableExceptionDefinition::$PROBABLE_INCORRECT_PASSWORD_ERROR
+                );
+            }
 
             $mftpRoot = realpath(dirname(__FILE__) . "/../../../");
 
             $archivePath = PathOperations::join($mftpRoot, MFTP_LATEST_VERSION_ARCHIVE_TEMP_NAME);
 
-            if (MONSTA_DEBUG)
-                return true;  // don't accidentally update the developer's machine
+            if (MONSTA_DEBUG) {
+                return true;
+            }  // don't accidentally update the developer's machine
 
             $updateContext = new MonstaUpdateInstallContext();
 

@@ -1,15 +1,20 @@
 <?php
 
-    class AffiliateChecker {
+    class AffiliateChecker
+    {
         private $affiliateCheckUrl = "https://www.monstaftp.com/_callbacks/affiliate-tracker.php";
         private $affiliateRecordTimeoutSeconds = 10;
 
-        public function recordAffiliateSource($affiliateId, $licenseEmail, $installUrl) {
-            $urlWithQS = $this->affiliateCheckUrl . "?" . $this->buildQueryString($affiliateId, $licenseEmail,
-                    $installUrl);
+        public function recordAffiliateSource($affiliateId, $licenseEmail, $installUrl)
+        {
+            $urlWithQS = $this->affiliateCheckUrl . "?" . $this->buildQueryString(
+                $affiliateId,
+                $licenseEmail,
+                $installUrl
+            );
 
-            $contextOptions  = array (
-                "http" => array (
+            $contextOptions  = array(
+                "http" => array(
                     "method" => "GET",
                     "header"=> "User-agent: Monsta FTP " . MONSTA_VERSION . "\r\n"
                 )
@@ -29,7 +34,8 @@
             return trim($affiliateResult) === "true";
         }
 
-        private function buildQueryString($affiliateId, $licenseEmail, $installUrl) {
+        private function buildQueryString($affiliateId, $licenseEmail, $installUrl)
+        {
             return http_build_query(
                 array(
                     "a" => $affiliateId,

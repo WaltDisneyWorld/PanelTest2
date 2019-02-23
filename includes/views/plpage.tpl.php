@@ -8,7 +8,9 @@
  *
  */
 
-if (!isset($HOME)) die();
+if (!isset($HOME)) {
+    die();
+}
 require 'includes/classes/head.class.php';
 $safe = false;
 $noshow = true;

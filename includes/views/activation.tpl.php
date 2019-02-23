@@ -1,7 +1,9 @@
-<?php 
-if (!isset($HOME)) die();
+<?php
+if (!isset($HOME)) {
+    die();
+}
 require 'includes/classes/head.class.php';
-onlyadmin(); 
+onlyadmin();
 ?>
   <div class="content-wrapper">
             <div class="container-fluid">
@@ -13,12 +15,13 @@ onlyadmin();
                         <p>Connection to IntISP Activation Servers
                         
                         
-                        <?php 
+                        <?php
                         if (!$failsafe_offline) {
                             ?>
                         <i class="fa fa-check"></i>
                         <?php
-                        } else { ?>
+                        } else {
+                            ?>
                        
                         [ERROR]<?php
                         }?>
@@ -26,12 +29,13 @@ onlyadmin();
    <p>Connection to IntISP Update Servers
                         
                         
-                        <?php 
+                        <?php
                         if (!$failsafe_offline) {
                             ?>
                         <i class="fa fa-check"></i>
                         <?php
-                        } else { ?>
+                        } else {
+                            ?>
                        
                         [ERROR]<?php
                         }?>
@@ -44,42 +48,42 @@ include 'config.php';
     $sql = "SELECT value FROM settings WHERE code =  'register' LIMIT 0 , 30";
 if ($result = mysqli_query($con, $sql)) {
     // Fetch one and one row
-  while ($row = mysqli_fetch_row($result)) {
-      printf($row[0]);
-  }
-  // Free result set
-  mysqli_free_result($result);
+    while ($row = mysqli_fetch_row($result)) {
+        printf($row[0]);
+    }
+    // Free result set
+    mysqli_free_result($result);
 }
 mysqli_close($con);
 ?></h1><p>The license is currently activated under a <?php echo $edition; ?> of IntISP <?php echo $intisp_ver; ?>.</p></center>
 <?php
-if (isset($_GET["debug"])) { ?>
+if (isset($_GET["debug"])) {
+    ?>
 <h1>Debug</h1>
 <textarea style="margin: 0px; height: 345px; width: 744px;" disabled>
 Running Activation Server Debugger...
 <?php
 function is_connected($addr)
-  {
-    if (!$socket = @fsockopen($addr, 80, $num, $error, 5)) {
-      return false;
-    } else {
-      return true;
+    {
+        if (!$socket = @fsockopen($addr, 80, $num, $error, 5)) {
+            return false;
+        } else {
+            return true;
+        }
     }
-  }
-if (is_connected("example.com")) {
-    echo "Detected a valid internet connection [OK]\n";
-} else {
-    echo "COULD NOT CONNECT TO THE INTERNET [FAIL]\n";
-}
-$ip = gethostbyname('www.enyrx.com');
-echo "Detected Enyrx is pointing to $ip\n";
-if (is_connected("enyrx.com")) {
-    echo "Stable connection to Enyrx Servers [OK]\n";
-} else {
-    echo "COULD NOT CONNECT TO ENYRX [FAIL]\n";
-}
-echo "The Debug process has completed.";
-?>
+    if (is_connected("example.com")) {
+        echo "Detected a valid internet connection [OK]\n";
+    } else {
+        echo "COULD NOT CONNECT TO THE INTERNET [FAIL]\n";
+    }
+    $ip = gethostbyname('www.enyrx.com');
+    echo "Detected Enyrx is pointing to $ip\n";
+    if (is_connected("enyrx.com")) {
+        echo "Stable connection to Enyrx Servers [OK]\n";
+    } else {
+        echo "COULD NOT CONNECT TO ENYRX [FAIL]\n";
+    }
+    echo "The Debug process has completed."; ?>
 </textarea>
 <br><?php
 }

@@ -1,27 +1,33 @@
 <?php
-    class ProConfigBuilder {
+    class ProConfigBuilder
+    {
         private $proPackagedID;
 
-        public function __construct($proPackageID) {
+        public function __construct($proPackageID)
+        {
             $this->proPackagedID = $proPackageID;
         }
 
         /**
          * @return mixed
          */
-        public function getProPackagedID() {
+        public function getProPackagedID()
+        {
             return $this->proPackagedID;
         }
 
-        public function generateRelativeLicensePath() {
+        public function generateRelativeLicensePath()
+        {
             return sprintf("license-%s.key", $this->getProPackagedID());
         }
 
-        public function generateRelativeProfilePath() {
+        public function generateRelativeProfilePath()
+        {
             return sprintf("profiles-%s.bin", $this->getProPackagedID());
         }
 
-        public function renderProConfig($configTemplatePath) {
+        public function renderProConfig($configTemplatePath)
+        {
             $rawContents = file_get_contents($configTemplatePath);
 
             $profileLocalPath = $this->generateRelativeProfilePath($this->getProPackagedID());

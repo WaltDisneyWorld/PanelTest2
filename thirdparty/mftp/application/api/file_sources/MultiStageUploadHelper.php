@@ -1,8 +1,10 @@
 <?php
     require_once(dirname(__FILE__) . "/../lib/helpers.php");
 
-    class MultiStageUploadHelper {
-        public static function storeUploadContext($connectionType, $actionName, $configuration, $localPath, $remotePath) {
+    class MultiStageUploadHelper
+    {
+        public static function storeUploadContext($connectionType, $actionName, $configuration, $localPath, $remotePath)
+        {
             $context = array(
                 "connectionType" => $connectionType,
                 "actionName" => $actionName,
@@ -18,18 +20,22 @@
             return $sessionKey;
         }
 
-        public static function getUploadContext($sessionKey) {
-            if (!array_key_exists(MFTP_SESSION_KEY_PREFIX . $sessionKey, $_SESSION))
+        public static function getUploadContext($sessionKey)
+        {
+            if (!array_key_exists(MFTP_SESSION_KEY_PREFIX . $sessionKey, $_SESSION)) {
                 throw new Exception("sessionKey '$sessionKey' not found in session");
+            }
 
             return $_SESSION[MFTP_SESSION_KEY_PREFIX . $sessionKey];
         }
 
-        public static function getUploadRequest($sessionKey) {
+        public static function getUploadRequest($sessionKey)
+        {
             $uploadContext = self::getUploadContext($sessionKey);
 
-            if (!is_array($uploadContext))
+            if (!is_array($uploadContext)) {
                 throw new Exception("Upload Context is not an array");
+            }
 
             $request = array(
                 "connectionType" => $uploadContext["connectionType"],

@@ -4,8 +4,10 @@
     require_once(dirname(__FILE__) . '/IntegerPermissionSet.php');
     require_once(dirname(__FILE__) . '/../Validation.php');
 
-    class StatOutputListItem extends ListItem {
-        public function __construct($name, $fileStat) {
+    class StatOutputListItem extends ListItem
+    {
+        public function __construct($name, $fileStat)
+        {
             $this->name = $name;
             $this->link = false; // appears to not matter for SFTP
             $this->directory = ($fileStat['mode'] & 0x4000) != 0;  // 16384 = is directory bit

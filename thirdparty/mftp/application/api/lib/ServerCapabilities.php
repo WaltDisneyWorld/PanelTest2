@@ -4,15 +4,18 @@
 
     define("MFTP_SERVER_CAPABILITIES_CREATION_TIME_KEY", "CREATION_TIME");
 
-    class ServerCapabilities {
+    class ServerCapabilities
+    {
         private $path;
         private $capabilityCache = null;
 
-        public function __construct($path) {
+        public function __construct($path)
+        {
             $this->path = $path;
         }
 
-        public function getServerCapabilities($protocol, $host, $port) {
+        public function getServerCapabilities($protocol, $host, $port)
+        {
             $key = $this->generateServerCacheKey($protocol, $host, $port);
 
             $cache = $this->getCapabilityCache();
@@ -20,7 +23,8 @@
             return array_key_exists($key, $cache) ? $cache[$key] : null;
         }
 
-        public function setServerCapabilities($protocol, $host, $port, $capabilities) {
+        public function setServerCapabilities($protocol, $host, $port, $capabilities)
+        {
             $key = $this->generateServerCacheKey($protocol, $host, $port);
 
             $cache = $this->getCapabilityCache();
@@ -34,7 +38,8 @@
             $this->storeCapabilities();
         }
 
-        private function getCapabilityCache() {
+        private function getCapabilityCache()
+        {
             if (is_null($this->capabilityCache)) {
                 $this->capabilityCache = $this->readCapabilityCache();
             }
@@ -42,11 +47,13 @@
             return $this->capabilityCache;
         }
 
-        private function setCapabilityCache($capabilityCache) {
+        private function setCapabilityCache($capabilityCache)
+        {
             $this->capabilityCache = $capabilityCache;
         }
 
-        private function readCapabilityCache() {
+        private function readCapabilityCache()
+        {
             $path = $this->getPath();
             if (!@file_exists($path) || !@is_readable($path)) {
                 return array();
@@ -54,16 +61,17 @@
 
             $cacheContents = @file_get_contents($path);
 
-            if ($cacheContents === FALSE) {
+            if ($cacheContents === false) {
                 return array();
             }
 
             $data = @json_decode($cacheContents, true);
 
-            return ($data === FALSE || is_null($data)) ? array() : $data;
+            return ($data === false || is_null($data)) ? array() : $data;
         }
 
-        private function writeCapabilityCache($capabilityCache) {
+        private function writeCapabilityCache($capabilityCache)
+        {
             $cachePath = $this->getPath();
             $cacheDir = dirname($cachePath);
 
@@ -73,7 +81,8 @@
             }
         }
 
-        private function storeCapabilities() {
+        private function storeCapabilities()
+        {
             if (is_null($this->capabilityCache) || (is_array($this->capabilityCache) && count($this->capabilityCache) == 0)) {
                 return; // nothing to write
             }
@@ -82,7 +91,7 @@
 
             $lockHandle = @fopen($lockPath, "w+");
 
-            if ($lockHandle !== FALSE) {
+            if ($lockHandle !== false) {
                 if (@flock($lockHandle, LOCK_EX)) {
                     $storedCache = $this->readCapabilityCache();
 
@@ -114,15 +123,18 @@
             }
         }
 
-        private function getPath() {
+        private function getPath()
+        {
             return $this->path;
         }
 
-        private function getLockFilePath() {
+        private function getLockFilePath()
+        {
             return $this->getPath() . ".lck";
         }
 
-        private function generateServerCacheKey($protocol, $host, $port) {
+        private function generateServerCacheKey($protocol, $host, $port)
+        {
             return strtolower("$protocol://$host:$port");
         }
     }

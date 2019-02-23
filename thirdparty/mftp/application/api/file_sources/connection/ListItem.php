@@ -1,7 +1,8 @@
 <?php
     require_once(dirname(__FILE__) . '/../../lib/JsonSerializable.php');
 
-    abstract class ListItem implements JsonSerializable {
+    abstract class ListItem implements JsonSerializable
+    {
         /**
          * @var boolean
          */
@@ -60,89 +61,102 @@
         /**
          * @return bool
          */
-        public function isDirectory() {
+        public function isDirectory()
+        {
             return $this->directory;
         }
 
         /**
          * @return bool
          */
-        public function isLink() {
+        public function isLink()
+        {
             return $this->link;
         }
 
         /**
          * @return StringPermissionSet
          */
-        public function getOwnerPermissions() {
+        public function getOwnerPermissions()
+        {
             return $this->ownerPermissions;
         }
 
         /**
          * @return StringPermissionSet
          */
-        public function getGroupPermissions() {
+        public function getGroupPermissions()
+        {
             return $this->groupPermissions;
         }
 
         /**
          * @return StringPermissionSet
          */
-        public function getOtherPermissions() {
+        public function getOtherPermissions()
+        {
             return $this->otherPermissions;
         }
 
         /**
          * @return int
          */
-        public function getLinkCount() {
+        public function getLinkCount()
+        {
             return $this->linkCount;
         }
 
         /**
          * @return string
          */
-        public function getOwnerUserName() {
+        public function getOwnerUserName()
+        {
             return $this->ownerUserName;
         }
 
         /**
          * @return string
          */
-        public function getOwnerGroupName() {
+        public function getOwnerGroupName()
+        {
             return $this->ownerGroupName;
         }
 
         /**
          * @return int
          */
-        public function getSize() {
+        public function getSize()
+        {
             return $this->size;
         }
 
         /**
          * @return int
          */
-        public function getModificationDate() {
+        public function getModificationDate()
+        {
             return $this->modificationDate;
         }
 
         /**
          * @return string
          */
-        public function getName() {
+        public function getName()
+        {
             return $this->name;
         }
 
         /**
          * @return int
          */
-        public function getNumericPermissions() {
+        public function getNumericPermissions()
+        {
             return ($this->getOwnerPermissions()->asNumeric() * 64) + ($this->getGroupPermissions()->asNumeric() * 8) +
             $this->getOtherPermissions()->asNumeric();
         }
 
-        public function jsonSerialize() {
+        public function jsonSerialize()
+        {
             return array(
                 "name" => (string)$this->getName(),
                 "isDirectory" => $this->isDirectory(),
@@ -156,7 +170,8 @@
             );
         }
 
-        public function legacyJsonSerialize() {
+        public function legacyJsonSerialize()
+        {
             return $this->jsonSerialize();
         }
     }

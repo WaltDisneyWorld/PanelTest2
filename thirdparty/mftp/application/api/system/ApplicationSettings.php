@@ -3,7 +3,8 @@
     require_once(dirname(__FILE__) . "/../lib/LocalizableException.php");
     require_once(dirname(__FILE__) . "/../lib/nicejson.php");
 
-    class ApplicationSettings {
+    class ApplicationSettings
+    {
         /**
          * @var array|mixed
          */
@@ -65,7 +66,8 @@
         private static $DEFAULT_EDITABLE_FILE_EXTENSIONS =
             "txt,htm,html,php,asp,aspx,js,css,xhtml,cfm,pl,py,c,cpp,rb,java,xml,json";
 
-        private function getValidKeys() {
+        private function getValidKeys()
+        {
             // this is kind of like an instance var getter thing so it's up here
             return array(
                 self::$KEY_SHOW_DOT_FILES,
@@ -107,7 +109,8 @@
             );
         }
 
-        private function getDefaults() {
+        private function getDefaults()
+        {
             return array(
                 self::$KEY_SHOW_DOT_FILES => true,
                 self::$KEY_LANGUAGE => self::$DEFAULT_LANGUAGE,
@@ -148,7 +151,8 @@
             );
         }
 
-        private function getFrontendWritableKeys() {
+        private function getFrontendWritableKeys()
+        {
             // since there's no auth only allow setting of safe keys
             return array(
                 self::$KEY_SHOW_DOT_FILES,
@@ -157,13 +161,14 @@
             );
         }
 
-        public function __construct($settingsPath) {
+        public function __construct($settingsPath)
+        {
             $this->settingsPath = $settingsPath;
             $this->settingsReadFailed = false;
 
-            if (!file_exists($settingsPath))
+            if (!file_exists($settingsPath)) {
                 $this->settings = array();
-            else {
+            } else {
                 $settings = array();
 
                 $settingsContents = @file_get_contents($settingsPath);
@@ -188,73 +193,91 @@
         /**
          * @return boolean
          */
-        public function isSettingsReadFailed() {
+        public function isSettingsReadFailed()
+        {
             return $this->settingsReadFailed;
         }
 
         /**
          * @return string
          */
-        public function getSettingsReadError() {
+        public function getSettingsReadError()
+        {
             return $this->settingsReadError;
         }
 
-        public function save() {
-            if (!$this->settingsWritable())
-                throw new LocalizableException("Could not write settings JSON at " . $this->settingsPath,
-                    LocalizableExceptionDefinition::$SETTINGS_WRITE_ERROR, array("path" => $this->settingsPath));
+        public function save()
+        {
+            if (!$this->settingsWritable()) {
+                throw new LocalizableException(
+                    "Could not write settings JSON at " . $this->settingsPath,
+                    LocalizableExceptionDefinition::$SETTINGS_WRITE_ERROR,
+                    array("path" => $this->settingsPath)
+                );
+            }
 
             file_put_contents($this->settingsPath, json_format($this->settings));
         }
 
-        private function settingsWritable() {
-            if (file_exists($this->settingsPath))
+        private function settingsWritable()
+        {
+            if (file_exists($this->settingsPath)) {
                 return is_writable($this->settingsPath);
+            }
 
             return is_writable(dirname($this->settingsPath));
         }
 
-        private function getDefaultValue($key) {
+        private function getDefaultValue($key)
+        {
             $defaults = $this->getDefaults();
 
-            if (!array_key_exists($key, $defaults))
+            if (!array_key_exists($key, $defaults)) {
                 return null;
+            }
 
             return $defaults[$key];
         }
 
-        private function getSetKey($key) {
-            if (isset($this->settings[$key]))
+        private function getSetKey($key)
+        {
+            if (isset($this->settings[$key])) {
                 return $this->settings[$key];
+            }
 
             return $this->getDefaultValue($key);
         }
 
-        private function setBool($key, $value) {
-            if (!is_bool($value))
+        private function setBool($key, $value)
+        {
+            if (!is_bool($value)) {
                 throw new InvalidArgumentException("$key requires a boolean argument, got: \"$value\"");
+            }
 
             $this->settings[$key] = $value;
         }
 
-        private function blankArray($inputArray, $skipKeys) {
+        private function blankArray($inputArray, $skipKeys)
+        {
             $blankedArray = array();
 
             foreach ($inputArray as $key => $value) {
-                if ($key == "types" || $key == "host" && is_array($value))
+                if ($key == "types" || $key == "host" && is_array($value)) {
                     $blankedArray[$key] = $value;
-                else if (is_array($value))
+                } elseif (is_array($value)) {
                     $blankedArray[$key] = $this->blankArray($value, $skipKeys);
-                else if (array_search($key, $skipKeys) !== false)
+                } elseif (array_search($key, $skipKeys) !== false) {
                     $blankedArray[$key] = $value;
-                else
+                } else {
                     $blankedArray[$key] = true;
+                }
             }
 
             return $blankedArray;
         }
 
-        public function getSettingsArray() {
+        public function getSettingsArray()
+        {
             $settings = array();
 
             foreach ($this->getSettingKeyGetterMap() as $key => $getterName) {
@@ -264,24 +287,29 @@
             return $settings;
         }
 
-        public function setFromArray($settingsArray) {
+        public function setFromArray($settingsArray)
+        {
             $safeKeys = $this->getFrontendWritableKeys();
 
             foreach ($this->getSettingKeySetterMap() as $key => $setterName) {
-                if (!in_array($key, $safeKeys))
+                if (!in_array($key, $safeKeys)) {
                     continue;
+                }
 
-                if (isset($settingsArray[$key]))
+                if (isset($settingsArray[$key])) {
                     $this->$setterName($settingsArray[$key]);
+                }
             }
         }
 
-        private function getSetOrGet($isSet, $key) {
+        private function getSetOrGet($isSet, $key)
+        {
             $prefix = $isSet ? 'set' : 'get';
             return $prefix . ucfirst($key);
         }
 
-        private function getAccessorLookupMap($isSet) {
+        private function getAccessorLookupMap($isSet)
+        {
             $validKeys = $this->getValidKeys();
 
             $settingKeyMap = array();
@@ -295,54 +323,66 @@
 
         /* public setting setter/getters below */
 
-        private function getSettingKeySetterMap() {
+        private function getSettingKeySetterMap()
+        {
             return $this->getAccessorLookupMap(true);
         }
 
-        private function getSettingKeyGetterMap() {
+        private function getSettingKeyGetterMap()
+        {
             return $this->getAccessorLookupMap(false);
         }
 
-        public function getShowDotFiles() {
+        public function getShowDotFiles()
+        {
             return $this->getSetKey(self::$KEY_SHOW_DOT_FILES);
         }
 
-        public function setShowDotFiles($showDotFiles) {
+        public function setShowDotFiles($showDotFiles)
+        {
             $this->setBool(self::$KEY_SHOW_DOT_FILES, $showDotFiles);
         }
 
-        public function getLanguage() {
+        public function getLanguage()
+        {
             return $this->getSetKey(self::$KEY_LANGUAGE);
         }
 
-        public function setLanguage($language) {
+        public function setLanguage($language)
+        {
             $this->settings[self::$KEY_LANGUAGE] = $language;
         }
 
-        public function getEditNewFilesImmediately() {
+        public function getEditNewFilesImmediately()
+        {
             return $this->getSetKey(self::$KEY_EDIT_NEW_FILES_IMMEDIATELY);
         }
 
-        public function setEditNewFilesImmediately($editNewFilesImmediately) {
+        public function setEditNewFilesImmediately($editNewFilesImmediately)
+        {
             $this->setBool(self::$KEY_EDIT_NEW_FILES_IMMEDIATELY, $editNewFilesImmediately);
         }
 
-        public function getEditableFileExtensions() {
+        public function getEditableFileExtensions()
+        {
             return $this->getSetKey(self::$KEY_EDITABLE_FILE_EXTENSIONS);
         }
 
-        public function setEditableFileExtensions($editableFileExtensions) {
+        public function setEditableFileExtensions($editableFileExtensions)
+        {
             $this->settings[self::$KEY_EDITABLE_FILE_EXTENSIONS] = $editableFileExtensions;
         }
 
-        public function getConnectionRestrictions() {
+        public function getConnectionRestrictions()
+        {
             $restrictions = $this->getSetKey(self::$KEY_CONNECTION_RESTRICTIONS);
 
             if (is_array($restrictions)) {
                 $license = readDefaultMonstaLicense();
                 if (is_null($license) || !$license->isLicensed()) {
-                    if (array_key_exists("types", $restrictions))
+                    if (array_key_exists("types", $restrictions)) {
                         return array("types" => $restrictions["types"]);
+                    }
 
                     return $this->getDefaultValue(self::$KEY_CONNECTION_RESTRICTIONS);
                 }
@@ -353,260 +393,324 @@
             return $restrictions;
         }
 
-        public function setConnectionRestrictions($connectionRestrictions) {
+        public function setConnectionRestrictions($connectionRestrictions)
+        {
             // Not writable because they come in blank todo: make it writable? (for authorised users)
             // $this->settings[self::$KEY_CONNECTION_RESTRICTIONS] = $connectionRestrictions;
         }
 
-        public function getUnblankedConnectionRestrictions() {
+        public function getUnblankedConnectionRestrictions()
+        {
             return $this->getSetKey(self::$KEY_CONNECTION_RESTRICTIONS);
         }
 
-        public function getHideProUpgradeMessages() {
+        public function getHideProUpgradeMessages()
+        {
             return $this->getSetKey(self::$KEY_HIDE_PRO_UPGRADE_MESSAGES);
         }
 
-        public function setHideProUpgradeMessages($hideProUpgradeMessages) {
+        public function setHideProUpgradeMessages($hideProUpgradeMessages)
+        {
             $this->setBool(self::$KEY_HIDE_PRO_UPGRADE_MESSAGES, $hideProUpgradeMessages);
         }
 
-        public function getDisableMasterLogin() {
+        public function getDisableMasterLogin()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_MASTER_LOGIN);
         }
 
-        public function setDisableMasterLogin($disableMasterLogin) {
+        public function setDisableMasterLogin($disableMasterLogin)
+        {
             $this->setBool(self::$KEY_DISABLE_MASTER_LOGIN, $disableMasterLogin);
         }
 
-        public function getEncodeEditorSaves() {
+        public function getEncodeEditorSaves()
+        {
             return $this->getSetKey(self::$KEY_ENCODE_EDITOR_SAVES);
         }
 
-        public function setEncodeEditorSaves($encodeEditorSaves) {
+        public function setEncodeEditorSaves($encodeEditorSaves)
+        {
             $this->setBool(self::$KEY_ENCODE_EDITOR_SAVES, $encodeEditorSaves);
         }
 
-        public function getDisableChmod() {
+        public function getDisableChmod()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_CHMOD);
         }
 
-        public function setDisableChmod($disableChmod) {
+        public function setDisableChmod($disableChmod)
+        {
             $this->setBool(self::$KEY_DISABLE_CHMOD, $disableChmod);
         }
 
-        public function getDisableFileView() {
+        public function getDisableFileView()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_FILE_VIEW);
         }
 
-        public function setDisableFileView($disableFileView) {
+        public function setDisableFileView($disableFileView)
+        {
             $this->setBool(self::$KEY_DISABLE_FILE_VIEW, $disableFileView);
         }
 
-        public function getDisableFileEdit() {
+        public function getDisableFileEdit()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_FILE_EDIT);
         }
 
-        public function setDisableFileEdit($disableFileEdit) {
+        public function setDisableFileEdit($disableFileEdit)
+        {
             $this->setBool(self::$KEY_DISABLE_FILE_VIEW, $disableFileEdit);
         }
 
-        public function getEditorLineSeparator() {
+        public function getEditorLineSeparator()
+        {
             return $this->getSetKey(self::$KEY_EDITOR_LINE_SEPARATOR);
         }
 
-        public function setEditorLineSeparator($lineSeparator) {
+        public function setEditorLineSeparator($lineSeparator)
+        {
             $this->settings[self::$KEY_EDITOR_LINE_SEPARATOR] = $lineSeparator;
         }
 
-        public function getDisableAddOnsButton() {
+        public function getDisableAddOnsButton()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_ADD_ONS_BUTTON);
         }
 
-        public function setDisableAddOnsButton($disableAddOnsButton) {
+        public function setDisableAddOnsButton($disableAddOnsButton)
+        {
             $this->setBool(self::$KEY_DISABLE_ADD_ONS_BUTTON, $disableAddOnsButton);
         }
 
-        public function getDisableHelpButton() {
+        public function getDisableHelpButton()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_HELP_BUTTON);
         }
 
-        public function setDisableHelpButton($disableHelpButton) {
+        public function setDisableHelpButton($disableHelpButton)
+        {
             $this->setBool(self::$KEY_DISABLE_HELP_BUTTON, $disableHelpButton);
         }
 
-        public function getHelpUrl() {
+        public function getHelpUrl()
+        {
             return $this->getSetKey(self::$KEY_HELP_URL);
         }
 
-        public function setHelpUrl($helpUrl) {
+        public function setHelpUrl($helpUrl)
+        {
             $this->setBool(self::$KEY_HELP_URL, $helpUrl);
         }
 
-        public function getXhrTimeoutSeconds() {
+        public function getXhrTimeoutSeconds()
+        {
             return $this->getSetKey(self::$KEY_XHR_TIMEOUT_SECONDS);
         }
 
-        public function setXhrTimeoutSeconds($xhrTimeoutSeconds) {
+        public function setXhrTimeoutSeconds($xhrTimeoutSeconds)
+        {
             $this->settings[self::$KEY_XHR_TIMEOUT_SECONDS] = intval($xhrTimeoutSeconds);
         }
 
-        public function getPostLogoutUrl() {
+        public function getPostLogoutUrl()
+        {
             return $this->getSetKey(self::$KEY_POST_LOGOUT_URL);
         }
 
-        public function setPostLogoutUrl($postLogoutUrl) {
+        public function setPostLogoutUrl($postLogoutUrl)
+        {
             $this->settings[self::$KEY_POST_LOGOUT_URL] = $postLogoutUrl;
         }
 
-        public function getDisableRemoteServerAddressDisplay() {
+        public function getDisableRemoteServerAddressDisplay()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_REMOTE_SERVER_ADDRESS_DISPLAY);
         }
 
-        public function setDisableRemoteServerAddressDisplay($disableRemoteServerAddressDisplay) {
+        public function setDisableRemoteServerAddressDisplay($disableRemoteServerAddressDisplay)
+        {
             $this->setBool(self::$KEY_DISABLE_REMOTE_SERVER_ADDRESS_DISPLAY, $disableRemoteServerAddressDisplay);
         }
 
-        public function getDisableChangeServerButton() {
+        public function getDisableChangeServerButton()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_CHANGE_SERVER_BUTTON);
         }
 
-        public function setDisableChangeServerButton($disableChangeServerButton) {
+        public function setDisableChangeServerButton($disableChangeServerButton)
+        {
             $this->setBool(self::$KEY_DISABLE_CHANGE_SERVER_BUTTON, $disableChangeServerButton);
         }
 
-        public function getFooterItemDisplay() {
+        public function getFooterItemDisplay()
+        {
             return $this->getSetKey(self::$KEY_FOOTER_ITEM_DISPLAY);
         }
 
-        public function setFooterItemDisplay($footerItemDisplay) {
+        public function setFooterItemDisplay($footerItemDisplay)
+        {
             $this->settings[self::$KEY_FOOTER_ITEM_DISPLAY] = $footerItemDisplay;
         }
 
-        public function getSidebarItemDisplay() {
+        public function getSidebarItemDisplay()
+        {
             return $this->getSetKey(self::$KEY_SIDEBAR_ITEM_DISPLAY);
         }
 
-        public function setSidebarItemDisplay($sidebarItemDisplay) {
+        public function setSidebarItemDisplay($sidebarItemDisplay)
+        {
             $this->settings[self::$KEY_SIDEBAR_ITEM_DISPLAY] = $sidebarItemDisplay;
         }
 
-        public function getContextMenuItemDisplay() {
+        public function getContextMenuItemDisplay()
+        {
             return $this->getSetKey(self::$KEY_CONTEXT_MENU_ITEM_DISPLAY);
         }
 
-        public function setContextMenuItemDisplay($contextMenuItemDisplay) {
+        public function setContextMenuItemDisplay($contextMenuItemDisplay)
+        {
             $this->settings[self::$KEY_CONTEXT_MENU_ITEM_DISPLAY] = $contextMenuItemDisplay;
         }
 
-        public function getFileBrowserColumnDisplay() {
+        public function getFileBrowserColumnDisplay()
+        {
             return $this->getSetKey(self::$KEY_FILE_BROWSER_COLUMN_DISPLAY);
         }
 
-        public function setFileBrowserColumnDisplay($fileBrowserColumnDisplay) {
+        public function setFileBrowserColumnDisplay($fileBrowserColumnDisplay)
+        {
             $this->settings[self::$KEY_CONTEXT_MENU_ITEM_DISPLAY] = $fileBrowserColumnDisplay;
         }
 
-        public function getHeaderItemDisplay() {
+        public function getHeaderItemDisplay()
+        {
             return $this->getSetKey(self::$KEY_HEADER_ITEM_DISPLAY);
         }
 
-        public function setHeaderItemDisplay($headerItemDisplay) {
+        public function setHeaderItemDisplay($headerItemDisplay)
+        {
             $this->settings[self::$KEY_HEADER_ITEM_DISPLAY] = $headerItemDisplay;
         }
 
-        public function getHideHistoryBar() {
+        public function getHideHistoryBar()
+        {
             return $this->getSetKey(self::$KEY_HIDE_HISTORY_BAR);
         }
 
-        public function setHideHistoryBar($hideHistoryBar) {
+        public function setHideHistoryBar($hideHistoryBar)
+        {
             $this->setBool(self::$KEY_HIDE_HISTORY_BAR, $hideHistoryBar);
         }
 
-        public function getEnableResetPassword() {
+        public function getEnableResetPassword()
+        {
             return $this->getSetKey(self::$KEY_ENABLE_RESET_PASSWORD);
         }
 
-        public function setEnableResetPassword($disableFileView) {
+        public function setEnableResetPassword($disableFileView)
+        {
             $this->setBool(self::$KEY_ENABLE_RESET_PASSWORD, $disableFileView);
         }
 
-        public function getEnableForgotPassword() {
+        public function getEnableForgotPassword()
+        {
             return $this->getSetKey(self::$KEY_ENABLE_FORGOT_PASSWORD);
         }
 
-        public function setEnableForgotPassword($disableFileView) {
+        public function setEnableForgotPassword($disableFileView)
+        {
             $this->setBool(self::$KEY_ENABLE_FORGOT_PASSWORD, $disableFileView);
         }
 
-        public function getDisableLoginLinkButton() {
+        public function getDisableLoginLinkButton()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_LOGIN_LINK_BUTTON);
         }
 
-        public function setDisableLoginLink($disableLoginLinkButton) {
+        public function setDisableLoginLink($disableLoginLinkButton)
+        {
             $this->setBool(self::$KEY_DISABLE_LOGIN_LINK_BUTTON, $disableLoginLinkButton);
         }
 
-        public function getLoginItemDisplay() {
+        public function getLoginItemDisplay()
+        {
             return $this->getSetKey(self::$KEY_LOGIN_ITEM_DISPLAY);
         }
 
-        public function setLoginItemDisplay($loginItemDisplay) {
+        public function setLoginItemDisplay($loginItemDisplay)
+        {
             $this->settings[self::$KEY_LOGIN_ITEM_DISPLAY] = $loginItemDisplay;
         }
         
-        public function getAllowedClientAddresses() {
+        public function getAllowedClientAddresses()
+        {
             return $this->getSetKey(self::$KEY_ALLOWED_CLIENT_ADDRESSES);
         }
         
-        public function setAllowedClientAddresses($allowedClientAddresses) {
+        public function setAllowedClientAddresses($allowedClientAddresses)
+        {
             $this->settings[self::$KEY_ALLOWED_CLIENT_ADDRESSES] = $allowedClientAddresses;
         }
 
-        public function getDisallowedClientMessage() {
+        public function getDisallowedClientMessage()
+        {
             return $this->getSetKey(self::$KEY_DISALLOWED_CLIENT_MESSAGE);
         }
 
-        public function setDisallowedClientMessage($disallowedClientMessage) {
+        public function setDisallowedClientMessage($disallowedClientMessage)
+        {
             $this->settings[self::$KEY_DISALLOWED_CLIENT_MESSAGE] = $disallowedClientMessage;
         }
         
-        public function getLoginFailureRedirect() {
+        public function getLoginFailureRedirect()
+        {
             return $this->getSetKey(self::$KEY_LOGIN_FAILURE_REDIRECT);
         }
 
-        public function setLoginFailureRedirect($loginFailureRedirect) {
+        public function setLoginFailureRedirect($loginFailureRedirect)
+        {
             $this->settings[self::$KEY_LOGIN_FAILURE_REDIRECT]  = $loginFailureRedirect;
         }
 
-        public function getDisableLoginForm() {
+        public function getDisableLoginForm()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_LOGIN_FORM);
         }
 
-        public function setDisableLoginForm($disableLoginForm) {
+        public function setDisableLoginForm($disableLoginForm)
+        {
             $this->setBool(self::$KEY_DISABLE_LOGIN_FORM, $disableLoginForm);
         }
 
-        public function getResumeSessionInfoDisplaySeconds() {
+        public function getResumeSessionInfoDisplaySeconds()
+        {
             return $this->getSetKey(self::$KEY_RESUME_SESSION_INFO_DISPLAY_SECONDS);
         }
 
-        public function setResumeSessionInfoDisplaySeconds($resumeSessionInfoDisplaySeconds) {
+        public function setResumeSessionInfoDisplaySeconds($resumeSessionInfoDisplaySeconds)
+        {
             $this->settings[self::$KEY_RESUME_SESSION_INFO_DISPLAY_SECONDS] = $resumeSessionInfoDisplaySeconds;
         }
 
-        public function getDisableUploadOverwriteConfirmation() {
+        public function getDisableUploadOverwriteConfirmation()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_UPLOAD_OVERWRITE_CONFIRMATION);
         }
 
-        public function setDisableUploadOverwriteConfirmation($disableUploadOverwriteConfirmation) {
+        public function setDisableUploadOverwriteConfirmation($disableUploadOverwriteConfirmation)
+        {
             $this->setBool(self::$KEY_DISABLE_UPLOAD_OVERWRITE_CONFIRMATION, $disableUploadOverwriteConfirmation);
         }
 
-        public function getDisableDeleteConfirmation() {
+        public function getDisableDeleteConfirmation()
+        {
             return $this->getSetKey(self::$KEY_DISABLE_DELETE_CONFIRMATION);
         }
 
-        public function setDisableDeleteConfirmation($disableDeleteConfirmation) {
+        public function setDisableDeleteConfirmation($disableDeleteConfirmation)
+        {
             $this->setBool(self::$KEY_DISABLE_DELETE_CONFIRMATION, $disableDeleteConfirmation);
         }
     }

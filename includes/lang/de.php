@@ -1,5 +1,5 @@
 <?php
-error_reporting (0);
+error_reporting(0);
 
 $lang_1 = '<p> Ihr Lizenzschlüssel';
 $lang_2 = 'wurde ausgesetzt. Mögliche Gründe hierfür sind: </ p>
@@ -43,7 +43,7 @@ $lang_29 = 'PHP Info';
 $lang_30 = 'Forum';
 $lang_31 = 'Unterstützung';
 if (isset($failsafe_offline) && $failsafe_offline) {
-$lang_32 = "<div class =' alert alert-warning 'role =' alert '>
+    $lang_32 = "<div class =' alert alert-warning 'role =' alert '>
  <h4 class = 'alert-heading'> VX IntISP-Update kann installiert werden. </ h4>
 <p> Ein Update kann installiert werden. Dieses Update kann Installationsprobleme beheben, Sicherheitsprobleme beheben und neue Funktionen hinzufügen. </ p>
 <a href='index.php?page=update' class='btn btn-primary'> Update ausführen </a>
@@ -54,7 +54,6 @@ $lang_32 = "<div class =' alert alert-warning 'role =' alert '>
 <p> Ein Update kann installiert werden. Dieses Update kann Installationsprobleme beheben, Sicherheitsprobleme beheben und neue Funktionen hinzufügen. </ p>
 <a href='index.php?page=update' class='btn btn-primary'> Update ausführen </a>
 </ div> ";
-    
 }
 $lang_33 = "<div class =' alert alert-danger 'role =' alert '>
  <h4 class = 'alert-heading'> Unsichere Verbindung </ h4>

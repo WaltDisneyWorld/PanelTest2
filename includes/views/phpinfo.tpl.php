@@ -1,5 +1,7 @@
-<?php 
-if (!isset($HOME)) die();
+<?php
+if (!isset($HOME)) {
+    die();
+}
 
 require 'includes/classes/head.class.php';
 ?>
@@ -19,7 +21,7 @@ require 'includes/classes/head.class.php';
         $cat        = 'General';
         foreach ($info_lines as $line) {
             // new cat?
-            preg_match('~<h2>(.*)</h2>~', $line, $title) ? $cat = $title[1] : NULL;
+            preg_match('~<h2>(.*)</h2>~', $line, $title) ? $cat = $title[1] : null;
             if (preg_match('~<tr><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td></tr>~', $line, $val)) {
                 $info_arr[$cat][$val[1]] = $val[2];
             } elseif (preg_match('~<tr><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td></tr>~', $line, $val)) {
@@ -45,8 +47,7 @@ require 'includes/classes/head.class.php';
 
             return;
         }
-        echo wordwrap($my_array , 190 , '<br>' , true );
-     
+        echo wordwrap($my_array, 190, '<br>', true);
     }
 
         // example:

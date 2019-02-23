@@ -134,8 +134,11 @@ class Session
 
         // session cookie settings
         session_set_cookie_params(
-            0, $config->getRootPath(),
-            '', $config->isHttps(), true
+            0,
+            $config->getRootPath(),
+            '',
+            $config->isHttps(),
+            true
         );
 
         // cookies are safer (use ini_set() in case this function is disabled)
@@ -200,7 +203,7 @@ class Session
         /**
          * Disable setting of session cookies for further session_start() calls.
          */
-        if(session_status() !== PHP_SESSION_ACTIVE) {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
             ini_set('session.use_cookies', 'true');
         }
 

@@ -1,11 +1,13 @@
-<?php 
-if (!isset($HOME)) die();
+<?php
+if (!isset($HOME)) {
+    die();
+}
 require 'includes/classes/head.class.php';
-onlyadmin(); 
+onlyadmin();
 if (isset($_GET["a"])) {
-     $con           = mysqli_connect($host, $user, $pass, $data);
-            $sql    = 'delete from mail where id = ' . $_GET["a"];
-            $result = mysqli_query($con, $sql);
+    $con           = mysqli_connect($host, $user, $pass, $data);
+    $sql    = 'delete from mail where id = ' . $_GET["a"];
+    $result = mysqli_query($con, $sql);
 }
 
 ?>

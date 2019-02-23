@@ -1,5 +1,6 @@
 <?php
 
-    interface ConfigurationBase {
+    interface ConfigurationBase
+    {
         public function getRemoteUsername();
     }

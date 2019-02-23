@@ -1,13 +1,16 @@
 <?php
 session_start();
 error_reporting(0);
-if (!isset($_SESSION["user"])) die();
+if (!isset($_SESSION["user"])) {
+    die();
+}
     require_once(dirname(__FILE__) . "/application/api/constants.php");
     includeMonstaConfig();
     require_once(dirname(__FILE__) . '/application/api/lib/helpers.php');
     require_once(dirname(__FILE__) . '/application/api/lib/entry_handlers.php');
-    if (file_exists(dirname(__FILE__) . '/mftp_extensions.php'))
+    if (file_exists(dirname(__FILE__) . '/mftp_extensions.php')) {
         include_once(dirname(__FILE__) . '/mftp_extensions.php');
+    }
 
     require_once(dirname(__FILE__) . '/application/api/lib/access_check.php');
 
@@ -31,8 +34,9 @@ if (!isset($_SESSION["user"])) die();
 
     if ($isHostEdition) {
         if (function_exists("mftpInitialLoadValidation")) {
-            if (!mftpInitialLoadValidation($isPostEntry))
+            if (!mftpInitialLoadValidation($isPostEntry)) {
                 exit();
+            }
         }
 
         $resetPasswordAvailable = function_exists("mftpResetPasswordHandler");
@@ -65,7 +69,7 @@ if (!isset($_SESSION["user"])) die();
 
         <?php
         if ($isLicensed && $isPostEntry) {
-        ?>
+            ?>
         g_isMonstaPostEntry = true;
         var g_monstaPostEntryVars = <?php print json_encode(extractMonstaPostEntryVars($_POST)); ?>;
         <?php
@@ -99,7 +103,8 @@ if (!isset($_SESSION["user"])) die();
     </script>
 </head>
 <body>
-<?php if (get_magic_quotes_gpc()) { ?>
+<?php if (get_magic_quotes_gpc()) {
+        ?>
     <div class="container">
         <div class="grid12">
             <p>
@@ -115,7 +120,9 @@ if (!isset($_SESSION["user"])) die();
             </p>
         </div>
     </div>
-<?php } else { ?>
+<?php
+    } else {
+        ?>
     <div id="spinner" ng-controller="SpinnerController" ng-show="spinnerVisible">
         <div>
             <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
@@ -149,7 +156,8 @@ if (!isset($_SESSION["user"])) die();
 
     <ng-include src="'application/frontend/templates/body-slidebar.html'"></ng-include>
     <iframe src="about:blank" id="download-iframe"></iframe>
-<?php } ?>
+<?php
+    } ?>
     <script>
         var versionQS = <?php print json_encode($versionQS); ?> + getFpQs();
         document.write('<scri' + 'pt async src="//monstaftp.com/_callbacks/latest-version.php?' + versionQS + '"></scr' + 'ipt>')

@@ -28,7 +28,6 @@ if (!defined('TESTSUITE')) {
 // But this one is needed for Sanitize::escapeJsString()
 use PhpMyAdmin\Sanitize;
 
-
 $buffer = PhpMyAdmin\OutputBuffering::getInstance();
 $buffer->start();
 if (!defined('TESTSUITE')) {

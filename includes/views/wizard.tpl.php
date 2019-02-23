@@ -1,7 +1,9 @@
-<?php 
-if (!isset($HOME)) die();
+<?php
+if (!isset($HOME)) {
+    die();
+}
 require 'includes/classes/head.class.php';
-onlyadmin(); 
+onlyadmin();
 ?>
   <div class="content-wrapper">
             <div class="container-fluid">

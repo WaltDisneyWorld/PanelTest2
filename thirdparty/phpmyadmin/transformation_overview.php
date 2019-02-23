@@ -24,13 +24,11 @@ $types = Transformations::getAvailableMIMEtypes();
 <h2><?php echo __('Available MIME types'); ?></h2>
 <?php
 foreach ($types['mimetype'] as $key => $mimetype) {
-
     if (isset($types['empty_mimetype'][$mimetype])) {
         echo '<i>' , htmlspecialchars($mimetype) , '</i><br />';
     } else {
         echo htmlspecialchars($mimetype) , '<br />';
     }
-
 }
 $transformation_types = array(
     'transformation', 'input_transformation'
@@ -45,7 +43,8 @@ $th = array(
 );
 ?>
 <br />
-<?php foreach ($transformation_types as $ttype) { ?>
+<?php foreach ($transformation_types as $ttype) {
+    ?>
     <a name="<?php echo $ttype; ?>"></a>
     <h2><?php echo $label[$ttype] ?></h2>
     <table width="90%">
@@ -58,15 +57,13 @@ $th = array(
     <tbody>
     <?php
     foreach ($types[$ttype] as $key => $transform) {
-        $desc = Transformations::getDescription($types[$ttype . '_file'][$key]);
-        ?>
+        $desc = Transformations::getDescription($types[$ttype . '_file'][$key]); ?>
         <tr>
             <td><?php echo htmlspecialchars($transform); ?></td>
             <td><?php echo htmlspecialchars($desc); ?></td>
         </tr>
         <?php
-    }
-    ?>
+    } ?>
     </tbody>
     </table>
     <?php

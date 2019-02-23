@@ -14,8 +14,9 @@
 
     $uploadContextKey = "sessionKey";
 
-    if(!array_key_exists($uploadContextKey, $_GET))
+    if (!array_key_exists($uploadContextKey, $_GET)) {
         exitWith404("$uploadContextKey not found in request.");
+    }
 
     $sessionKey = $_GET[$uploadContextKey];
 

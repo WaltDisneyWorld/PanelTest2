@@ -1,4 +1,6 @@
-<?php if (!isset($HOME)) die();
+<?php if (!isset($HOME)) {
+    die();
+}
 require 'includes/classes/head.class.php';?>
         <div class="content-wrapper">
             <div class="container-fluid">
@@ -13,5 +15,5 @@ require 'includes/classes/head.class.php';?>
   </div>
 
 
-<?php 
+<?php
 require 'includes/classes/footer.class.php'; ?>

@@ -1,4 +1,6 @@
-<?php if (!isset($HOME)) die(); require 'includes/classes/head.class.php';onlyadmin();onlymasterreseller(); ?>
+<?php if (!isset($HOME)) {
+    die();
+} require 'includes/classes/head.class.php';onlyadmin();onlymasterreseller(); ?>
         <div class="content-wrapper">
             <div class="container-fluid">
 
@@ -42,8 +44,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
     mysqli_close($con);
@@ -63,8 +65,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
    
 ?>">
@@ -80,8 +82,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
   
 ?>">
@@ -97,8 +99,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>">
@@ -120,8 +122,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?></textarea><Br>
@@ -141,8 +143,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>">
@@ -157,8 +159,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>">
@@ -172,8 +174,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>">
@@ -188,8 +190,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>">
@@ -204,8 +206,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>">
@@ -220,8 +222,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>">
@@ -237,8 +239,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>">
@@ -254,30 +256,30 @@
         while ($row = mysqli_fetch_row($result)) {
             $wew = $row[0];
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>
-    <label><input type="radio" name="smtp_security" value="0" <?php 
+    <label><input type="radio" name="smtp_security" value="0" <?php
     if ($wew == 0) {
-      ?>
+        ?>
       checked="true"
       <?php
     }
     
     ?>> None</label><br>
-<label><input type="radio" name="smtp_security" value="1" <?php 
+<label><input type="radio" name="smtp_security" value="1" <?php
     if ($wew == 1) {
-      ?>
+        ?>
       checked="true"
       <?php
     }
     
     ?>> SSL</label><br>
-<label><input type="radio" name="smtp_security" value="2" <?php 
+<label><input type="radio" name="smtp_security" value="2" <?php
     if ($wew == 2) {
-      ?>
+        ?>
       checked="true"
       <?php
     }
@@ -302,8 +304,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>">
@@ -319,8 +321,8 @@
         while ($row = mysqli_fetch_row($result)) {
             printf($row[0]);
         }
-          // Free result set
-          mysqli_free_result($result);
+        // Free result set
+        mysqli_free_result($result);
     }
 
 ?>">
@@ -339,13 +341,12 @@
         
         <h3>Open Authentication</h3>
         <?php
-        function ae($c,$d) {
-             require 'config.php';
-    $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
-     $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
-  
-            ?>
+        function ae($c, $d)
+        {
+            require 'config.php';
+            $mysqli = new mysqli();
+            $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+            $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]"; ?>
     
         <p>The Authorized Redirect URL should be <?php echo $actual_link; ?> or <?php echo $actual_link; ?>/action.php?action=login&oauth=<?php echo $c; ?> with the actual url.</p>
          <fieldset class="form-group">
@@ -354,40 +355,36 @@
 
     $sql = "SELECT value FROM settings WHERE code =  '" . $c . "_secret' LIMIT 0 , 30";
 
-    if ($result = mysqli_query($con, $sql)) {
-        // Fetch one and one row
-        while ($row = mysqli_fetch_row($result)) {
-            printf($row[0]);
-        }
-          // Free result set
-          mysqli_free_result($result);
-    }
-
-?>">
+            if ($result = mysqli_query($con, $sql)) {
+                // Fetch one and one row
+                while ($row = mysqli_fetch_row($result)) {
+                    printf($row[0]);
+                }
+                // Free result set
+                mysqli_free_result($result);
+            } ?>">
   </fieldset>
                <fieldset class="form-group">
     <label for="formGroupExampleInput"><?php echo $d; ?> Public Key</label>
     <input type="text" class="form-control" name="<?php echo $c; ?>_public" id="formGroupExampleInput" value="<?php
 
     $sql = "SELECT value FROM settings WHERE code =  '" . $c . "_public' LIMIT 0 , 30";
-    if ($result = mysqli_query($con, $sql)) {
-        // Fetch one and one row
-        while ($row = mysqli_fetch_row($result)) {
-            printf($row[0]);
-        }
-          // Free result set
-          mysqli_free_result($result);
-    }
-
-?>">
+            if ($result = mysqli_query($con, $sql)) {
+                // Fetch one and one row
+                while ($row = mysqli_fetch_row($result)) {
+                    printf($row[0]);
+                }
+                // Free result set
+                mysqli_free_result($result);
+            } ?>">
   </fieldset><br>
       
         <?php
         }
-        ae("github","Github");
-        ae("twitter","Twitter");
-        ae("google","Google");
-        ae("facebook","Facebook");
+        ae("github", "Github");
+        ae("twitter", "Twitter");
+        ae("google", "Google");
+        ae("facebook", "Facebook");
         ?>
         <button type="submit" class="btn btn-primary"><?php echo $lang_69; ?></button>
         

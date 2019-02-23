@@ -17,7 +17,6 @@ $databaseDesigner = new Designer();
 $designerCommon = new Common();
 
 if (isset($_REQUEST['dialog'])) {
-
     if ($_GET['dialog'] == 'edit') {
         $html = $databaseDesigner->getHtmlForEditOrDeletePages($GLOBALS['db'], 'editPage');
     } elseif ($_GET['dialog'] == 'delete') {
@@ -26,7 +25,8 @@ if (isset($_REQUEST['dialog'])) {
         $html = $databaseDesigner->getHtmlForPageSaveAs($GLOBALS['db']);
     } elseif ($_GET['dialog'] == 'export') {
         $html = $databaseDesigner->getHtmlForSchemaExport(
-            $GLOBALS['db'], $_GET['selected_page']
+            $GLOBALS['db'],
+            $_GET['selected_page']
         );
     } elseif ($_POST['dialog'] == 'add_table') {
         $script_display_field = $designerCommon->getTablesInfo();
@@ -45,8 +45,11 @@ if (isset($_REQUEST['dialog'])) {
         $GLOBALS['designer_out']['OWNER'] = array($GLOBALS['designer_out']['OWNER'][$req_key]);
 
         $html = $databaseDesigner->getDatabaseTables(
-            array(), -1, $tab_column,
-            $tables_all_keys, $tables_pk_or_unique_keys
+            array(),
+            -1,
+            $tab_column,
+            $tables_all_keys,
+            $tables_pk_or_unique_keys
         );
     }
 
@@ -57,7 +60,6 @@ if (isset($_REQUEST['dialog'])) {
 }
 
 if (isset($_POST['operation'])) {
-
     if ($_POST['operation'] == 'deletePage') {
         $success = $designerCommon->deletePage($_POST['selected_page']);
         $response->setRequestStatus($success);
@@ -72,7 +74,9 @@ if (isset($_POST['operation'])) {
         $response->setRequestStatus($success);
     } elseif ($_POST['operation'] == 'setDisplayField') {
         $designerCommon->saveDisplayField(
-            $_POST['db'], $_POST['table'], $_POST['field']
+            $_POST['db'],
+            $_POST['table'],
+            $_POST['field']
         );
         $response->setRequestStatus(true);
     } elseif ($_POST['operation'] == 'addNewRelation') {
@@ -168,7 +172,10 @@ list(
 // by designer/init.js and converted to JS variables.
 $response->addHTML(
     $databaseDesigner->getHtmlForJsFields(
-        $script_tables, $script_contr, $script_display_field, $display_page
+        $script_tables,
+        $script_contr,
+        $script_display_field,
+        $display_page
     )
 );
 $response->addHTML(
@@ -191,8 +198,11 @@ $response->addHTML($databaseDesigner->getHtmlTableList($tab_pos, $display_page))
 
 $response->addHTML(
     $databaseDesigner->getDatabaseTables(
-        $tab_pos, $display_page, $tab_column,
-        $tables_all_keys, $tables_pk_or_unique_keys
+        $tab_pos,
+        $display_page,
+        $tab_column,
+        $tables_all_keys,
+        $tables_pk_or_unique_keys
     )
 );
 $response->addHTML('</form>');

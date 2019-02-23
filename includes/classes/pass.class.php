@@ -1,5 +1,7 @@
 <?php
-if (!isset($HOME)) die();
+if (!isset($HOME)) {
+    die();
+}
 
 error_reporting(E_ALL);
 /*
@@ -11,6 +13,7 @@ error_reporting(E_ALL);
  */
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
+
 require "vendor/autoload.php";
 require 'config.php';
  $key = Key::loadFromAsciiSafeString($salt);

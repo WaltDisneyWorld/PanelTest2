@@ -130,7 +130,10 @@ if (isset($_POST['submitoptions'])) {
                 && ! empty($_POST['adjust_privileges'])
             ) {
                 $operations->adjustPrivilegesRenameOrMoveTable(
-                    $oldDb, $oldTable, $_POST['db'], $_POST['new_name']
+                    $oldDb,
+                    $oldTable,
+                    $_POST['db'],
+                    $_POST['new_name']
                 );
             }
 
@@ -196,7 +199,9 @@ if (isset($_POST['submitoptions'])) {
         && ! empty($_POST['change_all_collations'])
     ) {
         $operations->changeAllColumnsCollation(
-            $GLOBALS['db'], $GLOBALS['table'], $_POST['tbl_collation']
+            $GLOBALS['db'],
+            $GLOBALS['table'],
+            $_POST['tbl_collation']
         );
     }
 }
@@ -254,7 +259,8 @@ if (isset($result) && empty($message_to_show)) {
             $response->addJSON('message', $_message);
             if (!empty($sql_query)) {
                 $response->addJSON(
-                    'sql_query', Util::getMessage(null, $sql_query)
+                    'sql_query',
+                    Util::getMessage(null, $sql_query)
                 );
             }
             exit;
@@ -274,7 +280,8 @@ if (isset($result) && empty($message_to_show)) {
             $response->addJSON('message', $_message);
             if (!empty($sql_query)) {
                 $response->addJSON(
-                    'sql_query', Util::getMessage(null, $sql_query)
+                    'sql_query',
+                    Util::getMessage(null, $sql_query)
                 );
             }
             exit;
@@ -367,7 +374,10 @@ if (mb_strstr($show_comment, '; InnoDB free') === false) {
 
 $response->addHTML(
     $operations->getTableOptionDiv(
-        $pma_table, $comment, $tbl_collation, $tbl_storage_engine,
+        $pma_table,
+        $comment,
+        $tbl_collation,
+        $tbl_storage_engine,
         $create_options['pack_keys'],
         $auto_increment,
         (empty($create_options['delay_key_write']) ? '0' : '1'),
@@ -422,7 +432,8 @@ if (! (isset($db_is_system_schema) && $db_is_system_schema)) {
                 'reload' => '1',
                 'purge' => '1',
                 'message_to_show' => sprintf(
-                    ($tbl_is_view
+                    (
+                        $tbl_is_view
                         ? __('View %s has been dropped.')
                         : __('Table %s has been dropped.')
                     ),
@@ -468,5 +479,4 @@ if ($cfgRelation['relwork'] && ! $pma_table->isEngine("INNODB")) {
             $operations->getHtmlForReferentialIntegrityCheck($foreign, $url_params)
         );
     } // end if ($foreign)
-
 } // end  if (!empty($cfg['Server']['relation']))

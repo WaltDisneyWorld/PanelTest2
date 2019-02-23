@@ -790,7 +790,8 @@ class Export
         } elseif ('load' == $_POST['templateAction']) {
             $data = null;
             while ($row = $GLOBALS['dbi']->fetchAssoc(
-                $result, DatabaseInterface::CONNECT_CONTROL
+                $result,
+                DatabaseInterface::CONNECT_CONTROL
             )) {
                 $data = $row['template_data'];
             }

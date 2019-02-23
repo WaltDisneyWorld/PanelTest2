@@ -45,7 +45,7 @@ error_reporting(0);
 <div class="columns">
     <div class="column"> <a class="panel-block <?php
     if (!isset($_GET["pg"])) {
-      ?>
+        ?>
       is-active
       <?php
     }
@@ -59,7 +59,7 @@ error_reporting(0);
   </a>
   <a class="panel-block <?php
     if (isset($_GET["pg"]) && $_GET["pg"] == "req") {
-      ?>
+        ?>
       is-active
       <?php
     }
@@ -73,7 +73,7 @@ error_reporting(0);
   </a>
   <a class="panel-block <?php
     if (isset($_GET["pg"]) && $_GET["pg"] == "license") {
-      ?>
+        ?>
       is-active
       <?php
     }
@@ -87,7 +87,7 @@ error_reporting(0);
   </a>
   <a class="panel-block <?php
     if (isset($_GET["pg"]) && $_GET["pg"] == "db") {
-      ?>
+        ?>
       is-active
       <?php
     }
@@ -101,7 +101,7 @@ error_reporting(0);
   </a>
   <a class="panel-block <?php
     if (isset($_GET["pg"]) && $_GET["pg"] == "installation") {
-      ?>
+        ?>
       is-active
       <?php
     }
@@ -118,25 +118,25 @@ error_reporting(0);
     
     
    <?php
-   define("HOMEBASE",1);
+   define("HOMEBASE", 1);
     if (!isset($_GET["pg"])) {
-       require("pages/welcome.php"); 
-       } ?>
+        require("pages/welcome.php");
+    } ?>
        
          <?php
           if (isset($_GET["pg"]) && $_GET["pg"] == "req") {
-       require("pages/req.php"); 
-       }
+              require("pages/req.php");
+          }
    if (isset($_GET["pg"]) && $_GET["pg"] == "license") {
-       require("pages/license.php"); 
-       } ?>
+       require("pages/license.php");
+   } ?>
          <?php
    if (isset($_GET["pg"]) && $_GET["pg"] == "db") {
-       require("pages/db.php"); 
-       } 
+       require("pages/db.php");
+   }
      if (isset($_GET["pg"]) && $_GET["pg"] == "installation") {
-       require("pages/install.php"); 
-       } ?>
+         require("pages/install.php");
+     } ?>
 </div>
     </div>
     <script src="public/js/bulma.js"></script>
