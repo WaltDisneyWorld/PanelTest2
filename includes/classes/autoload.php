@@ -47,8 +47,21 @@ die();
 }
 function int_route($file, $CP = false)
 {
-    $template_name = "default";
-    require("config.php");
+	require("config.php");
+	$mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'theme' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+            $template_name = $row[0];
+        }
+        // Free result set
+        mysqli_free_result($result);
+    }
+    mysqli_close($con);
+    
     require_once 'vendor/autoload.php';
    
  

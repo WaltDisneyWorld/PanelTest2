@@ -71,6 +71,46 @@
    
 ?>">
   </fieldset>
+		
+		
+		 <fieldset class="form-group">
+    <label for="formGroupExampleInput">Theme</label>
+			 <select class="form-control" name="theme">
+				 
+				 <?php
+    require 'config.php';
+    $mysqli = new mysqli();
+    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    // Check connection
+    $sql = "SELECT value FROM settings WHERE code =  'theme' LIMIT 0 , 30";
+    if ($result = mysqli_query($con, $sql)) {
+        // Fetch one and one row
+        while ($row = mysqli_fetch_row($result)) {
+            $oldtemplate = $row[0];
+        }
+        // Free result set
+        mysqli_free_result($result);
+    }
+   
+
+				 $templates = scandir("templates");
+				 foreach ($templates as $template) {
+					 if ($template == "." || $template == "..") {} else {
+						 if (is_dir("templates/" . $template)) {
+					 ?>
+				 <option value="<?php echo $template; ?>" <?php 
+							 if ($template == $oldtemplate) {
+								 echo "selected";
+							 } ?>
+							 ><?php echo $template; ?></option>
+				 <?php
+				 }}}
+				 
+				 ?>
+</select>
+    
+  </fieldset>
+		
    <fieldset class="form-group">
     <label for="formGroupExampleInput"><?php echo $lang_66; ?></label>
     <input type="text" class="form-control" name="forum" id="formGroupExampleInput" value="<?php
@@ -105,14 +145,7 @@
 
 ?>">
   </fieldset>  
-  <fieldset class="form-group" style="display:none;">
-    <label for="sel1">Select theme (select one):</label>
-      <select class="form-control" name="theme" id="sel1">
-        <option>default</option>
-        <option>modern</option>
-        <option>dark</option>
-      </select>
-      </fieldset>
+ 
    <label for="formGroupExampleInput"><?php echo $lang_68; ?></label><Br>
    <textarea style="width:400px;height:500px;" name="head"><?php
 

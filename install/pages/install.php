@@ -84,6 +84,8 @@ $sql = "INSERT INTO settings (id, code, value) VALUES ('18', 'smtp_username', ''
 $m->query($sql);
 $sql = "INSERT INTO settings (id, code, value) VALUES ('19', 'smtp_password', '')";
 $m->query($sql);
+$sql = "INSERT INTO settings (id, code, value) VALUES ('20', 'theme', 'default')";
+$m->query($sql);
 function ae($c, $f)
 {
     global $m;
