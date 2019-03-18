@@ -23,7 +23,8 @@ function send_message($id, $message, $progress) {
     sleep(1);
 send_message(50, "Starting Composer Package Installer... (This may take some time, do not exit this page)" , 50);
 file_put_contents("composer.json",file_get_contents("../../composer.json"));
-send_message(60, shell_exec('env COMPOSER_HOME="' . getcwd() . '" php composer.phar install') . "Done!" , 40);
+$output = "<pre>" . shell_exec('env COMPOSER_HOME="' . getcwd() . '" php composer.phar install 2>&1') . "</pre>";
+send_message(60, "Done!" , 40);
 shell_exec("cp -rf vendor ../../vendor");
   send_message(70, "Cleaning up..." , 70);
    shell_exec("rm -rf vendor cache composer.json composer.lock composer.phar composer.php keys.dev.pub keys.tags.pub .htaccess");
@@ -34,5 +35,11 @@ shell_exec("cp -rf vendor ../../vendor");
      $fi = "FAILED!";
     }
     send_message(100, "The Vendor Folder Test has " . $fi , 100);
- send_message(100, 'Command Completed Complete!',1);
+    if ($fi == "FAILED!") {
+      send_message(100, '<b>This server may not support composer automated install. Please install requirements manually or try again.</b>',100);
+      send_message(100, $output,100);
+    } else {
+      send_message(100, 'Command Completed Complete!',100);
+    }
+
 
