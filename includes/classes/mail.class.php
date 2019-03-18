@@ -87,7 +87,7 @@ function sendemailuser($subject, $message)
         // Free result set
         mysqli_free_result($result);
     }
-    if ($sendto != "") {
+    if ($sendto != "" && $smtp_username != "" && $smtp_host != "") {
         //Server settings
     $mail->SMTPDebug = 0;                                 // Enable verbose debug output
     $mail->isSMTP();                                      // Set mailer to use SMTP

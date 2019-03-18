@@ -1,4 +1,14 @@
 {
+    "name": "adaclare/intisp",
+    "description": "The main web interface for the IntISP Project.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Package Maintainer",
+            "email": "nobody@adaclare.com"
+        }
+    ],
     "require": {
         "samayo/bulletproof": "4.0.*",
         "defuse/php-encryption": "^2.2",
@@ -9,6 +19,8 @@
         "hayageek/oauth2-yahoo": "^2.0",
         "stevenmaguire/oauth2-microsoft": "^2.2",
         "twig/twig": "^2.6",
-        "bramus/router": "~1.4"
+        "bramus/router": "~1.4",
+        "predis/predis": "^1.1",
+        "psr/log": "^1.1"
     }
 }

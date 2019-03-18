@@ -2,3 +2,4 @@ vendor
 config.php
 cache
 thirdparty/phpmyadmin/tmp
+actions.log

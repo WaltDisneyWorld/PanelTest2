@@ -115,9 +115,13 @@ if ($_ACT == "options") {
     );
     header('Location: /settings');
 }
+if ($_ACT == "newserv") {
+    require("includes/classes/newserv.class.php");
+}
 if ($_ACT == "exit") {
+    require 'config.php';
     unset($_SESSION["user"]);
     
     session_destroy();
-    header('Location: index.php');
+    header('Location: ' .$webroot . '/');
 }

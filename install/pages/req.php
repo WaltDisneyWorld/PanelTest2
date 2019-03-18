@@ -52,7 +52,7 @@ if (is_writable("../cache")) {
         if (file_exists("../vendor")) {
             displayReq("Composer Installation", "Composer has been installed and setup.", true);
         } else {
-            displayReq("Composer Installation", "Composer has not been installed. Please make sure you extract the vendor.zip or run composer install", false);
+            displayReq("Composer Installation", "Composer has not been installed. Please make sure you extract the vendor.zip or run composer install. <a href='installVendor'>Try running automated Install</a>", false);
         }
     preg_match("#^\d+(\.\d+)*#", PHP_VERSION, $match);
 if (version_compare($match[0], '7.0.0', '>=')) {
