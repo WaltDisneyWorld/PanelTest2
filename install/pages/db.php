@@ -26,6 +26,9 @@ if (isset($_GET["c"])) {
         $_SESSION["act"] = $_POST["key"];
     }
     if ($e == 0) {
+        $conn = new mysqli($_POST["host"], $_POST["username"], $_POST["password"]);
+        $sql = "CREATE DATABASE IF NOT EXISTS " . $_POST["database"];
+        $conn->query($sql);
         $mysqli_connection = new MySQLi($_POST["host"], $_POST["username"], $_POST["password"], $_POST["database"]);
         if ($mysqli_connection->connect_error) {
             $e = 1; ?>
@@ -74,7 +77,7 @@ if (isset($_GET["c"])) {
 <div class="field">
   <label class="label">License Key</label>
   <div class="control">
-    <input name="key" class="input is-rounded" type="text" placeholder="IntISP-XXXXXXXXXXXX" style="width:400px">
+    <input name="key" class="input is-rounded" type="text" placeholder="IntISP-XXXXXXXXXXXX" value="NXAXP-8374J-8QWCS-83EN4-9I0" style="width:400px">
     <p>If you do not have a license key. You can get one <a href="https://host.enyrx.com">here</a>.</p>
   </div>
 </div>
@@ -82,7 +85,7 @@ if (isset($_GET["c"])) {
 <div class="field">
   <label class="label">Database Host</label>
   <div class="control">
-    <input name="host" class="input is-rounded" type="text" placeholder="localhost" style="width:400px">
+    <input name="host" class="input is-rounded" type="text" placeholder="localhost" value="localhost" style="width:400px">
     <p>This is where the database server is running. If it is on the same computer is should be localhost or 127.0.0.0.1</p>
   </div>
 </div>
@@ -91,7 +94,7 @@ if (isset($_GET["c"])) {
 <div class="field">
   <label class="label">Database Username</label>
   <div class="control">
-    <input name="username" class="input is-rounded" type="text" placeholder="root" style="width:400px">
+    <input name="username" class="input is-rounded" type="text" placeholder="root" value="root" style="width:400px">
     <p>The database user should be root.</p>
   </div>
 </div>
@@ -100,7 +103,7 @@ if (isset($_GET["c"])) {
   <label class="label">Database Password</label>
   <div class="control">
     <input name="password" class="input is-rounded" type="text" placeholder="**********" style="width:400px">
-    <p>The database password should be whatever the password is for root.</p>
+    <p>The database password should be what was generated/entered during installation.</p>
   </div>
 </div>
 	
@@ -108,7 +111,19 @@ if (isset($_GET["c"])) {
 <div class="field">
   <label class="label">Database Name</label>
   <div class="control">
-    <input name="database" class="input is-rounded" type="text" placeholder="intisp" style="width:400px">
+    <input name="database" class="input is-rounded" type="text" placeholder="intisp" value="<?php
+    function generateRandomString($length = 10) {
+    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+echo "intisp" . generateRandomString(10);
+    
+    ?>" style="width:400px">
     <p>You will need to make sure that the database exists.</p>
   </div>
 </div>

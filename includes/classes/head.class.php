@@ -296,8 +296,35 @@ echo $twig->render('head.tpl', ['template_dir' => 'templates/' . $template_name,
            <div class="alert alert-warning" role="alert">
  <h4 class="alert-heading">The Activation Servers are offline</h4>
  <p>The Enyrx Activation Servers seem to be offline or could not be contacted at this time. IntISP automatically switched the version to development mode until the activation servers can be contacted again.</p>
-<p>If you continue to see this mes.sage after some time please contact our support. The owner of this server may also be pirating our software. However if you are also not able to access enyrx.com, the user is most likely not pirating.</p>
+<p>If you continue to see this message after some time please contact our support. The owner of this server may also be pirating our software. However if you are also not able to access enyrx.com, the user is most likely not pirating.</p>
 <a href="<?php echo $webroot; ?>/?rec" class="btn btn-primary">Recheck Activation</a>
+</div>
+          <?php
+            }
+            if (isset($_GET["con"]))
+            {
+                
+             function rrmdir($dir) { 
+   if (is_dir($dir)) { 
+     $objects = scandir($dir); 
+     foreach ($objects as $object) { 
+       if ($object != "." && $object != "..") { 
+         if (is_dir($dir."/".$object))
+           rrmdir($dir."/".$object);
+         else
+           unlink($dir."/".$object); 
+       } 
+     }
+     rmdir($dir); 
+   } 
+ }rrmdir("install");
+            }
+              if (file_exists("install")) {
+                ?>
+           <div class="alert alert-warning" role="alert">
+ <h4 class="alert-heading">The Install Folder Needs to be deleted</h4>
+<p>Your installation folder needs to be deleted. Please delete the folder or press the button below. Failing to do so will cause your system to be at risk.</p>
+<a href="<?php echo $webroot; ?>/?con" class="btn btn-primary">Delete Install Folder</a>
 </div>
           <?php
             }
