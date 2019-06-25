@@ -3,3 +3,4 @@ config.php
 cache
 thirdparty/phpmyadmin/tmp
 actions.log
+includes/master.zip

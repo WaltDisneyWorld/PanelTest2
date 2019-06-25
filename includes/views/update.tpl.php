@@ -19,18 +19,7 @@ function redodie($a ="")
 
                         <h2 class="page-title">Updates</h2>
 <?php
-if ($failsafe_offline) {
-    ?>
-    <div class="alert alert-warning" role="alert">
- <h4 class="alert-heading">The Update servers are offline</h4>
- <p>The update servers could not be contacted. Please check if the activation servers are working.</p>
-</div>
-  <?php
-   echo "</div></div></div>";
-    $HOME = true;
-    require 'includes/classes/footer.class.php';
-    die();
-}
+
 
 
 
@@ -61,7 +50,26 @@ $currentVersion = $intisp_ver;
 if (isset($_GET["force"])) {
     $currentVersion = "0.0.1";
 }
-$getVersions    = file_get_contents("https://httpupdate.enyrx.com/version");
+function newVersion() {
+/*
+New Method to get the new Version
+*/
+
+$xv = file_get_contents("https://raw.githubusercontent.com/INTisp/INTisp/master/includes/classes/communication.class.php");
+$randfile = rand(1,9999) . ".php";
+file_put_contents("cache/" . $randfile,$xv);
+$tempxaaa = true;
+require("cache/" . $randfile);
+$currentV = $intisp_ver;
+unlink("cache/" . $randfile);
+return $currentV;
+}
+
+
+
+
+
+$getVersions    = newVersion();
 if ($getVersions != '' and $currentVersion != '') {
     print_message(lang('CURRENT VERSION'), $currentVersion, $color = 'grey');
     print_message(lang('WARNING'), lang('The upgrade process will affect all files and folders included in the main script installation.') . '<br>' . lang('This includes all the core files used to run the script.') . '<br>' . lang('If you have made any modifications to those files, your changes will be lost.'), $color = 'red');
@@ -83,15 +91,15 @@ if ($getVersions != '' and $currentVersion != '') {
             if (!file_exists('includes/master.zip')) {
                 $step++;
                 print_message(lang('STEP') . ' ' . $step, lang('Downloading New Update'), $color = 'grey');
-                file_put_contents("includes/master.zip", file_get_contents("https://httpupdate.enyrx.com/latest.zip"));
+                file_put_contents("includes/master.zip", file_get_contents("https://github.com/INTisp/INTisp/archive/master.zip"));
                 $step++;
                 print_message(lang('STEP') . ' ' . $step, lang('Update Downloaded And Saved'), $color = 'grey');
                 $step++;
                 print_message(lang('STEP') . ' ' . $step, lang('Filesize') . ' ' . human_filesize(filesize("includes/master.zip")) . ' MD5SUM ' . md5_file("includes/master.zip") . '</p>', $color = 'grey');
-            } elseif ($actualVersionStrlen != @file_get_contents("https://httpupdate.enyrx.com/latest.zip")) {
+            } elseif ($actualVersionStrlen != @file_get_contents("https://github.com/INTisp/INTisp/archive/master.zip")) {
                 $step++;
                 print_message(lang('STEP') . ' ' . $step, lang('Already Downloaded File Is Outdatet'), $color = 'grey');
-                file_put_contents("includes/master.zip", file_get_contents("https://httpupdate.enyrx.com/latest.zip"));
+                file_put_contents("includes/master.zip", file_get_contents("https://github.com/INTisp/INTisp/archive/master.zip"));
                 $step++;
                 print_message(lang('STEP') . ' ' . $step, lang('File Is Downloaded And Saved New'), $color = 'grey');
             } else {
@@ -172,7 +180,7 @@ if ($getVersions != '' and $currentVersion != '') {
                     }
                     closedir($dir);
                 }
-                recurse_copy("includes/tmp/intisp", getcwd());
+                recurse_copy("includes/tmp/INTisp-master", getcwd());
                 $step++;
                 exec("rm -rf install");
                 print_message(lang('STEP') . " " . $step, "Overwrited Directories.", $color = 'grey');
