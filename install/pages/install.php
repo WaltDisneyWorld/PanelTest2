@@ -26,7 +26,7 @@ if (!isset($_SESSION["act"])) {
 
 
 <h1 class="title">Installation Procedure</h1>
-<p>The installation procedure is running please do not close or refresh this page. Do not turn off the server. Once the installation procedure has finished. You will automatically be redirected to the login. The default login is admin and the password is also admin.</p>
+<p>The installation procedure is running please do not close or refresh this page. Do not turn off the server.</p>
 <Br><br>
 <textarea style="margin: 0px; height: 345px; width: 744px;" disabled>
     IntISP Installation Process has been started!<?php echo "\n";
@@ -119,9 +119,14 @@ $m->query($sql);
     ?>
     </textarea>
 <br>
+<p>The Installation has completed!</p><br>
 <div class="notification is-danger">
 Please make sure to delete the installation folder as anyone can overwrite this installation.
 </div>
+
+<p>The default Username and Password is:</p>
+<b>Username:</b> admin<br>
+<b>Password:</b> admin
 <br><br>
 
 <a href="../" class="button">Login to IntISP Now</a>

@@ -10,6 +10,7 @@ error_reporting(0);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IntISP Installation</title>
     <link rel="stylesheet" href="public/css/bulma.min.css">
+        <link rel="stylesheet" href="public/css/all.css">
   </head>
   <body>
     <div class="container">
@@ -28,15 +29,15 @@ error_reporting(0);
    <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <div class="button is-primary">
+          <div class="button is-dark">
             <strong>V<?php
             $tempxaaa = 1;
             require("../includes/classes/communication.class.php");
             echo $intisp_ver;
-            ?> Installation</strong>
+            ?></strong>
           </div>
                <a class="button is-light" href="https://host.enyrx.com/contact.php">
-            Need Assistance
+               <i class="fas fa-life-ring"></i>
           </a>
         </div>
       </div>
@@ -52,9 +53,7 @@ error_reporting(0);
     
     
     ?>">
-    <span class="panel-icon">
-      <i class="fas fa-book" aria-hidden="true"></i>
-    </span>
+ 
     Welcome
   </a>
   <a class="panel-block <?php
@@ -66,9 +65,7 @@ error_reporting(0);
     
     
     ?>">
-    <span class="panel-icon">
-      <i class="fas fa-book" aria-hidden="true"></i>
-    </span>
+   
     Requirements
   </a>
   <a class="panel-block <?php
@@ -80,10 +77,8 @@ error_reporting(0);
     
     
     ?>">
-    <span class="panel-icon">
-      <i class="fas fa-book" aria-hidden="true"></i>
-    </span>
-    License Agreement
+ 
+    EULA
   </a>
   <a class="panel-block <?php
     if (isset($_GET["pg"]) && $_GET["pg"] == "db") {
@@ -94,10 +89,8 @@ error_reporting(0);
     
     
     ?>">
-    <span class="panel-icon">
-      <i class="fas fa-book" aria-hidden="true"></i>
-    </span>
-    Database Details
+  
+    Configuration
   </a>
   <a class="panel-block <?php
     if (isset($_GET["pg"]) && $_GET["pg"] == "installation") {
@@ -108,9 +101,7 @@ error_reporting(0);
     
     
     ?>">
-    <span class="panel-icon">
-      <i class="fas fa-book" aria-hidden="true"></i>
-    </span>
+  
     Installation
   </a>
   </div>

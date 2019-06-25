@@ -3,7 +3,7 @@ if (!defined('HOMEBASE')) {
     die("Direct Access is Not Allowed");
 }
 ?>
-<h1 class="title">Our License</h1>
+<h1 class="title">Our End User License Agreement</h1>
 <?php
 if (isset($_GET["c"])) {
     if ($_POST["agree"] == "no") {
@@ -22,36 +22,52 @@ if (isset($_GET["c"])) {
 ?>
 <p>Please read the below EULA and select that you accept our terms and conditions.</p><br>
 <textarea style="margin: 0px; height: 345px; width: 744px;" disabled>
-This End-User License Agreement ("EULA") is a legal agreement between you and Enyrx Technologies
-This EULA agreement governs your acquisition and use of our IntISP software ("Software") directly from Enyrx Technologies or indirectly through a Enyrx Technologies authorized reseller or distributor (a "Reseller").
-Please read this EULA agreement carefully before completing the installation process and using the IntISP software. It provides a license to use the IntISP software and contains warranty information and liability disclaimers.
-If you register for a free trial of the IntISP software, this EULA agreement will also govern that trial. By clicking "accept" or installing and/or using the IntISP software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.
-If you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.
-This EULA agreement shall apply only to the Software supplied by Enyrx Technologies herewith regardless of whether other software is referred to or described herein. The terms also apply to any Enyrx Technologies updates, supplements, Internet-based services, and support services for the Software, unless other terms accompany those items on delivery. If so, those terms apply. 
-Enyrx Technologies hereby grants you a personal, non-transferable, non-exclusive licence to use the IntISP software on your devices in accordance with the terms of this EULA agreement.
-You are permitted to load the IntISP software (for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum requirements of the IntISP software.
-You are not permitted to:
-Edit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things
-Reproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose
-Allow any third party to use the Software on behalf of or for the benefit of any third party
-Use the Software in any way which breaches any applicable local, national or international law
-use the Software for any purpose that Enyrx Technologies considers is a breach of this EULA agreement
-Intellectual Property and Ownership
-Enyrx Technologies shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of Enyrx Technologies.
-Enyrx Technologies reserves the right to grant licences to use the Software to third parties.
-This EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to Enyrx Technologies.
-It will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.
-This EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of us.
-</textarea><br> <form method="POST" action="?pg=license&c"> 
-  <label><input id="349" type="radio"  name="agree" value="no" checked>I do not agree</label>
+IntISP Web Hosting Suite <?php echo $intisp_ver; ?>
+
+Copyright (c) 2007-2019 Adaclare Technologies
+*** END USER LICENSE AGREEMENT ***
+IMPORTANT: PLEASE READ THIS LICENSE CAREFULLY BEFORE USING THIS SOFTWARE.
+1. LICENSE
+By receiving, opening the file package, and/or using IntISP Web Hosting Suite <?php echo $intisp_ver; ?>("Software") containing this software, you agree that this End User User License Agreement(EULA) is a legally binding and valid contract and agree to be bound by it. You agree to abide by the intellectual property laws and all of the terms and conditions of this Agreement.
+Unless you have a different license agreement signed by Adaclare Technologies your use of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> indicates your acceptance of this license agreement and warranty.
+Subject to the terms of this Agreement, Adaclare Technologies grants to you a limited, non-exclusive, non-transferable license, without right to sub-license, to use IntISP Web Hosting Suite <?php echo $intisp_ver; ?> in accordance with this Agreement and any other written agreement with Adaclare Technologies. Adaclare Technologies does not transfer the title of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> to you; the license granted to you is not a sale. This agreement is a binding legal agreement between Adaclare Technologies and the purchasers or users of IntISP Web Hosting Suite <?php echo $intisp_ver; ?>.
+If you do not agree to be bound by this agreement, remove IntISP Web Hosting Suite <?php echo $intisp_ver; ?> from your computer now and, if applicable, promptly return to Adaclare Technologies by mail any copies of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> and related documentation and packaging in your possession.
+2. DISTRIBUTION
+IntISP Web Hosting Suite <?php echo $intisp_ver; ?> and the license herein granted shall not be copied, shared, distributed, re-sold, offered for re-sale, transferred or sub-licensed in whole or in part except that you may make one copy for archive purposes only. For information about redistribution of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> contact Adaclare Technologies.
+3. USER AGREEMENT
+3.1 Use
+Your license to use IntISP Web Hosting Suite <?php echo $intisp_ver; ?> is limited to the number of licenses purchased by you. You shall not allow others to use, copy or evaluate copies of IntISP Web Hosting Suite <?php echo $intisp_ver; ?>.
+3.2 Use Restrictions
+You shall use IntISP Web Hosting Suite <?php echo $intisp_ver; ?> in compliance with all applicable laws and not for any unlawful purpose. Without limiting the foregoing, use, display or distribution of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> together with material that is pornographic, racist, vulgar, obscene, defamatory, libelous, abusive, promoting hatred, discriminating or displaying prejudice based on religion, ethnic heritage, race, sexual orientation or age is strictly prohibited.
+Each licensed copy of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> may be used on one single computer location by one user. Use of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> means that you have loaded, installed, or run IntISP Web Hosting Suite <?php echo $intisp_ver; ?> on a computer or similar device. If you install IntISP Web Hosting Suite <?php echo $intisp_ver; ?> onto a multi-user platform, server or network, each and every individual user of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> must be licensed separately.
+You may make one copy of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> for backup purposes, providing you only have one copy installed on one computer being used by one person. Other users may not use your copy of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> . The assignment, sublicense, networking, sale, or distribution of copies of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> are strictly forbidden without the prior written consent of Adaclare Technologies. It is a violation of this agreement to assign, sell, share, loan, rent, lease, borrow, network or transfer the use of IntISP Web Hosting Suite <?php echo $intisp_ver; ?>. If any person other than yourself uses IntISP Web Hosting Suite <?php echo $intisp_ver; ?> registered in your name, regardless of whether it is at the same time or different times, then this agreement is being violated and you are responsible for that violation!
+3.3 Copyright Restriction
+This Software contains copyrighted material, trade secrets and other proprietary material. You shall not, and shall not attempt to, modify, reverse engineer, disassemble or decompile IntISP Web Hosting Suite <?php echo $intisp_ver; ?>. Nor can you create any derivative works or other works that are based upon or derived from IntISP Web Hosting Suite <?php echo $intisp_ver; ?> in whole or in part.
+Adaclare Technologies's name, logo and graphics file that represents IntISP Web Hosting Suite <?php echo $intisp_ver; ?> shall not be used in any way to promote products developed with IntISP Web Hosting Suite <?php echo $intisp_ver; ?> . Adaclare Technologies retains sole and exclusive ownership of all right, title and interest in and to IntISP Web Hosting Suite <?php echo $intisp_ver; ?> and all Intellectual Property rights relating thereto.
+Copyright law and international copyright treaty provisions protect all parts of IntISP Web Hosting Suite <?php echo $intisp_ver; ?>, products and services. No program, code, part, image, audio sample, or text may be copied or used in any way by the user except as intended within the bounds of the single user program. All rights not expressly granted hereunder are reserved for Adaclare Technologies.
+3.4 Limitation of Responsibility
+You will indemnify, hold harmless, and defend Adaclare Technologies , its employees, agents and distributors against any and all claims, proceedings, demand and costs resulting from or in any way connected with your use of Adaclare Technologies's Software.
+In no event (including, without limitation, in the event of negligence) will Adaclare Technologies , its employees, agents or distributors be liable for any consequential, incidental, indirect, special or punitive damages whatsoever (including, without limitation, damages for loss of profits, loss of use, business interruption, loss of information or data, or pecuniary loss), in connection with or arising out of or related to this Agreement, IntISP Web Hosting Suite <?php echo $intisp_ver; ?> or the use or inability to use IntISP Web Hosting Suite <?php echo $intisp_ver; ?> or the furnishing, performance or use of any other matters hereunder whether based upon contract, tort or any other theory including negligence.
+Adaclare Technologies's entire liability, without exception, is limited to the customers' reimbursement of the purchase price of the Software (maximum being the lesser of the amount paid by you and the suggested retail price as listed by Adaclare Technologies ) in exchange for the return of the product, all copies, registration papers and manuals, and all materials that constitute a transfer of license from the customer back to Adaclare Technologies.
+3.5 Warranties
+Except as expressly stated in writing, Adaclare Technologies makes no representation or warranties in respect of this Software and expressly excludes all other warranties, expressed or implied, oral or written, including, without limitation, any implied warranties of merchantable quality or fitness for a particular purpose.
+3.6 Governing Law
+This Agreement shall be governed by the law of the United States applicable therein. You hereby irrevocably attorn and submit to the non-exclusive jurisdiction of the courts of United States therefrom. If any provision shall be considered unlawful, void or otherwise unenforceable, then that provision shall be deemed severable from this License and not affect the validity and enforceability of any other provisions.
+3.7 Termination
+Any failure to comply with the terms and conditions of this Agreement will result in automatic and immediate termination of this license. Upon termination of this license granted herein for any reason, you agree to immediately cease use of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> and destroy all copies of IntISP Web Hosting Suite <?php echo $intisp_ver; ?> supplied under this Agreement. The financial obligations incurred by you shall survive the expiration or termination of this license.
+4. DISCLAIMER OF WARRANTY
+THIS SOFTWARE AND THE ACCOMPANYING FILES ARE SOLD "AS IS" AND WITHOUT WARRANTIES AS TO PERFORMANCE OR MERCHANTABILITY OR ANY OTHER WARRANTIES WHETHER EXPRESSED OR IMPLIED. THIS DISCLAIMER CONCERNS ALL FILES GENERATED AND EDITED BY IntISP Web Hosting Suite <?php echo $intisp_ver; ?> AS WELL.
+5. CONSENT OF USE OF DATA
+You agree that Adaclare Technologies may collect and use information gathered in any manner as part of the product support services provided to you, if any, related to IntISP Web Hosting Suite <?php echo $intisp_ver; ?>.Adaclare Technologies may also use this information to provide notices to you which may be of use or interest to you.</textarea><br> <form method="POST" action="?pg=license&c"> 
+  <label><input id="349" type="radio"  name="agree" value="no" checked> I do not agree to the EULA</label>
        <br>
-         <label><input id="349" type="radio" name="agree" value="yes">Agree</label>
+         <label><input id="349" type="radio" name="agree" value="yes"> I have read and I agree to the EULA</label>
          
          
          
 <br><br>
 <div class="buttons has-addons">
-    <a href="?pg=req" class="button">Back</a>
-  <input type="submit" class="button" value="Continue">
+    <a href="?pg=req" class="button">Return</a>
+  <input type="submit" class="button" value="Next">
 </div>
 </form>

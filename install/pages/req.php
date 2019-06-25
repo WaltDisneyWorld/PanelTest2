@@ -4,19 +4,19 @@ if (!defined('HOMEBASE')) {
 }
 ?>
 <h1 class="title">IntISP Requirements</h1>
-<p>Before installing IntISP we need to make sure that your system meets our basic requirements. This is very important because it prevents a lot of bugs from happening.</p>
+<p>Before we can install IntISP on your server, we need to make sure that the system meets the basic requirements. These requirements are put in place because it can help stop many bugs from occuring in your installation.</p>
 <table class="table">
   <thead>
     <tr>
      <th>Requirement</th>
-     <th>Your Server</th>
+     <th>What we have detected</th>
       <th>Status</th>
          </tr>
   </thead>
   <tfoot>
       <tr>
          <th>Requirement</th>
-     <th>Your Server</th>
+     <th>What we have detected</th>
       <th>Status</th>
          </tr>
        </tfoot>
@@ -30,21 +30,25 @@ if (!defined('HOMEBASE')) {
       <td><?php echo $title; ?></td>
       <td><?php echo $server; ?></td>
       <td><?php if ($ok) {
-              echo "PASS!";
+              echo '<span class="icon has-text-success">
+  <i class="fas fa-check-square"></i>
+</span> ';
           } else {
-              echo "<b>FAIL!</b>";
+              echo '<span class="icon has-text-warning">
+  <i class="fas fa-exclamation-triangle"></i>
+</span> ';
               $failedreq = 1;
           } ?></td>
       </tr>
           <?php
       }
       if (is_writable("../config.php")) {
-          displayReq("Writable Configuration File", "config.php can be written.", true);
+          displayReq("Writable Configuration", "config.php exists and can be written to.", true);
       } else {
-          displayReq("Writable Configuration File", "config.php cannot be written. Please try creating a config.php file", false);
+          displayReq("Writable Configuration", "config.php does not exist. Please create a config.php file and check permissions.", false);
       }
 if (is_writable("../cache")) {
-    displayReq("Writable Cache Directory", "The cache folder can be written to.", true);
+    displayReq("Writable Cache Directory", "cache folder exists and can be written to.", true);
 } else {
     displayReq("Writable Cache Directory", "The cache folder cannot be written to. Please verify the permissions and make sure the directory cache exists.", false);
 }
@@ -92,10 +96,10 @@ if (function_exists('curl_version')) {
       } ?>
 <br><br>
 <div class="buttons has-addons">
-    <a href="index.php" class="button">Back</a>
+    <a href="index.php" class="button">Cancel</a>
     <?php if (!$failedreq) {
           ?>
- <a href="?pg=license" class="button">Continue</a>
+ <a href="?pg=license" class="button">Next</a>
  <?php
       } ?>
 </div>

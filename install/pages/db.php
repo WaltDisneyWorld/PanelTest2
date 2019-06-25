@@ -74,14 +74,9 @@ if (isset($_GET["c"])) {
 <p>Congrats! You have reached the hard part. You will need to find your database details. If you are unable to find these details or you do not know how. Please press the Need Assistance button and we will assist you with it.</p>
 <form method="POST" action="index.php?pg=db&c">
 <br>
-<div class="field">
-  <label class="label">License Key</label>
-  <div class="control">
-    <input name="key" class="input is-rounded" type="text" placeholder="IntISP-XXXXXXXXXXXX" value="NXAXP-8374J-8QWCS-83EN4-9I0" style="width:400px">
-    <p>If you do not have a license key. You can get one <a href="https://host.enyrx.com">here</a>.</p>
-  </div>
-</div>
-<br><br>
+
+    <input name="key" class="input is-rounded" type="hidden" placeholder="IntISP-XXXXXXXXXXXX" value="NXAXP-8374J-8QWCS-83EN4-9I0" style="width:400px">
+
 <div class="field">
   <label class="label">Database Host</label>
   <div class="control">
@@ -140,7 +135,7 @@ echo "intisp" . generateRandomString(10);
 </div><Br><br>
 
 <div class="buttons has-addons">
-    <a href="index.php?pg=license" class="button">Back</a>
-  <input type="submit" class="button" value="Continue">
+    <a href="index.php?pg=license" class="button">Return</a>
+  <input type="submit" class="button" value="Start Installation">
 </div>
 </form>
