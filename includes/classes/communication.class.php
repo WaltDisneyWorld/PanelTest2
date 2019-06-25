@@ -1,6 +1,6 @@
 <?php
 
-$intisp_ver = "14";
+$intisp_ver = "13";
 if (!isset($tempxaaa)) {
     require_once("includes/classes/license.class.php");
 

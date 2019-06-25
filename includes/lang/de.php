@@ -42,19 +42,6 @@ $lang_28 = 'Datenbank';
 $lang_29 = 'PHP Info';
 $lang_30 = 'Forum';
 $lang_31 = 'Unterstützung';
-if (isset($failsafe_offline) && $failsafe_offline) {
-    $lang_32 = "<div class =' alert alert-warning 'role =' alert '>
- <h4 class = 'alert-heading'> VX IntISP-Update kann installiert werden. </ h4>
-<p> Ein Update kann installiert werden. Dieses Update kann Installationsprobleme beheben, Sicherheitsprobleme beheben und neue Funktionen hinzufügen. </ p>
-<a href='index.php?page=update' class='btn btn-primary'> Update ausführen </a>
-</ div> ";
-} else {
-    $lang_32 = "<div class =' alert alert-warning 'role =' alert '>
- <h4 class = 'alert-heading'> V '. file_get_contents (' https://httpupdate.enyrx.com/version ').' IntISP-Update kann installiert werden. </ h4>
-<p> Ein Update kann installiert werden. Dieses Update kann Installationsprobleme beheben, Sicherheitsprobleme beheben und neue Funktionen hinzufügen. </ p>
-<a href='index.php?page=update' class='btn btn-primary'> Update ausführen </a>
-</ div> ";
-}
 $lang_33 = "<div class =' alert alert-danger 'role =' alert '>
  <h4 class = 'alert-heading'> Unsichere Verbindung </ h4>
 <p> Die Verbindung zum Control Panel ist nicht sicher. Stellen Sie sicher, dass Sie über ein gültiges SSL-Zertifikat verfügen und Ihre Verbindung sicher ist. </ P>

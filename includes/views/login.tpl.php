@@ -1,6 +1,5 @@
 <?php
 
-
 if (isset($_GET["de"])) {
     $_SESSION["lang"] = "de";
 }

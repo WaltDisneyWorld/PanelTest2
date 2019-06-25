@@ -39,20 +39,6 @@ $lang_28 = "Database";
 $lang_29 = "PHP Info";
 $lang_30 = "Forum";
 $lang_31 = "Support";
-if (isset($failsafe_offline) && $failsafe_offline) {
-    $lang_32 = '        <div class="alert alert-warning" role="alert">
- <h4 class="alert-heading">VX IntISP Update Ready to Install.</h4>
-<p>An update is ready to be installed, this update may fix installation issues, recover security issues, and add new features.</p>
-<a href="index.php?page=update" class="btn btn-primary">Run Update</a>
-</div>';
-} else {
-    $lang_32 = '        <div class="alert alert-warning" role="alert">
- <h4 class="alert-heading">V' . file_get_contents("https://httpupdate.enyrx.com/version") . ' IntISP Update Ready to Install.</h4>
-<p>An update is ready to be installed, this update may fix installation issues, recover security issues, and add new features.</p>
-<a href="index.php?page=update" class="btn btn-primary">Run Update</a>
-</div>';
-}
-
 $lang_33 = '    <div class="alert alert-danger" role="alert">
  <h4 class="alert-heading">Unsecure Connection</h4>
 <p>The connection to the control panel is not secure. Please make sure you have a valid SSL Certificate and your connection is secure.</p>
