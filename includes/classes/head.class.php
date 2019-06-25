@@ -1,5 +1,13 @@
 <?php
 
+/*
+Set this to true, so that if missed Server Check, The License stuff won't work correctly.
+*/
+
+$failsafe_offline = true; 
+
+
+
 if (!isset($HOME)) {
     die();
 }
@@ -140,7 +148,7 @@ mysqli_close($con);
          $usertype =  $lang_5;
      }
  } else {
-     if ($_SESSION['user'] == 'admitn') {
+     if ($_SESSION['user'] == 'admin') {
          $usertype =  $lang_6;
      } else {
          $usertype =  $lang_7;
@@ -273,34 +281,19 @@ echo $twig->render('head.tpl', ['template_dir' => 'templates/' . $template_name,
 "menu"=>$menu_builder,
 "webroot"=>$webroot]);
 
+/*
  if (!$failsafe_offline) {
      if ($intisp_ver != file_get_contents("https://httpupdate.enyrx.com/version")) {
          echo $lang_32;
      }
  }
-                       if (!isSSL()) {
+ */ 
+ if (!isSSL()) {
                            echo $lang_33;
                        }
         if ($CP) {
-            if (getEdition($keys)["ID"] == 1) {
-                ?>
-                   <div class="alert alert-warning" role="alert">
- <h4 class="alert-heading">This is a free trail.</h4>
-<p>This trail will expire in <b><?php echo getEdition($keys)["Exp"]; ?></b> days</p>
-<p>Once the trail expires you will not be able to login to this control panel. You will need to install a new key.</p>
-</div>
-              <?php
-            }
-            if ($failsafe_offline) {
-                ?>
-           <div class="alert alert-warning" role="alert">
- <h4 class="alert-heading">The Activation Servers are offline</h4>
- <p>The Enyrx Activation Servers seem to be offline or could not be contacted at this time. IntISP automatically switched the version to development mode until the activation servers can be contacted again.</p>
-<p>If you continue to see this message after some time please contact our support. The owner of this server may also be pirating our software. However if you are also not able to access enyrx.com, the user is most likely not pirating.</p>
-<a href="<?php echo $webroot; ?>/?rec" class="btn btn-primary">Recheck Activation</a>
-</div>
-          <?php
-            }
+           
+           
             if (isset($_GET["con"]))
             {
                 

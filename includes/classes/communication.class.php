@@ -29,48 +29,16 @@ if (!isset($tempxaaa)) {
     }
     function checkOnline($domain)
     {
-        if (isset($_SESSION["singlechk"])) {
-            return false;
-        }
-        
-        $curlInit = curl_init($domain);
-        curl_setopt($curlInit, CURLOPT_CONNECTTIMEOUT, 3);
-        curl_setopt($curlInit, CURLOPT_HEADER, true);
-        curl_setopt($curlInit, CURLOPT_NOBODY, true);
-        curl_setopt($curlInit, CURLOPT_RETURNTRANSFER, true);
-
-        //get answer
-        $response = curl_exec($curlInit);
-
-        curl_close($curlInit);
-        if ($response) {
-            return true;
-        }
-        $_SESSION["singlechk"] = "1";
-        return false;
+        /*
+            Get Rid of License and Activation Servers
+            They are no longer needed
+        */
+    return true;
     }
-    $dev_edition = true;
-    if (checkOnline("http://host.enyrx.com")) {
-        $edition = getEdition($keys)["Type"];
-    } else {
-        $edition = "Dev";
-        $failsafe_offline = true;
-    }
-    if ($edition == "Shared") {
-        $dev_edition = false;
-        $edition = "Shared Host Edition";
-    }
-    if ($edition == "Standalone") {
-        $dev_edition = false;
-        $edition = "Standalone Server Edition";
-    }
-    if ($edition == "Host") {
-        $dev_edition = false;
-        $edition = "Web Host Edition";
-    }
-    if ($edition == "Dev") {
-        $edition = "Developer Edition";
-    }
+  
+    
+    $edition = getEdition($keys)["Type"];
+  
     $logging = $debug;
     function updatePassword($pass)
     {
