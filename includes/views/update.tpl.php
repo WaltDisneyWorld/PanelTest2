@@ -149,7 +149,23 @@ if ($getVersions != '' and $currentVersion != '') {
                     }
                 }
                 $master = 'includes/tmp/';
-                $data   = exec('unzip -d includes/tmp includes/master.zip');
+                function doTheExtraction() {
+                    $data   = exec('unzip -d includes/tmp includes/master.zip');
+                    if (is_dir("includes/tmp/intisp")) {
+                        return;
+                    }
+                    $zip = new ZipArchive;
+                    if ($zip->open('includes/master.zip') === TRUE) {
+                    $zip->extractTo('includes/tmp/');
+                     $zip->close();
+                     return true;
+                    } else {
+                   return false;
+                    }
+                }
+
+
+                doTheExtraction();
                 if (is_dir("includes/tmp/intisp")) {
                     $step++;
                     print_message(lang('STEP') . " " . $step, "File extraction completed.", $color = 'grey');
