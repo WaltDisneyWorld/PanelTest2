@@ -5,7 +5,7 @@ if (!isset($HOME)) {
 require 'includes/classes/head.class.php';
 onlyadmin();
 ini_set('max_execution_time', 60);
-error_reporting(0);
+error_reporting(E_ALL);
 function redodie($a ="")
 {
     $HOME = true;
@@ -83,11 +83,12 @@ if ($getVersions != '' and $currentVersion != '') {
         if ($actualVersion > $currentVersion) {
             $step++;
             print_message(lang('STEP') . ' ' . $step, lang('New Update Found &mdash; Version') . ' ' . $actualVersion, $color = 'grey');
-            if ($info = @file_get_contents("https://httpupdate.enyrx.com/changelog.txt")) {
+            if ($info = @file_get_contents("https://raw.githubusercontent.com/INTisp/INTisp/master/README.md")) {
                 print_message(lang('What\'s New'), '<pre class="yxt">' . $info . '</pre>', $color = 'grey');
             }
             $found               = true;
             $actualVersionStrlen = @file_get_contents("includes/master.zip");
+            
             if (!file_exists('includes/master.zip')) {
                 $step++;
                 print_message(lang('STEP') . ' ' . $step, lang('Downloading New Update'), $color = 'grey');
@@ -96,19 +97,16 @@ if ($getVersions != '' and $currentVersion != '') {
                 print_message(lang('STEP') . ' ' . $step, lang('Update Downloaded And Saved'), $color = 'grey');
                 $step++;
                 print_message(lang('STEP') . ' ' . $step, lang('Filesize') . ' ' . human_filesize(filesize("includes/master.zip")) . ' MD5SUM ' . md5_file("includes/master.zip") . '</p>', $color = 'grey');
-            } elseif ($actualVersionStrlen != @file_get_contents("https://github.com/INTisp/INTisp/archive/master.zip")) {
-                $step++;
-                print_message(lang('STEP') . ' ' . $step, lang('Already Downloaded File Is Outdatet'), $color = 'grey');
-                file_put_contents("includes/master.zip", file_get_contents("https://github.com/INTisp/INTisp/archive/master.zip"));
-                $step++;
-                print_message(lang('STEP') . ' ' . $step, lang('File Is Downloaded And Saved New'), $color = 'grey');
             } else {
                 $step++;
-                print_message(lang('STEP') . ' ' . $step, lang('Update Already Downloaded'), $color = 'grey');
+                print_message(lang('STEP') . ' ' . $step, lang('Update Already Downloaded And Saved'), $color = 'grey');
                 $step++;
                 print_message(lang('STEP') . ' ' . $step, lang('Filesize') . ' ' . human_filesize(filesize("includes/master.zip")) . ' MD5SUM ' . md5_file("includes/master.zip") . '</p>', $color = 'grey');
+  
             }
+          
             if (isset($_GET['doUpdate']) and $_GET['doUpdate'] == true) {
+               
                 print_message(lang('STEP') . ' ' . $step, lang('Peak Memory Usage') . ' ' . human_filesize(memory_get_peak_usage(true)) . '</p>', $color = 'grey');
                 if (!is_dir("includes/tmp")) {
                     if (@mkdir("includes/tmp", 0777, true)) {
