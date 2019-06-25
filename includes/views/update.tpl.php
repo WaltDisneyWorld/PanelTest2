@@ -161,12 +161,13 @@ if ($getVersions != '' and $currentVersion != '') {
                      return true;
                     } else {
                    return false;
+                   die("t");
                     }
                 }
 
 
                 doTheExtraction();
-                if (is_dir("includes/tmp/intisp")) {
+                if (is_dir("includes/tmp/INTisp-master")) {
                     $step++;
                     print_message(lang('STEP') . " " . $step, "File extraction completed.", $color = 'grey');
                 } else {
