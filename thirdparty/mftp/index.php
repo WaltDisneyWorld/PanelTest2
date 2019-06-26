@@ -1,166 +1,461 @@
 <?php
 session_start();
-error_reporting(0);
 if (!isset($_SESSION['user'])) {
+  die();
+}
+require("config.php");
+/*
+../ & ./ preventor
+
+*/
+if (!isset($_GET["p"])) {
+    header("Location: ?p=%2F");
     die();
 }
-    require_once dirname(__FILE__).'/application/api/constants.php';
-    includeMonstaConfig();
-    require_once dirname(__FILE__).'/application/api/lib/helpers.php';
-    require_once dirname(__FILE__).'/application/api/lib/entry_handlers.php';
-    if (file_exists(dirname(__FILE__).'/mftp_extensions.php')) {
-        include_once dirname(__FILE__).'/mftp_extensions.php';
+if (!file_exists($path . "/" . $_GET["p"])) {
+  header("Location: ?p=%2F");
+  die();
+}
+
+
+
+if (strpos($_GET["p"], '../') !== false) {
+    die("../ & ./ Preventor Tripped");
+}
+if (strpos($_GET["p"], './') !== false) {
+    die("../ & ./ Preventor Tripped");
+}
+
+if (isset($_GET["file"])) {
+  $file_name = stripslashes($_GET["file"]);
+  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+    if (!file_exists($path . "/" . $_GET["p"] . "/" . $file_name)) {
+    touch($path . "/" . $_GET["p"] . "/" . $file_name);
     }
-
-    require_once dirname(__FILE__).'/application/api/lib/access_check.php';
-
-    require_once dirname(__FILE__).'/application/api/system/ApplicationSettings.php';
-
-    $applicationSettings = new ApplicationSettings(APPLICATION_SETTINGS_PATH);
-
-    $languageDir = dirname(__FILE__).'/application/languages/';
-
-    $languages = readLanguagesFromDirectory($languageDir);
-
-    $license = readDefaultMonstaLicense();
-    $isLicensed = !is_null($license) && $license->isLicensed();
-    $isHostEdition = $isLicensed && $license->getLicenseVersion() >= 3 && $license->isMonstaHostEdition();
-    $isPostEntry = $isHostEdition && isMonstaPostEntry($_SERVER['REQUEST_METHOD'], $_POST);
-
-    $versionQS = generateVersionQueryString($isLicensed, $isHostEdition);
-
-    $resetPasswordAvailable = false;
-    $forgotPasswordAvailable = false;
-
-    if ($isHostEdition) {
-        if (function_exists('mftpInitialLoadValidation')) {
-            if (!mftpInitialLoadValidation($isPostEntry)) {
-                exit();
-            }
-        }
-
-        $resetPasswordAvailable = function_exists('mftpResetPasswordHandler');
-        $forgotPasswordAvailable = function_exists('mftpForgotPasswordHandler');
+  }
+  header("Location: ?p=" . $_GET["p"]);
+}
+if (isset($_GET["folder"])) {
+  $file_name = stripslashes($_GET["folder"]);
+  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+    if (!file_exists($path . "/" . $_GET["p"] . "/" . $file_name)) {
+    mkdir($path . "/" . $_GET["p"] . "/" . $file_name);
     }
+  }
+  header("Location: ?p=" . $_GET["p"]);
+}
+if (isset($_GET["d_confirmed"])) {
+  function recurseRmdir($dir) {
+    $files = array_diff(scandir($dir), array('.','..'));
+    foreach ($files as $file) {
+      (is_dir("$dir/$file")) ? recurseRmdir("$dir/$file") : unlink("$dir/$file");
+    }
+    return rmdir($dir);
+  }
+  $file_name = stripslashes($_GET["d_confirmed"]);
+  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+    if (is_dir($path . "/" . $_GET["p"] . "/" . $file_name)) {
+      recurseRmdir($path . "/" . $_GET["p"] . "/" . $file_name);
+    } else {
+      unlink($path . "/" . $_GET["p"] . "/" . $file_name);
+    }
+    header("Location: ?p=" . $_GET["p"]);
+  }
+}
+
+
+if (isset($_GET["prev"])) {
+  $old = stripslashes($_GET["prev"]);
+  $new = stripslashes($_GET["renamed"]);
+  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+    if (file_exists($path . "/" . $_GET["p"] . "/" . $old)) {
+      if (!file_exists($path . "/" . $_GET["p"] . "/" . $new)) {
+        rename($path . "/" . $_GET["p"] . "/" . $old,$path . "/" . $_GET["p"] . "/" . $new);
+
+      }
+    }
+  }
+  header("Location: ?p=" . $_GET["p"]);
+}
+if (isset($_GET["d_cut"])) {
+  $new = stripslashes($_GET["d_cut"]);
+  if (isset($_SESSION["d_copy"])) unset($_SESSION["d_copy"]);
+
+
+  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+    if (file_exists($path . "/" . $_GET["p"] . "/" . $new)) {
+        $_SESSION["d_cut"] = $path . "/" . $_GET["p"] . "/" . $new;
+    }}
+    header("Location: ?p=" . $_GET["p"]);
+}
+if (isset($_GET["d_copy"])) {
+  $new = stripslashes($_GET["d_copy"]);
+  if (isset($_SESSION["d_cut"])) unset($_SESSION["d_cut"]);
+  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+    if (file_exists($path . "/" . $_GET["p"] . "/" . $new)) {
+        $_SESSION["d_copy"] = $path . "/" . $_GET["p"] . "/" . $new;
+    }}
+    header("Location: ?p=" . $_GET["p"]);
+}
+
+if (isset($_GET["cancelcut"])) {
+  if (isset($_SESSION["d_cut"])) unset($_SESSION["d_cut"]);
+  if (isset($_SESSION["d_copy"])) unset($_SESSION["d_copy"]);
+  header("Location: ?p=" . $_GET["p"]);
+}
+
+
+
 ?>
-<!DOCTYPE html>
-<html ng-app="MonstaFTP">
-<head>
-    <title><?php echo getMonstaPageTitle($isHostEdition); ?></title>
+<html>
+  <head>
+    <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/css/style.css">
+    <script src="public/js/jquery.min.js"></script>
+<script src="public/js/popper.min.js"></script>
+<script src="public/js/bootstrap.min.js"></script>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="public/css/all.css">
+  </head>
+  <body>
+<?php
+if (isset($_GET["d_confirm"])) {
+  ?>
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#delModal').modal('show');
+    });
+</script>
+  <?php
+}
+if (isset($_GET["edit"])) {
+  ?>
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#editModal').modal('show');
+    });
+</script>
+<?php
+} if (isset($_GET["rename"])) {
+  ?>
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#renameModal').modal('show');
+    });
+</script>
+  <?php
+}
+?>
 
-    <link rel="shortcut icon" type="image/x-icon" href="application/frontend/images/logo-favicon.png">
-    <link rel="apple-touch-icon" href="application/frontend/images/logo-webclip.png">
-
-    <script>
-        var g_defaultLanguage = "<?php echo $applicationSettings->getLanguage(); ?>";
-        var g_upgradeURL = "http://www.monstaftp.com/upgrade";
-        var g_loadComplete = false;
-        var g_xhrTimeoutSeconds = <?php echo $applicationSettings->getXhrTimeoutSeconds(); ?>;
-        var g_isMonstaPostEntry = false;
-        var g_isNewWindowsInstall = <?php echo booleanToJsValue('Windows' == getNormalizedOSName() && !$isLicensed); ?>;
-        var g_ftpConnectionAvailable = <?php echo booleanToJsValue(ftpConnectionAvailable()); ?>;
-        var g_openSslAvailable = <?php echo booleanToJsValue(function_exists('openssl_get_publickey')); ?>;
-        var g_resetPasswordAvailable = <?php echo booleanToJsValue($resetPasswordAvailable); ?>;
-        var g_forgotPasswordAvailable = <?php echo booleanToJsValue($forgotPasswordAvailable); ?>;
-
-        <?php
-        if ($isLicensed && $isPostEntry) {
-            ?>
-        g_isMonstaPostEntry = true;
-        var g_monstaPostEntryVars = <?php echo json_encode(extractMonstaPostEntryVars($_POST)); ?>;
-        <?php
-        }
-        ?>
-    </script>
-
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,600,300">
-    <script src="application/frontend/assets-<?php echo MONSTA_VERSION; ?>/vendor.js"></script>
-
-    <link rel="stylesheet" href="application/frontend/css/monsta.css">
-    <link rel="stylesheet" href="settings/theme.css">
-    
-    <script src="application/frontend/js/monsta-min-<?php echo MONSTA_VERSION; ?>.js"></script>
-    <script src="application/frontend/js/templates-<?php echo MONSTA_VERSION; ?>.js"></script>
-
-    <?php
-        if ($applicationSettings->isSettingsReadFailed()) {
-            ?>
-            <script>
-                var g_settingsReadFailureMesage = "Reading settings.json failed. <?php echo $applicationSettings->getSettingsReadError(); ?>.\n\nCheck the file is readable and " +
-                    "has no syntax errors (http://jsonlint.com might help). You are using the default settings.";
-
-                alert(g_settingsReadFailureMesage);
-            </script>
-            <?php
-        }
+    <div class="row admin-sub-header">
+      <div class="col-md-8 col-sm-8 col-8 site-breadcrumb">
+        <div id="wrap">
+          
+          <span id="breadcrumb-nav-links"> 
+          <a href="?p=%2F">ROOT</a>
+            
+   <?php
+$arr=explode("/",$_GET["p"]);
+$c = -2;
+$d = 0;
+foreach ($arr as $ocur) {
+    $c++;
+    if ($c >= 0) {
+        $d++;
     ?>
-    <script>
-        var g_languageFiles = <?php echo json_encode($languages); ?>;
-    </script>
-</head>
-<body>
-<?php if (get_magic_quotes_gpc()) {
-        ?>
-    <div class="container">
-        <div class="grid12">
-            <p>
-                This PHP install has magic quotes enabled. This feature of PHP has been deprecated, and Monsta FTP is
-                not compatible with magic quotes.
-            </p>
-            <p>
-                Please disable PHP magic quotes to use Monsta FTP.
-            </p>
-            <p>
-                For more information, please see:
-                <a href="http://redirect.monstaftp.com/magic-quotes">http://redirect.monstaftp.com/magic-quotes</a>.
-            </p>
+ <a href="?p=<?php
+   for( $i= 0 ; $i <= $d ; $i++ ) {
+       echo urlencode($arr[$i] . "/");
+   }
+ 
+ ?>"><?php echo $ocur; ?></a>
+ <span class="separator"> / </span>
+    <?php
+}
+}
+?>
+          </span>
         </div>
+      </div>
+      <div class="col-md-4 col-sm-4 col-4 text-right">
+     <?php if (isset($_SESSION["d_copy"]) || isset($_SESSION["d_cut"])) { ?>
+      <?php if (isset($_SESSION["d_copy"])) { 
+        echo basename($_SESSION["d_copy"]);
+       } else {
+        echo basename($_SESSION["d_cut"]);
+      } ?>
+      <button class="btn btn-light btn-sm pl-3 pr-3 ml-1"> <i class="fas fa-paste"></i></button>
+      <a href="?p=<?php echo $_GET["p"]; ?>&cancelcut" class="btn btn-light btn-sm pl-3 pr-3 ml-1"><i class="fas fa-ban"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <?php } ?>
+     
+     <button class="btn btn-light btn-sm pl-3 pr-3 ml-1"> <i class="fas fa-upload"></i></button>
+      <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#newFile"> <i class="fas fa-file-medical"></i></button>
+        <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#newFold"> <i class="fas fa-folder-plus"></i></button>
+        <button class="btn btn-light btn-sm pl-3 pr-3 ml-1"> Wordpress</button>
+      </div>
     </div>
+    
+    <div class="row edrive-wrapper">
+  
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 edrive-space">
+        <div class="row edrive-table-head">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-12">Name</div>
+          <div class="col-lg-2 col-md-3 col-sm-3 col-12">Date Modified</div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-12">Type</div>
+          <div class="col-lg-1 col-md-1 col-sm-1 col-12">Size</div>
+          <div class="col-lg-4 col-md-3 col-sm-3 col-12">Actions</div>
+        </div>
+<?php
+$full_path = $path;
+if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+    $full_path = $path . $_GET["p"];
+}
+$folders_files = scandir($full_path);
+function filesize_formatted($path)
+{
+    $size = filesize($path);
+    $units = array( 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+    $power = $size > 0 ? floor(log($size, 1024)) : 0;
+    return number_format($size / pow(1024, $power), 2, '.', ',') . ' ' . $units[$power];
+}
+foreach ($folders_files as $type) {
+    if ($type == "." || $type == "..") {} else {
+    if (is_dir($full_path . "/" . $type)) {
+?>
+  <div class="row edrive-table-data-row">
+          <div class="col-lg-3 col-md-3 col-sm-3 col-12 data-name"><i class="fas fa-folder edrive-file-icon"></i> <a href="?p=<?php 
+          
+          if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+            echo $_GET["p"] . "/" . $type;
+          } else {
+          echo $type;
+          }
+          
+          
+          ?>" title="<?php echo $type; ?>"><?php echo $type; ?></a></div>
+          <div class="col-lg-2 col-md-3 col-sm-3 col-12 data-info"><?php echo date ("F d Y H:i:s.",filemtime($full_path . "/" . $type)); ?></div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-12 data-info">Folder</div>
+          <div class="col-lg-1 col-md-1 col-sm-1 col-12 data-info">-</div>
+          <div class="col-lg-4 col-md-3 col-sm-3 col-12 data-info">
+          <a href="?p=<?php echo $_GET["p"]; ?>&d_copy=<?php echo urlencode($type); ?>"><i class="fas fa-copy"></i></a>&nbsp;&nbsp;&nbsp;
+          <a href="?p=<?php echo $_GET["p"]; ?>&d_cut=<?php echo urlencode($type); ?>"><i class="fas fa-cut"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="?p=<?php echo $_GET["p"]; ?>&rename=<?php echo urlencode($type); ?>"><i class="fas fa-i-cursor"></i></a> &nbsp;&nbsp;&nbsp;
+          <a href="?p=<?php echo $_GET["p"]; ?>&d_confirm=<?php echo urlencode($type); ?>"><i class="fas fa-trash"></i></a>
+      
+          </div>
+        </div>
 <?php
     } else {
         ?>
-    <div id="spinner" ng-controller="SpinnerController" ng-show="spinnerVisible">
-        <div>
-            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <div class="row edrive-table-data-row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-12 data-name"><i class="fas fa-file edrive-file-icon"></i> <a href="?e=<?php 
+        
+        if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+          echo $_GET["p"] . "/" . $type;
+        } else {
+        echo $type;
+        }
+        
+        
+        ?>" title="<?php echo $type; ?>"><?php echo $type; ?></a></div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-12 data-info"><?php echo date ("F d Y H:i:s.",filemtime($full_path . "/" . $type)); ?></div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-12 data-info">File</div>
+        <div class="col-lg-1 col-md-1 col-sm-1 col-12 data-info"><?php echo filesize_formatted($full_path . "/" . $type); ?></div>
+        <div class="col-lg-4 col-md-3 col-sm-3 col-12 data-info">
+        <a href="?p=<?php echo $_GET["p"]; ?>&d_copy=<?php echo urlencode($type); ?>"><i class="fas fa-copy"></i></a>&nbsp;&nbsp;&nbsp;
+          <a href="?p=<?php echo $_GET["p"]; ?>&d_cut=<?php echo urlencode($type); ?>"><i class="fas fa-cut"></i></a>&nbsp;&nbsp;&nbsp;
+        <a href="?p=<?php echo $_GET["p"]; ?>&edit=<?php echo urlencode($type); ?>"><i class="fas fa-edit"></i></a> &nbsp;&nbsp;&nbsp;
+        <a href="?p=<?php echo $_GET["p"]; ?>&rename=<?php echo urlencode($type); ?>"><i class="fas fa-i-cursor"></i></a> &nbsp;&nbsp;&nbsp;
+        <a href="?p=<?php echo $_GET["p"]; ?>&d_confirm=<?php echo urlencode($type); ?>"><i class="fas fa-trash"></i></a>
+        
         </div>
-    </div>
-    <div id="file-xfer-drop" ng-controller="DragDropController">
-        <div translate>DROP_FILES_INSTRUCTION</div>
-    </div>
-    <ng-include src="'application/frontend/templates/modal-chmod.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-login.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-password-management.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-editor.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-transfers.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-prompt.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-confirm.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-error.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-addons.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-settings.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-properties.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-login-link.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-choice.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-update.html'"></ng-include>
-    <ng-include src="'application/frontend/templates/modal-upgrade-required.html'"></ng-include>
+        </div>
+  <?php
+    }
+}
+}
+?>
 
-    <div id="sb-site" canvas="container">
-        <ng-include src="'application/frontend/templates/body-header.html'"></ng-include>
-        <ng-include src="'application/frontend/templates/body-history.html'"></ng-include>
-        <ng-include src="'application/frontend/templates/body-files.html'"></ng-include>
-        <ng-include src="'application/frontend/templates/body-footer.html'"></ng-include>
-    </div>
 
-    <ng-include src="'application/frontend/templates/body-slidebar.html'"></ng-include>
-    <iframe src="about:blank" id="download-iframe"></iframe>
+
+      
+      
+      </div>
+    </div>
+    <div class="modal fade" id="newFile" tabindex="-1" role="dialog" aria-labelledby="newFileLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newFileLabel">Create a new File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form method="GET">
+  <div class="form-group">
+  <input type="hidden" name="p" value="<?php echo $_GET["p"]; ?>">
+    <input type="text" class="form-control" name="file" required>
+    <small id="emailHelp" class="form-text text-muted">Please enter the file name.</small>
+  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="submit" value="Create" class="btn btn-primary">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="newFold" tabindex="-1" role="dialog" aria-labelledby="newFoldLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newFoldLabel">Create a new Folder</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form method="GET">
+  <div class="form-group">
+  <input type="hidden" name="p" value="<?php echo $_GET["p"]; ?>">
+    <input type="text" class="form-control" name="folder" required>
+    <small id="emailHelp" class="form-text text-muted">Please enter the folder name.</small>
+  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="submit" value="Create" class="btn btn-primary">
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php
-    } ?>
-    <script>
-        var versionQS = <?php echo json_encode($versionQS); ?> + getFpQs();
-        document.write('<scri' + 'pt async src="//monstaftp.com/_callbacks/latest-version.php?' + versionQS + '"></scr' + 'ipt>')
-    </script>
-</body>
+if (isset($_GET["d_confirm"])) {
+  
+  ?>
+
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delModalLabel">Please Confirm</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <p>Are you sure you want to delete <b><?php echo $_GET["d_confirm"]; ?></b>? Once deleted the file/folder will not be able to be recovered.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <a href="?p=<?php echo $_GET["p"]; ?>&d_confirmed=<?php echo $_GET["d_confirm"]; ?>" class="btn btn-primary">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php
+}
+
+if (isset($_GET["edit"])) {
+  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+    $editing_file = stripslashes($_GET["edit"]);
+    if (file_exists($path . "/" . $_GET["p"] . "/" . $editing_file) && !is_dir($path . "/" . $_GET["p"] . "/" . $editing_file)) {
+    
+  ?>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Editing <?php echo $_GET["edit"]; ?></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <style type="text/css">
+#editor {
+  position: relative;
+  min-height: 500px;
+  width: 50%px;
+}
+</style>
+<form method="POST" action="?p=<?php echo $_GET["p"];?>&edit=<?php echo $_GET["edit"]; ?>&save">
+<?php if (isset($_GET["save"])) { 
+  file_put_contents($path . "/" . $_GET["p"] . "/" . $editing_file,$_POST["editor"]);
+  ?>
+  <div class="alert alert-success">The file has been saved.</div>
+<?php }
+?>
+<textarea name="editor">
+<?php echo htmlspecialchars(file_get_contents($path . "/" . $_GET["p"] . "/" . $editing_file)); ?>
+</textarea>
+<div id="editor">
+
+</div>
+<script src="public/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    var textarea = $('textarea[name="editor"]').hide();
+    editor.getSession().setValue(textarea.val());
+editor.getSession().on('change', function(){
+  textarea.val(editor.getSession().getValue());
+});
+    editor.setTheme("ace/theme/twilight");
+</script>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="submit" value="Save" class="btn btn-primary">
+</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php
+}}}
+if (isset($_GET["rename"])) { 
+  
+  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+$editing_file = stripslashes($_GET["rename"]);
+    if (file_exists($path . "/" . $_GET["p"] . "/" . $editing_file)) {
+  ?>
+
+<div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="renameLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="renameLabel">Renaming <?php echo $_GET["rename"]; ?></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form method="GET">
+  <div class="form-group">
+  <input type="hidden" name="p" value="<?php echo $_GET["p"]; ?>">
+  <input type="hidden" name="prev" value="<?php echo $editing_file; ?>">
+    <input type="text" class="form-control" name="renamed" value="<?php echo $_GET["rename"]; ?>" required>
+    <small id="emailHelp" class="form-text text-muted">Please enter the new file/folder name.</small>
+  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="submit" value="Rename" class="btn btn-primary">
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<?php }} }?>
+
+  </body>
 </html>
