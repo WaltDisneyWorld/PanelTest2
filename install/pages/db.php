@@ -46,6 +46,15 @@ if (isset($_GET['c'])) {
 <?php
         }
         if (0 == $e) {
+
+        /*
+        Broken due to remove License Checks. Fix Session issues
+        */
+          $_SESSION["act"] = true;
+        /*
+          BYPASS ACTIVATION CHECK
+        */
+
             ?>
      <script>window.location.href = "index.php?pg=installation";</script>
         <a href="index.php?pg=installation">Click here</a> if you are not redirected.
