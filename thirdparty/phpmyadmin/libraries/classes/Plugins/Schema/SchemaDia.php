@@ -1,11 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Dia schema export code
- *
- * @package    PhpMyAdmin-Schema
- * @subpackage Dia
+ * Dia schema export code.
  */
+
 namespace PhpMyAdmin\Plugins\Schema;
 
 use PhpMyAdmin\Properties\Options\Groups\OptionsPropertyMainGroup;
@@ -16,15 +15,12 @@ use PhpMyAdmin\Properties\Plugins\SchemaPluginProperties;
 use PhpMyAdmin\Properties\Options\Items\SelectPropertyItem;
 
 /**
- * Handles the schema export for the Dia format
- *
- * @package    PhpMyAdmin-Schema
- * @subpackage Dia
+ * Handles the schema export for the Dia format.
  */
 class SchemaDia extends SchemaPlugin
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -32,9 +28,7 @@ class SchemaDia extends SchemaPlugin
     }
 
     /**
-     * Sets the schema export Dia properties
-     *
-     * @return void
+     * Sets the schema export Dia properties.
      */
     protected function setProperties()
     {
@@ -47,16 +41,16 @@ class SchemaDia extends SchemaPlugin
         // $schemaPluginProperties
         // this will be shown as "Format specific options"
         $exportSpecificOptions = new OptionsPropertyRootGroup(
-            "Format Specific Options"
+            'Format Specific Options'
         );
 
         // specific options main group
-        $specificOptions = new OptionsPropertyMainGroup("general_opts");
+        $specificOptions = new OptionsPropertyMainGroup('general_opts');
         // add options common to all plugins
         $this->addCommonOptions($specificOptions);
 
         $leaf = new SelectPropertyItem(
-            "orientation",
+            'orientation',
             __('Orientation')
         );
         $leaf->setValues(
@@ -68,7 +62,7 @@ class SchemaDia extends SchemaPlugin
         $specificOptions->addProperty($leaf);
 
         $leaf = new SelectPropertyItem(
-            "paper",
+            'paper',
             __('Paper size')
         );
         $leaf->setValues($this->getPaperSizeArray());

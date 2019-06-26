@@ -1,28 +1,25 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * functions for displaying server status sub item: monitor
+ * functions for displaying server status sub item: monitor.
  *
  * @usedby  server_status_monitor.php
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin\Server\Status;
 
 use PhpMyAdmin\Sanitize;
-use PhpMyAdmin\Server\Status\Data;
 use PhpMyAdmin\SysInfo;
 use PhpMyAdmin\Util;
 
 /**
- * functions for displaying server status sub item: monitor
- *
- * @package PhpMyAdmin
+ * functions for displaying server status sub item: monitor.
  */
 class Monitor
 {
     /**
-     * Prints html with monitor
+     * Prints html with monitor.
      *
      * @param Data $serverStatusData Server status data
      *
@@ -30,7 +27,7 @@ class Monitor
      */
     public static function getHtmlForMonitor(Data $serverStatusData)
     {
-        $retval  = self::getHtmlForTabLinks();
+        $retval = self::getHtmlForTabLinks();
 
         $retval .= self::getHtmlForSettingsDialog();
 
@@ -48,10 +45,10 @@ class Monitor
         $retval .= '<script type="text/javascript">';
         $retval .= 'variableNames = [ ';
         $i = 0;
-        foreach ($serverStatusData->status as $name=>$value) {
+        foreach ($serverStatusData->status as $name => $value) {
             if (is_numeric($value)) {
                 if ($i++ > 0) {
-                    $retval .= ", ";
+                    $retval .= ', ';
                 }
                 $retval .= Sanitize::formatJsVal($name);
             }
@@ -63,27 +60,27 @@ class Monitor
     }
 
     /**
-     * Returns html for Analyse Dialog
+     * Returns html for Analyse Dialog.
      *
      * @return string
      */
     public static function getHtmlForAnalyseDialog()
     {
-        $retval  = '<div id="logAnalyseDialog" title="';
-        $retval .= __('Log statistics') . '" class="hide">';
-        $retval .= '<p>' . __('Selected time range:');
+        $retval = '<div id="logAnalyseDialog" title="';
+        $retval .= __('Log statistics').'" class="hide">';
+        $retval .= '<p>'.__('Selected time range:');
         $retval .= '<input type="text" name="dateStart"'
-            . ' class="datetimefield" value="" /> - ';
+            .' class="datetimefield" value="" /> - ';
         $retval .= '<input type="text" name="dateEnd" class="datetimefield" value="" />';
         $retval .= '</p>';
         $retval .= '<input type="checkbox" id="limitTypes"'
-            . ' value="1" checked="checked" />';
+            .' value="1" checked="checked" />';
         $retval .= '<label for="limitTypes">';
         $retval .= __('Only retrieve SELECT,INSERT,UPDATE and DELETE Statements');
         $retval .= '</label>';
         $retval .= '<br/>';
         $retval .= '<input type="checkbox" id="removeVariables"'
-            . ' value="1" checked="checked" />';
+            .' value="1" checked="checked" />';
         $retval .= '<label for="removeVariables">';
         $retval .= __('Remove variable data in INSERT statements for better grouping');
         $retval .= '</label>';
@@ -97,7 +94,7 @@ class Monitor
         $retval .= '</p>';
         $retval .= '</div>';
         $retval .= '<div id="queryAnalyzerDialog" title="';
-        $retval .= __('Query analyzer') . '" class="hide">';
+        $retval .= __('Query analyzer').'" class="hide">';
         $retval .= '<textarea id="sqlquery"> </textarea>';
         $retval .= '<p></p>';
         $retval .= '<div class="placeHolder"></div>';
@@ -107,27 +104,27 @@ class Monitor
     }
 
     /**
-     * Returns html for Instructions Dialog
+     * Returns html for Instructions Dialog.
      *
      * @return string
      */
     public static function getHtmlForInstructionsDialog()
     {
-        $retval  = '<div id="monitorInstructionsDialog" title="';
-        $retval .= __('Monitor Instructions') . '" class="hide">';
+        $retval = '<div id="monitorInstructionsDialog" title="';
+        $retval .= __('Monitor Instructions').'" class="hide">';
         $retval .= __(
             'The phpMyAdmin Monitor can assist you in optimizing the server'
-            . ' configuration and track down time intensive queries. For the latter you'
-            . ' will need to set log_output to \'TABLE\' and have either the'
-            . ' slow_query_log or general_log enabled. Note however, that the'
-            . ' general_log produces a lot of data and increases server load'
-            . ' by up to 15%.'
+            .' configuration and track down time intensive queries. For the latter you'
+            .' will need to set log_output to \'TABLE\' and have either the'
+            .' slow_query_log or general_log enabled. Note however, that the'
+            .' general_log produces a lot of data and increases server load'
+            .' by up to 15%.'
         );
 
         $retval .= '<p></p>';
         $retval .= '<img class="ajaxIcon" src="';
-        $retval .= $GLOBALS['pmaThemeImage'] . 'ajax_clock_small.gif"';
-        $retval .= ' alt="' . __('Loading…') . '" />';
+        $retval .= $GLOBALS['pmaThemeImage'].'ajax_clock_small.gif"';
+        $retval .= ' alt="'.__('Loading…').'" />';
         $retval .= '<div class="ajaxContent"></div>';
         $retval .= '<div class="monitorUse hide">';
         $retval .= '<p></p>';
@@ -136,16 +133,16 @@ class Monitor
         $retval .= '</strong><p>';
         $retval .= __(
             'Your browser will refresh all displayed charts in a regular interval.'
-            . ' You may add charts and change the refresh rate under \'Settings\','
-            . ' or remove any chart using the cog icon on each respective chart.'
+            .' You may add charts and change the refresh rate under \'Settings\','
+            .' or remove any chart using the cog icon on each respective chart.'
         );
         $retval .= '</p><p>';
         $retval .= __(
             'To display queries from the logs, select the relevant time span on any'
-            . ' chart by holding down the left mouse button and panning over the'
-            . ' chart. Once confirmed, this will load a table of grouped queries,'
-            . ' there you may click on any occurring SELECT statements to further'
-            . ' analyze them.'
+            .' chart by holding down the left mouse button and panning over the'
+            .' chart. Once confirmed, this will load a table of grouped queries,'
+            .' there you may click on any occurring SELECT statements to further'
+            .' analyze them.'
         );
         $retval .= '</p>';
         $retval .= '<p>';
@@ -155,10 +152,10 @@ class Monitor
         $retval .= '</strong><br />';
         $retval .= __(
             'Enabling the general_log may increase the server load by'
-            . ' 5-15%. Also be aware that generating statistics from the logs is a'
-            . ' load intensive task, so it is advisable to select only a small time'
-            . ' span and to disable the general_log and empty its table once'
-            . ' monitoring is not required any more.'
+            .' 5-15%. Also be aware that generating statistics from the logs is a'
+            .' load intensive task, so it is advisable to select only a small time'
+            .' span and to disable the general_log and empty its table once'
+            .' monitoring is not required any more.'
         );
         $retval .= '</p>';
         $retval .= '</div>';
@@ -168,30 +165,30 @@ class Monitor
     }
 
     /**
-     * Returns html for addChartDialog
+     * Returns html for addChartDialog.
      *
      * @return string
      */
     public static function getHtmlForAddChartDialog()
     {
-        $retval  = '<div id="addChartDialog" title="'
-            . __('Add chart') . '" class="hide">';
+        $retval = '<div id="addChartDialog" title="'
+            .__('Add chart').'" class="hide">';
         $retval .= '<div id="tabGridVariables">';
         $retval .= '<p><input type="text" name="chartTitle" value="'
-            . __('Chart Title') . '" /></p>';
+            .__('Chart Title').'" /></p>';
         $retval .= '<input type="radio" name="chartType"'
-            . ' value="preset" id="chartPreset" />';
-        $retval .= '<label for="chartPreset">' . __('Preset chart') . '</label>';
+            .' value="preset" id="chartPreset" />';
+        $retval .= '<label for="chartPreset">'.__('Preset chart').'</label>';
         $retval .= '<select name="presetCharts"></select><br/>';
         $retval .= '<input type="radio" name="chartType" value="variable" '
-            . 'id="chartStatusVar" checked="checked" />';
+            .'id="chartStatusVar" checked="checked" />';
         $retval .= '<label for="chartStatusVar">';
         $retval .= __('Status variable(s)');
         $retval .= '</label><br/>';
         $retval .= '<div id="chartVariableSettings">';
-        $retval .= '<label for="chartSeries">' . __('Select series:') . '</label><br />';
+        $retval .= '<label for="chartSeries">'.__('Select series:').'</label><br />';
         $retval .= '<select id="chartSeries" name="varChartList" size="1">';
-        $retval .= '<option>' . __('Commonly monitored') . '</option>';
+        $retval .= '<option>'.__('Commonly monitored').'</option>';
         $retval .= '<option>Processes</option>';
         $retval .= '<option>Questions</option>';
         $retval .= '<option>Connections</option>';
@@ -212,17 +209,17 @@ class Monitor
         $retval .= '<input type="text" name="variableInput" id="variableInput" />';
         $retval .= '<p></p>';
         $retval .= '<input type="checkbox" name="differentialValue"'
-            . ' id="differentialValue" value="differential" checked="checked" />';
+            .' id="differentialValue" value="differential" checked="checked" />';
         $retval .= '<label for="differentialValue">';
         $retval .= __('Display as differential value');
         $retval .= '</label><br />';
         $retval .= '<input type="checkbox" id="useDivisor"'
-            . ' name="useDivisor" value="1" />';
-        $retval .= '<label for="useDivisor">' . __('Apply a divisor') . '</label>';
+            .' name="useDivisor" value="1" />';
+        $retval .= '<label for="useDivisor">'.__('Apply a divisor').'</label>';
         $retval .= '<span class="divisorInput hide">';
         $retval .= '<input type="text" name="valueDivisor" size="4" value="1" />';
-        $retval .= '(<a href="#kibDivisor">' . __('KiB') . '</a>, ';
-        $retval .= '<a href="#mibDivisor">' . __('MiB') . '</a>)';
+        $retval .= '(<a href="#kibDivisor">'.__('KiB').'</a>, ';
+        $retval .= '<a href="#mibDivisor">'.__('MiB').'</a>)';
         $retval .= '</span><br />';
         $retval .= '<input type="checkbox" id="useUnit" name="useUnit" value="1" />';
         $retval .= '<label for="useUnit">';
@@ -232,15 +229,15 @@ class Monitor
         $retval .= '<input type="text" name="valueUnit" size="4" value="" />';
         $retval .= '</span>';
         $retval .= '<p>';
-        $retval .= '<a href="#submitAddSeries"><b>' . __('Add this series') . '</b></a>';
+        $retval .= '<a href="#submitAddSeries"><b>'.__('Add this series').'</b></a>';
         $retval .= '<span id="clearSeriesLink" class="hide">';
-        $retval .= ' | <a href="#submitClearSeries">' . __('Clear series') . '</a>';
+        $retval .= ' | <a href="#submitClearSeries">'.__('Clear series').'</a>';
         $retval .= '</span>';
         $retval .= '</p>';
         $retval .= __('Series in chart:');
         $retval .= '<br/>';
         $retval .= '<span id="seriesPreview">';
-        $retval .= '<i>' . __('None') . '</i>';
+        $retval .= '<i>'.__('None').'</i>';
         $retval .= '</span>';
         $retval .= '</div>';
         $retval .= '</div>';
@@ -250,21 +247,21 @@ class Monitor
     }
 
     /**
-     * Returns html with Tab Links
+     * Returns html with Tab Links.
      *
      * @return string
      */
     public static function getHtmlForTabLinks()
     {
-        $retval  = '<div class="tabLinks">';
+        $retval = '<div class="tabLinks">';
         $retval .= '<a href="#pauseCharts">';
-        $retval .= Util::getImage('play') . __('Start Monitor');
+        $retval .= Util::getImage('play').__('Start Monitor');
         $retval .= '</a>';
         $retval .= '<a href="#settingsPopup" class="popupLink">';
-        $retval .= Util::getImage('s_cog') .  __('Settings');
+        $retval .= Util::getImage('s_cog').__('Settings');
         $retval .= '</a>';
         $retval .= '<a href="#monitorInstructionsDialog">';
-        $retval .= Util::getImage('b_help') . __('Instructions/Setup');
+        $retval .= Util::getImage('b_help').__('Instructions/Setup');
         $retval .= '<a href="#endChartEditMode" class="hide">';
         $retval .= Util::getImage('s_okay');
         $retval .= __('Done dragging (rearranging) charts');
@@ -275,23 +272,23 @@ class Monitor
     }
 
     /**
-     * Returns html with Settings dialog
+     * Returns html with Settings dialog.
      *
      * @return string
      */
     public static function getHtmlForSettingsDialog()
     {
-        $retval  = '<div class="popupContent settingsPopup">';
+        $retval = '<div class="popupContent settingsPopup">';
         $retval .= '<a href="#addNewChart">';
-        $retval .= Util::getImage('b_chart') . __('Add chart');
+        $retval .= Util::getImage('b_chart').__('Add chart');
         $retval .= '</a>';
         $retval .= '<a href="#rearrangeCharts">';
         $retval .= Util::getImage('b_tblops')
-            . __('Enable charts dragging');
+            .__('Enable charts dragging');
         $retval .= '</a>';
         $retval .= '<div class="clearfloat paddingtop"></div>';
         $retval .= '<div class="floatleft">';
-        $retval .= __('Refresh rate') . '<br />';
+        $retval .= __('Refresh rate').'<br />';
         $retval .= Data::getHtmlForRefreshList(
             'gridChartRefresh',
             5,
@@ -312,11 +309,11 @@ class Monitor
         $retval .= '</select>';
         $retval .= '</div>';
         $retval .= '<div class="clearfloat paddingtop">';
-        $retval .= '<b>' . __('Chart arrangement') . '</b> ';
+        $retval .= '<b>'.__('Chart arrangement').'</b> ';
         $retval .= Util::showHint(
             __(
                 'The arrangement of the charts is stored to the browsers local storage. '
-                . 'You may want to export it if you have a complicated set up.'
+                .'You may want to export it if you have a complicated set up.'
             )
         );
         $retval .= '<br/>';
@@ -337,9 +334,8 @@ class Monitor
         return $retval;
     }
 
-
     /**
-     * Define some data and links needed on the client side
+     * Define some data and links needed on the client side.
      *
      * @param Data $serverStatusData Server status data
      *
@@ -348,32 +344,32 @@ class Monitor
     public static function getHtmlForClientSideDataAndLinks(Data $serverStatusData)
     {
         /**
-         * Define some data needed on the client side
+         * Define some data needed on the client side.
          */
         $input = '<input type="hidden" name="%s" value="%s" />';
-        $form  = '<form id="js_data" class="hide">';
+        $form = '<form id="js_data" class="hide">';
         $form .= sprintf($input, 'server_time', microtime(true) * 1000);
         $form .= sprintf($input, 'server_os', SysInfo::getOs());
         $form .= sprintf($input, 'is_superuser', $GLOBALS['dbi']->isSuperuser());
         $form .= sprintf($input, 'server_db_isLocal', $serverStatusData->db_isLocal);
         $form .= '</form>';
         /**
-         * Define some links used on client side
+         * Define some links used on client side.
          */
-        $links  = '<div id="profiling_docu" class="hide">';
+        $links = '<div id="profiling_docu" class="hide">';
         $links .= Util::showMySQLDocu('general-thread-states');
         $links .= '</div>';
         $links .= '<div id="explain_docu" class="hide">';
         $links .= Util::showMySQLDocu('explain-output');
         $links .= '</div>';
 
-        return $form . $links;
+        return $form.$links;
     }
 
     /***************************Ajax request function***********************************/
 
     /**
-     * Returns JSon for real-time charting data
+     * Returns JSon for real-time charting data.
      *
      * @return array
      */
@@ -398,7 +394,7 @@ class Monitor
         if (count($statusVars)) {
             $statusVarValues = $GLOBALS['dbi']->fetchResult(
                 "SHOW GLOBAL STATUS WHERE Variable_name='"
-                . implode("' OR Variable_name='", $statusVars) . "'",
+                .implode("' OR Variable_name='", $statusVars)."'",
                 0,
                 1
             );
@@ -410,7 +406,7 @@ class Monitor
         if (count($serverVars)) {
             $serverVarValues = $GLOBALS['dbi']->fetchResult(
                 "SHOW GLOBAL VARIABLES WHERE Variable_name='"
-                . implode("' OR Variable_name='", $serverVars) . "'",
+                .implode("' OR Variable_name='", $serverVars)."'",
                 0,
                 1
             );
@@ -426,7 +422,7 @@ class Monitor
     }
 
     /**
-     * Assign the variables for real-time charting data
+     * Assign the variables for real-time charting data.
      *
      * @param array $ret             Real-time charting data
      * @param array $statusVarValues Status variable values
@@ -456,7 +452,7 @@ class Monitor
     }
 
     /**
-     * Get called to get JSON for charting data
+     * Get called to get JSON for charting data.
      *
      * @param array $ret        Real-time charting data
      * @param array $serverVars Server variable values
@@ -499,7 +495,7 @@ class Monitor
     }
 
     /**
-     * Switch called to get JSON for charting data
+     * Switch called to get JSON for charting data.
      *
      * @param string $type       Type
      * @param string $pName      Name
@@ -553,7 +549,7 @@ class Monitor
                 $cpuload = $sysinfo->loadavg();
             }
 
-            if (SysInfo::getOs() == 'Linux') {
+            if ('Linux' == SysInfo::getOs()) {
                 $ret['idle'] = $cpuload['idle'];
                 $ret['busy'] = $cpuload['busy'];
             } else {
@@ -578,7 +574,7 @@ class Monitor
     }
 
     /**
-     * Returns JSon for log data with type: slow
+     * Returns JSon for log data with type: slow.
      *
      * @param int $start Unix Time: Start time for query
      * @param int $end   Unix Time: End time for query
@@ -587,15 +583,15 @@ class Monitor
      */
     public static function getJsonForLogDataTypeSlow($start, $end)
     {
-        $query  = 'SELECT start_time, user_host, ';
+        $query = 'SELECT start_time, user_host, ';
         $query .= 'Sec_to_Time(Sum(Time_to_Sec(query_time))) as query_time, ';
         $query .= 'Sec_to_Time(Sum(Time_to_Sec(lock_time))) as lock_time, ';
         $query .= 'SUM(rows_sent) AS rows_sent, ';
         $query .= 'SUM(rows_examined) AS rows_examined, db, sql_text, ';
         $query .= 'COUNT(sql_text) AS \'#\' ';
         $query .= 'FROM `mysql`.`slow_log` ';
-        $query .= 'WHERE start_time > FROM_UNIXTIME(' . $start . ') ';
-        $query .= 'AND start_time < FROM_UNIXTIME(' . $end . ') GROUP BY sql_text';
+        $query .= 'WHERE start_time > FROM_UNIXTIME('.$start.') ';
+        $query .= 'AND start_time < FROM_UNIXTIME('.$end.') GROUP BY sql_text';
 
         $result = $GLOBALS['dbi']->tryQuery($query);
 
@@ -624,14 +620,14 @@ class Monitor
                         )
                     );
                     $row['sql_text'] = mb_substr($row['sql_text'], 0, 200)
-                        . '... [' . $implode_sql_text . ']';
+                        .'... ['.$implode_sql_text.']';
                 }
                 break;
             default:
                 break;
             }
 
-            if (! isset($return['sum'][$type])) {
+            if (!isset($return['sum'][$type])) {
                 $return['sum'][$type] = 0;
             }
             $return['sum'][$type] += $row['#'];
@@ -646,7 +642,7 @@ class Monitor
     }
 
     /**
-     * Returns JSon for log data with type: general
+     * Returns JSon for log data with type: general.
      *
      * @param int $start Unix Time: Start time for query
      * @param int $end   Unix Time: End time for query
@@ -665,9 +661,9 @@ class Monitor
         $query .= 'server_id, argument, count(argument) as \'#\' ';
         $query .= 'FROM `mysql`.`general_log` ';
         $query .= 'WHERE command_type=\'Query\' ';
-        $query .= 'AND event_time > FROM_UNIXTIME(' . $start . ') ';
-        $query .= 'AND event_time < FROM_UNIXTIME(' . $end . ') ';
-        $query .= $limitTypes . 'GROUP by argument'; // HAVING count > 1';
+        $query .= 'AND event_time > FROM_UNIXTIME('.$start.') ';
+        $query .= 'AND event_time < FROM_UNIXTIME('.$end.') ';
+        $query .= $limitTypes.'GROUP by argument'; // HAVING count > 1';
 
         $result = $GLOBALS['dbi']->tryQuery($query);
 
@@ -682,13 +678,13 @@ class Monitor
             preg_match('/^(\w+)\s/', $row['argument'], $match);
             $type = mb_strtolower($match[1]);
 
-            if (! isset($return['sum'][$type])) {
+            if (!isset($return['sum'][$type])) {
                 $return['sum'][$type] = 0;
             }
             $return['sum'][$type] += $row['#'];
 
             switch ($type) {
-            /** @noinspection PhpMissingBreakStatementInspection */
+            /* @noinspection PhpMissingBreakStatementInspection */
             case 'insert':
                 // Group inserts if selected
                 if ($removeVars
@@ -698,7 +694,7 @@ class Monitor
                         $matches
                     )
                 ) {
-                    $insertTables[$matches[2]]++;
+                    ++$insertTables[$matches[2]];
                     if ($insertTables[$matches[2]] > 1) {
                         $return['rows'][$insertTablesFirst]['#']
                             = $insertTables[$matches[2]];
@@ -725,8 +721,8 @@ class Monitor
                 // but append byte count therefor
                 if (mb_strlen($row['argument']) > 220) {
                     $row['argument'] = mb_substr($row['argument'], 0, 200)
-                        . '... ['
-                        .  implode(
+                        .'... ['
+                        .implode(
                             ' ',
                             Util::formatByteDown(
                                 mb_strlen($row['argument']),
@@ -734,7 +730,7 @@ class Monitor
                                 2
                             )
                         )
-                        . ']';
+                        .']';
                 }
                 break;
 
@@ -743,7 +739,7 @@ class Monitor
             }
 
             $return['rows'][] = $row;
-            $i++;
+            ++$i;
         }
 
         $return['sum']['TOTAL'] = array_sum($return['sum']);
@@ -755,15 +751,15 @@ class Monitor
     }
 
     /**
-     * Return suspension points if needed
+     * Return suspension points if needed.
      *
      * @param string $lastChar Last char
      *
-     * @return null|string Return suspension points if needed
+     * @return string|null Return suspension points if needed
      */
     public static function getSuspensionPoints($lastChar)
     {
-        if ($lastChar != '.') {
+        if ('.' != $lastChar) {
             return '<br/>...';
         }
 
@@ -771,7 +767,7 @@ class Monitor
     }
 
     /**
-     * Returns JSon for logging vars
+     * Returns JSon for logging vars.
      *
      * @return array
      */
@@ -779,20 +775,20 @@ class Monitor
     {
         if (isset($_POST['varName']) && isset($_POST['varValue'])) {
             $value = $GLOBALS['dbi']->escapeString($_POST['varValue']);
-            if (! is_numeric($value)) {
-                $value="'" . $value . "'";
+            if (!is_numeric($value)) {
+                $value = "'".$value."'";
             }
 
-            if (! preg_match("/[^a-zA-Z0-9_]+/", $_POST['varName'])) {
+            if (!preg_match('/[^a-zA-Z0-9_]+/', $_POST['varName'])) {
                 $GLOBALS['dbi']->query(
-                    'SET GLOBAL ' . $_POST['varName'] . ' = ' . $value
+                    'SET GLOBAL '.$_POST['varName'].' = '.$value
                 );
             }
         }
 
         $loggingVars = $GLOBALS['dbi']->fetchResult(
             'SHOW GLOBAL VARIABLES WHERE Variable_name IN'
-            . ' ("general_log","slow_query_log","long_query_time","log_output")',
+            .' ("general_log","slow_query_log","long_query_time","log_output")',
             0,
             1
         );
@@ -800,7 +796,7 @@ class Monitor
     }
 
     /**
-     * Returns JSon for query_analyzer
+     * Returns JSon for query_analyzer.
      *
      * @return array
      */
@@ -826,7 +822,7 @@ class Monitor
         $GLOBALS['dbi']->tryQuery($query);
         $return['affectedRows'] = $GLOBALS['cached_affected_rows'];
 
-        $result = $GLOBALS['dbi']->tryQuery('EXPLAIN ' . $query);
+        $result = $GLOBALS['dbi']->tryQuery('EXPLAIN '.$query);
         while ($row = $GLOBALS['dbi']->fetchAssoc($result)) {
             $return['explain'][] = $row;
         }
@@ -840,10 +836,10 @@ class Monitor
             $return['profiling'] = array();
             $result = $GLOBALS['dbi']->tryQuery(
                 'SELECT seq,state,duration FROM INFORMATION_SCHEMA.PROFILING'
-                . ' WHERE QUERY_ID=1 ORDER BY seq'
+                .' WHERE QUERY_ID=1 ORDER BY seq'
             );
             while ($row = $GLOBALS['dbi']->fetchAssoc($result)) {
-                $return['profiling'][]= $row;
+                $return['profiling'][] = $row;
             }
             $GLOBALS['dbi']->freeResult($result);
         }

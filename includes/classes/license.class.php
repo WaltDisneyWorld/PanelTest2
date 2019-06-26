@@ -7,11 +7,11 @@ function getEdition($key)
 
         This is no longer going to be added in newer releases.
     */
-require("config.php");
+require 'config.php';
     return array(
-    "Key" => $key,
-    "Type" => "Community Release",
-    "Status" => "Active",
-    "ID" => 3,
+    'Key' => $key,
+    'Type' => 'Community Release',
+    'Status' => 'Active',
+    'ID' => 3,
 );
 }

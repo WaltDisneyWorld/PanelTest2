@@ -1,6 +1,6 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/ConnectionBase.php");
+    require_once dirname(__FILE__).'/ConnectionBase.php';
 
     abstract class SFTPConnectionBase extends ConnectionBase
     {
@@ -15,7 +15,7 @@
             } elseif ($this->configuration->isAuthenticationModeAgent()) {
                 return $this->authenticateByAgent();
             } else {
-                throw new Exception(sprintf("Unknown %s authentication type.", $this->protocolName));
+                throw new Exception(sprintf('Unknown %s authentication type.', $this->protocolName));
             }
         }
 

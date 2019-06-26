@@ -1,16 +1,15 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * User preferences management page
- *
- * @package PhpMyAdmin
+ * User preferences management page.
  */
 use PhpMyAdmin\Message;
 use PhpMyAdmin\TwoFactor;
 use PhpMyAdmin\Template;
 
 /**
- * Gets some core libraries and displays a top message if required
+ * Gets some core libraries and displays a top message if required.
  */
 require_once 'libraries/common.inc.php';
 
@@ -19,7 +18,7 @@ require 'libraries/user_preferences.inc.php';
 $two_factor = new TwoFactor($GLOBALS['cfg']['Server']['user']);
 
 if (isset($_POST['2fa_remove'])) {
-    if (! $two_factor->check(true)) {
+    if (!$two_factor->check(true)) {
         echo Template::get('prefs_twofactor_confirm')->render([
             'form' => $two_factor->render(),
         ]);
@@ -29,7 +28,7 @@ if (isset($_POST['2fa_remove'])) {
         Message::rawNotice(__('Two-factor authentication has been removed.'))->display();
     }
 } elseif (isset($_POST['2fa_configure'])) {
-    if (! $two_factor->configure($_POST['2fa_configure'])) {
+    if (!$two_factor->configure($_POST['2fa_configure'])) {
         echo Template::get('prefs_twofactor_configure')->render([
             'form' => $two_factor->setup(),
             'configure' => $_POST['2fa_configure'],

@@ -1,22 +1,22 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/FTPConnectionBase.php');
-    require_once(dirname(__FILE__) . '/../PathOperations.php');
-    require_once(dirname(__FILE__) . '/FTPListParser.php');
-    require_once(dirname(__FILE__) . '/Exceptions.php');
-    require_once(dirname(__FILE__) . "/../../lib/helpers.php");
+    require_once dirname(__FILE__).'/FTPConnectionBase.php';
+    require_once dirname(__FILE__).'/../PathOperations.php';
+    require_once dirname(__FILE__).'/FTPListParser.php';
+    require_once dirname(__FILE__).'/Exceptions.php';
+    require_once dirname(__FILE__).'/../../lib/helpers.php';
 
     abstract class FTPTransferMode
     {
         public static function fromString($transferModeName)
         {
             switch ($transferModeName) {
-                case "ASCII":
+                case 'ASCII':
                     return FTP_ASCII;
-                case "BINARY":
+                case 'BINARY':
                     return FTP_BINARY;
                 default:
-                    throw new InvalidArgumentException("FTP Transfer mode must be ASCII or BINARY.");
+                    throw new InvalidArgumentException('FTP Transfer mode must be ASCII or BINARY.');
             }
         }
     }
@@ -40,14 +40,14 @@
 
         protected function handleDisconnect()
         {
-            if (@ftp_close($this->connection) === false) {
-                $errorMessage =  $this->getLastError();
+            if (false === @ftp_close($this->connection)) {
+                $errorMessage = $this->getLastError();
                 throw new FileSourceConnectionException(
-                    sprintf("Failed to close %s connection: %s", $this->getProtocolName(), $errorMessage),
+                    sprintf('Failed to close %s connection: %s', $this->getProtocolName(), $errorMessage),
                     LocalizableExceptionDefinition::$FAILED_TO_CLOSE_CONNECTION_ERROR,
                     array(
                     'protocol' => $this->getProtocolName(),
-                    'message' => $errorMessage
+                    'message' => $errorMessage,
                 )
                 );
             }
@@ -64,7 +64,7 @@
 
         protected function configureUTF8()
         {
-            @ftp_raw($this->connection, "OPTS UTF8 ON");
+            @ftp_raw($this->connection, 'OPTS UTF8 ON');
             // this may or may not work, but if it doesn't there's nothing we can do so just carry on
         }
 
@@ -88,9 +88,9 @@
 
             $dirList = @ftp_rawlist($this->connection, $listArgs);
 
-            if ($dirList === false) {
+            if (false === $dirList) {
                 throw new FileSourceOperationException(
-                    sprintf("Failed to list directory \"%s\"", $path),
+                    sprintf('Failed to list directory "%s"', $path),
                     LocalizableExceptionDefinition::$LIST_DIRECTORY_FAILED_ERROR,
                     array(
                         'path' => $path,
@@ -98,7 +98,7 @@
                 );
             }
 
-            return new FTPListParser($dirList, $showHidden, $this->getSysType("unix"));
+            return new FTPListParser($dirList, $showHidden, $this->getSysType('unix'));
         }
 
         protected function rawGetSysType()
@@ -118,6 +118,7 @@
 
         /**
          * @param $transferOperation FTPTransferOperation
+         *
          * @return bool
          */
         protected function handleDownloadFile($transferOperation)
@@ -132,6 +133,7 @@
 
         /**
          * @param $transferOperation FTPTransferOperation
+         *
          * @return bool
          */
         protected function handleUploadFile($transferOperation)

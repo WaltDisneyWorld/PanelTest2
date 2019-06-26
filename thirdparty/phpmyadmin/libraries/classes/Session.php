@@ -1,23 +1,17 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Session handling
+ * Session handling.
  *
- * @package PhpMyAdmin
  *
  * @see     https://secure.php.net/session
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\Config;
-use PhpMyAdmin\Core;
-use PhpMyAdmin\ErrorHandler;
-use PhpMyAdmin\Util;
-
 /**
- * Session class
- *
- * @package PhpMyAdmin
+ * Session class.
  */
 class Session
 {
@@ -30,7 +24,7 @@ class Session
     {
         $_SESSION[' PMA_token '] = Util::generateRandom(16);
 
-        /**
+        /*
          * Check if token is properly generated (the generation can fail, for example
          * due to missing /dev/random for openssl).
          */
@@ -44,14 +38,14 @@ class Session
     /**
      * tries to secure session from hijacking and fixation
      * should be called before login and after successful login
-     * (only required if sensitive information stored in session)
+     * (only required if sensitive information stored in session).
      *
      * @return void
      */
     public static function secure()
     {
         // prevent session fixation and XSS
-        if (session_status() === PHP_SESSION_ACTIVE && ! defined('TESTSUITE')) {
+        if (PHP_SESSION_ACTIVE === session_status() && !defined('TESTSUITE')) {
             session_regenerate_id(true);
         }
         // continue with empty session
@@ -60,7 +54,7 @@ class Session
     }
 
     /**
-     * Session failed function
+     * Session failed function.
      *
      * @param array $errors PhpMyAdmin\ErrorHandler array
      *
@@ -95,19 +89,20 @@ class Session
          */
         Core::fatalError(
             'Error during session start; please check your PHP and/or '
-            . 'webserver log file and configure your PHP '
-            . 'installation properly. Also ensure that cookies are enabled '
-            . 'in your browser.'
-            . '<br /><br />'
-            . implode('<br /><br />', $messages)
+            .'webserver log file and configure your PHP '
+            .'installation properly. Also ensure that cookies are enabled '
+            .'in your browser.'
+            .'<br /><br />'
+            .implode('<br /><br />', $messages)
         );
     }
 
     /**
-     * Set up session
+     * Set up session.
      *
      * @param PhpMyAdmin\Config       $config       Configuration handler
      * @param PhpMyAdmin\ErrorHandler $errorHandler Error handler
+     *
      * @return void
      */
     public static function setUp(Config $config, ErrorHandler $errorHandler)
@@ -115,8 +110,8 @@ class Session
         // verify if PHP supports session, die if it does not
         if (!function_exists('session_name')) {
             Core::warnMissingExtension('session', true);
-        } elseif (! empty(ini_get('session.auto_start'))
-            && session_name() != 'phpMyAdmin'
+        } elseif (!empty(ini_get('session.auto_start'))
+            && 'phpMyAdmin' != session_name()
             && !empty(session_id())) {
             // Do not delete the existing non empty session, it might be used by
             // other applications; instead just close it.
@@ -191,7 +186,7 @@ class Session
 
         $session_result = session_start();
 
-        if ($session_result !== true
+        if (true !== $session_result
             || $orig_error_count != $errorHandler->countErrors(false)
         ) {
             setcookie($session_name, '', 1);
@@ -200,14 +195,14 @@ class Session
         }
         unset($orig_error_count, $session_result);
 
-        /**
+        /*
          * Disable setting of session cookies for further session_start() calls.
          */
-        if (session_status() !== PHP_SESSION_ACTIVE) {
+        if (PHP_SESSION_ACTIVE !== session_status()) {
             ini_set('session.use_cookies', 'true');
         }
 
-        /**
+        /*
          * Token which is used for authenticating access queries.
          * (we use "space PMA_token space" to prevent overwriting)
          */
@@ -229,7 +224,7 @@ class Session
             session_start();
             if (empty($_SESSION[' PMA_token '])) {
                 Core::fatalError(
-                    'Failed to store CSRF token in session! ' .
+                    'Failed to store CSRF token in session! '.
                     'Probably sessions are not working properly.'
                 );
             }

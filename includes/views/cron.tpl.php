@@ -3,9 +3,9 @@
 }
 require 'includes/classes/head.class.php';
 $loggedin = $_SESSION['user'];
-if (isset($_GET["yes"])) {
-    $time = $_POST["time"];
-    $command = $_POST["command"];
+if (isset($_GET['yes'])) {
+    $time = $_POST['time'];
+    $command = $_POST['command'];
     $conn = mysqli_connect("$host", "$user", "$pass", "$data");
 
     $sql = "INSERT INTO cron (id, user, time, value)
@@ -51,8 +51,8 @@ VALUES ('".rand(10000, 99999)."', '".$loggedin."', '".$time."','".$command."')";
     
 	  <?php
 
-            $con    = mysqli_connect($host, $user, $pass, $data);
-            $sql    = 'SELECT * FROM cron WHERE user = "' . $loggedin . '"';
+            $con = mysqli_connect($host, $user, $pass, $data);
+            $sql = 'SELECT * FROM cron WHERE user = "'.$loggedin.'"';
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_row($result)) {
                 echo ' <tr>

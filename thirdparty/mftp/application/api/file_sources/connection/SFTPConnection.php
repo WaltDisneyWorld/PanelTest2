@@ -1,7 +1,7 @@
 <?php
-    require_once(dirname(__FILE__) . '/SFTPConnectionBase.php');
-    require_once(dirname(__FILE__) . '/StatOutputListItem.php');
-    require_once(dirname(__FILE__) . "/../../lib/helpers.php");
+    require_once dirname(__FILE__).'/SFTPConnectionBase.php';
+    require_once dirname(__FILE__).'/StatOutputListItem.php';
+    require_once dirname(__FILE__).'/../../lib/helpers.php';
 
     class SFTPConnection extends SFTPConnectionBase
     {
@@ -33,7 +33,7 @@
         {
             $handle = @opendir($this->getRemoteFileURL($path));
 
-            if ($handle === false) {
+            if (false === $handle) {
                 $message = $this->determineFileError($path);
                 // there might be other cases to check for
 
@@ -45,11 +45,11 @@
 
             try {
                 while (false != ($entry = readdir($handle))) {
-                    if ($entry == '.' || $entry == '..') {
+                    if ('.' == $entry || '..' == $entry) {
                         continue;
                     }
 
-                    if ($showHidden === false && substr($entry, 0, 1) == '.') {
+                    if (false === $showHidden && '.' == substr($entry, 0, 1)) {
                         continue;
                     }
 
@@ -70,6 +70,7 @@
 
         /**
          * @param SFTPTransferOperation $transferOperation
+         *
          * @return bool
          */
         protected function handleDownloadFile($transferOperation)
@@ -85,6 +86,7 @@
 
         /**
          * @param SFTPTransferOperation $transferOperation
+         *
          * @return bool
          */
         protected function handleUploadFile($transferOperation)
@@ -104,7 +106,7 @@
             $message = $this->determineFileError($remotePath);
 
             // if $message is false it is probably that the parent directory is not writable :. permission denied
-            @trigger_error($message !== false ? $message : "Permission denied deleting $remotePath");
+            @trigger_error(false !== $message ? $message : "Permission denied deleting $remotePath");
             return false;
         }
 
@@ -120,7 +122,7 @@
                 $message = $this->determineFileError($remotePath, false);
             }
 
-            @trigger_error($message !== false ? $message : "Unknown error creating directory $remotePath");
+            @trigger_error(false !== $message ? $message : "Unknown error creating directory $remotePath");
 
             return false;
         }
@@ -139,11 +141,11 @@
             /* ssh2_sftp_rename doesn't log for error_get_last on failure :\ so determine the failure manually and
                log it */
             $message = $this->determineFileError($source);
-            if ($message === false) {
+            if (false === $message) {
                 $message = $this->determineFileError($destination, false);
             }
 
-            @trigger_error($message !== false ? $message : "Unknown error moving $source to $destination");
+            @trigger_error(false !== $message ? $message : "Unknown error moving $source to $destination");
             return false;
         }
 
@@ -163,10 +165,10 @@
 
         protected function authenticateByPublicKey()
         {
-            if (!defined("SSH_KEY_AUTH_ENABLED") || SSH_KEY_AUTH_ENABLED === false) {
+            if (!defined('SSH_KEY_AUTH_ENABLED') || SSH_KEY_AUTH_ENABLED === false) {
                 throw new FileSourceAuthenticationException(
-                    "Public key authentication is disabled by default and must 
-                be enabled in configuration to be allowed.",
+                    'Public key authentication is disabled by default and must 
+                be enabled in configuration to be allowed.',
                     LocalizableExceptionDefinition::$SFTP_AUTHENTICATION_NOT_ENABLED
                 );
             }
@@ -182,10 +184,10 @@
                 return true;
             }
 
-            if ($this->getPassword() != null) {
+            if (null != $this->getPassword()) {
                 throw new FileSourceAuthenticationException(
-                    "Due to a PHP bug private keys with passwords may not work 
-                on Ubuntu/Debian. See https://bugs.php.net/bug.php?id=58573",
+                    'Due to a PHP bug private keys with passwords may not work 
+                on Ubuntu/Debian. See https://bugs.php.net/bug.php?id=58573',
                     LocalizableExceptionDefinition::$DEBIAN_PRIVATE_KEY_BUG_ERROR
                 );
             }
@@ -195,10 +197,10 @@
 
         protected function authenticateByAgent()
         {
-            if (!defined("SSH_AGENT_AUTH_ENABLED") || SSH_AGENT_AUTH_ENABLED === false) {
+            if (!defined('SSH_AGENT_AUTH_ENABLED') || SSH_AGENT_AUTH_ENABLED === false) {
                 throw new FileSourceAuthenticationException(
-                    "SSH agent authentication is disabled by default and must 
-                be enabled in configuration to be allowed.",
+                    'SSH agent authentication is disabled by default and must 
+                be enabled in configuration to be allowed.',
                     LocalizableExceptionDefinition::$SFTP_AUTHENTICATION_NOT_ENABLED
                 );
             }
@@ -214,10 +216,10 @@
 
         private function getRemoteFileURL($remotePath)
         {
-            if ($remotePath == '/') {
+            if ('/' == $remotePath) {
                 $remotePath = '/./';
             }
-            return "ssh2.sftp://" . $this->sftpConnection . $remotePath;
+            return 'ssh2.sftp://'.$this->sftpConnection.$remotePath;
         }
 
         private function determineFileError($remotePath, $expectExists = true)
@@ -246,21 +248,21 @@
         protected function handleOperationError($operationName, $path, $error, $secondaryPath = null)
         {
             $fileInfo = null;
-            if (strpos($error['message'], "Unable to receive remote file") !== false
-                || strpos($error['message'], "Failure creating remote file")
+            if (false !== strpos($error['message'], 'Unable to receive remote file')
+                || strpos($error['message'], 'Failure creating remote file')
             ) {
                 // permission denied and file doesn't exist both generate this error for remote files
                 $remotePath = is_null($secondaryPath) ? $path : $secondaryPath;
                 $fileInfo = $this->statRemoteFile($remotePath);
-            } elseif (strpos($error['message'], "Unable to read source file") !== false) {
+            } elseif (false !== strpos($error['message'], 'Unable to read source file')) {
                 // permission denied and file doesn't exist both generate this error for local files
                 $fileInfo = @stat($path);
-            } elseif (strpos($error['message'], "failed to open dir: operation failed")) {
+            } elseif (strpos($error['message'], 'failed to open dir: operation failed')) {
                 $error['message'] = 'Permission denied';
             }
 
             if (!is_null($fileInfo)) {
-                if ($fileInfo === false) {
+                if (false === $fileInfo) {
                     $error['message'] = 'No such file or directory';
                 } else {
                     $error['message'] = 'Permission denied';

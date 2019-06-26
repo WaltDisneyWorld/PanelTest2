@@ -1,8 +1,8 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/../PathOperations.php');
-    require_once(dirname(__FILE__) . '/../transfers/TransferOperationFactory.php');
-    require_once(dirname(__FILE__) . "/../../lib/helpers.php");
+    require_once dirname(__FILE__).'/../PathOperations.php';
+    require_once dirname(__FILE__).'/../transfers/TransferOperationFactory.php';
+    require_once dirname(__FILE__).'/../../lib/helpers.php';
 
     class ZipBuilder
     {
@@ -29,7 +29,7 @@
 
         public function buildZip($fileList)
         {
-            $zipPath = tempnam(getMonstaSharedTransferDirectory(), "monsta-download-zip");
+            $zipPath = tempnam(getMonstaSharedTransferDirectory(), 'monsta-download-zip');
 
             $this->zipFile = new ZipArchive();
             $this->zipFile->open($zipPath, ZipArchive::CREATE);
@@ -56,7 +56,7 @@
             $fileOutputPath = tempnam(getMonstaSharedTransferDirectory(), $fileName);
             $rawConfiguration = array(
                 'localPath' => $fileOutputPath,
-                'remotePath' => PathOperations::join($this->baseDirectory, $relativeFilePath)
+                'remotePath' => PathOperations::join($this->baseDirectory, $relativeFilePath),
             );
 
             $this->localPathsCleanup[] = $fileOutputPath;

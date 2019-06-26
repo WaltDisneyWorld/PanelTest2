@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Classes to create relation schema in EPS format.
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin\Plugins\Schema\Eps;
 
 use PhpMyAdmin\Plugins\Schema\Dia\RelationStatsDia;
@@ -15,7 +15,7 @@ use PhpMyAdmin\Plugins\Schema\Svg\TableStatsSvg;
 use PhpMyAdmin\Relation;
 
 /**
- * EPS Relation Schema Class
+ * EPS Relation Schema Class.
  *
  * Purpose of this class is to generate the EPS Document
  * which is used for representing the database diagrams.
@@ -25,7 +25,6 @@ use PhpMyAdmin\Relation;
  * This class inherits ExportRelationSchema class has common functionality added
  * to this class
  *
- * @package PhpMyAdmin
  * @name    Eps_Relation_Schema
  */
 class EpsRelationSchema extends ExportRelationSchema
@@ -41,7 +40,7 @@ class EpsRelationSchema extends ExportRelationSchema
     private $_tablewidth;
 
     /**
-     * The "PMA_EPS_Relation_Schema" constructor
+     * The "PMA_EPS_Relation_Schema" constructor.
      *
      * Upon instantiation This starts writing the EPS document
      * user will be prompted for download as .eps extension
@@ -67,15 +66,15 @@ class EpsRelationSchema extends ExportRelationSchema
                 $this->pageNumber
             )
         );
-        $this->diagram->setAuthor('phpMyAdmin ' . PMA_VERSION);
-        $this->diagram->setDate(date("j F Y, g:i a"));
+        $this->diagram->setAuthor('phpMyAdmin '.PMA_VERSION);
+        $this->diagram->setDate(date('j F Y, g:i a'));
         $this->diagram->setOrientation($this->orientation);
         $this->diagram->setFont('Verdana', '10');
 
         $alltables = $this->getTablesFromRequest();
 
         foreach ($alltables as $table) {
-            if (! isset($this->_tables[$table])) {
+            if (!isset($this->_tables[$table])) {
                 $this->_tables[$table] = new TableStatsEps(
                     $this->diagram,
                     $this->db,
@@ -109,7 +108,7 @@ class EpsRelationSchema extends ExportRelationSchema
                 * (do not use array_search() because we would have to
                 * to do a === false and this is not PHP3 compatible)
                 */
-                if ($master_field != 'foreign_keys_data') {
+                if ('foreign_keys_data' != $master_field) {
                     if (in_array($rel['foreign_table'], $alltables)) {
                         $this->_addRelation(
                             $one_table,
@@ -154,9 +153,7 @@ class EpsRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Output Eps Document for download
-     *
-     * @return void
+     * Output Eps Document for download.
      */
     public function showOutput()
     {
@@ -164,17 +161,15 @@ class EpsRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Defines relation objects
+     * Defines relation objects.
      *
-     * @param string  $masterTable    The master table name
-     * @param string  $font           The font
-     * @param int     $fontSize       The font size
-     * @param string  $masterField    The relation field in the master table
-     * @param string  $foreignTable   The foreign table name
-     * @param string  $foreignField   The relation field in the foreign table
-     * @param boolean $tableDimension Whether to display table position or not
-     *
-     * @return void
+     * @param string $masterTable    The master table name
+     * @param string $font           The font
+     * @param int    $fontSize       The font size
+     * @param string $masterField    The relation field in the master table
+     * @param string $foreignTable   The foreign table name
+     * @param string $foreignField   The relation field in the foreign table
+     * @param bool   $tableDimension Whether to display table position or not
      *
      * @see _setMinMax,Table_Stats_Eps::__construct(),
      * PhpMyAdmin\Plugins\Schema\Eps\RelationStatsEps::__construct()
@@ -188,7 +183,7 @@ class EpsRelationSchema extends ExportRelationSchema
         $foreignField,
         $tableDimension
     ) {
-        if (! isset($this->_tables[$masterTable])) {
+        if (!isset($this->_tables[$masterTable])) {
             $this->_tables[$masterTable] = new TableStatsEps(
                 $this->diagram,
                 $this->db,
@@ -201,7 +196,7 @@ class EpsRelationSchema extends ExportRelationSchema
                 $tableDimension
             );
         }
-        if (! isset($this->_tables[$foreignTable])) {
+        if (!isset($this->_tables[$foreignTable])) {
             $this->_tables[$foreignTable] = new TableStatsEps(
                 $this->diagram,
                 $this->db,
@@ -225,9 +220,8 @@ class EpsRelationSchema extends ExportRelationSchema
 
     /**
      * Draws relation arrows and lines connects master table's master field to
-     * foreign table's foreign field
+     * foreign table's foreign field.
      *
-     * @return void
      *
      * @see Relation_Stats_Eps::relationDraw()
      */
@@ -239,9 +233,8 @@ class EpsRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Draws tables
+     * Draws tables.
      *
-     * @return void
      *
      * @see Table_Stats_Eps::Table_Stats_tableDraw()
      */

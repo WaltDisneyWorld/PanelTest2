@@ -7,8 +7,8 @@
             $pathComponents = array();
 
             foreach (func_get_args() as $pathComponent) {
-                if ($pathComponent !== '') {
-                    if (substr($pathComponent, 0, 1) == '/') {
+                if ('' !== $pathComponent) {
+                    if ('/' == substr($pathComponent, 0, 1)) {
                         $pathComponents = array();
                     }  // if we're back at the root then reset the array
                     $pathComponents[] = $pathComponent;
@@ -22,14 +22,14 @@
         {
             $pathComponents = array();
             $realPathComponentFound = false;  // ..s should be resolved only if they aren't leading the path
-            $pathPrefix = substr($path, 0, 1) == '/' ? '/' : '';
+            $pathPrefix = '/' == substr($path, 0, 1) ? '/' : '';
 
-            foreach (explode("/", $path) as $pathComponent) {
-                if (strlen($pathComponent) == 0 || $pathComponent == '.') {
+            foreach (explode('/', $path) as $pathComponent) {
+                if (0 == strlen($pathComponent) || '.' == $pathComponent) {
                     continue;
                 }
 
-                if ($pathComponent == '..' && $realPathComponentFound) {
+                if ('..' == $pathComponent && $realPathComponentFound) {
                     unset($pathComponents[count($pathComponents) - 1]);
                     continue;
                 }
@@ -38,7 +38,7 @@
                 $realPathComponentFound = true;
             }
 
-            return $pathPrefix . join("/", $pathComponents);
+            return $pathPrefix.join('/', $pathComponents);
         }
 
         public static function directoriesMatch($dir1, $dir2)
@@ -50,13 +50,13 @@
         {
             // on windows machines $dirName will be \ for root files, we want it to be / for remote paths
             $dirName = dirname($path);
-            return ($dirName == "\\") ? "/" : $dirName;
+            return ('\\' == $dirName) ? '/' : $dirName;
         }
 
         public static function directoriesInPath($directoryPath)
         {
             $directories = array();
-            while ($directoryPath != "/" && $directoryPath != null && $directoryPath != "") {
+            while ('/' != $directoryPath && null != $directoryPath && '' != $directoryPath) {
                 $directories[] = $directoryPath;
                 $directoryPath = self::remoteDirname($directoryPath);
             }
@@ -66,12 +66,12 @@
 
         public static function ensureTrailingSlash($path)
         {
-            if (strlen($path) == 0) {
-                return "/";
+            if (0 == strlen($path)) {
+                return '/';
             }
 
-            if (substr($path, strlen($path) - 1, 1) != "/") {
-                $path .= "/";
+            if ('/' != substr($path, strlen($path) - 1, 1)) {
+                $path .= '/';
             }
 
             return $path;
@@ -87,29 +87,29 @@
 
         public static function getFirstPathComponent($path)
         {
-            $pathWithoutLeadingSlashes = preg_replace("|^(/+)|", "", $path);
+            $pathWithoutLeadingSlashes = preg_replace('|^(/+)|', '', $path);
 
-            $pathComponents = explode("/", $pathWithoutLeadingSlashes);
-            return (count($pathComponents) == 0) ? "" : $pathComponents[0];
+            $pathComponents = explode('/', $pathWithoutLeadingSlashes);
+            return (0 == count($pathComponents)) ? '' : $pathComponents[0];
         }
 
         public static function stripTrailingSlash($path)
         {
-            return substr($path, -1) === "/" ? substr($path, 0, -1) : $path;
+            return '/' === substr($path, -1) ? substr($path, 0, -1) : $path;
         }
 
         public static function recursiveDelete($path)
         {
-            if (is_dir($path) === true) {
+            if (true === is_dir($path)) {
                 $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::CHILD_FIRST);
 
                 foreach ($files as $file) {
-                    if (in_array($file->getBasename(), array('.', '..')) !== true) {
+                    if (true !== in_array($file->getBasename(), array('.', '..'))) {
                         $removeSuccess = true;
 
-                        if ($file->isDir() === true) {
+                        if (true === $file->isDir()) {
                             $removeSuccess = @rmdir($file->getPathName());
-                        } elseif (($file->isFile() === true) || ($file->isLink() === true)) {
+                        } elseif ((true === $file->isFile()) || (true === $file->isLink())) {
                             $removeSuccess = @unlink($file->getPathname());
                         }
 
@@ -120,7 +120,7 @@
                 }
 
                 return @rmdir($path);
-            } elseif ((is_file($path) === true) || (is_link($path) === true)) {
+            } elseif ((true === is_file($path)) || (true === is_link($path))) {
                 return @unlink($path);
             }
 
@@ -130,8 +130,8 @@
         public static function pathDepthCompare($path1, $path2)
         {
             // naive function for ordering paths based on their depth; more slashes == deeper
-            $slashCount1 = substr_count($path1, "/");
-            $slashCount2 = substr_count($path2, "/");
+            $slashCount1 = substr_count($path1, '/');
+            $slashCount2 = substr_count($path2, '/');
 
             if ($slashCount1 == $slashCount2) {
                 return strcasecmp($path1, $path2);

@@ -1,5 +1,5 @@
 <?php
-    require_once(dirname(__FILE__) . "/../file_sources/PathOperations.php");
+    require_once dirname(__FILE__).'/../file_sources/PathOperations.php';
 
     class HttpFetchRequest
     {
@@ -13,9 +13,9 @@
          */
         private $fileNameFromHeader = null;
 
-
         /**
          * HttpRemoteUploadFetchRequest constructor.
+         *
          * @param $url string
          * @param $destinationDirectory string
          */
@@ -26,7 +26,7 @@
 
         public function getFileName($effectiveUrl)
         {
-            return $this->fileNameFromHeader != null ? $this->fileNameFromHeader :
+            return null != $this->fileNameFromHeader ? $this->fileNameFromHeader :
                 $this->getFileNameFromURL($effectiveUrl);
         }
 
@@ -42,13 +42,13 @@
 
         private function parseContentDispositionHeader($headerContents)
         {
-            $fileNameIdentifier = "filename=";
-            $fileNamePosition = strpos($headerContents, "filename=");
+            $fileNameIdentifier = 'filename=';
+            $fileNamePosition = strpos($headerContents, 'filename=');
 
-            if ($fileNamePosition !== false) {
+            if (false !== $fileNamePosition) {
                 $headerFilename = substr($headerContents, $fileNamePosition + strlen($fileNameIdentifier));
 
-                if (substr($headerFilename, 0, 1) == '"' && substr($headerFilename, -1) == '"') {
+                if ('"' == substr($headerFilename, 0, 1) && '"' == substr($headerFilename, -1)) {
                     $headerFilename = substr($headerFilename, 1, strlen($headerFilename) - 2);
                 }
 
@@ -58,8 +58,8 @@
 
         public function handleCurlHeader($ch, $headerLine)
         {
-            $splitHeaderLine = explode(":", $headerLine, 2);
-            if (strtolower($splitHeaderLine[0]) == "content-disposition") {
+            $splitHeaderLine = explode(':', $headerLine, 2);
+            if ('content-disposition' == strtolower($splitHeaderLine[0])) {
                 $this->parseContentDispositionHeader(trim($splitHeaderLine[1]));
             }
 

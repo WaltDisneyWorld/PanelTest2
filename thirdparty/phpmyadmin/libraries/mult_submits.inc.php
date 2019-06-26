@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Helper for multi submit forms
- *
- * @package PhpMyAdmin
+ * Helper for multi submit forms.
  */
-
 use PhpMyAdmin\CentralColumns;
 use PhpMyAdmin\Message;
 use PhpMyAdmin\MultSubmits;
@@ -14,7 +12,7 @@ use PhpMyAdmin\Sql;
 use PhpMyAdmin\Template;
 use PhpMyAdmin\Util;
 
-if (! defined('PHPMYADMIN')) {
+if (!defined('PHPMYADMIN')) {
     exit;
 }
 
@@ -33,7 +31,7 @@ $request_params = array(
     'submit_mult',
     'table_type',
     'to_prefix',
-    'url_query'
+    'url_query',
 );
 
 foreach ($request_params as $one_request_param) {
@@ -50,23 +48,23 @@ global $db, $table,  $clause_is_unique, $from_prefix, $goto,
 
 $multSubmits = new MultSubmits();
 
-/**
+/*
  * Prepares the work and runs some other scripts if required
  */
-if (! empty($submit_mult)
+if (!empty($submit_mult)
     && $submit_mult != __('With selected:')
-    && (! empty($_POST['selected_dbs'])
-    || ! empty($_POST['selected_tbl'])
-    || ! empty($selected_fld)
-    || ! empty($_POST['rows_to_delete']))
+    && (!empty($_POST['selected_dbs'])
+    || !empty($_POST['selected_tbl'])
+    || !empty($selected_fld)
+    || !empty($_POST['rows_to_delete']))
 ) {
     define('PMA_SUBMIT_MULT', 1);
-    if (! empty($_POST['selected_dbs'])) {
+    if (!empty($_POST['selected_dbs'])) {
         // coming from server database view - do something with
         // selected databases
-        $selected   = $_POST['selected_dbs'];
+        $selected = $_POST['selected_dbs'];
         $query_type = 'drop_db';
-    } elseif (! empty($_POST['selected_tbl'])) {
+    } elseif (!empty($_POST['selected_tbl'])) {
         // coming from database structure view - do something with
         // selected tables
         $selected = $_POST['selected_tbl'];
@@ -87,7 +85,7 @@ if (! empty($submit_mult)
         case 'checksum_tbl':
             $query_type = $submit_mult;
             unset($submit_mult);
-            $mult_btn   = __('Yes');
+            $mult_btn = __('Yes');
             break;
         case 'export':
             unset($submit_mult);
@@ -110,23 +108,23 @@ if (! empty($submit_mult)
                 $table,
                 $selected,
                 $views,
-                isset($original_sql_query)? $original_sql_query : null,
-                isset($original_url_query)? $original_url_query : null
+                isset($original_sql_query) ? $original_sql_query : null,
+                isset($original_url_query) ? $original_url_query : null
             );
             $response->disable();
             $response->addHTML(
                 $multSubmits->getHtmlForCopyMultipleTables($action, $_url_params)
             );
             exit;
-        case 'show_create':
+        case 'show_create' :
             $show_create = Template::get(
                 'database/structure/show_create'
             )
                 ->render(
                     array(
-                        'db'         => $GLOBALS['db'],
+                        'db' => $GLOBALS['db'],
                         'db_objects' => $selected,
-                        'dbi'        => $GLOBALS['dbi'],
+                        'dbi' => $GLOBALS['dbi'],
                     )
                 );
             // Send response to client.
@@ -168,7 +166,7 @@ if (empty($table)) {
 }
 $views = $GLOBALS['dbi']->getVirtualTables($db);
 
-/**
+/*
  * Displays the confirmation form if required
  */
 if (!empty($submit_mult) && !empty($what)) {
@@ -213,17 +211,16 @@ if (!empty($submit_mult) && !empty($what)) {
         $table,
         $selected,
         $views,
-        isset($original_sql_query)? $original_sql_query : null,
-        isset($original_url_query)? $original_url_query : null
+        isset($original_sql_query) ? $original_sql_query : null,
+        isset($original_url_query) ? $original_url_query : null
     );
 
-
-    if ($what == 'replace_prefix_tbl' || $what == 'copy_tbl_change_prefix') {
+    if ('replace_prefix_tbl' == $what || 'copy_tbl_change_prefix' == $what) {
         $response->disable();
         $response->addHTML(
             $multSubmits->getHtmlForReplacePrefixTable($action, $_url_params)
         );
-    } elseif ($what == 'add_prefix_tbl') {
+    } elseif ('add_prefix_tbl' == $what) {
         $response->disable();
         $response->addHTML($multSubmits->getHtmlForAddPrefixTable($action, $_url_params));
     } else {
@@ -232,29 +229,29 @@ if (!empty($submit_mult) && !empty($what)) {
         );
     }
     exit;
-} elseif (! empty($mult_btn) && $mult_btn == __('Yes')) {
-    /**
+} elseif (!empty($mult_btn) && $mult_btn == __('Yes')) {
+    /*
      * Executes the query - dropping rows, columns/fields, tables or dbs
      */
-    if ($query_type == 'primary_fld') {
+    if ('primary_fld' == $query_type) {
         // Gets table primary key
         $GLOBALS['dbi']->selectDb($db);
         $result = $GLOBALS['dbi']->query(
-            'SHOW KEYS FROM ' . Util::backquote($table) . ';'
+            'SHOW KEYS FROM '.Util::backquote($table).';'
         );
         $primary = '';
         while ($row = $GLOBALS['dbi']->fetchAssoc($result)) {
             // Backups the list of primary keys
-            if ($row['Key_name'] == 'PRIMARY') {
-                $primary .= $row['Column_name'] . ', ';
+            if ('PRIMARY' == $row['Key_name']) {
+                $primary .= $row['Column_name'].', ';
             }
         } // end while
         $GLOBALS['dbi']->freeResult($result);
     }
 
-    if ($query_type == 'drop_tbl'
-        || $query_type == 'empty_tbl'
-        || $query_type == 'row_delete'
+    if ('drop_tbl' == $query_type
+        || 'empty_tbl' == $query_type
+        || 'row_delete' == $query_type
     ) {
         $default_fk_check_value = Util::handleDisableFKCheckInit();
     }
@@ -277,11 +274,11 @@ if (!empty($submit_mult) && !empty($what)) {
         $reload = $reload_ret;
     }
 
-    if ($query_type == 'drop_tbl') {
+    if ('drop_tbl' == $query_type) {
         if (!empty($sql_query)) {
             $sql_query .= ';';
         } elseif (!empty($sql_query_views)) {
-            $sql_query = $sql_query_views . ';';
+            $sql_query = $sql_query_views.';';
             unset($sql_query_views);
         }
     }
@@ -312,18 +309,18 @@ if (!empty($submit_mult) && !empty($what)) {
         $GLOBALS['dbi']->selectDb($db);
         $result = $GLOBALS['dbi']->tryQuery($sql_query);
         if ($result && !empty($sql_query_views)) {
-            $sql_query .= ' ' . $sql_query_views . ';';
+            $sql_query .= ' '.$sql_query_views.';';
             $result = $GLOBALS['dbi']->tryQuery($sql_query_views);
             unset($sql_query_views);
         }
 
-        if (! $result) {
+        if (!$result) {
             $message = Message::error($GLOBALS['dbi']->getError());
         }
     }
-    if ($query_type == 'drop_tbl'
-        || $query_type == 'empty_tbl'
-        || $query_type == 'row_delete'
+    if ('drop_tbl' == $query_type
+        || 'empty_tbl' == $query_type
+        || 'row_delete' == $query_type
     ) {
         Util::handleDisableFKCheckCleanup($default_fk_check_value);
     }
@@ -334,13 +331,13 @@ if (!empty($submit_mult) && !empty($what)) {
     }
 } else {
     if (isset($submit_mult)
-        && ($submit_mult == 'sync_unique_columns_central_list'
-        || $submit_mult == 'delete_unique_columns_central_list'
-        || $submit_mult == 'add_to_central_columns'
-        || $submit_mult == 'remove_from_central_columns'
-        || $submit_mult == 'make_consistent_with_central_list')
+        && ('sync_unique_columns_central_list' == $submit_mult
+        || 'delete_unique_columns_central_list' == $submit_mult
+        || 'add_to_central_columns' == $submit_mult
+        || 'remove_from_central_columns' == $submit_mult
+        || 'make_consistent_with_central_list' == $submit_mult)
     ) {
-        if (isset($centralColsError) && $centralColsError !== true) {
+        if (isset($centralColsError) && true !== $centralColsError) {
             $message = $centralColsError;
         } else {
             $message = Message::success(__('Success!'));

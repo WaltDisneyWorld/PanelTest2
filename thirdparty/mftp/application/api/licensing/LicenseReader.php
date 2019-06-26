@@ -1,7 +1,7 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/Exceptions.php');
-    require_once(dirname(__FILE__) . '/../lib/file_operations.php');
+    require_once dirname(__FILE__).'/Exceptions.php';
+    require_once dirname(__FILE__).'/../lib/file_operations.php';
 
     class LicenseReader
     {
@@ -28,16 +28,16 @@
         public function extractEncodedDataFromLicense($licenseData)
         {
             $licenseLines = preg_split("/(=\s+|\r\n|\n|\r)/", $licenseData);
-            $encodedData = "";
+            $encodedData = '';
 
             foreach ($licenseLines as $line) {
                 $line = trim($line);
 
-                if ($line == "") {
+                if ('' == $line) {
                     continue;
                 }
 
-                if (strlen($line) >= 3 && substr($line, 0, 3) == "===" || substr($line, -3, 3) == "===") {
+                if (strlen($line) >= 3 && '===' == substr($line, 0, 3) || '===' == substr($line, -3, 3)) {
                     continue;
                 }
 
@@ -50,7 +50,9 @@
         /**
          * @param $licensePath
          * @param $licenseContent
+         *
          * @return mixed
+         *
          * @throws InvalidLicenseException
          */
         public function readLicenseString($licensePath, $licenseContent)

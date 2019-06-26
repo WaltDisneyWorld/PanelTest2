@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Classes to create relation schema in SVG format.
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin\Plugins\Schema\Svg;
 
 use PhpMyAdmin\Core;
@@ -13,10 +13,8 @@ use XMLWriter;
 
 /**
  * This Class inherits the XMLwriter class and
- * helps in developing structure of SVG Schema Export
+ * helps in developing structure of SVG Schema Export.
  *
- * @package PhpMyAdmin
- * @access  public
  * @see     https://secure.php.net/manual/en/book.xmlwriter.php
  */
 class Svg extends XMLWriter
@@ -27,7 +25,7 @@ class Svg extends XMLWriter
     public $fontSize;
 
     /**
-     * The "PhpMyAdmin\Plugins\Schema\Svg\Svg" constructor
+     * The "PhpMyAdmin\Plugins\Schema\Svg\Svg" constructor.
      *
      * Upon instantiation This starts writing the RelationStatsSvg XML document
      *
@@ -57,11 +55,9 @@ class Svg extends XMLWriter
     }
 
     /**
-     * Set document title
+     * Set document title.
      *
      * @param string $value sets the title text
-     *
-     * @return void
      */
     public function setTitle($value)
     {
@@ -69,11 +65,9 @@ class Svg extends XMLWriter
     }
 
     /**
-     * Set document author
+     * Set document author.
      *
      * @param string $value sets the author
-     *
-     * @return void
      */
     public function setAuthor($value)
     {
@@ -81,11 +75,9 @@ class Svg extends XMLWriter
     }
 
     /**
-     * Set document font
+     * Set document font.
      *
      * @param string $value sets the font e.g Arial, Sans-serif etc
-     *
-     * @return void
      */
     public function setFont($value)
     {
@@ -93,7 +85,7 @@ class Svg extends XMLWriter
     }
 
     /**
-     * Get document font
+     * Get document font.
      *
      * @return string returns the font name
      */
@@ -103,11 +95,9 @@ class Svg extends XMLWriter
     }
 
     /**
-     * Set document font size
+     * Set document font size.
      *
-     * @param integer $value sets the font size in pixels
-     *
-     * @return void
+     * @param int $value sets the font size in pixels
      */
     public function setFontSize($value)
     {
@@ -115,9 +105,9 @@ class Svg extends XMLWriter
     }
 
     /**
-     * Get document font size
+     * Get document font size.
      *
-     * @return integer returns the font size
+     * @return int returns the font size
      */
     public function getFontSize()
     {
@@ -125,18 +115,16 @@ class Svg extends XMLWriter
     }
 
     /**
-     * Starts RelationStatsSvg Document
+     * Starts RelationStatsSvg Document.
      *
      * svg document starts by first initializing svg tag
      * which contains all the attributes and namespace that needed
      * to define the svg document
      *
-     * @param integer $width  total width of the RelationStatsSvg document
-     * @param integer $height total height of the RelationStatsSvg document
-     * @param integer $x      min-x of the view box
-     * @param integer $y      min-y of the view box
-     *
-     * @return void
+     * @param int $width  total width of the RelationStatsSvg document
+     * @param int $height total height of the RelationStatsSvg document
+     * @param int $x      min-x of the view box
+     * @param int $y      min-y of the view box
      *
      * @see XMLWriter::startElement(),XMLWriter::writeAttribute()
      */
@@ -152,19 +140,19 @@ class Svg extends XMLWriter
             $height = intval($height);
         }
 
-        if ($x != 0 || $y != 0) {
+        if (0 != $x || 0 != $y) {
             $this->writeAttribute('viewBox', "$x $y $width $height");
         }
-        $this->writeAttribute('width', ($width - $x) . 'px');
-        $this->writeAttribute('height', ($height - $y) . 'px');
+        $this->writeAttribute('width', ($width - $x).'px');
+        $this->writeAttribute('height', ($height - $y).'px');
         $this->writeAttribute('xmlns', 'http://www.w3.org/2000/svg');
         $this->writeAttribute('version', '1.1');
     }
 
     /**
-     * Ends RelationStatsSvg Document
+     * Ends RelationStatsSvg Document.
      *
-     * @return void
+     *
      * @see XMLWriter::endElement(),XMLWriter::endDocument()
      */
     public function endSvgDoc()
@@ -174,7 +162,7 @@ class Svg extends XMLWriter
     }
 
     /**
-     * output RelationStatsSvg Document
+     * output RelationStatsSvg Document.
      *
      * svg document prompted to the user for download
      * RelationStatsSvg document saved in .svg extension and can be
@@ -182,7 +170,6 @@ class Svg extends XMLWriter
      *
      * @param string $fileName file name
      *
-     * @return void
      * @see XMLWriter::startElement(),XMLWriter::writeAttribute()
      */
     public function showOutput($fileName)
@@ -195,11 +182,11 @@ class Svg extends XMLWriter
             'image/svg+xml',
             strlen($output)
         );
-        print $output;
+        echo $output;
     }
 
     /**
-     * Draws RelationStatsSvg elements
+     * Draws RelationStatsSvg elements.
      *
      * SVG has some predefined shape elements like rectangle & text
      * and other elements who have x,y co-ordinates are drawn.
@@ -209,7 +196,7 @@ class Svg extends XMLWriter
      * @param int        $x      The x attr defines the left position of the element
      *                           (e.g. x="0" places the element 0 pixels from the
      *                           left of the browser window)
-     * @param integer    $y      The y attribute defines the top position of the
+     * @param int        $y      The y attribute defines the top position of the
      *                           element (e.g. y="0" places the element 0 pixels
      *                           from the top of the browser window)
      * @param int|string $width  The width attribute defines the width the element
@@ -217,8 +204,6 @@ class Svg extends XMLWriter
      * @param string     $text   The text attribute defines the text the element
      * @param string     $styles The style attribute defines the style the element
      *                           styles can be defined like CSS styles
-     *
-     * @return void
      *
      * @see XMLWriter::startElement(), XMLWriter::writeAttribute(),
      * XMLWriter::text(), XMLWriter::endElement()
@@ -240,28 +225,26 @@ class Svg extends XMLWriter
         $this->writeAttribute('style', $styles);
         if (isset($text)) {
             $this->writeAttribute('font-family', $this->font);
-            $this->writeAttribute('font-size', $this->fontSize . 'px');
+            $this->writeAttribute('font-size', $this->fontSize.'px');
             $this->text($text);
         }
         $this->endElement();
     }
 
     /**
-     * Draws RelationStatsSvg Line element
+     * Draws RelationStatsSvg Line element.
      *
      * RelationStatsSvg line element is drawn for connecting the tables.
      * arrows are also drawn by specify its start and ending
      * co-ordinates
      *
-     * @param string  $name   RelationStatsSvg element name i.e line
-     * @param integer $x1     Defines the start of the line on the x-axis
-     * @param integer $y1     Defines the start of the line on the y-axis
-     * @param integer $x2     Defines the end of the line on the x-axis
-     * @param integer $y2     Defines the end of the line on the y-axis
-     * @param string  $styles The style attribute defines the style the element
-     *                        styles can be defined like CSS styles
-     *
-     * @return void
+     * @param string $name   RelationStatsSvg element name i.e line
+     * @param int    $x1     Defines the start of the line on the x-axis
+     * @param int    $y1     Defines the start of the line on the y-axis
+     * @param int    $x2     Defines the end of the line on the x-axis
+     * @param int    $y2     Defines the end of the line on the y-axis
+     * @param string $styles The style attribute defines the style the element
+     *                       styles can be defined like CSS styles
      *
      * @see XMLWriter::startElement(), XMLWriter::writeAttribute(),
      * XMLWriter::endElement()

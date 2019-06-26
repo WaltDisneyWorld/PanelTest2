@@ -1,25 +1,18 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * A simple rules engine, that parses and executes the rules in advisory_rules.txt.
  * Adjusted to phpMyAdmin.
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin;
 
 use Exception;
-use PhpMyAdmin\Core;
-use PhpMyAdmin\DatabaseInterface;
-use PhpMyAdmin\SysInfo;
-use PhpMyAdmin\Url;
-use PhpMyAdmin\Util;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
- * Advisor class
- *
- * @package PhpMyAdmin
+ * Advisor class.
  */
 class Advisor
 {
@@ -31,7 +24,7 @@ class Advisor
     protected $expression;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param DatabaseInterface  $dbi        DatabaseInterface object
      * @param ExpressionLanguage $expression ExpressionLanguage object
@@ -118,7 +111,7 @@ class Advisor
     }
 
     /**
-     * Get variables
+     * Get variables.
      *
      * @return mixed
      */
@@ -128,7 +121,7 @@ class Advisor
     }
 
     /**
-     * Set variables
+     * Set variables.
      *
      * @param array $variables Variables
      *
@@ -142,7 +135,7 @@ class Advisor
     }
 
     /**
-     * Set a variable and its value
+     * Set a variable and its value.
      *
      * @param string|int $variable Variable to set
      * @param mixed      $value    Value to set
@@ -157,7 +150,7 @@ class Advisor
     }
 
     /**
-     * Get parseResult
+     * Get parseResult.
      *
      * @return mixed
      */
@@ -167,7 +160,7 @@ class Advisor
     }
 
     /**
-     * Set parseResult
+     * Set parseResult.
      *
      * @param array $parseResult Parse result
      *
@@ -181,7 +174,7 @@ class Advisor
     }
 
     /**
-     * Get runResult
+     * Get runResult.
      *
      * @return mixed
      */
@@ -191,7 +184,7 @@ class Advisor
     }
 
     /**
-     * Set runResult
+     * Set runResult.
      *
      * @param array $runResult Run result
      *
@@ -205,7 +198,7 @@ class Advisor
     }
 
     /**
-     * Parses and executes advisor rules
+     * Parses and executes advisor rules.
      *
      * @return array with run and parse results
      */
@@ -223,7 +216,7 @@ class Advisor
 
         // Add total memory to variables as well
         $sysinfo = SysInfo::get();
-        $memory  = $sysinfo->memory();
+        $memory = $sysinfo->memory();
         $this->variables['system_memory']
             = isset($memory['MemTotal']) ? $memory['MemTotal'] : 0;
 
@@ -235,41 +228,39 @@ class Advisor
 
         return array(
             'parse' => array('errors' => $this->parseResult['errors']),
-            'run'   => $this->runResult
+            'run' => $this->runResult,
         );
     }
 
     /**
      * Stores current error in run results.
      *
-     * @param string    $description description of an error.
+     * @param string    $description description of an error
      * @param Exception $exception   exception raised
-     *
-     * @return void
      */
     public function storeError($description, $exception)
     {
         $this->runResult['errors'][] = $description
-            . ' '
-            . sprintf(
+            .' '
+            .sprintf(
                 __('Error when evaluating: %s'),
                 $exception->getMessage()
             );
     }
 
     /**
-     * Executes advisor rules
+     * Executes advisor rules.
      *
-     * @return boolean
+     * @return bool
      */
     public function runRules()
     {
         $this->setRunResult(
             array(
-                'fired'     => array(),
-                'notfired'  => array(),
+                'fired' => array(),
+                'notfired' => array(),
                 'unchecked' => array(),
-                'errors'    => array(),
+                'errors' => array(),
             )
         );
 
@@ -292,7 +283,7 @@ class Advisor
                 }
             }
 
-            if (! $precond) {
+            if (!$precond) {
                 $this->addRule('unchecked', $rule);
             } else {
                 try {
@@ -354,8 +345,8 @@ class Advisor
     public function translate($str, $param = null)
     {
         $string = _gettext(self::escapePercent($str));
-        if (! is_null($param)) {
-            $params = $this->ruleExprEvaluate('[' . $param . ']');
+        if (!is_null($param)) {
+            $params = $this->ruleExprEvaluate('['.$param.']');
         } else {
             $params = array();
         }
@@ -379,12 +370,10 @@ class Advisor
     }
 
     /**
-     * Adds a rule to the result list
+     * Adds a rule to the result list.
      *
      * @param string $type type of rule
      * @param array  $rule rule itself
-     *
-     * @return void
      */
     public function addRule($type, array $rule)
     {
@@ -436,7 +425,7 @@ class Advisor
     }
 
     /**
-     * Callback for wrapping links with Core::linkURL
+     * Callback for wrapping links with Core::linkURL.
      *
      * @param array $matches List of matched elements form preg_replace_callback
      *
@@ -444,11 +433,11 @@ class Advisor
      */
     private function replaceLinkURL(array $matches)
     {
-        return 'href="' . Core::linkURL($matches[2]) . '" target="_blank" rel="noopener noreferrer"';
+        return 'href="'.Core::linkURL($matches[2]).'" target="_blank" rel="noopener noreferrer"';
     }
 
     /**
-     * Callback for wrapping variable edit links
+     * Callback for wrapping variable edit links.
      *
      * @param array $matches List of matched elements form preg_replace_callback
      *
@@ -456,17 +445,17 @@ class Advisor
      */
     private function replaceVariable(array $matches)
     {
-        return '<a href="server_variables.php' . Url::getCommon(array('filter' => $matches[1]))
-                . '">' . htmlspecialchars($matches[1]) . '</a>';
+        return '<a href="server_variables.php'.Url::getCommon(array('filter' => $matches[1]))
+                .'">'.htmlspecialchars($matches[1]).'</a>';
     }
 
     /**
      * Runs a code expression, replacing variable names with their respective
-     * values
+     * values.
      *
      * @param string $expr expression to evaluate
      *
-     * @return integer result of evaluated expression
+     * @return int result of evaluated expression
      *
      * @throws Exception
      */
@@ -497,7 +486,7 @@ class Advisor
         $rules = array();
         $lines = array();
 
-        if ($file === false) {
+        if (false === $file) {
             $errors[] = sprintf(
                 __('Error in reading file: The file \'%s\' does not exist or is not readable!'),
                 $filename
@@ -506,26 +495,26 @@ class Advisor
         }
 
         $ruleSyntax = array(
-            'name', 'formula', 'test', 'issue', 'recommendation', 'justification'
+            'name', 'formula', 'test', 'issue', 'recommendation', 'justification',
         );
         $numRules = count($ruleSyntax);
         $numLines = count($file);
         $ruleNo = -1;
         $ruleLine = -1;
 
-        for ($i = 0; $i < $numLines; $i++) {
+        for ($i = 0; $i < $numLines; ++$i) {
             $line = $file[$i];
-            if ($line == "" || $line[0] == '#') {
+            if ('' == $line || '#' == $line[0]) {
                 continue;
             }
 
             // Reading new rule
-            if (substr($line, 0, 4) == 'rule') {
+            if ('rule' == substr($line, 0, 4)) {
                 if ($ruleLine > 0) {
                     $errors[] = sprintf(
                         __(
                             'Invalid rule declaration on line %1$s, expected line '
-                            . '%2$s of previous rule.'
+                            .'%2$s of previous rule.'
                         ),
                         $i + 1,
                         $ruleSyntax[$ruleLine++]
@@ -534,7 +523,7 @@ class Advisor
                 }
                 if (preg_match("/rule\s'(.*)'( \[(.*)\])?$/", $line, $match)) {
                     $ruleLine = 1;
-                    $ruleNo++;
+                    ++$ruleNo;
                     $rules[$ruleNo] = array('name' => $match[1]);
                     $lines[$ruleNo] = array('name' => $i + 1);
                     if (isset($match[3])) {
@@ -549,7 +538,7 @@ class Advisor
                 }
                 continue;
             } else {
-                if ($ruleLine == -1) {
+                if (-1 == $ruleLine) {
                     $errors[] = sprintf(
                         __('Unexpected characters on line %s.'),
                         $i + 1
@@ -563,11 +552,11 @@ class Advisor
                     continue; // Empty lines are ok
                 }
                 // Non tabbed lines are not
-                if ($line[0] != "\t") {
+                if ("\t" != $line[0]) {
                     $errors[] = sprintf(
                         __(
                             'Unexpected character on line %1$s. Expected tab, but '
-                            . 'found "%2$s".'
+                            .'found "%2$s".'
                         ),
                         $i + 1,
                         $line[0]
@@ -591,10 +580,10 @@ class Advisor
     }
 
     /**
-     * Formats interval like 10 per hour
+     * Formats interval like 10 per hour.
      *
-     * @param integer $num       number to format
-     * @param integer $precision required precision
+     * @param int $num       number to format
+     * @param int $precision required precision
      *
      * @return string formatted string
      */
@@ -615,21 +604,21 @@ class Advisor
 
         $num = round($num, $precision);
 
-        if ($num == 0) {
-            $num = '<' . pow(10, -$precision);
+        if (0 == $num) {
+            $num = '<'.pow(10, -$precision);
         }
 
         return "$num $per";
     }
 
     /**
-     * Wrapper for PhpMyAdmin\Util::timespanFormat
+     * Wrapper for PhpMyAdmin\Util::timespanFormat.
      *
      * This function is used when evaluating advisory_rules.txt
      *
      * @param int $seconds the timespan
      *
-     * @return string  the formatted value
+     * @return string the formatted value
      */
     public static function timespanFormat($seconds)
     {
@@ -637,13 +626,13 @@ class Advisor
     }
 
     /**
-     * Wrapper around PhpMyAdmin\Util::formatByteDown
+     * Wrapper around PhpMyAdmin\Util::formatByteDown.
      *
      * This function is used when evaluating advisory_rules.txt
      *
-     * @param double $value the value to format
-     * @param int    $limes the sensitiveness
-     * @param int    $comma the number of decimals to retain
+     * @param float $value the value to format
+     * @param int   $limes the sensitiveness
+     * @param int   $comma the number of decimals to retain
      *
      * @return string the formatted value with unit
      */

@@ -1,10 +1,10 @@
 <?php
-    require_once(dirname(__FILE__) . "/../file_sources/PathOperations.php");
-    require_once(dirname(__FILE__) . "/LicenseReader.php");
-    require_once(dirname(__FILE__) . "/KeyPairSuite.php");
-    require_once(dirname(__FILE__) . "/ProPackageIDGenerator.php");
-    require_once(dirname(__FILE__) . "/ProConfigBuilder.php");
-    require_once(dirname(__FILE__) . "/../lib/LocalizableException.php");
+    require_once dirname(__FILE__).'/../file_sources/PathOperations.php';
+    require_once dirname(__FILE__).'/LicenseReader.php';
+    require_once dirname(__FILE__).'/KeyPairSuite.php';
+    require_once dirname(__FILE__).'/ProPackageIDGenerator.php';
+    require_once dirname(__FILE__).'/ProConfigBuilder.php';
+    require_once dirname(__FILE__).'/../lib/LocalizableException.php';
 
     class LicenseWriter
     {
@@ -25,6 +25,7 @@
 
         /**
          * LicenseWriter constructor.
+         *
          * @param $licenseContent string
          * @param $publicKeyPath string
          * @param $outputDirectory string
@@ -39,7 +40,7 @@
         public function throwInvalidLicenseException($previousException = null)
         {
             throw new InvalidLicenseException(
-                "The license entered was not valid.",
+                'The license entered was not valid.',
                 LocalizableExceptionDefinition::$INVALID_POSTED_LICENSE_ERROR,
                 null,
                 $previousException
@@ -50,7 +51,7 @@
         {
             $licenseReader = new LicenseReader($this->keyPairSuite);
             try {
-                return $licenseReader->readLicenseString("POST", $this->getLicenseContent());
+                return $licenseReader->readLicenseString('POST', $this->getLicenseContent());
             } catch (LicensingException $e) {
                 $this->throwInvalidLicenseException($e);
             }
@@ -67,7 +68,7 @@
 
         public function getExistingLicense()
         {
-            if (MONSTA_LICENSE_PATH !== "") {
+            if (MONSTA_LICENSE_PATH !== '') {
                 $licenseReader = new LicenseReader($this->keyPairSuite);
                 try {
                     return $licenseReader->readLicense(MONSTA_LICENSE_PATH);
@@ -81,13 +82,13 @@
         {
             $newLicense = $this->getLicenseData();
             $existingLicense = $this->getExistingLicense();
-            if ($existingLicense === null) {
+            if (null === $existingLicense) {
                 return;
             }
 
-            if ($newLicense["expiryDate"] < $existingLicense["expiryDate"]) {
-                throw new LicensingException("The new license was not saved as its expiry date is earlier than the 
-                current license.", LocalizableExceptionDefinition::$REPLACEMENT_LICENSE_OLDER_ERROR);
+            if ($newLicense['expiryDate'] < $existingLicense['expiryDate']) {
+                throw new LicensingException('The new license was not saved as its expiry date is earlier than the 
+                current license.', LocalizableExceptionDefinition::$REPLACEMENT_LICENSE_OLDER_ERROR);
             }
         }
 
@@ -109,7 +110,7 @@
 
         public function getConfigOutputPath()
         {
-            return PathOperations::join($this->getOutputDirectory(), "config_pro.php");
+            return PathOperations::join($this->getOutputDirectory(), 'config_pro.php');
         }
 
         public function writeLicense($proPackageID, $licenseContent)
@@ -123,11 +124,11 @@
                 $configBuilder->generateRelativeLicensePath()
             );
 
-            if (@file_put_contents($licensePath, $licenseContent) === false) {
+            if (false === @file_put_contents($licensePath, $licenseContent)) {
                 throw new LocalizableException(
                     "Could not write license file to $licensePath",
                     LocalizableExceptionDefinition::$LICENSE_WRITE_ERROR,
-                    array("path" => $licensePath)
+                    array('path' => $licensePath)
                 );
             }
         }
@@ -136,11 +137,11 @@
         {
             $this->checkOutputDirectoryWritable();
 
-            if (@file_put_contents($this->getConfigOutputPath(), $configContent) === false) {
+            if (false === @file_put_contents($this->getConfigOutputPath(), $configContent)) {
                 throw new LocalizableException(
-                    "Could not write pro config to " . normalizePath($this->getConfigOutputPath()),
+                    'Could not write pro config to '.normalizePath($this->getConfigOutputPath()),
                     LocalizableExceptionDefinition::$LICENSE_WRITE_ERROR,
-                    array("path" => normalizePath($this->getConfigOutputPath()))
+                    array('path' => normalizePath($this->getConfigOutputPath()))
                 );
             }
         }
@@ -165,9 +166,9 @@
         {
             if (!@is_writable($this->getOutputDirectory())) {
                 throw new LocalizableException(
-                    "License directory " . normalizePath($this->getOutputDirectory()) . " not writable, check its permissions.",
+                    'License directory '.normalizePath($this->getOutputDirectory()).' not writable, check its permissions.',
                     LocalizableExceptionDefinition::$LICENSE_DIRECTORY_NOT_WRITABLE_ERROR,
-                    array("path" => normalizePath($this->getOutputDirectory()))
+                    array('path' => normalizePath($this->getOutputDirectory()))
                 );
             }
         }

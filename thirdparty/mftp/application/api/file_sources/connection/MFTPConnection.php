@@ -1,9 +1,9 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/../../lib/helpers.php");
-    require_once(dirname(__FILE__) . "/../../lib/logging.php");
-    require_once(dirname(__FILE__) . '/mftp_functions.php');
-    require_once(dirname(__FILE__) . '/FTPConnectionBase.php');
+    require_once dirname(__FILE__).'/../../lib/helpers.php';
+    require_once dirname(__FILE__).'/../../lib/logging.php';
+    require_once dirname(__FILE__).'/mftp_functions.php';
+    require_once dirname(__FILE__).'/FTPConnectionBase.php';
 
     class MFTPConnection extends FTPConnectionBase
     {
@@ -11,7 +11,7 @@
         {
             $connectionOrFalse = mftp_connect($this->configuration->getHost(), $this->configuration->getPort());
 
-            if ($connectionOrFalse === false) {
+            if (false === $connectionOrFalse) {
                 mftpLog(LOG_WARNING, "MFTP failed to connect to '{$this->configuration->getHost()}:{$this->configuration->getPort()}'");
             } else {
                 mftpLog(LOG_DEBUG, "MFTP connected to '{$this->configuration->getHost()}:{$this->configuration->getPort()}'");
@@ -23,10 +23,10 @@
         protected function configureUTF8()
         {
             $features = $this->getServerFeatures();
-            if (array_search("UTF8", $features) !== false) {
+            if (false !== array_search('UTF8', $features)) {
                 mftp_utf8_on($this->connection);
                 // this may or may not work, but if it doesn't there's nothing we can do so just carry on
-                mftpLog(LOG_DEBUG, "MFTP enabled UTF8");
+                mftpLog(LOG_DEBUG, 'MFTP enabled UTF8');
             }
         }
 
@@ -59,7 +59,7 @@
             try {
                 $rawList = mftp_rawlist($this->connection, $listArgs);
 
-                mftpLog(LOG_DEBUG, "MFTP listed directory: $listArgs. Returned " . count($rawList) . " results.");
+                mftpLog(LOG_DEBUG, "MFTP listed directory: $listArgs. Returned ".count($rawList).' results.');
 
                 return $rawList;
             } catch (MFTPNoSuchRemoteFileException $remoteFileMissingException) {
@@ -74,7 +74,7 @@
             try {
                 $sysType = mftp_get_systype($this->connection);
             } catch (MFTPException $sysTypeException) {
-                mftpLog(LOG_WARNING, "MFTP failed to get sysType: " . $sysTypeException->getMessage());
+                mftpLog(LOG_WARNING, 'MFTP failed to get sysType: '.$sysTypeException->getMessage());
 
                 return false;
             }
@@ -107,7 +107,7 @@
                 return true;
             } catch (MFTPAuthenticationRequiresTlsException $tlsException) {
                 throw new LocalizableException(
-                  "The server you are connecting to requires TLS/SSL to be enabled.",
+                  'The server you are connecting to requires TLS/SSL to be enabled.',
                   LocalizableExceptionDefinition::$TLS_REQUIRED_ERROR
               );
             } catch (MFTPAuthenticationException $e) {
@@ -170,7 +170,7 @@
                 return false;
             } catch (MFTPQuotaExceededException $quotaExceededException) {
                 throw new LocalizableException(
-                    "Could not upload the file as the account quota has been exceeded.",
+                    'Could not upload the file as the account quota has been exceeded.',
                     LocalizableExceptionDefinition::$QUOTA_EXCEEDED_MESSAGE
                 );
             }
@@ -261,7 +261,7 @@
 
         protected function getServerFeatures()
         {
-            $cachedFeatures = $this->getCapabilitiesArrayValue("FEATURES");
+            $cachedFeatures = $this->getCapabilitiesArrayValue('FEATURES');
 
             if (!is_null($cachedFeatures)) {
                 if (is_null($this->connection->features)) {
@@ -272,7 +272,7 @@
             if (!$this->isAuthenticated()) {
                 return mftp_features($this->connection);
             } else {
-                mftpLog(LOG_INFO, "Attempting to get FEAT after authentication");
+                mftpLog(LOG_INFO, 'Attempting to get FEAT after authentication');
                 return array(); // some FTP servers (ws_ftp) don't support getting FEAT after auth. default to empty array
             }
         }

@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * User preferences form
- *
- * @package PhpMyAdmin
+ * User preferences form.
  */
+
 namespace PhpMyAdmin\Config\Forms\User;
 
 use PhpMyAdmin\Config\Forms\BaseForm;
@@ -17,19 +17,19 @@ class MainForm extends BaseForm
             'Startup' => array(
                 'ShowCreateDb',
                 'ShowStats',
-                'ShowServerInfo'
+                'ShowServerInfo',
             ),
             'DbStructure' => array(
                 'ShowDbStructureCharset',
                 'ShowDbStructureComment',
                 'ShowDbStructureCreation',
                 'ShowDbStructureLastUpdate',
-                'ShowDbStructureLastCheck'
+                'ShowDbStructureLastCheck',
             ),
             'TableStructure' => array(
                 'HideStructureActions',
                 'ShowColumnComments',
-                ':group:' . __('Default transformations'),
+                ':group:'.__('Default transformations'),
                 'DefaultTransformations/Hex',
                 'DefaultTransformations/Substring',
                 'DefaultTransformations/Bool2Text',
@@ -39,7 +39,7 @@ class MainForm extends BaseForm
                 'DefaultTransformations/Inline',
                 'DefaultTransformations/TextImageLink',
                 'DefaultTransformations/TextLink',
-                ':group:end'
+                ':group:end',
             ),
             'Browse' => array(
                 'TableNavigationLinksMode',
@@ -57,7 +57,7 @@ class MainForm extends BaseForm
                 'RowActionLinksWithoutUnique',
                 'TablePrimaryKeyOrder',
                 'RememberSorting',
-                'RelationalDisplay'
+                'RelationalDisplay',
             ),
             'Edit' => array(
                 'ProtectBinary',
@@ -65,16 +65,16 @@ class MainForm extends BaseForm
                 'ShowFieldTypesInDataEditView',
                 'InsertRows',
                 'ForeignKeyDropdownOrder',
-                'ForeignKeyMaxLimit'
+                'ForeignKeyMaxLimit',
             ),
             'Tabs' => array(
                 'TabsMode',
                 'DefaultTabServer',
                 'DefaultTabDatabase',
-                'DefaultTabTable'
+                'DefaultTabTable',
             ),
             'DisplayRelationalSchema' => array(
-                'PDFDefaultPageSize'
+                'PDFDefaultPageSize',
             ),
         );
     }

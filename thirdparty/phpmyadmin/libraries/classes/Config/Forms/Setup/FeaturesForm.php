@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * User preferences form
- *
- * @package PhpMyAdmin
+ * User preferences form.
  */
+
 namespace PhpMyAdmin\Config\Forms\Setup;
 
 class FeaturesForm extends \PhpMyAdmin\Config\Forms\User\FeaturesForm
@@ -27,7 +27,7 @@ class FeaturesForm extends \PhpMyAdmin\Config\Forms\User\FeaturesForm
             'ZipDump',
             'GZipDump',
             'BZipDump',
-            'CompressOnFly'
+            'CompressOnFly',
         );
         $result['Security'] = array(
             'blowfish_secret',
@@ -40,7 +40,7 @@ class FeaturesForm extends \PhpMyAdmin\Config\Forms\User\FeaturesForm
             'LoginCookieStore',
             'LoginCookieDeleteAll',
             'CaptchaLoginPublicKey',
-            'CaptchaLoginPrivateKey'
+            'CaptchaLoginPrivateKey',
         );
         $result['Developer'] = array(
             'UserprefsDeveloperTab',

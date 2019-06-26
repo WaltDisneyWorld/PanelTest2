@@ -1,12 +1,12 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * CSV import plugin for phpMyAdmin
+ * CSV import plugin for phpMyAdmin.
  *
  * @todo       add an option for handling NULL values
- * @package    PhpMyAdmin-Import
- * @subpackage CSV
  */
+
 namespace PhpMyAdmin\Plugins\Import;
 
 use PhpMyAdmin\Import;
@@ -16,22 +16,19 @@ use PhpMyAdmin\Properties\Options\Items\TextPropertyItem;
 use PhpMyAdmin\Util;
 
 /**
- * Handles the import for the CSV format
- *
- * @package    PhpMyAdmin-Import
- * @subpackage CSV
+ * Handles the import for the CSV format.
  */
 class ImportCsv extends AbstractImportCsv
 {
     /**
-     * Whether to analyze tables
+     * Whether to analyze tables.
      *
      * @var bool
      */
     private $_analyze;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -41,14 +38,12 @@ class ImportCsv extends AbstractImportCsv
     /**
      * Sets the import plugin properties.
      * Called in the constructor.
-     *
-     * @return void
      */
     protected function setProperties()
     {
         $this->_setAnalyze(false);
 
-        if ($GLOBALS['plugin_param'] !== 'table') {
+        if ('table' !== $GLOBALS['plugin_param']) {
             $this->_setAnalyze(true);
         }
 
@@ -56,13 +51,13 @@ class ImportCsv extends AbstractImportCsv
         $this->properties->setText('CSV');
         $this->properties->setExtension('csv');
 
-        if ($GLOBALS['plugin_param'] !== 'table') {
+        if ('table' !== $GLOBALS['plugin_param']) {
             $leaf = new BoolPropertyItem(
-                "col_names",
+                'col_names',
                 __(
                     'The first line of the file contains the table column names'
-                    . ' <i>(if this is unchecked, the first line will become part'
-                    . ' of the data)</i>'
+                    .' <i>(if this is unchecked, the first line will become part'
+                    .' of the data)</i>'
                 )
             );
             $generalOptions->addProperty($leaf);
@@ -70,31 +65,29 @@ class ImportCsv extends AbstractImportCsv
             $hint = new Message(
                 __(
                     'If the data in each row of the file is not'
-                    . ' in the same order as in the database, list the corresponding'
-                    . ' column names here. Column names must be separated by commas'
-                    . ' and not enclosed in quotations.'
+                    .' in the same order as in the database, list the corresponding'
+                    .' column names here. Column names must be separated by commas'
+                    .' and not enclosed in quotations.'
                 )
             );
             $leaf = new TextPropertyItem(
-                "columns",
-                __('Column names: ') . Util::showHint($hint)
+                'columns',
+                __('Column names: ').Util::showHint($hint)
             );
             $generalOptions->addProperty($leaf);
         }
 
         $leaf = new BoolPropertyItem(
-            "ignore",
+            'ignore',
             __('Do not abort on INSERT error')
         );
         $generalOptions->addProperty($leaf);
     }
 
     /**
-     * Handles the whole import logic
+     * Handles the whole import logic.
      *
      * @param array &$sql_data 2-element array with sql data
-     *
-     * @return void
      */
     public function doImport(array &$sql_data = array())
     {
@@ -115,7 +108,7 @@ class ImportCsv extends AbstractImportCsv
         $csv_new_line = strtr($csv_new_line, $replacements);
 
         $param_error = false;
-        if (strlen($csv_terminated) === 0) {
+        if (0 === strlen($csv_terminated)) {
             $message = Message::error(
                 __('Invalid parameter for CSV import: %s')
             );
@@ -148,8 +141,8 @@ class ImportCsv extends AbstractImportCsv
             $message->addParam(__('Columns escaped with'));
             $error = true;
             $param_error = true;
-        } elseif (mb_strlen($csv_new_line) != 1
-            && $csv_new_line != 'auto'
+        } elseif (1 != mb_strlen($csv_new_line)
+            && 'auto' != $csv_new_line
         ) {
             $message = Message::error(
                 __('Invalid parameter for CSV import: %s')
@@ -178,7 +171,7 @@ class ImportCsv extends AbstractImportCsv
             if (isset($_POST['csv_ignore'])) {
                 $sql_template .= ' IGNORE';
             }
-            $sql_template .= ' INTO ' . Util::backquote($table);
+            $sql_template .= ' INTO '.Util::backquote($table);
 
             $tmp_fields = $GLOBALS['dbi']->getColumns($db, $table);
 
@@ -205,8 +198,8 @@ class ImportCsv extends AbstractImportCsv
                         $message = Message::error(
                             __(
                                 'Invalid column (%s) specified! Ensure that columns'
-                                . ' names are spelled correctly, separated by commas'
-                                . ', and not enclosed in quotes.'
+                                .' names are spelled correctly, separated by commas'
+                                .', and not enclosed in quotes.'
                             )
                         );
                         $message->addParam($val);
@@ -243,11 +236,11 @@ class ImportCsv extends AbstractImportCsv
         $csv_terminated_len = mb_strlen($csv_terminated);
         while (!($finished && $i >= $len) && !$error && !$timeout_passed) {
             $data = Import::getNextChunk();
-            if ($data === false) {
+            if (false === $data) {
                 // subtract data we didn't handle yet and stop processing
                 $GLOBALS['offset'] -= strlen($buffer);
                 break;
-            } elseif ($data === true) {
+            } elseif (true === $data) {
                 // Handle rest of buffer
             } else {
                 // Append new data to buffer
@@ -257,12 +250,12 @@ class ImportCsv extends AbstractImportCsv
                 // Force a trailing new line at EOF to prevent parsing problems
                 if ($finished && $buffer) {
                     $finalch = mb_substr($buffer, -1);
-                    if ($csv_new_line == 'auto'
-                        && $finalch != "\r"
-                        && $finalch != "\n"
+                    if ('auto' == $csv_new_line
+                        && "\r" != $finalch
+                        && "\n" != $finalch
                     ) {
                         $buffer .= "\n";
-                    } elseif ($csv_new_line != 'auto'
+                    } elseif ('auto' != $csv_new_line
                         && $finalch != $csv_new_line
                     ) {
                         $buffer .= $csv_new_line;
@@ -271,11 +264,11 @@ class ImportCsv extends AbstractImportCsv
 
                 // Do not parse string when we're not at the end
                 // and don't have new line inside
-                if (($csv_new_line == 'auto'
-                    && mb_strpos($buffer, "\r") === false
-                    && mb_strpos($buffer, "\n") === false)
-                    || ($csv_new_line != 'auto'
-                    && mb_strpos($buffer, $csv_new_line) === false)
+                if (('auto' == $csv_new_line
+                    && false === mb_strpos($buffer, "\r")
+                    && false === mb_strpos($buffer, "\n"))
+                    || ('auto' != $csv_new_line
+                    && false === mb_strpos($buffer, $csv_new_line))
                 ) {
                     continue;
                 }
@@ -316,7 +309,7 @@ class ImportCsv extends AbstractImportCsv
                             break;
                         }
                         $values[] = '';
-                        $i++;
+                        ++$i;
                         $ch = mb_substr($buffer, $i, 1);
                         if ($csv_terminated_len > 1 && $ch == $csv_terminated[0]) {
                             $ch = $this->readCsvTerminatedString(
@@ -337,7 +330,7 @@ class ImportCsv extends AbstractImportCsv
                             break;
                         }
                         $need_end = true;
-                        $i++;
+                        ++$i;
                         $ch = mb_substr($buffer, $i, 1);
                         if ($csv_terminated_len > 1 && $ch == $csv_terminated[0]) {
                             $ch = $this->readCsvTerminatedString(
@@ -359,15 +352,15 @@ class ImportCsv extends AbstractImportCsv
                         || (!$need_end
                             && !($ch == $csv_terminated
                                 || $ch == $csv_new_line
-                                || ($csv_new_line == 'auto'
-                                    && ($ch == "\r" || $ch == "\n"))))
+                                || ('auto' == $csv_new_line
+                                    && ("\r" == $ch || "\n" == $ch))))
                     ) {
                         if ($ch == $csv_escaped) {
                             if ($i == $len - 1) {
                                 $fail = true;
                                 break;
                             }
-                            $i++;
+                            ++$i;
                             $ch = mb_substr($buffer, $i, 1);
                             if ($csv_terminated_len > 1
                                 && $ch == $csv_terminated[0]
@@ -383,8 +376,8 @@ class ImportCsv extends AbstractImportCsv
                             if ($csv_enclosed == $csv_escaped
                                 && ($ch == $csv_terminated
                                 || $ch == $csv_new_line
-                                || ($csv_new_line == 'auto'
-                                && ($ch == "\r" || $ch == "\n")))
+                                || ('auto' == $csv_new_line
+                                && ("\r" == $ch || "\n" == $ch)))
                             ) {
                                 break;
                             }
@@ -396,7 +389,7 @@ class ImportCsv extends AbstractImportCsv
                             }
                             break;
                         }
-                        $i++;
+                        ++$i;
                         $ch = mb_substr($buffer, $i, 1);
                         if ($csv_terminated_len > 1 && $ch == $csv_terminated[0]) {
                             $ch = $this->readCsvTerminatedString(
@@ -410,7 +403,7 @@ class ImportCsv extends AbstractImportCsv
                     }
 
                     // unquoted NULL string
-                    if (false === $need_end && $value === 'NULL') {
+                    if (false === $need_end && 'NULL' === $value) {
                         $value = null;
                     }
 
@@ -436,7 +429,7 @@ class ImportCsv extends AbstractImportCsv
                             }
                             break;
                         } else {
-                            $i++;
+                            ++$i;
                             $ch = mb_substr($buffer, $i, 1);
                             if ($csv_terminated_len > 1
                                 && $ch == $csv_terminated[0]
@@ -453,7 +446,7 @@ class ImportCsv extends AbstractImportCsv
                     }
                     // Are we at the end?
                     if ($ch == $csv_new_line
-                        || ($csv_new_line == 'auto' && ($ch == "\r" || $ch == "\n"))
+                        || ('auto' == $csv_new_line && ("\r" == $ch || "\n" == $ch))
                         || ($finished && $i == $len - 1)
                     ) {
                         $csv_finish = true;
@@ -470,7 +463,7 @@ class ImportCsv extends AbstractImportCsv
                             }
                             break;
                         }
-                        $i++;
+                        ++$i;
                         $ch = mb_substr($buffer, $i, 1);
                         if ($csv_terminated_len > 1
                             && $ch == $csv_terminated[0]
@@ -491,14 +484,14 @@ class ImportCsv extends AbstractImportCsv
                 // End of line
                 if ($csv_finish
                     || $ch == $csv_new_line
-                    || ($csv_new_line == 'auto' && ($ch == "\r" || $ch == "\n"))
+                    || ('auto' == $csv_new_line && ("\r" == $ch || "\n" == $ch))
                 ) {
-                    if ($csv_new_line == 'auto' && $ch == "\r") { // Handle "\r\n"
+                    if ('auto' == $csv_new_line && "\r" == $ch) { // Handle "\r\n"
                         if ($i >= ($len - 2) && !$finished) {
                             break; // We need more data to decide new line
                         }
-                        if (mb_substr($buffer, $i + 1, 1) == "\n") {
-                            $i++;
+                        if ("\n" == mb_substr($buffer, $i + 1, 1)) {
+                            ++$i;
                         }
                     }
                     // We didn't parse value till the end of line, so there was
@@ -523,15 +516,14 @@ class ImportCsv extends AbstractImportCsv
                     } else {
                         // Do we have correct count of values?
                         if (count($values) != $required_fields) {
-
                             // Hack for excel
-                            if ($values[count($values) - 1] == ';') {
+                            if (';' == $values[count($values) - 1]) {
                                 unset($values[count($values) - 1]);
                             } else {
                                 $message = Message::error(
                                     __(
                                         'Invalid column count in CSV input'
-                                        . ' on line %d.'
+                                        .' on line %d.'
                                     )
                                 );
                                 $message->addParam($line);
@@ -546,37 +538,37 @@ class ImportCsv extends AbstractImportCsv
                             if (!$first) {
                                 $sql .= ', ';
                             }
-                            if ($val === null) {
+                            if (null === $val) {
                                 $sql .= 'NULL';
                             } else {
                                 $sql .= '\''
-                                    . $GLOBALS['dbi']->escapeString($val)
-                                    . '\'';
+                                    .$GLOBALS['dbi']->escapeString($val)
+                                    .'\'';
                             }
 
                             $first = false;
                         }
                         $sql .= ')';
                         if (isset($_POST['csv_replace'])) {
-                            $sql .= " ON DUPLICATE KEY UPDATE ";
+                            $sql .= ' ON DUPLICATE KEY UPDATE ';
                             foreach ($fields as $field) {
                                 $fieldName = Util::backquote(
                                     $field['Field']
                                 );
-                                $sql .= $fieldName . " = VALUES(" . $fieldName
-                                    . "), ";
+                                $sql .= $fieldName.' = VALUES('.$fieldName
+                                    .'), ';
                             }
                             $sql = rtrim($sql, ', ');
                         }
 
-                        /**
+                        /*
                          * @todo maybe we could add original line to verbose
                          * SQL in comment
                          */
                         Import::runQuery($sql, $sql, $sql_data);
                     }
 
-                    $line++;
+                    ++$line;
                     $csv_finish = false;
                     $values = array();
                     $buffer = mb_substr($buffer, $i + 1);
@@ -611,13 +603,13 @@ class ImportCsv extends AbstractImportCsv
             ) {
                 // Fill out column names
                 for ($i = 0; $i < $max_cols; ++$i) {
-                    $col_names[] = 'COL ' . ($i + 1);
+                    $col_names[] = 'COL '.($i + 1);
                 }
             }
 
             if (mb_strlen($db)) {
                 $result = $GLOBALS['dbi']->fetchResult('SHOW TABLES');
-                $tbl_name = 'TABLE ' . (count($result) + 1);
+                $tbl_name = 'TABLE '.(count($result) + 1);
             } else {
                 $tbl_name = 'TBL_NAME';
             }
@@ -629,7 +621,7 @@ class ImportCsv extends AbstractImportCsv
             $analyses[] = Import::analyzeTable($tables[0]);
 
             /**
-             * string $db_name (no backquotes)
+             * string $db_name (no backquotes).
              *
              * array $table = array(table_name, array() column_names, array()() rows)
              * array $tables = array of "$table"s
@@ -658,7 +650,7 @@ class ImportCsv extends AbstractImportCsv
         // Commit any possible data in buffers
         Import::runQuery('', '', $sql_data);
 
-        if (count($values) != 0 && !$error) {
+        if (0 != count($values) && !$error) {
             $message = Message::error(
                 __('Invalid format of CSV input on line %d.')
             );
@@ -670,7 +662,7 @@ class ImportCsv extends AbstractImportCsv
     /**
      * Read the expected column_separated_with String of length
      * $csv_terminated_len from the $buffer
-     * into variable $ch and return the read string $ch
+     * into variable $ch and return the read string $ch.
      *
      * @param string $buffer             The original string buffer read from
      *                                   csv file
@@ -685,17 +677,18 @@ class ImportCsv extends AbstractImportCsv
      */
     public function readCsvTerminatedString($buffer, $ch, $i, $csv_terminated_len)
     {
-        for ($j = 0; $j < $csv_terminated_len - 1; $j++) {
-            $i++;
+        for ($j = 0; $j < $csv_terminated_len - 1; ++$j) {
+            ++$i;
             $ch .= mb_substr($buffer, $i, 1);
         }
 
         return $ch;
     }
+
     /* ~~~~~~~~~~~~~~~~~~~~ Getters and Setters ~~~~~~~~~~~~~~~~~~~~ */
 
     /**
-     * Returns true if the table should be analyzed, false otherwise
+     * Returns true if the table should be analyzed, false otherwise.
      *
      * @return bool
      */
@@ -705,11 +698,9 @@ class ImportCsv extends AbstractImportCsv
     }
 
     /**
-     * Sets to true if the table should be analyzed, false otherwise
+     * Sets to true if the table should be analyzed, false otherwise.
      *
      * @param bool $analyze status
-     *
-     * @return void
      */
     private function _setAnalyze($analyze)
     {

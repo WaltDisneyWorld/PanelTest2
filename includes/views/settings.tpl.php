@@ -1,6 +1,6 @@
 <?php if (!isset($HOME)) {
     die();
-} require 'includes/classes/head.class.php';onlyadmin();onlymasterreseller(); ?>
+} require 'includes/classes/head.class.php'; onlyadmin(); onlymasterreseller(); ?>
         <div class="content-wrapper">
             <div class="container-fluid">
 
@@ -34,7 +34,7 @@
     <input type="text" class="form-control" name="title" id="formGroupExampleInput" value="<?php
     require 'config.php';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
 
     $sql = "SELECT value FROM settings WHERE code =  'title' LIMIT 0 , 30";
@@ -57,7 +57,7 @@
     <input type="text" class="form-control" name="logos" id="formGroupExampleInput" value="<?php
     require 'config.php';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
     $sql = "SELECT value FROM settings WHERE code =  'logo' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {
@@ -68,7 +68,7 @@
         // Free result set
         mysqli_free_result($result);
     }
-   
+
 ?>">
   </fieldset>
 		
@@ -80,7 +80,7 @@
 				 <?php
     require 'config.php';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
     $sql = "SELECT value FROM settings WHERE code =  'theme' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {
@@ -91,21 +91,20 @@
         // Free result set
         mysqli_free_result($result);
     }
-   
 
-				 $templates = scandir("templates");
+				 $templates = scandir('templates');
 				 foreach ($templates as $template) {
-					 if ($template == "." || $template == "..") {} else {
-						 if (is_dir("templates/" . $template)) {
+					 if ('.' == $template || '..' == $template) {} else {
+						 if (is_dir('templates/'.$template)) {
 					 ?>
 				 <option value="<?php echo $template; ?>" <?php 
 							 if ($template == $oldtemplate) {
-								 echo "selected";
+								 echo 'selected';
 							 } ?>
 							 ><?php echo $template; ?></option>
 				 <?php
 				 }}}
-				 
+
 				 ?>
 </select>
     
@@ -125,7 +124,7 @@
         // Free result set
         mysqli_free_result($result);
     }
-  
+
 ?>">
   </fieldset>
    
@@ -169,7 +168,7 @@
         <fieldset class="form-group" style="display:none;">
     <label for="formGroupExampleInput">Navbar color</label>
     <input type="text" class="form-control" name="navbar" id="formGroupExampleInput" value="<?php
- 
+
     $sql = "SELECT value FROM settings WHERE code =  'color' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {
         // Fetch one and one row
@@ -295,28 +294,28 @@
 
 ?>
     <label><input type="radio" name="smtp_security" value="0" <?php
-    if ($wew == 0) {
+    if (0 == $wew) {
         ?>
       checked="true"
       <?php
     }
-    
+
     ?>> None</label><br>
 <label><input type="radio" name="smtp_security" value="1" <?php
-    if ($wew == 1) {
+    if (1 == $wew) {
         ?>
       checked="true"
       <?php
     }
-    
+
     ?>> SSL</label><br>
 <label><input type="radio" name="smtp_security" value="2" <?php
-    if ($wew == 2) {
+    if (2 == $wew) {
         ?>
       checked="true"
       <?php
     }
-    
+
     ?>> TLS</label>
   </fieldset>
   
@@ -378,15 +377,15 @@
         {
             require 'config.php';
             $mysqli = new mysqli();
-            $con    = mysqli_connect("$host", "$user", "$pass", "$data");
-            $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]"; ?>
+            $con = mysqli_connect("$host", "$user", "$pass", "$data");
+            $actual_link = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http')."://$_SERVER[HTTP_HOST]"; ?>
     
         <p>The Authorized Redirect URL should be <?php echo $actual_link; ?> or <?php echo $actual_link; ?>/action.php?action=login&oauth=<?php echo $c; ?> with the actual url.</p>
          <fieldset class="form-group">
     <label for="formGroupExampleInput"><?php echo $d; ?> Secret Key</label>
     <input type="text" class="form-control" name="<?php echo $c; ?>_secret" id="formGroupExampleInput" value="<?php
 
-    $sql = "SELECT value FROM settings WHERE code =  '" . $c . "_secret' LIMIT 0 , 30";
+    $sql = "SELECT value FROM settings WHERE code =  '".$c."_secret' LIMIT 0 , 30";
 
             if ($result = mysqli_query($con, $sql)) {
                 // Fetch one and one row
@@ -401,7 +400,7 @@
     <label for="formGroupExampleInput"><?php echo $d; ?> Public Key</label>
     <input type="text" class="form-control" name="<?php echo $c; ?>_public" id="formGroupExampleInput" value="<?php
 
-    $sql = "SELECT value FROM settings WHERE code =  '" . $c . "_public' LIMIT 0 , 30";
+    $sql = "SELECT value FROM settings WHERE code =  '".$c."_public' LIMIT 0 , 30";
             if ($result = mysqli_query($con, $sql)) {
                 // Fetch one and one row
                 while ($row = mysqli_fetch_row($result)) {
@@ -414,10 +413,10 @@
       
         <?php
         }
-        ae("github", "Github");
-        ae("twitter", "Twitter");
-        ae("google", "Google");
-        ae("facebook", "Facebook");
+        ae('github', 'Github');
+        ae('twitter', 'Twitter');
+        ae('google', 'Google');
+        ae('facebook', 'Facebook');
         ?>
         <button type="submit" class="btn btn-primary"><?php echo $lang_69; ?></button>
         

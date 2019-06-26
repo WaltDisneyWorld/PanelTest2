@@ -1,17 +1,15 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * phpMyAdmin fatal error display page
- *
- * @package PhpMyAdmin
+ * phpMyAdmin fatal error display page.
  */
 use PhpMyAdmin\Sanitize;
 
-if (! defined('PHPMYADMIN')) {
+if (!defined('PHPMYADMIN')) {
     exit;
 }
 
-if (! defined('TESTSUITE')) {
+if (!defined('TESTSUITE')) {
     http_response_code(500);
     header('Content-Type: text/html; charset=utf-8');
 }

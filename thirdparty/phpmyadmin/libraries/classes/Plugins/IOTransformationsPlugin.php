@@ -1,19 +1,15 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Abstract class for the I/O transformations plugins
- *
- * @package PhpMyAdmin
+ * Abstract class for the I/O transformations plugins.
  */
-namespace PhpMyAdmin\Plugins;
 
-use PhpMyAdmin\Plugins\TransformationsPlugin;
+namespace PhpMyAdmin\Plugins;
 
 /**
  * Provides a common interface that will have to be implemented
  * by all of the Input/Output transformations plugins.
- *
- * @package PhpMyAdmin
  */
 abstract class IOTransformationsPlugin extends TransformationsPlugin
 {
@@ -54,7 +50,7 @@ abstract class IOTransformationsPlugin extends TransformationsPlugin
 
     /**
      * Returns the array of scripts (filename) required for plugin
-     * initialization and handling
+     * initialization and handling.
      *
      * @return array javascripts to be included
      */
@@ -64,7 +60,7 @@ abstract class IOTransformationsPlugin extends TransformationsPlugin
     }
 
     /**
-     * Returns the error message
+     * Returns the error message.
      *
      * @return string error
      */
@@ -74,7 +70,7 @@ abstract class IOTransformationsPlugin extends TransformationsPlugin
     }
 
     /**
-     * Returns the success status
+     * Returns the success status.
      *
      * @return bool
      */
@@ -84,9 +80,7 @@ abstract class IOTransformationsPlugin extends TransformationsPlugin
     }
 
     /**
-     * Resets the object properties
-     *
-     * @return void
+     * Resets the object properties.
      */
     public function reset()
     {

@@ -1,19 +1,17 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * hold PhpMyAdmin\Twig\IndexExtension class
- *
- * @package PhpMyAdmin\Twig
+ * hold PhpMyAdmin\Twig\IndexExtension class.
  */
+
 namespace PhpMyAdmin\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * Class IndexExtension
- *
- * @package PhpMyAdmin\Twig
+ * Class IndexExtension.
  */
 class IndexExtension extends AbstractExtension
 {

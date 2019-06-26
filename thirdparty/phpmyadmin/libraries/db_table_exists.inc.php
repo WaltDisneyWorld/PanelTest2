@@ -1,18 +1,16 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Ensure the database and the table exist (else move to the "parent" script)
- * and display headers
- *
- * @package PhpMyAdmin
+ * and display headers.
  */
-
 use PhpMyAdmin\Core;
 use PhpMyAdmin\Message;
 use PhpMyAdmin\Response;
 use PhpMyAdmin\Url;
 
-if (! defined('PHPMYADMIN')) {
+if (!defined('PHPMYADMIN')) {
     exit;
 }
 
@@ -23,9 +21,9 @@ if (empty($is_db)) {
         $is_db = false;
     }
 
-    if (! $is_db) {
+    if (!$is_db) {
         // not a valid db name -> back to the welcome page
-        if (! defined('IS_TRANSFORMATION_WRAPPER')) {
+        if (!defined('IS_TRANSFORMATION_WRAPPER')) {
             $response = Response::getInstance();
             if ($response->isAjax()) {
                 $response->setRequestStatus(false);
@@ -38,7 +36,7 @@ if (empty($is_db)) {
                 if (isset($message)) {
                     $url_params['message'] = $message;
                 }
-                if (! empty($sql_query)) {
+                if (!empty($sql_query)) {
                     $url_params['sql_query'] = $sql_query;
                 }
                 if (isset($show_as_php)) {
@@ -46,7 +44,7 @@ if (empty($is_db)) {
                 }
                 Core::sendHeaderLocation(
                     './index.php'
-                    . Url::getCommonRaw($url_params)
+                    .Url::getCommonRaw($url_params)
                 );
             }
             exit;
@@ -63,10 +61,10 @@ if (empty($is_table)
     if (strlen($table) > 0) {
         $is_table = $GLOBALS['dbi']->getCachedTableContent(array($db, $table), false);
 
-        if (! $is_table) {
+        if (!$is_table) {
             $_result = $GLOBALS['dbi']->tryQuery(
                 'SHOW TABLES LIKE \''
-                . $GLOBALS['dbi']->escapeString($table) . '\';',
+                .$GLOBALS['dbi']->escapeString($table).'\';',
                 PhpMyAdmin\DatabaseInterface::CONNECT_USER,
                 PhpMyAdmin\DatabaseInterface::QUERY_STORE
             );
@@ -77,7 +75,7 @@ if (empty($is_table)
         $is_table = false;
     }
 
-    if (! $is_table) {
+    if (!$is_table) {
         if (!defined('IS_TRANSFORMATION_WRAPPER')) {
             if (strlen($table) > 0) {
                 // SHOW TABLES doesn't show temporary tables, so try select
@@ -89,8 +87,8 @@ if (empty($is_table)
                  * only happen if IS_TRANSFORMATION_WRAPPER?
                  */
                 $_result = $GLOBALS['dbi']->tryQuery(
-                    'SELECT COUNT(*) FROM ' . PhpMyAdmin\Util::backquote($table)
-                    . ';',
+                    'SELECT COUNT(*) FROM '.PhpMyAdmin\Util::backquote($table)
+                    .';',
                     PhpMyAdmin\DatabaseInterface::CONNECT_USER,
                     PhpMyAdmin\DatabaseInterface::QUERY_STORE
                 );
@@ -98,13 +96,13 @@ if (empty($is_table)
                 $GLOBALS['dbi']->freeResult($_result);
             }
 
-            if (! $is_table) {
+            if (!$is_table) {
                 include './db_sql.php';
                 exit;
             }
         }
 
-        if (! $is_table) {
+        if (!$is_table) {
             exit;
         }
     }

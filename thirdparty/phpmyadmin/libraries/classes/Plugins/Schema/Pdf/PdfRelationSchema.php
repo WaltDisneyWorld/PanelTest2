@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * PDF schema handling
- *
- * @package PhpMyAdmin
+ * PDF schema handling.
  */
+
 namespace PhpMyAdmin\Plugins\Schema\Pdf;
 
 use PhpMyAdmin\Pdf as PdfLib;
@@ -13,15 +13,15 @@ use PhpMyAdmin\Relation;
 use PhpMyAdmin\Transformations;
 use PhpMyAdmin\Util;
 
-/**
+/*
  * Skip the plugin if TCPDF is not available.
  */
-if (! class_exists('TCPDF')) {
+if (!class_exists('TCPDF')) {
     $GLOBALS['skip_import'] = true;
     return;
 }
 
-/**
+/*
  * block attempts to directly run this script
  */
 if (getcwd() == dirname(__FILE__)) {
@@ -29,7 +29,7 @@ if (getcwd() == dirname(__FILE__)) {
 }
 
 /**
- * Pdf Relation Schema Class
+ * Pdf Relation Schema Class.
  *
  * Purpose of this class is to generate the PDF Document. PDF is widely
  * used format for documenting text,fonts,images and 3d vector graphics.
@@ -38,12 +38,11 @@ if (getcwd() == dirname(__FILE__)) {
  * to this class
  *
  * @name Pdf_Relation_Schema
- * @package PhpMyAdmin
  */
 class PdfRelationSchema extends ExportRelationSchema
 {
     /**
-     * Defines properties
+     * Defines properties.
      */
     private $_showGrid;
     private $_withDoc;
@@ -71,7 +70,7 @@ class PdfRelationSchema extends ExportRelationSchema
     protected $relations = array();
 
     /**
-     * The "PdfRelationSchema" constructor
+     * The "PdfRelationSchema" constructor.
      *
      * @param string $db database name
      *
@@ -113,9 +112,9 @@ class PdfRelationSchema extends ExportRelationSchema
         $this->diagram->setOffline($this->offline);
 
         $alltables = $this->getTablesFromRequest();
-        if ($this->getTableOrder() == 'name_asc') {
+        if ('name_asc' == $this->getTableOrder()) {
             sort($alltables);
-        } elseif ($this->getTableOrder() == 'name_desc') {
+        } elseif ('name_desc' == $this->getTableOrder()) {
             rsort($alltables);
         }
 
@@ -139,7 +138,7 @@ class PdfRelationSchema extends ExportRelationSchema
 
         /* snip */
         foreach ($alltables as $table) {
-            if (! isset($this->_tables[$table])) {
+            if (!isset($this->_tables[$table])) {
                 $this->_tables[$table] = new TableStatsPdf(
                     $this->diagram,
                     $this->db,
@@ -201,7 +200,7 @@ class PdfRelationSchema extends ExportRelationSchema
                 // by the user
                 // (do not use array_search() because we would have to
                 // to do a === false and this is not PHP3 compatible)
-                if ($master_field != 'foreign_keys_data') {
+                if ('foreign_keys_data' != $master_field) {
                     if (in_array($rel['foreign_table'], $alltables)) {
                         $this->_addRelation(
                             $one_table,
@@ -239,11 +238,9 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Set Show Grid
+     * Set Show Grid.
      *
-     * @param boolean $value show grid of the document or not
-     *
-     * @return void
+     * @param bool $value show grid of the document or not
      */
     public function setShowGrid($value)
     {
@@ -251,9 +248,9 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Returns whether to show grid
+     * Returns whether to show grid.
      *
-     * @return boolean whether to show grid
+     * @return bool whether to show grid
      */
     public function isShowGrid()
     {
@@ -261,11 +258,9 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Set Data Dictionary
+     * Set Data Dictionary.
      *
-     * @param boolean $value show selected database data dictionary or not
-     *
-     * @return void
+     * @param bool $value show selected database data dictionary or not
      */
     public function setWithDataDictionary($value)
     {
@@ -273,9 +268,9 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Return whether to show selected database data dictionary or not
+     * Return whether to show selected database data dictionary or not.
      *
-     * @return boolean whether to show selected database data dictionary or not
+     * @return bool whether to show selected database data dictionary or not
      */
     public function isWithDataDictionary()
     {
@@ -283,11 +278,9 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Sets the order of the table in data dictionary
+     * Sets the order of the table in data dictionary.
      *
      * @param string $value table order
-     *
-     * @return void
      */
     public function setTableOrder($value)
     {
@@ -295,7 +288,7 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Returns the order of the table in data dictionary
+     * Returns the order of the table in data dictionary.
      *
      * @return string table order
      */
@@ -305,9 +298,7 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Output Pdf Document for download
-     *
-     * @return void
+     * Output Pdf Document for download.
      */
     public function showOutput()
     {
@@ -315,11 +306,9 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Sets X and Y minimum and maximum for a table cell
+     * Sets X and Y minimum and maximum for a table cell.
      *
      * @param TableStatsPdf $table The table name of which sets XY co-ordinates
-     *
-     * @return void
      */
     private function _setMinMax($table)
     {
@@ -330,14 +319,12 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Defines relation objects
+     * Defines relation objects.
      *
      * @param string $masterTable  The master table name
      * @param string $masterField  The relation field in the master table
      * @param string $foreignTable The foreign table name
      * @param string $foreignField The relation field in the foreign table
-     *
-     * @return void
      *
      * @see _setMinMax
      */
@@ -347,7 +334,7 @@ class PdfRelationSchema extends ExportRelationSchema
         $foreignTable,
         $foreignField
     ) {
-        if (! isset($this->_tables[$masterTable])) {
+        if (!isset($this->_tables[$masterTable])) {
             $this->_tables[$masterTable] = new TableStatsPdf(
                 $this->diagram,
                 $this->db,
@@ -360,7 +347,7 @@ class PdfRelationSchema extends ExportRelationSchema
             );
             $this->_setMinMax($this->_tables[$masterTable]);
         }
-        if (! isset($this->_tables[$foreignTable])) {
+        if (!isset($this->_tables[$foreignTable])) {
             $this->_tables[$foreignTable] = new TableStatsPdf(
                 $this->diagram,
                 $this->db,
@@ -383,9 +370,8 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Draws the grid
+     * Draws the grid.
      *
-     * @return void
      *
      * @see PMA_Schema_PDF
      */
@@ -409,7 +395,7 @@ class PdfRelationSchema extends ExportRelationSchema
         for ($l = 0,
             $size = intval($innerHeight / $gridSize);
             $l <= $size;
-            $l++
+            ++$l
         ) {
             $this->diagram->line(
                 0,
@@ -427,14 +413,14 @@ class PdfRelationSchema extends ExportRelationSchema
                     ($l * $gridSize + $topSpace - $this->_topMargin)
                     * $this->_scale + $this->_yMin
                 );
-                $this->diagram->Cell($labelWidth, $labelHeight, ' ' . $label);
+                $this->diagram->Cell($labelWidth, $labelHeight, ' '.$label);
             } // end if
         } // end for
         // Draws vertical lines
         for (
             $j = 0, $size = intval($this->diagram->getPageWidth() / $gridSize);
             $j <= $size;
-            $j++
+            ++$j
         ) {
             $this->diagram->line(
                 $j * $gridSize,
@@ -452,9 +438,8 @@ class PdfRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Draws relation arrows
+     * Draws relation arrows.
      *
-     * @return void
      *
      * @see Relation_Stats_Pdf::relationdraw()
      */
@@ -463,14 +448,13 @@ class PdfRelationSchema extends ExportRelationSchema
         $i = 0;
         foreach ($this->relations as $relation) {
             $relation->relationDraw($this->showColor, $i);
-            $i++;
+            ++$i;
         }
     }
 
     /**
-     * Draws tables
+     * Draws tables.
      *
-     * @return void
      *
      * @see Table_Stats_Pdf::tableDraw()
      */
@@ -484,9 +468,7 @@ class PdfRelationSchema extends ExportRelationSchema
     /**
      * Generates data dictionary pages.
      *
-     * @param array $alltables Tables to document.
-     *
-     * @return void
+     * @param array $alltables tables to document
      */
     public function dataDictionaryDoc(array $alltables)
     {
@@ -503,7 +485,7 @@ class PdfRelationSchema extends ExportRelationSchema
             $this->diagram->Cell(
                 0,
                 6,
-                __('Page number:') . ' {' . sprintf("%02d", $i) . '}',
+                __('Page number:').' {'.sprintf('%02d', $i).'}',
                 0,
                 0,
                 'R',
@@ -514,7 +496,7 @@ class PdfRelationSchema extends ExportRelationSchema
             $this->diagram->Cell(
                 0,
                 6,
-                $i . ' ' . $table,
+                $i.' '.$table,
                 0,
                 1,
                 'L',
@@ -533,14 +515,14 @@ class PdfRelationSchema extends ExportRelationSchema
                 //    'L', 0, $this->diagram->PMA_links['doc'][$table][$field_name]
                 //);
             }
-            $i++;
+            ++$i;
         }
         $this->diagram->PMA_links['RT']['-'] = $this->diagram->AddLink();
         $this->diagram->SetX(10);
         $this->diagram->Cell(
             0,
             6,
-            __('Page number:') . ' {00}',
+            __('Page number:').' {00}',
             0,
             0,
             'R',
@@ -551,7 +533,7 @@ class PdfRelationSchema extends ExportRelationSchema
         $this->diagram->Cell(
             0,
             6,
-            $i . ' ' . __('Relational schema'),
+            $i.' '.__('Relational schema'),
             0,
             1,
             'L',
@@ -560,12 +542,12 @@ class PdfRelationSchema extends ExportRelationSchema
         );
         $z = 0;
         foreach ($alltables as $table) {
-            $z++;
+            ++$z;
             $this->diagram->SetAutoPageBreak(true, 15);
             $this->diagram->addpage($this->orientation);
             $this->diagram->Bookmark($table);
             $this->diagram->setAlias(
-                '{' . sprintf("%02d", $z) . '}',
+                '{'.sprintf('%02d', $z).'}',
                 $this->diagram->PageNo()
             );
             $this->diagram->PMA_links['RT'][$table]['-']
@@ -578,7 +560,7 @@ class PdfRelationSchema extends ExportRelationSchema
             $this->diagram->Cell(
                 0,
                 8,
-                $z . ' ' . $table,
+                $z.' '.$table,
                 1,
                 1,
                 'C',
@@ -595,31 +577,31 @@ class PdfRelationSchema extends ExportRelationSchema
             }
 
             /**
-             * Gets table information
+             * Gets table information.
              */
             $showtable = $GLOBALS['dbi']->getTable($this->db, $table)
                 ->getStatusInfo();
             $show_comment = isset($showtable['Comment'])
                 ? $showtable['Comment']
                 : '';
-            $create_time  = isset($showtable['Create_time'])
+            $create_time = isset($showtable['Create_time'])
                 ? Util::localisedDate(
                     strtotime($showtable['Create_time'])
                 )
                 : '';
-            $update_time  = isset($showtable['Update_time'])
+            $update_time = isset($showtable['Update_time'])
                 ? Util::localisedDate(
                     strtotime($showtable['Update_time'])
                 )
                 : '';
-            $check_time   = isset($showtable['Check_time'])
+            $check_time = isset($showtable['Check_time'])
                 ? Util::localisedDate(
                     strtotime($showtable['Check_time'])
                 )
                 : '';
 
             /**
-             * Gets fields properties
+             * Gets fields properties.
              */
             $columns = $GLOBALS['dbi']->getColumns($this->db, $table);
 
@@ -628,61 +610,60 @@ class PdfRelationSchema extends ExportRelationSchema
             $res_rel = $this->relation->getForeigners($this->db, $table);
 
             /**
-             * Displays the comments of the table if MySQL >= 3.23
+             * Displays the comments of the table if MySQL >= 3.23.
              */
-
             $break = false;
-            if (! empty($show_comment)) {
+            if (!empty($show_comment)) {
                 $this->diagram->Cell(
                     0,
                     3,
-                    __('Table comments:') . ' ' . $show_comment,
+                    __('Table comments:').' '.$show_comment,
                     0,
                     1
                 );
                 $break = true;
             }
 
-            if (! empty($create_time)) {
+            if (!empty($create_time)) {
                 $this->diagram->Cell(
                     0,
                     3,
-                    __('Creation:') . ' ' . $create_time,
+                    __('Creation:').' '.$create_time,
                     0,
                     1
                 );
                 $break = true;
             }
 
-            if (! empty($update_time)) {
+            if (!empty($update_time)) {
                 $this->diagram->Cell(
                     0,
                     3,
-                    __('Last update:') . ' ' . $update_time,
+                    __('Last update:').' '.$update_time,
                     0,
                     1
                 );
                 $break = true;
             }
 
-            if (! empty($check_time)) {
+            if (!empty($check_time)) {
                 $this->diagram->Cell(
                     0,
                     3,
-                    __('Last check:') . ' ' . $check_time,
+                    __('Last check:').' '.$check_time,
                     0,
                     1
                 );
                 $break = true;
             }
 
-            if ($break == true) {
+            if (true == $break) {
                 $this->diagram->Cell(0, 3, '', 0, 1);
                 $this->diagram->Ln();
             }
 
             $this->diagram->SetFont($this->_ff, 'B');
-            if (isset($this->orientation) && $this->orientation == 'L') {
+            if (isset($this->orientation) && 'L' == $this->orientation) {
                 $this->diagram->Cell(25, 8, __('Column'), 1, 0, 'C');
                 $this->diagram->Cell(20, 8, __('Type'), 1, 0, 'C');
                 $this->diagram->Cell(20, 8, __('Attributes'), 1, 0, 'C');
@@ -691,7 +672,7 @@ class PdfRelationSchema extends ExportRelationSchema
                 $this->diagram->Cell(25, 8, __('Extra'), 1, 0, 'C');
                 $this->diagram->Cell(45, 8, __('Links to'), 1, 0, 'C');
 
-                if ($this->paper == 'A4') {
+                if ('A4' == $this->paper) {
                     $comments_width = 67;
                 } else {
                     // this is really intended for 'letter'
@@ -722,10 +703,10 @@ class PdfRelationSchema extends ExportRelationSchema
             foreach ($columns as $row) {
                 $extracted_columnspec
                     = Util::extractColumnSpec($row['Type']);
-                $type                = $extracted_columnspec['print_type'];
-                $attribute           = $extracted_columnspec['attribute'];
-                if (! isset($row['Default'])) {
-                    if ($row['Null'] != '' && $row['Null'] != 'NO') {
+                $type = $extracted_columnspec['print_type'];
+                $attribute = $extracted_columnspec['attribute'];
+                if (!isset($row['Default'])) {
+                    if ('' != $row['Null'] && 'NO' != $row['Null']) {
                         $row['Default'] = 'NULL';
                     }
                 }
@@ -744,14 +725,14 @@ class PdfRelationSchema extends ExportRelationSchema
                 if ($foreigner) {
                     $linksTo = '-> ';
                     if ($foreigner['foreign_db'] != $this->db) {
-                        $linksTo .= $foreigner['foreign_db'] . '.';
+                        $linksTo .= $foreigner['foreign_db'].'.';
                     }
                     $linksTo .= $foreigner['foreign_table']
-                        . '.' . $foreigner['foreign_field'];
+                        .'.'.$foreigner['foreign_field'];
 
                     if (isset($foreigner['on_update'])) { // not set for internal
-                        $linksTo .= "\n" . 'ON UPDATE ' . $foreigner['on_update'];
-                        $linksTo .= "\n" . 'ON DELETE ' . $foreigner['on_delete'];
+                        $linksTo .= "\n".'ON UPDATE '.$foreigner['on_update'];
+                        $linksTo .= "\n".'ON DELETE '.$foreigner['on_delete'];
                     }
                 }
 
@@ -759,7 +740,7 @@ class PdfRelationSchema extends ExportRelationSchema
                     $field_name,
                     $type,
                     $attribute,
-                    (($row['Null'] == '' || $row['Null'] == 'NO')
+                    (('' == $row['Null'] || 'NO' == $row['Null'])
                         ? __('No')
                         : __('Yes')),
                     (isset($row['Default']) ? $row['Default'] : ''),
@@ -770,15 +751,14 @@ class PdfRelationSchema extends ExportRelationSchema
                         : ''),
                     (isset($mime_map) && isset($mime_map[$field_name])
                         ? str_replace('_', '/', $mime_map[$field_name]['mimetype'])
-                        : '')
+                        : ''),
                 );
                 $links = array();
                 $links[0] = $this->diagram->PMA_links['RT'][$table][$field_name];
                 if ($foreigner
                     && isset($this->diagram->PMA_links['doc'][$foreigner['foreign_table']][$foreigner['foreign_field']])
                 ) {
-                    $links[6] = $this->diagram->PMA_links['doc']
-                        [$foreigner['foreign_table']][$foreigner['foreign_field']];
+                    $links[6] = $this->diagram->PMA_links['doc'][$foreigner['foreign_table']][$foreigner['foreign_field']];
                 } else {
                     unset($links[6]);
                 }

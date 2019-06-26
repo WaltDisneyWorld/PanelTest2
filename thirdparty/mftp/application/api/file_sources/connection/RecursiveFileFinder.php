@@ -1,6 +1,6 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/../PathOperations.php");
+    require_once dirname(__FILE__).'/../PathOperations.php';
 
     class RecursiveFileFinder
     {
@@ -27,8 +27,8 @@
 
         private function findItems($items, $includeDirectoriesAndData = false)
         {
-            if ($items == null) {
-                $items = array("");
+            if (null == $items) {
+                $items = array('');
             }
 
             foreach ($items as $itemPath) {
@@ -70,7 +70,7 @@
                 return;
             } // we've gone too deep, maybe recursive symlink. bail out
 
-            if ($directoryList == null) {
+            if (null == $directoryList) {
                 $directoryList = $this->connection->listDirectory($dirPath, true);
             }
 

@@ -1,18 +1,14 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Hold the PhpMyAdmin\Language class
- *
- * @package PhpMyAdmin
+ * Hold the PhpMyAdmin\Language class.
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\LanguageManager;
-
 /**
- * Language object
- *
- * @package PhpMyAdmin
+ * Language object.
  */
 class Language
 {
@@ -23,21 +19,20 @@ class Language
     protected $mysql;
 
     /**
-     * Constructs the Language object
+     * Constructs the Language object.
      *
      * @param string $code   Language code
      * @param string $name   English name
      * @param string $native Native name
      * @param string $regex  Match regullar expression
      * @param string $mysql  MySQL locale code
-     *
      */
     public function __construct($code, $name, $native, $regex, $mysql)
     {
         $this->code = $code;
         $this->name = $name;
         $this->native = $native;
-        if (strpos($regex, '[-_]') === false) {
+        if (false === strpos($regex, '[-_]')) {
             $regex = str_replace('|', '([-_][[:alpha:]]{2,3})?|', $regex);
         }
         $this->regex = $regex;
@@ -45,7 +40,7 @@ class Language
     }
 
     /**
-     * Returns native name for language
+     * Returns native name for language.
      *
      * @return string
      */
@@ -55,7 +50,7 @@ class Language
     }
 
     /**
-     * Returns English name for language
+     * Returns English name for language.
      *
      * @return string
      */
@@ -65,21 +60,21 @@ class Language
     }
 
     /**
-     * Returns verbose name for language
+     * Returns verbose name for language.
      *
      * @return string
      */
     public function getName()
     {
-        if (! empty($this->native)) {
-            return $this->native . ' - ' . $this->name;
+        if (!empty($this->native)) {
+            return $this->native.' - '.$this->name;
         }
 
         return $this->name;
     }
 
     /**
-     * Returns language code
+     * Returns language code.
      *
      * @return string
      */
@@ -89,7 +84,7 @@ class Language
     }
 
     /**
-     * Returns MySQL locale code, can be empty
+     * Returns MySQL locale code, can be empty.
      *
      * @return string
      */
@@ -99,7 +94,7 @@ class Language
     }
 
     /**
-     * Compare function used for sorting
+     * Compare function used for sorting.
      *
      * @param Language $other Other object to compare
      *
@@ -130,13 +125,13 @@ class Language
     public function matchesAcceptLanguage($header)
     {
         $pattern = '/^('
-            . addcslashes($this->regex, '/')
-            . ')(;q=[0-9]\\.[0-9])?$/i';
+            .addcslashes($this->regex, '/')
+            .')(;q=[0-9]\\.[0-9])?$/i';
         return preg_match($pattern, $header);
     }
 
     /**
-     * Checks whether language matches HTTP header User-Agent
+     * Checks whether language matches HTTP header User-Agent.
      *
      * @param string $header Header content
      *
@@ -145,13 +140,13 @@ class Language
     public function matchesUserAgent($header)
     {
         $pattern = '/(\(|\[|;[[:space:]])('
-            . addcslashes($this->regex, '/')
-            . ')(;|\]|\))/i';
+            .addcslashes($this->regex, '/')
+            .')(;|\]|\))/i';
         return preg_match($pattern, $header);
     }
 
     /**
-     * Checks whether langauge is RTL
+     * Checks whether langauge is RTL.
      *
      * @return bool
      */
@@ -161,7 +156,7 @@ class Language
     }
 
     /**
-     * Activates given translation
+     * Activates given translation.
      *
      * @return bool
      */

@@ -1,8 +1,8 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/ItemListBase.php');
-    require_once(dirname(__FILE__) . '/FTPListItem.php');
-    require_once(dirname(__FILE__) . '/WindowsFTPListItem.php');
+    require_once dirname(__FILE__).'/ItemListBase.php';
+    require_once dirname(__FILE__).'/FTPListItem.php';
+    require_once dirname(__FILE__).'/WindowsFTPListItem.php';
 
     class FTPListParser extends ItemListBase
     {
@@ -13,7 +13,7 @@
             $parsedItemFormat = null;
 
             foreach ($rawList as $rawItem) {
-                if (strlen($rawItem) >= 5 && substr($rawItem, 0, 5) == "total") {
+                if (strlen($rawItem) >= 5 && 'total' == substr($rawItem, 0, 5)) {
                     continue;
                 }
 
@@ -24,19 +24,19 @@
                 // this is not an "else" for the if above, it needs to be done regardless
                 $listFormat = is_null($parsedItemFormat) ? $systemType : $parsedItemFormat;
 
-                if ($listFormat == FTP_SYS_TYPE_UNIX) {
+                if (FTP_SYS_TYPE_UNIX == $listFormat) {
                     $listItem = new FTPListItem($rawItem);
-                } elseif ($listFormat == FTP_SYS_TYPE_WINDOWS) {
+                } elseif (FTP_SYS_TYPE_WINDOWS == $listFormat) {
                     $listItem = new WindowsFTPListItem($rawItem);
                 } else {
-                    throw new InvalidArgumentException("Unknown List Format");
+                    throw new InvalidArgumentException('Unknown List Format');
                 }
 
-                if ($listItem->getName() == '..' || $listItem->getName() == '.') {
+                if ('..' == $listItem->getName() || '.' == $listItem->getName()) {
                     continue;
                 }
 
-                if (!$showHidden && substr($listItem->getName(), 0, 1) == '.') {
+                if (!$showHidden && '.' == substr($listItem->getName(), 0, 1)) {
                     continue;
                 }
 

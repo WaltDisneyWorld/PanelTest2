@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Header for the navigation panel
- *
- * @package PhpMyAdmin-Navigation
+ * Header for the navigation panel.
  */
+
 namespace PhpMyAdmin\Navigation;
 
 use PhpMyAdmin\Sanitize;
@@ -15,16 +15,14 @@ use PhpMyAdmin\Util;
 
 /**
  * This class renders the logo, links, server selection,
- * which are then displayed at the top of the navigation panel
- *
- * @package PhpMyAdmin-Navigation
+ * which are then displayed at the top of the navigation panel.
  */
 class NavigationHeader
 {
     /**
-     * Renders the navigation
+     * Renders the navigation.
      *
-     * @return String HTML
+     * @return string HTML
      */
     public function getDisplay()
     {
@@ -65,14 +63,14 @@ class NavigationHeader
             )
         );
         $buffer .= '</div>'; // pma_navigation_header
-        $buffer .= '<div id="pma_navigation_tree"' . $class . '>';
+        $buffer .= '<div id="pma_navigation_tree"'.$class.'>';
 
         return $buffer;
     }
 
     /**
      * Create the code for displaying the phpMyAdmin
-     * logo based on configuration settings
+     * logo based on configuration settings.
      *
      * @return string HTML code for the logo
      */
@@ -80,10 +78,10 @@ class NavigationHeader
     {
         $logo = 'phpMyAdmin';
         if (isset($GLOBALS['pmaThemeImage'])) {
-            $imgTag = '<img src="%s%s" ' . 'alt="' . $logo . '" id="imgpmalogo" />';
-            if (@file_exists($GLOBALS['pmaThemeImage'] . 'logo_left.png')) {
+            $imgTag = '<img src="%s%s" '.'alt="'.$logo.'" id="imgpmalogo" />';
+            if (@file_exists($GLOBALS['pmaThemeImage'].'logo_left.png')) {
                 $logo = sprintf($imgTag, $GLOBALS['pmaThemeImage'], 'logo_left.png');
-            } elseif (@file_exists($GLOBALS['pmaThemeImage'] . 'pma_logo2.png')) {
+            } elseif (@file_exists($GLOBALS['pmaThemeImage'].'pma_logo2.png')) {
                 $logo = sprintf($imgTag, $GLOBALS['pmaThemeImage'], 'pma_logo2.png');
             }
         }
@@ -116,7 +114,7 @@ class NavigationHeader
         );
         // prevent XSS, see PMASA-2013-9
         // if link has protocol, allow only http and https
-        if (! Sanitize::checkLink($logoLink, true)) {
+        if (!Sanitize::checkLink($logoLink, true)) {
             $logoLink = 'index.php';
         }
         switch ($GLOBALS['cfg']['NavigationLogoLinkWindow']) {
@@ -147,7 +145,7 @@ class NavigationHeader
 
     /**
      * Creates the code for displaying the links
-     * at the top of the navigation panel
+     * at the top of the navigation panel.
      *
      * @return string HTML code for the links
      */
@@ -160,21 +158,21 @@ class NavigationHeader
         $retval = '<!-- LINKS START -->';
         $retval .= '<div id="navipanellinks">';
         $retval .= Util::getNavigationLink(
-            'index.php' . Url::getCommon(),
+            'index.php'.Url::getCommon(),
             $showText,
             __('Home'),
             $showIcon,
             'b_home'
         );
         // if we have chosen server
-        if ($GLOBALS['server'] != 0) {
+        if (0 != $GLOBALS['server']) {
             // Logout for advanced authentication
-            if ($GLOBALS['cfg']['Server']['auth_type'] != 'config') {
+            if ('config' != $GLOBALS['cfg']['Server']['auth_type']) {
                 $text = __('Log out');
             } else {
                 $text = __('Empty session data');
             }
-            $link = 'logout.php' . $GLOBALS['url_query'];
+            $link = 'logout.php'.$GLOBALS['url_query'];
             $retval .= Util::getNavigationLink(
                 $link,
                 $showText,
@@ -233,7 +231,7 @@ class NavigationHeader
     }
 
     /**
-     * Displays the MySQL servers choice form
+     * Displays the MySQL servers choice form.
      *
      * @return string HTML code for the MySQL servers choice
      */

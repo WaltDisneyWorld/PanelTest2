@@ -13,7 +13,7 @@
         }
 
         if (!call_user_func($isTypeFunction, $val)) {
-            throw new InvalidArgumentException("Argument must be $typeName, got " . gettype($val) . " type '$val'.");
+            throw new InvalidArgumentException("Argument must be $typeName, got ".gettype($val)." type '$val'.");
         }
     }
 
@@ -25,7 +25,7 @@
          */
         public static function validateNonEmptyString($val, $argName = '')
         {
-            if (!is_string($val) || strlen($val) == 0) {
+            if (!is_string($val) || 0 == strlen($val)) {
                 throw new InvalidArgumentException("Argument $argName must be non zero-length string. Got: \"$val\"");
             }
         }
@@ -39,7 +39,7 @@
             Validation::validateInteger($mask, $allowNull);
 
             if ($mask < 0 || $mask > 0777) {
-                throw new InvalidArgumentException(sprintf("File mode out of range: 0%o.", $mask));
+                throw new InvalidArgumentException(sprintf('File mode out of range: 0%o.', $mask));
             }
         }
 
@@ -49,7 +49,7 @@
          */
         public static function validateInteger($val, $allowNull = false)
         {
-            _validateType($val, $allowNull, 'is_int', "integer");
+            _validateType($val, $allowNull, 'is_int', 'integer');
         }
 
         /**
@@ -58,17 +58,18 @@
          */
         public static function validateString($val, $allowNull = false)
         {
-            _validateType($val, $allowNull, 'is_string', "string");
+            _validateType($val, $allowNull, 'is_string', 'string');
         }
 
         public static function validateBoolean($val, $allowNull = false)
         {
-            _validateType($val, $allowNull, 'is_bool', "boolean");
+            _validateType($val, $allowNull, 'is_bool', 'boolean');
         }
 
         /**
          * @param $arrayOrNull array|null
          * @param $key string
+         *
          * @return mixed|null
          */
         public static function getArrayValueOrNull($arrayOrNull, $key)

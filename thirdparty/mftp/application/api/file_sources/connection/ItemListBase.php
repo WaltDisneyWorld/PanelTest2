@@ -1,5 +1,5 @@
 <?php
-    require_once(dirname(__FILE__) . '/../../lib/JsonSerializable.php');
+    require_once dirname(__FILE__).'/../../lib/JsonSerializable.php';
 
     abstract class ItemListBase implements ArrayAccess, Iterator, JsonSerializable
     {
@@ -18,7 +18,7 @@
         public function offsetSet($offset, $value)
         {
             // not sure if BadMethodCallException is appropriate but seems to be most fitting built in exception
-            throw new BadMethodCallException("Setting list items is not supported.");
+            throw new BadMethodCallException('Setting list items is not supported.');
         }
 
         public function offsetExists($offset)
@@ -28,13 +28,13 @@
 
         public function offsetUnset($offset)
         {
-            throw new BadMethodCallException("Unsetting list items is not supported.");
+            throw new BadMethodCallException('Unsetting list items is not supported.');
         }
 
         public function offsetGet($offset)
         {
             if ($offset > count($this->itemList) + 1) {
-                throw new OutOfRangeException(sprintf("Index %d is out of bounds.", $offset));
+                throw new OutOfRangeException(sprintf('Index %d is out of bounds.', $offset));
             }
 
             return $this->itemList[$offset];
@@ -67,7 +67,7 @@
         public function valid()
         {
             $key = $this->key();
-            return ($key !== null && $key !== false);
+            return null !== $key && false !== $key;
         }
 
         // Iterator Implementation End

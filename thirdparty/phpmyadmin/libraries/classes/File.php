@@ -1,64 +1,52 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * file upload functions
- *
- * @package PhpMyAdmin
+ * file upload functions.
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\Core;
-use PhpMyAdmin\Message;
-use PhpMyAdmin\Util;
-use PhpMyAdmin\ZipExtension;
-
 /**
- * File wrapper class
+ * File wrapper class.
  *
  * @todo when uploading a file into a blob field, should we also consider using
  *       chunks like in import? UPDATE `table` SET `field` = `field` + [chunk]
- *
- * @package PhpMyAdmin
  */
 class File
 {
     /**
      * @var string the temporary file name
-     * @access protected
      */
     public $_name = null;
 
     /**
      * @var string the content
-     * @access protected
      */
     public $_content = null;
 
     /**
      * @var Message|null the error message
-     * @access protected
      */
     public $_error_message = null;
 
     /**
      * @var bool whether the file is temporary or not
-     * @access protected
      */
     public $_is_temp = false;
 
     /**
      * @var string type of compression
-     * @access protected
      */
     public $_compression = null;
 
     /**
-     * @var integer
+     * @var int
      */
     public $_offset = 0;
 
     /**
-     * @var integer size of chunk to read with every step
+     * @var int size of chunk to read with every step
      */
     public $_chunk_size = 32768;
 
@@ -68,7 +56,7 @@ class File
     public $_handle = null;
 
     /**
-     * @var boolean whether to decompress content before returning
+     * @var bool whether to decompress content before returning
      */
     public $_decompress = false;
 
@@ -83,11 +71,9 @@ class File
     private $zipExtension;
 
     /**
-     * constructor
+     * constructor.
      *
-     * @param boolean|string $name file name or false
-     *
-     * @access public
+     * @param bool|string $name file name or false
      */
     public function __construct($name = false)
     {
@@ -101,10 +87,9 @@ class File
     }
 
     /**
-     * destructor
+     * destructor.
      *
      * @see     File::cleanUp()
-     * @access  public
      */
     public function __destruct()
     {
@@ -112,10 +97,9 @@ class File
     }
 
     /**
-     * deletes file if it is temporary, usually from a moved upload file
+     * deletes file if it is temporary, usually from a moved upload file.
      *
-     * @access  public
-     * @return boolean success
+     * @return bool success
      */
     public function cleanUp()
     {
@@ -127,10 +111,9 @@ class File
     }
 
     /**
-     * deletes the file
+     * deletes the file.
      *
-     * @access  public
-     * @return boolean success
+     * @return bool success
      */
     public function delete()
     {
@@ -139,12 +122,11 @@ class File
 
     /**
      * checks or sets the temp flag for this file
-     * file objects with temp flags are deleted with object destruction
+     * file objects with temp flags are deleted with object destruction.
      *
-     * @param boolean $is_temp sets the temp flag
+     * @param bool $is_temp sets the temp flag
      *
-     * @return boolean File::$_is_temp
-     * @access  public
+     * @return bool File::$_is_temp
      */
     public function isTemp($is_temp = null)
     {
@@ -156,12 +138,9 @@ class File
     }
 
     /**
-     * accessor
+     * accessor.
      *
      * @param string $name file name
-     *
-     * @return void
-     * @access  public
      */
     public function setName($name)
     {
@@ -169,21 +148,19 @@ class File
     }
 
     /**
-     * Gets file content
+     * Gets file content.
      *
      * @return string|false the binary file content,
      *                      or false if no content
-     *
-     * @access  public
      */
     public function getRawContent()
     {
         if (null === $this->_content) {
-            if ($this->isUploaded() && ! $this->checkUploadedFile()) {
+            if ($this->isUploaded() && !$this->checkUploadedFile()) {
                 return false;
             }
 
-            if (! $this->isReadable()) {
+            if (!$this->isReadable()) {
                 return false;
             }
 
@@ -200,26 +177,23 @@ class File
     }
 
     /**
-     * Gets file content
+     * Gets file content.
      *
      * @return string|false the binary file content as a string,
      *                      or false if no content
-     *
-     * @access  public
      */
     public function getContent()
     {
         $result = $this->getRawContent();
-        if ($result === false) {
+        if (false === $result) {
             return false;
         }
-        return '0x' . bin2hex($result);
+        return '0x'.bin2hex($result);
     }
 
     /**
      * Whether file is uploaded.
      *
-     * @access  public
      *
      * @return bool
      */
@@ -229,10 +203,9 @@ class File
     }
 
     /**
-     * accessor
+     * accessor.
      *
-     * @access  public
-     * @return string  File::$_name
+     * @return string File::$_name
      */
     public function getName()
     {
@@ -244,14 +217,13 @@ class File
      *
      * @param string $name name of file uploaded
      *
-     * @return boolean success
-     * @access  public
+     * @return bool success
      */
     public function setUploadedFile($name)
     {
         $this->setName($name);
 
-        if (! $this->isUploaded()) {
+        if (!$this->isUploaded()) {
             $this->setName(null);
             $this->_error_message = Message::error(__('File was not an uploaded file.'));
             return false;
@@ -266,12 +238,11 @@ class File
      * @param string $key       the md5 hash of the column name
      * @param string $rownumber number of row to process
      *
-     * @return boolean success
-     * @access  public
+     * @return bool success
      */
     public function setUploadedFromTblChangeRequest($key, $rownumber)
     {
-        if (! isset($_FILES['fields_upload'])
+        if (!isset($_FILES['fields_upload'])
             || empty($_FILES['fields_upload']['name']['multi_edit'][$rownumber][$key])
         ) {
             return false;
@@ -294,13 +265,13 @@ class File
         case 1: //UPLOAD_ERR_INI_SIZE:
             $this->_error_message = Message::error(__(
                 'The uploaded file exceeds the upload_max_filesize directive in '
-                . 'php.ini.'
+                .'php.ini.'
             ));
             break;
         case 2: //UPLOAD_ERR_FORM_SIZE:
             $this->_error_message = Message::error(__(
                 'The uploaded file exceeds the MAX_FILE_SIZE directive that was '
-                . 'specified in the HTML form.'
+                .'specified in the HTML form.'
             ));
             break;
         case 3: //UPLOAD_ERR_PARTIAL:
@@ -325,7 +296,7 @@ class File
     }
 
     /**
-     * strips some dimension from the multi-dimensional array from $_FILES
+     * strips some dimension from the multi-dimensional array from $_FILES.
      *
      * <code>
      * $file['name']['multi_edit'][$rownumber][$key] = [value]
@@ -348,7 +319,6 @@ class File
      * @param string $key       key to process
      *
      * @return array
-     * @access  public
      * @static
      */
     public function fetchUploadedFromTblChangeRequestMultiple(
@@ -368,17 +338,16 @@ class File
     }
 
     /**
-     * sets the name if the file to the one selected in the tbl_change form
+     * sets the name if the file to the one selected in the tbl_change form.
      *
      * @param string $key       the md5 hash of the column name
      * @param string $rownumber number of row to process
      *
-     * @return boolean success
-     * @access  public
+     * @return bool success
      */
     public function setSelectedFromTblChangeRequest($key, $rownumber = null)
     {
-        if (! empty($_REQUEST['fields_uploadlocal']['multi_edit'][$rownumber][$key])
+        if (!empty($_REQUEST['fields_uploadlocal']['multi_edit'][$rownumber][$key])
             && is_string($_REQUEST['fields_uploadlocal']['multi_edit'][$rownumber][$key])
         ) {
             // ... whether with multiple rows ...
@@ -393,7 +362,6 @@ class File
     /**
      * Returns possible error message.
      *
-     * @access  public
      * @return Message|null error message
      */
     public function getError()
@@ -404,23 +372,21 @@ class File
     /**
      * Checks whether there was any error.
      *
-     * @access  public
-     * @return boolean whether an error occurred or not
+     * @return bool whether an error occurred or not
      */
     public function isError()
     {
-        return ! is_null($this->_error_message);
+        return !is_null($this->_error_message);
     }
 
     /**
      * checks the superglobals provided if the tbl_change form is submitted
-     * and uses the submitted/selected file
+     * and uses the submitted/selected file.
      *
      * @param string $key       the md5 hash of the column name
      * @param string $rownumber number of row to process
      *
-     * @return boolean success
-     * @access  public
+     * @return bool success
      */
     public function checkTblChangeForm($key, $rownumber)
     {
@@ -443,8 +409,7 @@ class File
      *
      * @param string $name file name
      *
-     * @return boolean success
-     * @access  public
+     * @return bool success
      */
     public function setLocalSelectedFile($name)
     {
@@ -453,14 +418,14 @@ class File
         }
 
         $this->setName(
-            Util::userDir($GLOBALS['cfg']['UploadDir']) . Core::securePath($name)
+            Util::userDir($GLOBALS['cfg']['UploadDir']).Core::securePath($name)
         );
         if (@is_link($this->getName())) {
             $this->_error_message = __('File is a symbolic link');
             $this->setName(null);
             return false;
         }
-        if (! $this->isReadable()) {
+        if (!$this->isReadable()) {
             $this->_error_message = Message::error(__('File could not be read!'));
             $this->setName(null);
             return false;
@@ -472,8 +437,7 @@ class File
     /**
      * Checks whether file can be read.
      *
-     * @access  public
-     * @return boolean whether the file is readable or not
+     * @return bool whether the file is readable or not
      */
     public function isReadable()
     {
@@ -485,11 +449,11 @@ class File
     /**
      * If we are on a server with open_basedir, we must move the file
      * before opening it. The FAQ 1.11 explains how to create the "./tmp"
-     * directory - if needed
+     * directory - if needed.
      *
      * @todo move check of $cfg['TempDir'] into Config?
-     * @access  public
-     * @return boolean whether uploaded file is fine or not
+     *
+     * @return bool whether uploaded file is fine or not
      */
     public function checkUploadedFile()
     {
@@ -519,7 +483,7 @@ class File
             $new_file_to_upload
         );
         ob_end_clean();
-        if (! $move_uploaded_file_result) {
+        if (!$move_uploaded_file_result) {
             $this->_error_message = Message::error(__('Error while moving uploaded file.'));
             return false;
         }
@@ -527,7 +491,7 @@ class File
         $this->setName($new_file_to_upload);
         $this->isTemp(true);
 
-        if (! $this->isReadable()) {
+        if (!$this->isReadable()) {
             $this->_error_message = Message::error(__('Cannot read uploaded file.'));
             return false;
         }
@@ -536,13 +500,13 @@ class File
     }
 
     /**
-     * Detects what compression the file uses
+     * Detects what compression the file uses.
      *
      * @todo    move file read part into readChunk() or getChunk()
      * @todo    add support for compression plugins
-     * @access  protected
-     * @return  string|false false on error, otherwise string MIME type of
-     *                       compression, none for none
+     *
+     * @return string|false false on error, otherwise string MIME type of
+     *                      compression, none for none
      */
     protected function detectCompression()
     {
@@ -552,7 +516,7 @@ class File
         $file = fopen($this->getName(), 'rb');
         ob_end_clean();
 
-        if (! $file) {
+        if (!$file) {
             $this->_error_message = Message::error(__('File could not be read!'));
             return false;
         }
@@ -562,11 +526,9 @@ class File
     }
 
     /**
-     * Sets whether the content should be decompressed before returned
+     * Sets whether the content should be decompressed before returned.
      *
-     * @param boolean $decompress whether to decompress
-     *
-     * @return void
+     * @param bool $decompress whether to decompress
      */
     public function setDecompressContent($decompress)
     {
@@ -574,7 +536,7 @@ class File
     }
 
     /**
-     * Returns the file handle
+     * Returns the file handle.
      *
      * @return resource file handle
      */
@@ -587,30 +549,25 @@ class File
     }
 
     /**
-     * Sets the file handle
+     * Sets the file handle.
      *
      * @param object $handle file handle
-     *
-     * @return void
      */
     public function setHandle($handle)
     {
         $this->_handle = $handle;
     }
 
-
     /**
      * Sets error message for unsupported compression.
-     *
-     * @return void
      */
     public function errorUnsupported()
     {
         $this->_error_message = Message::error(sprintf(
             __(
                 'You attempted to load file with unsupported compression (%s). '
-                . 'Either support for it is not implemented or disabled by your '
-                . 'configuration.'
+                .'Either support for it is not implemented or disabled by your '
+                .'configuration.'
             ),
             $this->getCompression()
         ));
@@ -623,7 +580,7 @@ class File
      */
     public function open()
     {
-        if (! $this->_decompress) {
+        if (!$this->_decompress) {
             $this->_handle = @fopen($this->getName(), 'r');
         }
 
@@ -661,11 +618,11 @@ class File
             return false;
         }
 
-        return ($this->_handle !== false);
+        return false !== $this->_handle;
     }
 
     /**
-     * Opens file from zip
+     * Opens file from zip.
      *
      * @param string|null $specific_entry Entry to open
      *
@@ -674,7 +631,7 @@ class File
     public function openZip($specific_entry = null)
     {
         $result = $this->zipExtension->getContents($this->getName(), $specific_entry);
-        if (! empty($result['error'])) {
+        if (!empty($result['error'])) {
             $this->_error_message = Message::rawError($result['error']);
             return false;
         }
@@ -684,26 +641,24 @@ class File
     }
 
     /**
-     * Checks whether we've reached end of file
+     * Checks whether we've reached end of file.
      *
      * @return bool
      */
     public function eof()
     {
-        if (! is_null($this->_handle)) {
+        if (!is_null($this->_handle)) {
             return feof($this->_handle);
         }
         return $this->_offset == strlen($this->_content);
     }
 
     /**
-     * Closes the file
-     *
-     * @return void
+     * Closes the file.
      */
     public function close()
     {
-        if (! is_null($this->_handle)) {
+        if (!is_null($this->_handle)) {
             fclose($this->_handle);
             $this->_handle = null;
         } else {
@@ -714,7 +669,7 @@ class File
     }
 
     /**
-     * Reads data from file
+     * Reads data from file.
      *
      * @param int $size Number of bytes to read
      *
@@ -738,7 +693,7 @@ class File
     }
 
     /**
-     * Returns the character set of the file
+     * Returns the character set of the file.
      *
      * @return string character set of the file
      */
@@ -748,11 +703,9 @@ class File
     }
 
     /**
-     * Sets the character set of the file
+     * Sets the character set of the file.
      *
      * @param string $charset character set of the file
-     *
-     * @return void
      */
     public function setCharset($charset)
     {
@@ -763,7 +716,6 @@ class File
      * Returns compression used by file.
      *
      * @return string MIME type of compression, none for none
-     * @access  public
      */
     public function getCompression()
     {
@@ -775,9 +727,9 @@ class File
     }
 
     /**
-     * Returns the offset
+     * Returns the offset.
      *
-     * @return integer the offset
+     * @return int the offset
      */
     public function getOffset()
     {
@@ -785,9 +737,9 @@ class File
     }
 
     /**
-     * Returns the chunk size
+     * Returns the chunk size.
      *
-     * @return integer the chunk size
+     * @return int the chunk size
      */
     public function getChunkSize()
     {
@@ -795,11 +747,9 @@ class File
     }
 
     /**
-     * Sets the chunk size
+     * Sets the chunk size.
      *
-     * @param integer $chunk_size the chunk size
-     *
-     * @return void
+     * @param int $chunk_size the chunk size
      */
     public function setChunkSize($chunk_size)
     {
@@ -807,9 +757,9 @@ class File
     }
 
     /**
-     * Returns the length of the content in the file
+     * Returns the length of the content in the file.
      *
-     * @return integer the length of the file content
+     * @return int the length of the file content
      */
     public function getContentLength()
     {

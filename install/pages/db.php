@@ -1,8 +1,8 @@
 <?php
 if (!defined('HOMEBASE')) {
-    die("Direct Access is Not Allowed");
+    die('Direct Access is Not Allowed');
 }
-if (!isset($_SESSION["install_db"])) {
+if (!isset($_SESSION['install_db'])) {
     ?>
      <script>window.location.href = "index.php?pg=license";</script>
         <a href="index.php?pg=license">Click here</a> if you are not redirected.
@@ -13,23 +13,23 @@ if (!isset($_SESSION["install_db"])) {
 <h1 class="title">Database Details</h1>
 
 <?php
-if (isset($_GET["c"])) {
+if (isset($_GET['c'])) {
     $e = 0;
-    require("../includes/classes/license.class.php");
-    if (getEdition($_POST["key"]) == false) {
+    require '../includes/classes/license.class.php';
+    if (false == getEdition($_POST['key'])) {
         $e = 1; ?>
    <div class="notification is-danger">
  The License information provided may be not be valid.
 </div>
   <?php
     } else {
-        $_SESSION["act"] = $_POST["key"];
+        $_SESSION['act'] = $_POST['key'];
     }
-    if ($e == 0) {
-        $conn = new mysqli($_POST["host"], $_POST["username"], $_POST["password"]);
-        $sql = "CREATE DATABASE IF NOT EXISTS " . $_POST["database"];
+    if (0 == $e) {
+        $conn = new mysqli($_POST['host'], $_POST['username'], $_POST['password']);
+        $sql = 'CREATE DATABASE IF NOT EXISTS '.$_POST['database'];
         $conn->query($sql);
-        $mysqli_connection = new MySQLi($_POST["host"], $_POST["username"], $_POST["password"], $_POST["database"]);
+        $mysqli_connection = new MySQLi($_POST['host'], $_POST['username'], $_POST['password'], $_POST['database']);
         if ($mysqli_connection->connect_error) {
             $e = 1; ?>
     <div class="notification is-danger">
@@ -38,16 +38,16 @@ if (isset($_GET["c"])) {
    <?php
         }
     }
-    if ($e == 0) {
-        $config = file_get_contents("config/database.php");
-        $new  = str_replace("%HOSTNAME%", $_POST['host'], $config);
-        $new  = str_replace("%USERNAME%", $_POST['username'], $new);
-        $new  = str_replace("%PASSWORD%", $_POST['password'], $new);
-        $new  = str_replace("%DATABASE%", $_POST['database'], $new);
-        $new  = str_replace("%WEBROOT%", $_POST['webroot'], $new);
-        $new  = str_replace("%LANG%", "en", $new);
-        file_put_contents("../config.php", $new);
-        if (!file_exists("../config.php")) {
+    if (0 == $e) {
+        $config = file_get_contents('config/database.php');
+        $new = str_replace('%HOSTNAME%', $_POST['host'], $config);
+        $new = str_replace('%USERNAME%', $_POST['username'], $new);
+        $new = str_replace('%PASSWORD%', $_POST['password'], $new);
+        $new = str_replace('%DATABASE%', $_POST['database'], $new);
+        $new = str_replace('%WEBROOT%', $_POST['webroot'], $new);
+        $new = str_replace('%LANG%', 'en', $new);
+        file_put_contents('../config.php', $new);
+        if (!file_exists('../config.php')) {
             $e = 1; ?>
     
      <div class="notification is-danger">
@@ -55,7 +55,7 @@ if (isset($_GET["c"])) {
 </div>
 <?php
         }
-        if ($e == 0) {
+        if (0 == $e) {
             ?>
      <script>window.location.href = "index.php?pg=installation";</script>
         <a href="index.php?pg=installation">Click here</a> if you are not redirected.
@@ -111,13 +111,13 @@ if (isset($_GET["c"])) {
     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
+    for ($i = 0; $i < $length; ++$i) {
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
     return $randomString;
 }
-echo "intisp" . generateRandomString(10);
-    
+echo 'intisp'.generateRandomString(10);
+
     ?>" style="width:400px">
     <p>You will need to make sure that the database exists.</p>
   </div>
@@ -126,8 +126,8 @@ echo "intisp" . generateRandomString(10);
 <div class="field">
   <label class="label">Site URL</label>
   <div class="control">
-	  <?php $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-                "https" : "http") . "://" . $_SERVER['HTTP_HOST'] .
+	  <?php $link = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ?
+                'https' : 'http').'://'.$_SERVER['HTTP_HOST'].
                 $_SERVER['REQUEST_URI']; ?>
     <input name="webroot" class="input is-rounded" type="text" value="<?php echo substr($link, 0, -24); ?>" style="width:400px">
     <p>The website URL where IntISP is installed.</p>

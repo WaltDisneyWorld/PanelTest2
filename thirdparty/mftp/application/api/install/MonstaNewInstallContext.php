@@ -1,7 +1,7 @@
 <?php
-    require_once(dirname(__FILE__) . "/../lib/LocalizableException.php");
-    require_once(dirname(__FILE__) . "/../file_sources/PathOperations.php");
-    require_once(dirname(__FILE__) . "/MonstaInstallContext.php");
+    require_once dirname(__FILE__).'/../lib/LocalizableException.php';
+    require_once dirname(__FILE__).'/../file_sources/PathOperations.php';
+    require_once dirname(__FILE__).'/MonstaInstallContext.php';
 
     class MonstaNewInstallContext extends MonstaInstallContext
     {
@@ -9,7 +9,7 @@
         {
             $rootItems = array();
 
-            $previousRootItem = "";
+            $previousRootItem = '';
 
             foreach (self::listArchive($archiveHandle) as $archiveFileName) {
                 $relativeArchivePath = self::getRelativeArchivePath($archiveFileName);
@@ -34,7 +34,7 @@
                     throw new LocalizableException(
                         "Could not install to $itemPath as the item exists",
                         LocalizableExceptionDefinition::$INSTALL_DIRECTORY_EXISTS_ERROR,
-                        array("path" => $itemPath)
+                        array('path' => $itemPath)
                     );
                 }
             }
@@ -45,7 +45,7 @@
             $extractNum = 1;
 
             do {
-                $extractDirectory = PathOperations::join($installDirectory, 'monsta-extract-temp-' . $extractNum++);
+                $extractDirectory = PathOperations::join($installDirectory, 'monsta-extract-temp-'.$extractNum++);
             } while (file_exists($extractDirectory));
 
             return $extractDirectory;
@@ -57,7 +57,7 @@
                 throw new LocalizableException(
                     "Could not install into $installDirectory as the directory is not writable",
                     LocalizableExceptionDefinition::$INSTALL_PATH_NOT_WRITABLE_ERROR,
-                    array("path" => $installDirectory)
+                    array('path' => $installDirectory)
                 );
             }
         }
@@ -85,8 +85,8 @@
                         "Install setup failed moving '$source' to '$dest'.",
                         LocalizableExceptionDefinition::$INSTALL_SETUP_RENAME_ERROR,
                         array(
-                            "source" => $source,
-                            "destination" => $dest
+                            'source' => $source,
+                            'destination' => $dest,
                         )
                     );
                 }
@@ -105,7 +105,7 @@
 
             if (!@$archiveHandle->extractTo($extractDirectory)) {
                 throw new LocalizableException(
-                    "Extract of install archive failed.",
+                    'Extract of install archive failed.',
                     LocalizableExceptionDefinition::$INSTALL_ARCHIVE_EXTRACT_ERROR
                 );
             }
@@ -118,10 +118,10 @@
                 throw $e;
             }
 
-            self::makeUserDirectoriesWritable($installDirectory, array("license", "settings"));
+            self::makeUserDirectoriesWritable($installDirectory, array('license', 'settings'));
 
             if (!PathOperations::recursiveDelete($extractDirectory)) {
-                $this->setWarning("EXTRACT_CLEANUP_ERROR", "Cleaning up of extract directory created during install failed.");
+                $this->setWarning('EXTRACT_CLEANUP_ERROR', 'Cleaning up of extract directory created during install failed.');
             }
         }
 
@@ -136,7 +136,7 @@
                 $fullUserDirectoryPath = PathOperations::join($installDirectory, $userDirectory);
                 $currentMode = @fileperms($fullUserDirectoryPath);
 
-                if ($currentMode === false) {
+                if (false === $currentMode) {
                     continue; // failure, no biggie, let just try the next one
                 }
 

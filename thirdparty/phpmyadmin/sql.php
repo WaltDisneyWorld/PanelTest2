@@ -1,11 +1,11 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * SQL executor
+ * SQL executor.
  *
  * @todo    we must handle the case if sql.php is called directly with a query
  *          that returns 0 rows - to prevent cyclic redirects or includes
- * @package PhpMyAdmin
  */
 use PhpMyAdmin\Config\PageSettings;
 use PhpMyAdmin\ParseAnalyze;
@@ -15,7 +15,7 @@ use PhpMyAdmin\Url;
 use PhpMyAdmin\Util;
 
 /**
- * Gets some core libraries
+ * Gets some core libraries.
  */
 require_once 'libraries/common.inc.php';
 require_once 'libraries/check_user_privileges.inc.php';
@@ -23,8 +23,8 @@ require_once 'libraries/check_user_privileges.inc.php';
 PageSettings::showGroup('Browse');
 
 $response = Response::getInstance();
-$header   = $response->getHeader();
-$scripts  = $header->getScripts();
+$header = $response->getHeader();
+$scripts = $header->getScripts();
 $scripts->addFile('vendor/jquery/jquery.uitablefilter.js');
 $scripts->addFile('tbl_change.js');
 $scripts->addFile('indexes.js');
@@ -33,17 +33,17 @@ $scripts->addFile('multi_column_sort.js');
 
 $sql = new Sql();
 
-/**
+/*
  * Set ajax_reload in the response if it was already set
  */
-if (isset($ajax_reload) && $ajax_reload['reload'] === true) {
+if (isset($ajax_reload) && true === $ajax_reload['reload']) {
     $response->addJSON('ajax_reload', $ajax_reload);
 }
 
 /**
- * Defines the url to return to in case of error in a sql statement
+ * Defines the url to return to in case of error in a sql statement.
  */
-$is_gotofile  = true;
+$is_gotofile = true;
 if (empty($goto)) {
     if (empty($table)) {
         $goto = Util::getScriptNameForOption(
@@ -58,13 +58,13 @@ if (empty($goto)) {
     }
 } // end if
 
-if (! isset($err_url)) {
-    $err_url = (! empty($back) ? $back : $goto)
-        . '?' . Url::getCommon(array('db' => $GLOBALS['db']))
-        . (
-            (mb_strpos(' ' . $goto, 'db_') != 1
+if (!isset($err_url)) {
+    $err_url = (!empty($back) ? $back : $goto)
+        .'?'.Url::getCommon(array('db' => $GLOBALS['db']))
+        .(
+            (1 != mb_strpos(' '.$goto, 'db_')
             && strlen($table) > 0)
-            ? '&amp;table=' . urlencode($table)
+            ? '&amp;table='.urlencode($table)
             : ''
         );
 } // end if
@@ -83,27 +83,26 @@ if (isset($_POST['bkm_fields']['bkm_database'])) {
 
 // During grid edit, if we have a relational field, show the dropdown for it.
 if (isset($_POST['get_relational_values'])
-    && $_POST['get_relational_values'] == true
+    && true == $_POST['get_relational_values']
 ) {
     $sql->getRelationalValues($db, $table);
     // script has exited at this point
 }
 
 // Just like above, find possible values for enum fields during grid edit.
-if (isset($_POST['get_enum_values']) && $_POST['get_enum_values'] == true) {
-    $sql->getEnumOrSetValues($db, $table, "enum");
+if (isset($_POST['get_enum_values']) && true == $_POST['get_enum_values']) {
+    $sql->getEnumOrSetValues($db, $table, 'enum');
     // script has exited at this point
 }
 
-
 // Find possible values for set fields during grid edit.
-if (isset($_POST['get_set_values']) && $_POST['get_set_values'] == true) {
-    $sql->getEnumOrSetValues($db, $table, "set");
+if (isset($_POST['get_set_values']) && true == $_POST['get_set_values']) {
+    $sql->getEnumOrSetValues($db, $table, 'set');
     // script has exited at this point
 }
 
 if (isset($_GET['get_default_fk_check_value'])
-    && $_GET['get_default_fk_check_value'] == true
+    && true == $_GET['get_default_fk_check_value']
 ) {
     $response = Response::getInstance();
     $response->addJSON(
@@ -113,10 +112,10 @@ if (isset($_GET['get_default_fk_check_value'])
     exit;
 }
 
-/**
+/*
  * Check ajax request to set the column order and visibility
  */
-if (isset($_POST['set_col_prefs']) && $_POST['set_col_prefs'] == true) {
+if (isset($_POST['set_col_prefs']) && true == $_POST['set_col_prefs']) {
     $sql->setColumnOrderOrVisibility($table, $db);
     // script has exited at this point
 }
@@ -133,7 +132,7 @@ if (empty($sql_query) && strlen($table) > 0 && strlen($db) > 0) {
     Util::checkParameters(array('sql_query'));
 }
 
-/**
+/*
  * Parse and analyze the query
  */
 list(
@@ -148,8 +147,7 @@ if ($table != $table_from_sql && !empty($table_from_sql)) {
     $table = $table_from_sql;
 }
 
-
-/**
+/*
  * Check rights in case of DROP DATABASE
  *
  * This test may be bypassed if $is_js_confirmed = 1 (already checked with js)
@@ -169,15 +167,14 @@ if ($sql->hasNoRightsToDropDatabase(
     );
 } // end if
 
-/**
+/*
  * Need to find the real end of rows?
  */
 if (isset($find_real_end) && $find_real_end) {
     $unlim_num_rows = $sql->findRealEndOfRows($db, $table);
 }
 
-
-/**
+/*
  * Bookmark add
  */
 if (isset($_POST['store_bkm'])) {
@@ -185,17 +182,16 @@ if (isset($_POST['store_bkm'])) {
     // script has exited at this point
 } // end if
 
-
 /**
- * Sets or modifies the $goto variable if required
+ * Sets or modifies the $goto variable if required.
  */
-if ($goto == 'sql.php') {
+if ('sql.php' == $goto) {
     $is_gotofile = false;
-    $goto = 'sql.php' . Url::getCommon(
+    $goto = 'sql.php'.Url::getCommon(
         array(
             'db' => $db,
             'table' => $table,
-            'sql_query' => $sql_query
+            'sql_query' => $sql_query,
         )
     );
 } // end if

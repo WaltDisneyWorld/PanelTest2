@@ -1,25 +1,25 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/ConnectionBase.php');
+    require_once dirname(__FILE__).'/ConnectionBase.php';
 
     function normalizeFTPSysType($sysTypeName)
     {
-        if (stripos($sysTypeName, 'unix') !== false || stripos($sysTypeName, 'macos')) {
+        if (false !== stripos($sysTypeName, 'unix') || stripos($sysTypeName, 'macos')) {
             return FTP_SYS_TYPE_UNIX;
         }
 
-        if (stripos($sysTypeName, 'windows') !== false) {
+        if (false !== stripos($sysTypeName, 'windows')) {
             return FTP_SYS_TYPE_WINDOWS;
         }
 
-        throw new UnexpectedValueException(sprintf("Unknown FTP system type \"%s\".", $sysTypeName));
+        throw new UnexpectedValueException(sprintf('Unknown FTP system type "%s".', $sysTypeName));
     }
 
     abstract class FTPConnectionBase extends ConnectionBase
     {
         /**
-         * @var integer
-         * This is lazy loaded
+         * @var int
+         *          This is lazy loaded
          */
         protected $sysType;
 
@@ -39,16 +39,16 @@
         {
             if (!$this->isConnected()) {
                 throw new FileSourceConnectionException(
-                    "Attempting to get system type before connection.",
+                    'Attempting to get system type before connection.',
                     LocalizableExceptionDefinition::$GET_SYSTEM_TYPE_BEFORE_CONNECTION_ERROR
                 );
             }
 
-            if ($this->sysType !== null) {
+            if (null !== $this->sysType) {
                 return $this->sysType;
             }
 
-            $cachedSysType = $this->getCapabilitiesArrayValue("SYSTYPE");
+            $cachedSysType = $this->getCapabilitiesArrayValue('SYSTYPE');
 
             if (!is_null($cachedSysType)) {
                 $this->sysType = $cachedSysType;
@@ -58,14 +58,14 @@
             if (!$this->isAuthenticated()) {
                 $sysTypeName = $this->rawGetSysType();
             } else {
-                mftpLog(LOG_INFO, "Attempting to get SYST after authentication");
+                mftpLog(LOG_INFO, 'Attempting to get SYST after authentication');
                 $sysTypeName = false;
             }
 
-            if ($sysTypeName === false) {
+            if (false === $sysTypeName) {
                 if (is_null($defaultOnFailure)) {
                     throw new FileSourceConnectionException(
-                        "Failed to retrieve system type",
+                        'Failed to retrieve system type',
                         LocalizableExceptionDefinition::$GET_SYSTEM_TYPE_FAILED_ERROR
                     );
                 }
@@ -86,16 +86,16 @@
                     $this->handleOperationError('DIRECTORY_CHANGE_OPERATION', $newDirectory, $this->getLastError());
                 }
 
-                if (substr($newDirectory, 0, 1) == "/") {
+                if ('/' == substr($newDirectory, 0, 1)) {
                     $this->currentDirectory = $newDirectory;
                 } else {
-                    if ($this->currentDirectory == null) {
-                        $this->currentDirectory = "/";
+                    if (null == $this->currentDirectory) {
+                        $this->currentDirectory = '/';
                     }
 
                     $this->currentDirectory = PathOperations::join($this->currentDirectory, $newDirectory);
 
-                    if (substr($this->currentDirectory, -1) == "/" && $this->currentDirectory != "/") {
+                    if ('/' == substr($this->currentDirectory, -1) && '/' != $this->currentDirectory) {
                         $this->currentDirectory = substr(
                             $this->currentDirectory,
                             0,
@@ -127,11 +127,11 @@
             }
 
             if (!$this->handlePassiveModeSet($this->configuration->isPassiveMode())) {
-                $passiveModeBoolName = $this->configuration->isPassiveMode() ? "true" : "false";
+                $passiveModeBoolName = $this->configuration->isPassiveMode() ? 'true' : 'false';
 
                 throw new FileSourceConnectionException(
                     sprintf(
-                    "Failed to set passive mode to %s.",
+                    'Failed to set passive mode to %s.',
                     $passiveModeBoolName
                 ),
                     LocalizableExceptionDefinition::$FAILED_TO_SET_PASSIVE_MODE_ERROR,
@@ -150,9 +150,9 @@
 
             $dirList = $this->handleRawDirectoryList($listArgs);
 
-            if ($dirList === false) {
+            if (false === $dirList) {
                 throw new FileSourceOperationException(
-                    sprintf("Failed to list directory \"%s\"", $path),
+                    sprintf('Failed to list directory "%s"', $path),
                     LocalizableExceptionDefinition::$LIST_DIRECTORY_FAILED_ERROR,
                     array(
                         'path' => $path,
@@ -160,7 +160,7 @@
                 );
             }
 
-            return new FTPListParser($dirList, $showHidden, $this->getSysType("unix"));
+            return new FTPListParser($dirList, $showHidden, $this->getSysType('unix'));
         }
 
         protected function handleCopy($source, $destination)
@@ -181,7 +181,7 @@
 
         public function supportsPermissionChange()
         {
-            return $this->getSysType("unix") == FTP_SYS_TYPE_UNIX;
+            return FTP_SYS_TYPE_UNIX == $this->getSysType('unix');
         }
 
         protected function handleGetFileInfo($remotePath)
@@ -209,8 +209,8 @@
         protected function handleFetchServerCapabilities()
         {
             return array(
-                "SYSTYPE" => $this->getSysType("unix"),
-                "FEATURES" => $this->getServerFeatures()
+                'SYSTYPE' => $this->getSysType('unix'),
+                'FEATURES' => $this->getServerFeatures(),
             );
         }
     }

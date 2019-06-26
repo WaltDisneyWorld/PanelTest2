@@ -1,6 +1,6 @@
 <?php
 if (!defined('HOMEBASE')) {
-    die("Direct Access is Not Allowed");
+    die('Direct Access is Not Allowed');
 }
 ?>
 <h1 class="title">IntISP Requirements</h1>
@@ -22,7 +22,7 @@ if (!defined('HOMEBASE')) {
        </tfoot>
   <tbody>
       <?php
-      $failedreq=0;
+      $failedreq = 0;
       function displayReq($title, $server, $ok)
       {
           global $failedreq; ?>
@@ -42,42 +42,42 @@ if (!defined('HOMEBASE')) {
       </tr>
           <?php
       }
-      if (is_writable("../config.php")) {
-          displayReq("Writable Configuration", "config.php exists and can be written to.", true);
+      if (is_writable('../config.php')) {
+          displayReq('Writable Configuration', 'config.php exists and can be written to.', true);
       } else {
-          displayReq("Writable Configuration", "config.php does not exist. Please create a config.php file and check permissions.", false);
+          displayReq('Writable Configuration', 'config.php does not exist. Please create a config.php file and check permissions.', false);
       }
-if (is_writable("../cache")) {
-    displayReq("Writable Cache Directory", "cache folder exists and can be written to.", true);
+if (is_writable('../cache')) {
+    displayReq('Writable Cache Directory', 'cache folder exists and can be written to.', true);
 } else {
-    displayReq("Writable Cache Directory", "The cache folder cannot be written to. Please verify the permissions and make sure the directory cache exists.", false);
+    displayReq('Writable Cache Directory', 'The cache folder cannot be written to. Please verify the permissions and make sure the directory cache exists.', false);
 }
 
-        if (file_exists("../vendor")) {
-            displayReq("Composer Installation", "Composer has been installed and setup.", true);
+        if (file_exists('../vendor')) {
+            displayReq('Composer Installation', 'Composer has been installed and setup.', true);
         } else {
-            displayReq("Composer Installation", "Composer has not been installed. Please make sure you extract the vendor.zip or run composer install. <a href='installVendor'>Try running automated Install</a>", false);
+            displayReq('Composer Installation', "Composer has not been installed. Please make sure you extract the vendor.zip or run composer install. <a href='installVendor'>Try running automated Install</a>", false);
         }
     preg_match("#^\d+(\.\d+)*#", PHP_VERSION, $match);
 if (version_compare($match[0], '7.0.0', '>=')) {
-    displayReq("PHP VERSION", "Your php version " . $match[0] . " matched the requirement.", true);
+    displayReq('PHP VERSION', 'Your php version '.$match[0].' matched the requirement.', true);
 } else {
-    displayReq("PHP VERSION", "Your php version " .$match[0] . " does not match the requirement. Please update", false);
+    displayReq('PHP VERSION', 'Your php version '.$match[0].' does not match the requirement. Please update', false);
 }
 if (function_exists('mysqli_connect')) {
-    displayReq("MySQLi", "Your php version has MySQLi.", true);
+    displayReq('MySQLi', 'Your php version has MySQLi.', true);
 } else {
-    displayReq("MySQLi", "Your php version does not have MySQLi.", false);
+    displayReq('MySQLi', 'Your php version does not have MySQLi.', false);
 }
 if (function_exists('mail')) {
-    displayReq("PHP Mail", "PHP Mail is installed.", true);
+    displayReq('PHP Mail', 'PHP Mail is installed.', true);
 } else {
-    displayReq("MySQLi", "PHP Mail may not be working right now.", false);
+    displayReq('MySQLi', 'PHP Mail may not be working right now.', false);
 }
 if (function_exists('curl_version')) {
-    displayReq("PHP CURL", "PHP CURL is installed.", true);
+    displayReq('PHP CURL', 'PHP CURL is installed.', true);
 } else {
-    displayReq("PHP CURL", "PHP CURL is not installed. Please install it before continuing.", false);
+    displayReq('PHP CURL', 'PHP CURL is not installed. Please install it before continuing.', false);
 }
       ?>
       

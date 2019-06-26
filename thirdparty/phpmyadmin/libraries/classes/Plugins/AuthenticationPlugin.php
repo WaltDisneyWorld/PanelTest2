@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Abstract class for the authentication plugins
- *
- * @package PhpMyAdmin
+ * Abstract class for the authentication plugins.
  */
+
 namespace PhpMyAdmin\Plugins;
 
 use PhpMyAdmin\Config;
@@ -13,7 +13,6 @@ use PhpMyAdmin\IpAllowDeny;
 use PhpMyAdmin\Logging;
 use PhpMyAdmin\Message;
 use PhpMyAdmin\Response;
-use PhpMyAdmin\Sanitize;
 use PhpMyAdmin\TwoFactor;
 use PhpMyAdmin\Session;
 use PhpMyAdmin\Template;
@@ -22,43 +21,41 @@ use PhpMyAdmin\Url;
 /**
  * Provides a common interface that will have to be implemented by all of the
  * authentication plugins.
- *
- * @package PhpMyAdmin
  */
 abstract class AuthenticationPlugin
 {
     /**
-     * Username
+     * Username.
      *
      * @var string
      */
     public $user = '';
 
     /**
-     * Password
+     * Password.
      *
      * @var string
      */
     public $password = '';
 
     /**
-     * Displays authentication form
+     * Displays authentication form.
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function showLoginForm();
 
     /**
-     * Gets authentication credentials
+     * Gets authentication credentials.
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function readCredentials();
 
     /**
-     * Set the user and password after last checkings if required
+     * Set the user and password after last checkings if required.
      *
-     * @return boolean
+     * @return bool
      */
     public function storeCredentials()
     {
@@ -66,7 +63,7 @@ abstract class AuthenticationPlugin
 
         $this->setSessionAccessTime();
 
-        $cfg['Server']['user']     = $this->user;
+        $cfg['Server']['user'] = $this->user;
         $cfg['Server']['password'] = $this->password;
 
         return true;
@@ -74,19 +71,15 @@ abstract class AuthenticationPlugin
 
     /**
      * Stores user credentials after successful login.
-     *
-     * @return void
      */
     public function rememberCredentials()
     {
     }
 
     /**
-     * User is not allowed to login to MySQL -> authentication failed
+     * User is not allowed to login to MySQL -> authentication failed.
      *
      * @param string $failure String describing why authentication has failed
-     *
-     * @return void
      */
     public function showFailure($failure)
     {
@@ -94,14 +87,12 @@ abstract class AuthenticationPlugin
     }
 
     /**
-     * Perform logout
-     *
-     * @return void
+     * Perform logout.
      */
     public function logOut()
     {
         /* Obtain redirect URL (before doing logout) */
-        if (! empty($GLOBALS['cfg']['Server']['LogoutURL'])) {
+        if (!empty($GLOBALS['cfg']['Server']['LogoutURL'])) {
             $redirect_url = $GLOBALS['cfg']['Server']['LogoutURL'];
         } else {
             $redirect_url = $this->getLoginFormURL();
@@ -115,19 +106,19 @@ abstract class AuthenticationPlugin
          * Get a logged-in server count in case of LoginCookieDeleteAll is disabled.
          */
         $server = 0;
-        if ($GLOBALS['cfg']['LoginCookieDeleteAll'] === false
-            && $GLOBALS['cfg']['Server']['auth_type'] == 'cookie'
+        if (false === $GLOBALS['cfg']['LoginCookieDeleteAll']
+            && 'cookie' == $GLOBALS['cfg']['Server']['auth_type']
         ) {
             foreach ($GLOBALS['cfg']['Servers'] as $key => $val) {
-                if (isset($_COOKIE['pmaAuth-' . $key])) {
+                if (isset($_COOKIE['pmaAuth-'.$key])) {
                     $server = $key;
                 }
             }
         }
 
-        if ($server === 0) {
+        if (0 === $server) {
             /* delete user's choices that were stored in session */
-            if (! defined('TESTSUITE')) {
+            if (!defined('TESTSUITE')) {
                 session_unset();
                 session_destroy();
             }
@@ -138,7 +129,7 @@ abstract class AuthenticationPlugin
             /* Redirect to other autenticated server */
             $_SESSION['partial_logout'] = true;
             Core::sendHeaderLocation(
-                './index.php' . Url::getCommonRaw(array('server' => $server))
+                './index.php'.Url::getCommonRaw(array('server' => $server))
             );
         }
     }
@@ -162,14 +153,14 @@ abstract class AuthenticationPlugin
      */
     public function getErrorMessage($failure)
     {
-        if ($failure == 'empty-denied') {
+        if ('empty-denied' == $failure) {
             return __(
                 'Login without a password is forbidden by configuration'
-                . ' (see AllowNoPassword)'
+                .' (see AllowNoPassword)'
             );
-        } elseif ($failure == 'root-denied' || $failure == 'allow-denied') {
+        } elseif ('root-denied' == $failure || 'allow-denied' == $failure) {
             return __('Access denied!');
-        } elseif ($failure == 'no-activity') {
+        } elseif ('no-activity' == $failure) {
             return sprintf(
                 __('No activity within %s seconds; please log in again.'),
                 intval($GLOBALS['cfg']['LoginCookieValidity'])
@@ -180,8 +171,8 @@ abstract class AuthenticationPlugin
         if (!empty($dbi_error)) {
             return htmlspecialchars($dbi_error);
         } elseif (isset($GLOBALS['errno'])) {
-            return '#' . $GLOBALS['errno'] . ' '
-            . __('Cannot log in to the MySQL server');
+            return '#'.$GLOBALS['errno'].' '
+            .__('Cannot log in to the MySQL server');
         }
 
         return __('Cannot log in to the MySQL server');
@@ -191,8 +182,6 @@ abstract class AuthenticationPlugin
      * Callback when user changes password.
      *
      * @param string $password New password to set
-     *
-     * @return void
      */
     public function handlePasswordChange($password)
     {
@@ -203,13 +192,11 @@ abstract class AuthenticationPlugin
      *
      * Tries to workaround PHP 5 session garbage collection which
      * looks at the session file's last modified time
-     *
-     * @return void
      */
     public function setSessionAccessTime()
     {
         if (isset($_REQUEST['guid'])) {
-            $guid = (string)$_REQUEST['guid'];
+            $guid = (string) $_REQUEST['guid'];
         } else {
             $guid = 'default';
         }
@@ -227,18 +214,16 @@ abstract class AuthenticationPlugin
     }
 
     /**
-     * High level authentication interface
+     * High level authentication interface.
      *
      * Gets the credentials or shows login form if necessary
-     *
-     * @return void
      */
     public function authenticate()
     {
         $success = $this->readCredentials();
 
         /* Show login form (this exits) */
-        if (! $success) {
+        if (!$success) {
             /* Force generating of new session */
             Session::secure();
             $this->showLoginForm();
@@ -251,9 +236,7 @@ abstract class AuthenticationPlugin
     }
 
     /**
-     * Check configuration defined restrictions for authentication
-     *
-     * @return void
+     * Check configuration defined restrictions for authentication.
      */
     public function checkRules()
     {
@@ -264,24 +247,24 @@ abstract class AuthenticationPlugin
         if (isset($cfg['Server']['AllowDeny'])
             && isset($cfg['Server']['AllowDeny']['order'])
         ) {
-            $allowDeny_forbidden         = false; // default
-            if ($cfg['Server']['AllowDeny']['order'] == 'allow,deny') {
-                $allowDeny_forbidden     = true;
+            $allowDeny_forbidden = false; // default
+            if ('allow,deny' == $cfg['Server']['AllowDeny']['order']) {
+                $allowDeny_forbidden = true;
                 if (IpAllowDeny::allowDeny('allow')) {
                     $allowDeny_forbidden = false;
                 }
                 if (IpAllowDeny::allowDeny('deny')) {
                     $allowDeny_forbidden = true;
                 }
-            } elseif ($cfg['Server']['AllowDeny']['order'] == 'deny,allow') {
+            } elseif ('deny,allow' == $cfg['Server']['AllowDeny']['order']) {
                 if (IpAllowDeny::allowDeny('deny')) {
                     $allowDeny_forbidden = true;
                 }
                 if (IpAllowDeny::allowDeny('allow')) {
                     $allowDeny_forbidden = false;
                 }
-            } elseif ($cfg['Server']['AllowDeny']['order'] == 'explicit') {
-                if (IpAllowDeny::allowDeny('allow') && ! IpAllowDeny::allowDeny('deny')) {
+            } elseif ('explicit' == $cfg['Server']['AllowDeny']['order']) {
+                if (IpAllowDeny::allowDeny('allow') && !IpAllowDeny::allowDeny('deny')) {
                     $allowDeny_forbidden = false;
                 } else {
                     $allowDeny_forbidden = true;
@@ -295,13 +278,13 @@ abstract class AuthenticationPlugin
         } // end if
 
         // is root allowed?
-        if (! $cfg['Server']['AllowRoot'] && $cfg['Server']['user'] == 'root') {
+        if (!$cfg['Server']['AllowRoot'] && 'root' == $cfg['Server']['user']) {
             $this->showFailure('root-denied');
         }
 
         // is a login without password allowed?
-        if (! $cfg['Server']['AllowNoPassword']
-            && $cfg['Server']['password'] === ''
+        if (!$cfg['Server']['AllowNoPassword']
+            && '' === $cfg['Server']['password']
         ) {
             $this->showFailure('empty-denied');
         }
@@ -310,8 +293,6 @@ abstract class AuthenticationPlugin
     /**
      * Checks whether two factor authentication is active
      * for given user and performs it.
-     *
-     * @return void
      */
     public function checkTwoFactor()
     {
@@ -340,7 +321,7 @@ abstract class AuthenticationPlugin
         ]);
         echo Template::get('login/footer')->render();
         echo Config::renderFooter();
-        if (! defined('TESTSUITE')) {
+        if (!defined('TESTSUITE')) {
             exit;
         }
     }

@@ -18,12 +18,12 @@
 
         public function generateRelativeLicensePath()
         {
-            return sprintf("license-%s.key", $this->getProPackagedID());
+            return sprintf('license-%s.key', $this->getProPackagedID());
         }
 
         public function generateRelativeProfilePath()
         {
-            return sprintf("profiles-%s.bin", $this->getProPackagedID());
+            return sprintf('profiles-%s.bin', $this->getProPackagedID());
         }
 
         public function renderProConfig($configTemplatePath)

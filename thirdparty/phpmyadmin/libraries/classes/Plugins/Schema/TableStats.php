@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Contains abstract class to hold table preferences/statistics
- *
- * @package PhpMyAdmin
+ * Contains abstract class to hold table preferences/statistics.
  */
+
 namespace PhpMyAdmin\Plugins\Schema;
 
 use PhpMyAdmin\DatabaseInterface;
@@ -13,12 +13,11 @@ use PhpMyAdmin\Relation;
 use PhpMyAdmin\Util;
 
 /**
- * Table preferences/statistics
+ * Table preferences/statistics.
  *
  * This class preserves the table co-ordinates,fields
  * and helps in drawing/generating the tables.
  *
- * @package PhpMyAdmin
  * @abstract
  */
 abstract class TableStats
@@ -39,22 +38,22 @@ abstract class TableStats
     protected $offline;
 
     /**
-     * @var Relation $relation
+     * @var Relation
      */
     protected $relation;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param object  $diagram        schema diagram
-     * @param string  $db             current db name
-     * @param integer $pageNumber     current page number (from the
-     *                                $cfg['Servers'][$i]['table_coords'] table)
-     * @param string  $tableName      table name
-     * @param boolean $showKeys       whether to display keys or not
-     * @param boolean $tableDimension whether to display table position or not
-     * @param boolean $offline        whether the coordinates are sent
-     *                                from the browser
+     * @param object $diagram        schema diagram
+     * @param string $db             current db name
+     * @param int    $pageNumber     current page number (from the
+     *                               $cfg['Servers'][$i]['table_coords'] table)
+     * @param string $tableName      table name
+     * @param bool   $showKeys       whether to display keys or not
+     * @param bool   $tableDimension whether to display table position or not
+     * @param bool   $offline        whether the coordinates are sent
+     *                               from the browser
      */
     public function __construct(
         $diagram,
@@ -65,15 +64,15 @@ abstract class TableStats
         $tableDimension,
         $offline
     ) {
-        $this->diagram    = $diagram;
-        $this->db         = $db;
+        $this->diagram = $diagram;
+        $this->db = $db;
         $this->pageNumber = $pageNumber;
-        $this->tableName  = $tableName;
+        $this->tableName = $tableName;
 
-        $this->showKeys   = $showKeys;
-        $this->tableDimension   = $tableDimension;
+        $this->showKeys = $showKeys;
+        $this->tableDimension = $tableDimension;
 
-        $this->offline    = $offline;
+        $this->offline = $offline;
 
         $this->relation = new Relation();
 
@@ -90,18 +89,16 @@ abstract class TableStats
 
     /**
      * Validate whether the table exists.
-     *
-     * @return void
      */
     protected function validateTableAndLoadFields()
     {
-        $sql = 'DESCRIBE ' . Util::backquote($this->tableName);
+        $sql = 'DESCRIBE '.Util::backquote($this->tableName);
         $result = $GLOBALS['dbi']->tryQuery(
             $sql,
             DatabaseInterface::CONNECT_USER,
             DatabaseInterface::QUERY_STORE
         );
-        if (! $result || ! $GLOBALS['dbi']->numRows($result)) {
+        if (!$result || !$GLOBALS['dbi']->numRows($result)) {
             $this->showMissingTableError();
         }
 
@@ -125,31 +122,26 @@ abstract class TableStats
     /**
      * Displays an error when the table cannot be found.
      *
-     * @return void
      * @abstract
      */
     abstract protected function showMissingTableError();
 
     /**
-     * Loads coordinates of a table
-     *
-     * @return void
+     * Loads coordinates of a table.
      */
     protected function loadCoordinates()
     {
         foreach ($_REQUEST['t_h'] as $key => $value) {
-            if ($this->db . '.' . $this->tableName == $key) {
-                $this->x = (double) $_REQUEST['t_x'][$key];
-                $this->y = (double) $_REQUEST['t_y'][$key];
+            if ($this->db.'.'.$this->tableName == $key) {
+                $this->x = (float) $_REQUEST['t_x'][$key];
+                $this->y = (float) $_REQUEST['t_y'][$key];
                 break;
             }
         }
     }
 
     /**
-     * Loads the table's display field
-     *
-     * @return void
+     * Loads the table's display field.
      */
     protected function loadDisplayField()
     {
@@ -158,19 +150,17 @@ abstract class TableStats
 
     /**
      * Loads the PRIMARY key.
-     *
-     * @return void
      */
     protected function loadPrimaryKey()
     {
         $result = $GLOBALS['dbi']->query(
-            'SHOW INDEX FROM ' . Util::backquote($this->tableName) . ';',
+            'SHOW INDEX FROM '.Util::backquote($this->tableName).';',
             DatabaseInterface::CONNECT_USER,
             DatabaseInterface::QUERY_STORE
         );
         if ($GLOBALS['dbi']->numRows($result) > 0) {
             while ($row = $GLOBALS['dbi']->fetchAssoc($result)) {
-                if ($row['Key_name'] == 'PRIMARY') {
+                if ('PRIMARY' == $row['Key_name']) {
                     $this->primary[] = $row['Column_name'];
                 }
             }
@@ -179,7 +169,7 @@ abstract class TableStats
 
     /**
      * Returns title of the current table,
-     * title can have the dimensions/co-ordinates of the table
+     * title can have the dimensions/co-ordinates of the table.
      *
      * @return string title of the current table
      */
@@ -189,6 +179,6 @@ abstract class TableStats
             ? sprintf('%.0fx%0.f', $this->width, $this->heightCell)
             : ''
         )
-        . ' ' . $this->tableName;
+        .' '.$this->tableName;
     }
 }

@@ -1,23 +1,20 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Contains PhpMyAdmin\Plugins\Schema\Svg\RelationStatsSvg class
- *
- * @package PhpMyAdmin
+ * Contains PhpMyAdmin\Plugins\Schema\Svg\RelationStatsSvg class.
  */
+
 namespace PhpMyAdmin\Plugins\Schema\Svg;
 
 use PhpMyAdmin\Plugins\Schema\Dia\RelationStatsDia;
 use PhpMyAdmin\Plugins\Schema\Eps\TableStatsEps;
 use PhpMyAdmin\Plugins\Schema\ExportRelationSchema;
 use PhpMyAdmin\Plugins\Schema\Pdf\TableStatsPdf;
-use PhpMyAdmin\Plugins\Schema\Svg\Svg;
-use PhpMyAdmin\Plugins\Schema\Svg\TableStatsSvg;
-use PhpMyAdmin\Plugins\Schema\Dia\TableStatsDia;
 use PhpMyAdmin\Relation;
 
 /**
- * RelationStatsSvg Relation Schema Class
+ * RelationStatsSvg Relation Schema Class.
  *
  * Purpose of this class is to generate the SVG XML Document because
  * SVG defines the graphics in XML format which is used for representing
@@ -28,7 +25,6 @@ use PhpMyAdmin\Relation;
  * inherits ExportRelationSchema class has common functionality added
  * to this class
  *
- * @package PhpMyAdmin
  * @name Svg_Relation_Schema
  */
 class SvgRelationSchema extends ExportRelationSchema
@@ -46,7 +42,7 @@ class SvgRelationSchema extends ExportRelationSchema
     private $_tablewidth;
 
     /**
-     * The "PhpMyAdmin\Plugins\Schema\Svg\SvgRelationSchema" constructor
+     * The "PhpMyAdmin\Plugins\Schema\Svg\SvgRelationSchema" constructor.
      *
      * Upon instantiation This starts writing the SVG XML document
      * user will be prompted for download as .svg extension
@@ -71,7 +67,7 @@ class SvgRelationSchema extends ExportRelationSchema
                 $this->pageNumber
             )
         );
-        $this->diagram->SetAuthor('phpMyAdmin ' . PMA_VERSION);
+        $this->diagram->SetAuthor('phpMyAdmin '.PMA_VERSION);
         $this->diagram->setFont('Arial');
         $this->diagram->setFontSize(16);
 
@@ -121,7 +117,7 @@ class SvgRelationSchema extends ExportRelationSchema
                 * (do not use array_search() because we would have to
                 * to do a === false and this is not PHP3 compatible)
                 */
-                if ($master_field != 'foreign_keys_data') {
+                if ('foreign_keys_data' != $master_field) {
                     if (in_array($rel['foreign_table'], $alltables)) {
                         $this->_addRelation(
                             $one_table,
@@ -167,9 +163,7 @@ class SvgRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Output RelationStatsSvg Document for download
-     *
-     * @return void
+     * Output RelationStatsSvg Document for download.
      */
     public function showOutput()
     {
@@ -177,11 +171,9 @@ class SvgRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Sets X and Y minimum and maximum for a table cell
+     * Sets X and Y minimum and maximum for a table cell.
      *
      * @param string $table The table name
-     *
-     * @return void
      */
     private function _setMinMax($table)
     {
@@ -192,17 +184,15 @@ class SvgRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Defines relation objects
+     * Defines relation objects.
      *
-     * @param string  $masterTable    The master table name
-     * @param string  $font           The font face
-     * @param int     $fontSize       Font size
-     * @param string  $masterField    The relation field in the master table
-     * @param string  $foreignTable   The foreign table name
-     * @param string  $foreignField   The relation field in the foreign table
-     * @param boolean $tableDimension Whether to display table position or not
-     *
-     * @return void
+     * @param string $masterTable    The master table name
+     * @param string $font           The font face
+     * @param int    $fontSize       Font size
+     * @param string $masterField    The relation field in the master table
+     * @param string $foreignTable   The foreign table name
+     * @param string $foreignField   The relation field in the foreign table
+     * @param bool   $tableDimension Whether to display table position or not
      *
      * @see _setMinMax,Table_Stats_Svg::__construct(),
      *       PhpMyAdmin\Plugins\Schema\Svg\RelationStatsSvg::__construct()
@@ -256,9 +246,8 @@ class SvgRelationSchema extends ExportRelationSchema
     /**
      * Draws relation arrows and lines
      * connects master table's master field to
-     * foreign table's foreign field
+     * foreign table's foreign field.
      *
-     * @return void
      *
      * @see Relation_Stats_Svg::relationDraw()
      */
@@ -270,9 +259,8 @@ class SvgRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Draws tables
+     * Draws tables.
      *
-     * @return void
      *
      * @see Table_Stats_Svg::Table_Stats_tableDraw()
      */

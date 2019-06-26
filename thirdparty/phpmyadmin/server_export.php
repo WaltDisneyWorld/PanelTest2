@@ -1,16 +1,15 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * object the server export page
- *
- * @package PhpMyAdmin
+ * object the server export page.
  */
 use PhpMyAdmin\Config\PageSettings;
 use PhpMyAdmin\Display\Export;
 use PhpMyAdmin\Response;
 
 /**
- * Does the common work
+ * Does the common work.
  */
 require_once 'libraries/common.inc.php';
 require_once 'libraries/server_common.inc.php';
@@ -18,24 +17,24 @@ require_once 'libraries/server_common.inc.php';
 PageSettings::showGroup('Export');
 
 $response = Response::getInstance();
-$header   = $response->getHeader();
-$scripts  = $header->getScripts();
+$header = $response->getHeader();
+$scripts = $header->getScripts();
 $scripts->addFile('export.js');
 
-$export_page_title = __('View dump (schema) of databases') . "\n";
+$export_page_title = __('View dump (schema) of databases')."\n";
 
 $displayExport = new Export();
 
-$select_item = isset($tmp_select)? $tmp_select : '';
+$select_item = isset($tmp_select) ? $tmp_select : '';
 $multi_values = $displayExport->getHtmlForSelectOptions($select_item);
 
-if (! isset($sql_query)) {
+if (!isset($sql_query)) {
     $sql_query = '';
 }
-if (! isset($num_tables)) {
+if (!isset($num_tables)) {
     $num_tables = 0;
 }
-if (! isset($unlim_num_rows)) {
+if (!isset($unlim_num_rows)) {
     $unlim_num_rows = 0;
 }
 $response = Response::getInstance();

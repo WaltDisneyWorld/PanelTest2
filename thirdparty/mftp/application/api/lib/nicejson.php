@@ -4,11 +4,12 @@
 // adapted to allow native functionality in php version >= 5.4.0
 
     /**
-     * Format a flat JSON string to make it more human-readable
+     * Format a flat JSON string to make it more human-readable.
      *
-     * @param string $json The original JSON string to process
-     *        When the input is not a string it is assumed the input is RAW
-     *        and should be converted to JSON first of all.
+     * @param string $json the original JSON string to process
+     *                     When the input is not a string it is assumed the input is RAW
+     *                     and should be converted to JSON first of all
+     *
      * @return string Indented version of the original JSON string
      */
     function json_format($json)
@@ -27,9 +28,9 @@
         $prevChar = '';
         $outOfQuotes = true;
 
-        for ($i = 0; $i < $strLen; $i++) {
+        for ($i = 0; $i < $strLen; ++$i) {
             // Speedup: copy blocks of input which don't matter re string detection and formatting.
-            $copyLen = strcspn($json, $outOfQuotes ? " \t\r\n\",:[{}]" : "\\\"", $i);
+            $copyLen = strcspn($json, $outOfQuotes ? " \t\r\n\",:[{}]" : '\\"', $i);
             if ($copyLen >= 1) {
                 $copyStr = substr($json, $i, $copyLen);
                 // Also reset the tracker for escapes: we won't be hitting any right now
@@ -44,22 +45,22 @@
             $char = substr($json, $i, 1);
 
             // Are we inside a quoted string encountering an escape sequence?
-            if (!$outOfQuotes && $prevChar === '\\') {
+            if (!$outOfQuotes && '\\' === $prevChar) {
                 // Add the escaped character to the result string and ignore it for the string enter/exit detection:
                 $result .= $char;
                 $prevChar = '';
                 continue;
             }
             // Are we entering/exiting a quoted string?
-            if ($char === '"' && $prevChar !== '\\') {
+            if ('"' === $char && '\\' !== $prevChar) {
                 $outOfQuotes = !$outOfQuotes;
             }
             // If this character is the end of an element,
             // output a new line and indent the next line
-            elseif ($outOfQuotes && ($char === '}' || $char === ']')) {
+            elseif ($outOfQuotes && ('}' === $char || ']' === $char)) {
                 $result .= $newLine;
-                $pos--;
-                for ($j = 0; $j < $pos; $j++) {
+                --$pos;
+                for ($j = 0; $j < $pos; ++$j) {
                     $result .= $indentStr;
                 }
             } // eat all non-essential whitespace in the input as we do our own here and it would only mess up our process
@@ -70,18 +71,18 @@
             // Add the character to the result string
             $result .= $char;
             // always add a space after a field colon:
-            if ($outOfQuotes && $char === ':') {
+            if ($outOfQuotes && ':' === $char) {
                 $result .= ' ';
             }
 
             // If the last character was the beginning of an element,
             // output a new line and indent the next line
-            elseif ($outOfQuotes && ($char === ',' || $char === '{' || $char === '[')) {
+            elseif ($outOfQuotes && (',' === $char || '{' === $char || '[' === $char)) {
                 $result .= $newLine;
-                if ($char === '{' || $char === '[') {
-                    $pos++;
+                if ('{' === $char || '[' === $char) {
+                    ++$pos;
                 }
-                for ($j = 0; $j < $pos; $j++) {
+                for ($j = 0; $j < $pos; ++$j) {
                     $result .= $indentStr;
                 }
             }

@@ -2,14 +2,11 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Styles for management of Routines, Triggers and Events
- * for the pmahomme theme
- *
- * @package    PhpMyAdmin-theme
- * @subpackage PMAHomme
+ * for the pmahomme theme.
  */
 
 // unplanned execution path
-if (! defined('PHPMYADMIN') && ! defined('TESTSUITE')) {
+if (!defined('PHPMYADMIN') && !defined('TESTSUITE')) {
     exit();
 }
 ?>

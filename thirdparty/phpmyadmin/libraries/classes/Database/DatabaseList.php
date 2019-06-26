@@ -1,35 +1,33 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * holds the PhpMyAdmin\Database\DatabaseList class
- *
- * @package PhpMyAdmin
- *
+ * holds the PhpMyAdmin\Database\DatabaseList class.
  */
+
 namespace PhpMyAdmin\Database;
 
 use PhpMyAdmin\ListDatabase;
 
 /**
- * holds the DatabaseList class
- *
- * @package PhpMyAdmin
+ * holds the DatabaseList class.
  */
 class DatabaseList
 {
     /**
-     * Holds database list
+     * Holds database list.
      *
      * @var ListDatabase
      */
     protected $databases = null;
 
     /**
-     * magic access to protected/inaccessible members/properties
+     * magic access to protected/inaccessible members/properties.
      *
      * @param string $param parameter name
      *
      * @return mixed
+     *
      * @see https://secure.php.net/language.oop5.overloading
      */
     public function __get($param)
@@ -43,7 +41,7 @@ class DatabaseList
     }
 
     /**
-     * Accessor to PMA::$databases
+     * Accessor to PMA::$databases.
      *
      * @return ListDatabase
      */

@@ -1,9 +1,8 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Displays form for editing and inserting new table rows
- *
- * @package PhpMyAdmin
+ * Displays form for editing and inserting new table rows.
  */
 use PhpMyAdmin\Config\PageSettings;
 use PhpMyAdmin\InsertEdit;
@@ -13,20 +12,20 @@ use PhpMyAdmin\Util;
 use PhpMyAdmin\Url;
 
 /**
- * Gets the variables sent or posted to this script and displays the header
+ * Gets the variables sent or posted to this script and displays the header.
  */
 require_once 'libraries/common.inc.php';
 
 PageSettings::showGroup('Edit');
 
 /**
- * Ensures db and table are valid, else moves to the "parent" script
+ * Ensures db and table are valid, else moves to the "parent" script.
  */
 require_once 'libraries/db_table_exists.inc.php';
 
 $insertEdit = new InsertEdit($GLOBALS['dbi']);
 
-/**
+/*
  * Determine whether Insert or Edit and set global variables
  */
 list(
@@ -44,7 +43,7 @@ if (!empty($unsaved_values) && count($rows) < count($unsaved_values)) {
 
 /**
  * Defines the url to return to in case of error in a sql statement
- * (at this point, $GLOBALS['goto'] will be set but could be empty)
+ * (at this point, $GLOBALS['goto'] will be set but could be empty).
  */
 if (empty($GLOBALS['goto'])) {
     if (strlen($table) > 0) {
@@ -55,34 +54,33 @@ if (empty($GLOBALS['goto'])) {
     }
 }
 
-
 $_url_params = $insertEdit->getUrlParameters($db, $table);
-$err_url = $GLOBALS['goto'] . Url::getCommon($_url_params);
+$err_url = $GLOBALS['goto'].Url::getCommon($_url_params);
 unset($_url_params);
 
 $comments_map = $insertEdit->getCommentsMap($db, $table);
 
 /**
- * START REGULAR OUTPUT
+ * START REGULAR OUTPUT.
  */
 
 /**
- * Load JavaScript files
+ * Load JavaScript files.
  */
 $response = Response::getInstance();
-$header   = $response->getHeader();
-$scripts  = $header->getScripts();
+$header = $response->getHeader();
+$scripts = $header->getScripts();
 $scripts->addFile('sql.js');
 $scripts->addFile('tbl_change.js');
 $scripts->addFile('vendor/jquery/additional-methods.js');
 $scripts->addFile('gis_data_editor.js');
 
 /**
- * Displays the query submitted and its result
+ * Displays the query submitted and its result.
  *
  * $disp_message come from tbl_replace.php
  */
-if (! empty($disp_message)) {
+if (!empty($disp_message)) {
     $response->addHTML(Util::getMessage($disp_message, null));
 }
 
@@ -102,24 +100,24 @@ $_form_params = $insertEdit->getFormParametersForInsertForm(
 );
 
 /**
- * Displays the form
+ * Displays the form.
  */
 // autocomplete feature of IE kills the "onchange" event handler and it
 //        must be replaced by the "onpropertychange" one in this case
-$chg_evt_handler =  'onchange';
+$chg_evt_handler = 'onchange';
 // Had to put the URI because when hosted on an https server,
 // some browsers send wrongly this form to the http server.
 
 $html_output = '';
 // Set if we passed the first timestamp field
 $timestamp_seen = false;
-$columns_cnt     = count($table_columns);
+$columns_cnt = count($table_columns);
 
-$tabindex              = 0;
+$tabindex = 0;
 $tabindex_for_function = +3000;
-$tabindex_for_null     = +6000;
-$tabindex_for_value    = 0;
-$o_rows                = 0;
+$tabindex_for_null = +6000;
+$tabindex_for_value = 0;
+$o_rows = 0;
 $biggest_max_file_size = 0;
 
 $url_params['db'] = $db;
@@ -151,15 +149,15 @@ $titles['Browse'] = Util::getIcon('b_browse', __('Browse foreign values'));
 
 // user can toggle the display of Function column and column types
 // (currently does not work for multi-edits)
-if (! $cfg['ShowFunctionFields'] || ! $cfg['ShowFieldTypesInDataEditView']) {
+if (!$cfg['ShowFunctionFields'] || !$cfg['ShowFieldTypesInDataEditView']) {
     $html_output .= __('Show');
 }
 
-if (! $cfg['ShowFunctionFields']) {
+if (!$cfg['ShowFunctionFields']) {
     $html_output .= $insertEdit->showTypeOrFunction('function', $url_params, false);
 }
 
-if (! $cfg['ShowFieldTypesInDataEditView']) {
+if (!$cfg['ShowFieldTypesInDataEditView']) {
     $html_output .= $insertEdit->showTypeOrFunction('type', $url_params, false);
 }
 
@@ -170,7 +168,7 @@ foreach ($rows as $row_id => $current_row) {
     }
 
     $jsvkey = $row_id;
-    $vkey = '[multi_edit][' . $jsvkey . ']';
+    $vkey = '[multi_edit]['.$jsvkey.']';
 
     $current_result = (isset($result) && is_array($result) && isset($result[$row_id])
         ? $result[$row_id]
@@ -217,7 +215,7 @@ foreach ($rows as $row_id => $current_row) {
 $scripts->addFiles($GLOBALS['plugin_scripts']);
 unset($unsaved_values, $checked, $repopulate, $GLOBALS['plugin_scripts']);
 
-if (! isset($after_insert)) {
+if (!isset($after_insert)) {
     $after_insert = 'back';
 }
 
@@ -232,9 +230,9 @@ $html_output .= $insertEdit->getActionsPanel(
 
 if ($biggest_max_file_size > 0) {
     $html_output .= '        '
-        . Util::generateHiddenMaxFileSize(
+        .Util::generateHiddenMaxFileSize(
             $biggest_max_file_size
-        ) . "\n";
+        )."\n";
 }
 $html_output .= '</form>';
 

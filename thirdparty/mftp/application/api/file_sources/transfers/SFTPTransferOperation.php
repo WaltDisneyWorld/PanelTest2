@@ -1,7 +1,7 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/TransferOperation.php');
-    require_once(dirname(__FILE__) . '/../Validation.php');
+    require_once dirname(__FILE__).'/TransferOperation.php';
+    require_once dirname(__FILE__).'/../Validation.php';
 
     class SFTPTransferOperation extends TransferOperation
     {

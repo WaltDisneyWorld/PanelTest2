@@ -2,18 +2,18 @@
 
     function isMonstaPostEntry($requestMethod, $postData)
     {
-        if ($requestMethod != 'POST') {
+        if ('POST' != $requestMethod) {
             return false;
         }
 
-        return array_key_exists('MFTP_POST', $postData) && $postData['MFTP_POST'] == 'true';
+        return array_key_exists('MFTP_POST', $postData) && 'true' == $postData['MFTP_POST'];
     }
 
     function upperCaseToCamelCase($varName)
     {
-        $fullVar = "";
+        $fullVar = '';
 
-        foreach (explode("_", $varName) as $partialVarName) {
+        foreach (explode('_', $varName) as $partialVarName) {
             $fullVar .= ucfirst(strtolower($partialVarName));
         }
 
@@ -22,11 +22,11 @@
 
     function convertStringToBoolean($val)
     {
-        if ($val !== "true" && $val !== "false") {
+        if ('true' !== $val && 'false' !== $val) {
             return null;
         }
 
-        return $val === "true";
+        return 'true' === $val;
     }
 
     function extractSettingVars($postData, $rawKeys, $intKeys, $boolKeys)
@@ -50,7 +50,7 @@
             }
 
             foreach ($sourceKeys as $partialPostKey) {
-                $postKey = "MFTP_" . $partialPostKey;
+                $postKey = 'MFTP_'.$partialPostKey;
 
                 if (array_key_exists($postKey, $postData)) {
                     $varName = upperCaseToCamelCase($partialPostKey);
@@ -63,7 +63,7 @@
                         case 1:
                             $var = intval($var);
 
-                            if ($var == 0) {
+                            if (0 == $var) {
                                 continue;
                             }
                             /*  0 is returned for invalid numbers, or "0", and since it's only used for port at the
@@ -89,9 +89,9 @@
     {
         return extractSettingVars(
             $postData,
-            array("HOST", "USERNAME", "PASSWORD", "INITIAL_DIRECTORY"),
-            array("PORT"),
-            array("PASSIVE", "SSL")
+            array('HOST', 'USERNAME', 'PASSWORD', 'INITIAL_DIRECTORY'),
+            array('PORT'),
+            array('PASSIVE', 'SSL')
         );
     }
 
@@ -99,15 +99,15 @@
     {
         return extractSettingVars(
             $postData,
-            array("HOST",
-                "REMOTE_USERNAME",
-                "PASSWORD",
-                "INITIAL_DIRECTORY",
-                "AUTHENTICATION_MODE_NAME",
-                "PUBLIC_KEY_FILE_PATH",
-                "PRIVATE_KEY_FILE_PATH"
+            array('HOST',
+                'REMOTE_USERNAME',
+                'PASSWORD',
+                'INITIAL_DIRECTORY',
+                'AUTHENTICATION_MODE_NAME',
+                'PUBLIC_KEY_FILE_PATH',
+                'PRIVATE_KEY_FILE_PATH',
             ),
-            array("PORT"),
+            array('PORT'),
             null
         );
     }
@@ -118,14 +118,14 @@
         $postedVars = array();
 
         if (array_key_exists('MFTP_POST_LOGOUT_URL', $postData) || array_key_exists('MFTP_LOGIN_FAILURE_REDIRECT', $postData)) {
-            $postedVars["settings"] = array();
+            $postedVars['settings'] = array();
 
             if (array_key_exists('MFTP_POST_LOGOUT_URL', $postData)) {
-                $postedVars["settings"]['postLogoutUrl'] = $postData['MFTP_POST_LOGOUT_URL'];
+                $postedVars['settings']['postLogoutUrl'] = $postData['MFTP_POST_LOGOUT_URL'];
             }
 
             if (array_key_exists('MFTP_LOGIN_FAILURE_REDIRECT', $postData)) {
-                $postedVars["settings"]['loginFailureRedirect'] = $postData['MFTP_LOGIN_FAILURE_REDIRECT'];
+                $postedVars['settings']['loginFailureRedirect'] = $postData['MFTP_LOGIN_FAILURE_REDIRECT'];
             }
         }
 
@@ -133,13 +133,13 @@
             return $postedVars;
         }
 
-        $connectionType = $postData["MFTP_CONNECTION_TYPE"];
+        $connectionType = $postData['MFTP_CONNECTION_TYPE'];
 
-        $postedVars["type"] = $connectionType;
+        $postedVars['type'] = $connectionType;
 
-        if ($connectionType == "ftp") {
+        if ('ftp' == $connectionType) {
             $settingsVars = extractMonstaFtpPostEntryVars($postData);
-        } elseif ($connectionType == "sftp") {
+        } elseif ('sftp' == $connectionType) {
             $settingsVars = extractMonstaSftpPostEntryVars($postData);
         } else {
             $settingsVars = array();

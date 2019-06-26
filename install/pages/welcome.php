@@ -1,6 +1,6 @@
 <?php
 if (!defined('HOMEBASE')) {
-    die("Direct Access is Not Allowed");
+    die('Direct Access is Not Allowed');
 }
 ?>
 <h1 class="title">Welcome to IntISP V<?php echo $intisp_ver; ?></h1>

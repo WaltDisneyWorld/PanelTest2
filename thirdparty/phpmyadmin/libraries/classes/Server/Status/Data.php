@@ -1,25 +1,23 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * PhpMyAdmin\Server\Status\Data class
- * Used by server_status_*.php pages
- *
- * @package PhpMyAdmin
+ * Used by server_status_*.php pages.
  */
+
 namespace PhpMyAdmin\Server\Status;
 
 use PhpMyAdmin\Url;
 
 /**
- * This class provides data about the server status
+ * This class provides data about the server status.
  *
  * All properties of the class are read-only
  *
  * TODO: Use lazy initialisation for some of the properties
  *       since not all of the server_status_*.php pages need
  *       all the data that this class provides.
- *
- * @package PhpMyAdmin
  */
 class Data
 {
@@ -36,7 +34,7 @@ class Data
     public $dataLoaded;
 
     /**
-     * An empty setter makes the above properties read-only
+     * An empty setter makes the above properties read-only.
      *
      * @param string $a key
      * @param mixed  $b value
@@ -49,7 +47,7 @@ class Data
     }
 
     /**
-     * Gets the allocations for constructor
+     * Gets the allocations for constructor.
      *
      * @return array
      */
@@ -59,51 +57,51 @@ class Data
             // variable name => section
             // variable names match when they begin with the given string
 
-            'Com_'              => 'com',
-            'Innodb_'           => 'innodb',
-            'Ndb_'              => 'ndb',
-            'Handler_'          => 'handler',
-            'Qcache_'           => 'qcache',
-            'Threads_'          => 'threads',
+            'Com_' => 'com',
+            'Innodb_' => 'innodb',
+            'Ndb_' => 'ndb',
+            'Handler_' => 'handler',
+            'Qcache_' => 'qcache',
+            'Threads_' => 'threads',
             'Slow_launch_threads' => 'threads',
 
-            'Binlog_cache_'     => 'binlog_cache',
-            'Created_tmp_'      => 'created_tmp',
-            'Key_'              => 'key',
+            'Binlog_cache_' => 'binlog_cache',
+            'Created_tmp_' => 'created_tmp',
+            'Key_' => 'key',
 
-            'Delayed_'          => 'delayed',
+            'Delayed_' => 'delayed',
             'Not_flushed_delayed_rows' => 'delayed',
 
-            'Flush_commands'    => 'query',
-            'Last_query_cost'   => 'query',
-            'Slow_queries'      => 'query',
-            'Queries'           => 'query',
+            'Flush_commands' => 'query',
+            'Last_query_cost' => 'query',
+            'Slow_queries' => 'query',
+            'Queries' => 'query',
             'Prepared_stmt_count' => 'query',
 
-            'Select_'           => 'select',
-            'Sort_'             => 'sort',
+            'Select_' => 'select',
+            'Sort_' => 'sort',
 
-            'Open_tables'       => 'table',
-            'Opened_tables'     => 'table',
+            'Open_tables' => 'table',
+            'Opened_tables' => 'table',
             'Open_table_definitions' => 'table',
             'Opened_table_definitions' => 'table',
-            'Table_locks_'      => 'table',
+            'Table_locks_' => 'table',
 
-            'Rpl_status'        => 'repl',
-            'Slave_'            => 'repl',
+            'Rpl_status' => 'repl',
+            'Slave_' => 'repl',
 
-            'Tc_'               => 'tc',
+            'Tc_' => 'tc',
 
-            'Ssl_'              => 'ssl',
+            'Ssl_' => 'ssl',
 
-            'Open_files'        => 'files',
-            'Open_streams'      => 'files',
-            'Opened_files'      => 'files',
+            'Open_files' => 'files',
+            'Open_streams' => 'files',
+            'Opened_files' => 'files',
         );
     }
 
     /**
-     * Gets the sections for constructor
+     * Gets the sections for constructor.
      *
      * @return array
      */
@@ -111,30 +109,30 @@ class Data
     {
         return array(
             // section => section name (description)
-            'com'           => 'Com',
-            'query'         => __('SQL query'),
-            'innodb'        => 'InnoDB',
-            'ndb'           => 'NDB',
-            'handler'       => __('Handler'),
-            'qcache'        => __('Query cache'),
-            'threads'       => __('Threads'),
-            'binlog_cache'  => __('Binary log'),
-            'created_tmp'   => __('Temporary data'),
-            'delayed'       => __('Delayed inserts'),
-            'key'           => __('Key cache'),
-            'select'        => __('Joins'),
-            'repl'          => __('Replication'),
-            'sort'          => __('Sorting'),
-            'table'         => __('Tables'),
-            'tc'            => __('Transaction coordinator'),
-            'files'         => __('Files'),
-            'ssl'           => 'SSL',
-            'other'         => __('Other')
+            'com' => 'Com',
+            'query' => __('SQL query'),
+            'innodb' => 'InnoDB',
+            'ndb' => 'NDB',
+            'handler' => __('Handler'),
+            'qcache' => __('Query cache'),
+            'threads' => __('Threads'),
+            'binlog_cache' => __('Binary log'),
+            'created_tmp' => __('Temporary data'),
+            'delayed' => __('Delayed inserts'),
+            'key' => __('Key cache'),
+            'select' => __('Joins'),
+            'repl' => __('Replication'),
+            'sort' => __('Sorting'),
+            'table' => __('Tables'),
+            'tc' => __('Transaction coordinator'),
+            'files' => __('Files'),
+            'ssl' => 'SSL',
+            'other' => __('Other'),
         );
     }
 
     /**
-     * Gets the links for constructor
+     * Gets the links for constructor.
      *
      * @return array
      */
@@ -204,11 +202,11 @@ class Data
         ];
         $links['innodb']['doc'] = 'innodb';
 
-        return($links);
+        return $links;
     }
 
     /**
-     * Calculate some values
+     * Calculate some values.
      *
      * @param array $server_status    contains results of SHOW GLOBAL STATUS
      * @param array $server_variables contains results of SHOW GLOBAL VARIABLES
@@ -221,7 +219,7 @@ class Data
         if (isset($server_status['Key_blocks_unused'])
             && isset($server_variables['key_cache_block_size'])
             && isset($server_variables['key_buffer_size'])
-            && $server_variables['key_buffer_size'] != 0
+            && 0 != $server_variables['key_buffer_size']
         ) {
             $server_status['Key_buffer_fraction_%']
                 = 100
@@ -231,7 +229,7 @@ class Data
                 * 100;
         } elseif (isset($server_status['Key_blocks_used'])
             && isset($server_variables['key_buffer_size'])
-            && $server_variables['key_buffer_size'] != 0
+            && 0 != $server_variables['key_buffer_size']
         ) {
             $server_status['Key_buffer_fraction_%']
                 = $server_status['Key_blocks_used']
@@ -273,7 +271,7 @@ class Data
     }
 
     /**
-     * Sort variables into arrays
+     * Sort variables into arrays.
      *
      * @param array $server_status contains results of SHOW GLOBAL STATUS
      * @param array $allocations   allocations for sections
@@ -293,17 +291,17 @@ class Data
         foreach ($server_status as $name => $value) {
             $section_found = false;
             foreach ($allocations as $filter => $section) {
-                if (mb_strpos($name, $filter) !== false) {
+                if (false !== mb_strpos($name, $filter)) {
                     $allocationMap[$name] = $section;
                     $sectionUsed[$section] = true;
                     $section_found = true;
-                    if ($section == 'com' && $value > 0) {
+                    if ('com' == $section && $value > 0) {
                         $used_queries[$name] = $value;
                     }
                     break; // Only exits inner loop
                 }
             }
-            if (! $section_found) {
+            if (!$section_found) {
                 $allocationMap[$name] = 'other';
                 $sectionUsed['other'] = true;
             }
@@ -312,7 +310,7 @@ class Data
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -321,7 +319,7 @@ class Data
         // get status from server
         $server_status_result = $GLOBALS['dbi']->tryQuery('SHOW GLOBAL STATUS');
         $server_status = array();
-        if ($server_status_result === false) {
+        if (false === $server_status_result) {
             $this->dataLoaded = false;
         } else {
             $this->dataLoaded = true;
@@ -385,9 +383,9 @@ class Data
         $serverHostToLower = mb_strtolower(
             $GLOBALS['cfg']['Server']['host']
         );
-        if ($serverHostToLower === 'localhost'
-            || $GLOBALS['cfg']['Server']['host'] === '127.0.0.1'
-            || $GLOBALS['cfg']['Server']['host'] === '::1'
+        if ('localhost' === $serverHostToLower
+            || '127.0.0.1' === $GLOBALS['cfg']['Server']['host']
+            || '::1' === $GLOBALS['cfg']['Server']['host']
         ) {
             $this->db_isLocal = true;
         }
@@ -401,7 +399,7 @@ class Data
     }
 
     /**
-     * cleanup of some deprecated values
+     * cleanup of some deprecated values.
      *
      * @param array $server_status status array to process
      *
@@ -423,7 +421,7 @@ class Data
     }
 
     /**
-     * Generates menu HTML
+     * Generates menu HTML.
      *
      * @return string
      */
@@ -433,39 +431,39 @@ class Data
         $items = array(
             array(
                 'name' => __('Server'),
-                'url' => 'server_status.php'
+                'url' => 'server_status.php',
             ),
             array(
                 'name' => __('Processes'),
-                'url' => 'server_status_processes.php'
+                'url' => 'server_status_processes.php',
             ),
             array(
                 'name' => __('Query statistics'),
-                'url' => 'server_status_queries.php'
+                'url' => 'server_status_queries.php',
             ),
             array(
                 'name' => __('All status variables'),
-                'url' => 'server_status_variables.php'
+                'url' => 'server_status_variables.php',
             ),
             array(
                 'name' => __('Monitor'),
-                'url' => 'server_status_monitor.php'
+                'url' => 'server_status_monitor.php',
             ),
             array(
                 'name' => __('Advisor'),
-                'url' => 'server_status_advisor.php'
-            )
+                'url' => 'server_status_advisor.php',
+            ),
         );
 
-        $retval  = '<ul id="topmenu2">';
+        $retval = '<ul id="topmenu2">';
         foreach ($items as $item) {
             $class = '';
             if ($item['url'] === $this->selfUrl) {
                 $class = ' class="tabactive"';
             }
             $retval .= '<li>';
-            $retval .= '<a' . $class;
-            $retval .= ' href="' . $item['url'] . $url_params . '">';
+            $retval .= '<a'.$class;
+            $retval .= ' href="'.$item['url'].$url_params.'">';
             $retval .= $item['name'];
             $retval .= '</a>';
             $retval .= '</li>';
@@ -477,7 +475,7 @@ class Data
     }
 
     /**
-     * Builds a <select> list for refresh rates
+     * Builds a <select> list for refresh rates.
      *
      * @param string $name         Name of select
      * @param int    $defaultRate  Currently chosen rate
@@ -490,11 +488,11 @@ class Data
         $defaultRate = 5,
         array $refreshRates = array(1, 2, 5, 10, 20, 40, 60, 120, 300, 600)
     ) {
-        $return = '<select name="' . $name . '" id="id_' . $name
-            . '" class="refreshRate">';
+        $return = '<select name="'.$name.'" id="id_'.$name
+            .'" class="refreshRate">';
         foreach ($refreshRates as $rate) {
-            $selected = ($rate == $defaultRate)?' selected="selected"':'';
-            $return .= '<option value="' . $rate . '"' . $selected . '>';
+            $selected = ($rate == $defaultRate) ? ' selected="selected"' : '';
+            $return .= '<option value="'.$rate.'"'.$selected.'>';
             if ($rate < 60) {
                 $return .= sprintf(
                     _ngettext('%d second', '%d seconds', $rate),
@@ -507,7 +505,7 @@ class Data
                     $rate
                 );
             }
-            $return .=  '</option>';
+            $return .= '</option>';
         }
         $return .= '</select>';
         return $return;

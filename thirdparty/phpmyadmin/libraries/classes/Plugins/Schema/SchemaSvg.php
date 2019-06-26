@@ -1,11 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * PDF schema export code
- *
- * @package    PhpMyAdmin-Schema
- * @subpackage SVG
+ * PDF schema export code.
  */
+
 namespace PhpMyAdmin\Plugins\Schema;
 
 use PhpMyAdmin\Properties\Options\Items\BoolPropertyItem;
@@ -16,15 +15,12 @@ use PhpMyAdmin\Plugins\Schema\Svg\SvgRelationSchema;
 use PhpMyAdmin\Properties\Plugins\SchemaPluginProperties;
 
 /**
- * Handles the schema export for the SVG format
- *
- * @package    PhpMyAdmin-Schema
- * @subpackage SVG
+ * Handles the schema export for the SVG format.
  */
 class SchemaSvg extends SchemaPlugin
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -32,9 +28,7 @@ class SchemaSvg extends SchemaPlugin
     }
 
     /**
-     * Sets the schema export SVG properties
-     *
-     * @return void
+     * Sets the schema export SVG properties.
      */
     protected function setProperties()
     {
@@ -47,11 +41,11 @@ class SchemaSvg extends SchemaPlugin
         // $schemaPluginProperties
         // this will be shown as "Format specific options"
         $exportSpecificOptions = new OptionsPropertyRootGroup(
-            "Format Specific Options"
+            'Format Specific Options'
         );
 
         // specific options main group
-        $specificOptions = new OptionsPropertyMainGroup("general_opts");
+        $specificOptions = new OptionsPropertyMainGroup('general_opts');
         // add options common to all plugins
         $this->addCommonOptions($specificOptions);
 

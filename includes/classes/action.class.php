@@ -1,4 +1,5 @@
 <?php
+
 if (!isset($HOME)) {
     die();
 }
@@ -10,34 +11,33 @@ if (!isset($HOME)) {
  *
  */
 
-
 function onlyadmin()
 {
-    if ($_SESSION['user'] == 'admin') {
+    if ('admin' == $_SESSION['user']) {
     } else {
         die();
     }
 }
 onlyadmin();
-require("includes/classes/communication.class.php");
-require("config.php");
+require 'includes/classes/communication.class.php';
+require 'config.php';
 if (!isset($_SESSION['user'])) {
-    header('Location: ' . $webroot . '/cp');
+    header('Location: '.$webroot.'/cp');
     die();
 }
 
-if ($_GET['act'] == 'restart') {
-    pwrmgmnt("restart");
-    header('Location: ' . $webroot . '/cp');
+if ('restart' == $_GET['act']) {
+    pwrmgmnt('restart');
+    header('Location: '.$webroot.'/cp');
     die();
 }
-if ($_GET['act'] == 'mysql') {
-    pwrmgmnt("mysql");
-    header('Location: ' . $webroot . '/cp');
+if ('mysql' == $_GET['act']) {
+    pwrmgmnt('mysql');
+    header('Location: '.$webroot.'/cp');
     die();
 }
-if ($_GET['act'] == 'server') {
-    pwrmgmnt("server");
-    header('Location: ' . $webroot . '/cp');
+if ('server' == $_GET['act']) {
+    pwrmgmnt('server');
+    header('Location: '.$webroot.'/cp');
     die();
 }

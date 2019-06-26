@@ -1,9 +1,9 @@
 <?php
-    require_once(dirname(__FILE__) . "/../constants.php");
-    require_once(dirname(__FILE__) . "/../file_sources/PathOperations.php");
-    require_once(dirname(__FILE__) . '/../licensing/KeyPairSuite.php');
-    require_once(dirname(__FILE__) . '/../licensing/LicenseReader.php');
-    require_once(dirname(__FILE__) . '/../licensing/LicenseFactory.php');
+    require_once dirname(__FILE__).'/../constants.php';
+    require_once dirname(__FILE__).'/../file_sources/PathOperations.php';
+    require_once dirname(__FILE__).'/../licensing/KeyPairSuite.php';
+    require_once dirname(__FILE__).'/../licensing/LicenseReader.php';
+    require_once dirname(__FILE__).'/../licensing/LicenseFactory.php';
 
     if (!MONSTA_DEBUG) {
         includeMonstaConfig();
@@ -11,7 +11,7 @@
 
     function monstaUploadDebug($message)
     {
-        if (defined("MONSTA_UPLOAD_LOGGING") && MONSTA_UPLOAD_LOGGING) {
+        if (defined('MONSTA_UPLOAD_LOGGING') && MONSTA_UPLOAD_LOGGING) {
             error_log($message);
         }
     }
@@ -20,9 +20,9 @@
     {
         // a more robust way of getting the temp directory
 
-        $configTempDir = defined("MONSTA_TEMP_DIRECTORY") ? MONSTA_TEMP_DIRECTORY : "";
+        $configTempDir = defined('MONSTA_TEMP_DIRECTORY') ? MONSTA_TEMP_DIRECTORY : '';
 
-        if ($configTempDir != "") {
+        if ('' != $configTempDir) {
             return $configTempDir;
         }
 
@@ -34,7 +34,7 @@
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
 
@@ -57,26 +57,26 @@
                 continue;
             }
 
-            $splitFileName = explode(".", $languageFile);
+            $splitFileName = explode('.', $languageFile);
 
-            if (count($splitFileName) != 2) {
+            if (2 != count($splitFileName)) {
                 continue;
             }
 
-            if ($splitFileName[1] != "json") {
+            if ('json' != $splitFileName[1]) {
                 continue;
             }
 
             $fullFilePath = PathOperations::join($languageDir, $languageFile);
 
             $languageContentsRaw = file_get_contents($fullFilePath);
-            if ($languageContentsRaw === false) {
+            if (false === $languageContentsRaw) {
                 continue;
             }
 
             $languageContents = json_decode($languageContentsRaw, true);
 
-            if ($languageContents === false) {
+            if (false === $languageContents) {
                 continue;
             }
 
@@ -87,7 +87,7 @@
             $languages[] = array($splitFileName[0], $languageContents['Language Display Name']);
         }
 
-        usort($languages, "languageCmp");
+        usort($languages, 'languageCmp');
 
         return $languages;
     }
@@ -95,14 +95,14 @@
     function monstaBasename($path)
     {
         // manual basename splitting because built in function may not work with special characters
-        $splitPath = explode("/", $path);
+        $splitPath = explode('/', $path);
         return $splitPath[count($splitPath) - 1];
     }
 
     function getMonstaSharedTransferDirectory()
     {
         // Directory that any transfers in the system go into so it can be cleared out regularly
-        $uploadDirPath = PathOperations::join(monstaGetTempDirectory(), "mftp-transfers");
+        $uploadDirPath = PathOperations::join(monstaGetTempDirectory(), 'mftp-transfers');
 
         if (!file_exists($uploadDirPath)) {
             mkdir($uploadDirPath);
@@ -122,7 +122,7 @@
         $dirHandle = @opendir($sharedUploadDir);
 
         while (false !== ($entry = @readdir($dirHandle))) {
-            if ($entry !== "." && $entry !== "..") {
+            if ('.' !== $entry && '..' !== $entry) {
                 $itemPath = PathOperations::join($sharedUploadDir, $entry);
                 $modifiedTime = filemtime($itemPath);
                 if (time() - $modifiedTime > MFTP_TMP_UPLOAD_TIMEOUT_SECONDS) {
@@ -142,7 +142,7 @@
             @mkdir($monstaSharedDir);
         }
 
-        $tempName = tempnam($monstaSharedDir, "");
+        $tempName = tempnam($monstaSharedDir, '');
 
         if (file_exists($tempName)) {
             unlink($tempName);
@@ -150,7 +150,7 @@
 
         mkdir($tempName);
 
-        return $tempName . "/" . $fileName;
+        return $tempName.'/'.$fileName;
     }
 
     function recursiveUnlink($path)
@@ -170,13 +170,13 @@
 
         $dirHandle = @opendir($path);
 
-        if ($dirHandle === false) {
+        if (false === $dirHandle) {
             monstaUploadDebug("OPENDIR FAILURE 1: $path");
             return;
         }
 
         while (false !== ($entry = @readdir($dirHandle))) {
-            if ($entry !== "." && $entry !== "..") {
+            if ('.' !== $entry && '..' !== $entry) {
                 $itemPath = PathOperations::join($path, $entry);
                 if (is_dir($itemPath)) {
                     recursiveUnlink($itemPath);
@@ -214,8 +214,8 @@
 
     function readUpload($uploadPath)
     {
-        $inputHandler = fopen('php://input', "r");
-        $fileHandler = fopen($uploadPath, "w+");
+        $inputHandler = fopen('php://input', 'r');
+        $fileHandler = fopen($uploadPath, 'w+');
 
         while (false !== ($buffer = fgets($inputHandler, 65536))) {
             fwrite($fileHandler, $buffer);
@@ -236,16 +236,16 @@
 
     function b64DecodeUnicode($rawData)
     {
-        if ($rawData == "") {
-            return "";
+        if ('' == $rawData) {
+            return '';
         }
 
         $decodedData = base64_decode($rawData);
 
-        $urlEncodedData = "";
+        $urlEncodedData = '';
 
         foreach (str_split($decodedData) as $char) {
-            $urlEncodedData .= sprintf("%%%02x", ord($char));
+            $urlEncodedData .= sprintf('%%%02x', ord($char));
         }
 
         return urldecode($urlEncodedData);
@@ -256,7 +256,7 @@
         $urlEncodedData = rawurlencode($rawData);
 
         $ordinalizedData = preg_replace_callback(
-            "/%([0-9A-F]{2})/",
+            '/%([0-9A-F]{2})/',
             function ($matches) {
                 $intVal = intval($matches[1], 16);
                 return chr($intVal);
@@ -269,13 +269,13 @@
 
     function attemptToUtf8String($data)
     {
-        if (!function_exists("mb_convert_encoding") || !function_exists("mb_detect_encoding")) {
+        if (!function_exists('mb_convert_encoding') || !function_exists('mb_detect_encoding')) {
             return $data;
         }
 
         $inputDataEncoding = @mb_detect_encoding($data, 'UTF-8, ISO-8859-1', true);
 
-        if ($inputDataEncoding === false) {
+        if (false === $inputDataEncoding) {
             return $data;
         }
 
@@ -291,17 +291,17 @@
 
     function succeededFailedText($successFailure)
     {
-        return $successFailure ? "succeeded" : "failed";
+        return $successFailure ? 'succeeded' : 'failed';
     }
 
     function getNormalizedOSName()
     {
-        if (strtoupper(substr(PHP_OS, 0, 5)) == 'LINUX') {
-            return "Linux";
-        } elseif (strtoupper(substr(PHP_OS, 0, 7)) == 'FREEBSD') {
-            return "FreeBSD";
-        } elseif (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-            return "Windows";
+        if ('LINUX' == strtoupper(substr(PHP_OS, 0, 5))) {
+            return 'Linux';
+        } elseif ('FREEBSD' == strtoupper(substr(PHP_OS, 0, 7))) {
+            return 'FreeBSD';
+        } elseif ('WIN' == strtoupper(substr(PHP_OS, 0, 3))) {
+            return 'Windows';
         } else {
             return PHP_OS;
         }
@@ -309,17 +309,17 @@
 
     function booleanToJsValue($boolVal)
     {
-        return $boolVal ? "true" : "false";
+        return $boolVal ? 'true' : 'false';
     }
 
     function ftpConnectionAvailable()
     {
-        return function_exists("fsockopen") || function_exists("ftp_connect");
+        return function_exists('fsockopen') || function_exists('ftp_connect');
     }
 
     function outputStreamKeepAlive()
     {
-        echo(" ");
+        echo ' ';
         // safe to have spaces in json data, but need to output some data so there's something to flush
         // and then PHP will know if the client is gone
 
@@ -328,7 +328,7 @@
 
         // we probably won't get here because script will stop after flush() fails because connection closed
         if (connection_aborted()) {
-            throw new Exception("Connection was closed");
+            throw new Exception('Connection was closed');
         }
     }
 
@@ -337,31 +337,31 @@
         $serverName = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '');
         $requestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 
-        if (preg_match("/\\.php$/", $requestUri)) {
+        if (preg_match('/\\.php$/', $requestUri)) {
             $requestUri = dirname($requestUri);
         }
 
-        $https = isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? "s" : "";
+        $https = isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 's' : '';
 
-        return "http" . $https . "://" . $serverName . $requestUri;
+        return 'http'.$https.'://'.$serverName.$requestUri;
     }
 
     function generateVersionQueryString($isLicensed, $isHostEdition)
     {
         $installUrl = getMonstaInstallUrl();
 
-        $debugArg = MONSTA_DEBUG ? "&amp;d=1" : "";
+        $debugArg = MONSTA_DEBUG ? '&amp;d=1' : '';
 
         $mftpEdition = $isLicensed ? ($isHostEdition ? 'e' : 'p') : 's';
 
-        $versionQS = "v=" . MONSTA_VERSION . "&amp;r=" . urlencode($installUrl) . "&amp;os=" . getNormalizedOSName() . "&amp;e=" . $mftpEdition . $debugArg;
+        $versionQS = 'v='.MONSTA_VERSION.'&amp;r='.urlencode($installUrl).'&amp;os='.getNormalizedOSName().'&amp;e='.$mftpEdition.$debugArg;
         return $versionQS;
     }
 
     function normalizePath($path)
     {
         // turn windows separators into unix
-        $path = str_replace("\\", "/", $path);
+        $path = str_replace('\\', '/', $path);
 
         // Remove any kind of funky unicode whitespace
         $normalized = preg_replace('#\p{C}+|^\./#u', '', $path);
@@ -377,7 +377,7 @@
         }
 
         if (preg_match('#/\.{2}|\.{2}/#', $normalized)) {
-            throw new LogicException('Path is outside of the defined root, path: [' . $path . '], resolved: [' . $normalized . ']');
+            throw new LogicException('Path is outside of the defined root, path: ['.$path.'], resolved: ['.$normalized.']');
         }
 
         return $normalized;
@@ -388,7 +388,7 @@
     {
         $newAr = array();
         foreach ($haystack as $needle) {
-            if ($needle !== "") {
+            if ('' !== $needle) {
                 $newAr[] = $needle;
             }
         }
@@ -410,8 +410,8 @@
 
     function calculateRelativeResourcePath($fullResourcePath, $destinationPath)
     {
-        $fullResourcePathComponents = removeEmptyValuesFromArray(explode("/", $fullResourcePath));
-        $destinationPathComponents = removeEmptyValuesFromArray(explode("/", $destinationPath));
+        $fullResourcePathComponents = removeEmptyValuesFromArray(explode('/', $fullResourcePath));
+        $destinationPathComponents = removeEmptyValuesFromArray(explode('/', $destinationPath));
         $matchingComponentCount = calculateMatchingPathComponentCount($fullResourcePathComponents, $destinationPathComponents);
 
         $newRelativePathComponents = array_slice($fullResourcePathComponents, $matchingComponentCount);
@@ -419,41 +419,41 @@
         $depthDifference = count($destinationPathComponents) - $matchingComponentCount;
 
         for ($parentPathCount = 0; $parentPathCount < $depthDifference; ++$parentPathCount) {
-            array_unshift($newRelativePathComponents, "..");
+            array_unshift($newRelativePathComponents, '..');
         }
 
-        return join("/", $newRelativePathComponents);
+        return join('/', $newRelativePathComponents);
     }
 
     function performTempThemeFix($destinationDir, $rootSourceDir, $frontendSourceDir)
     {
         $sourceDirs = array($rootSourceDir, $frontendSourceDir);
 
-        if (substr($destinationDir, -1) != "/") {
-            $destinationDir .= "/";
+        if ('/' != substr($destinationDir, -1)) {
+            $destinationDir .= '/';
         }
 
-        $themeFileName = "theme.css";
-        $destinationPath = $destinationDir . $themeFileName;
+        $themeFileName = 'theme.css';
+        $destinationPath = $destinationDir.$themeFileName;
 
         if (file_exists($destinationPath)) {
             return;
         }
 
         foreach ($sourceDirs as $sourceDir) {
-            if (substr($sourceDir, -1) != "/") {
-                $sourceDir .= "/";
+            if ('/' != substr($sourceDir, -1)) {
+                $sourceDir .= '/';
             }
 
-            $sourceFile = $sourceDir . $themeFileName;
+            $sourceFile = $sourceDir.$themeFileName;
 
             if (!file_exists($sourceFile)) {
                 continue;
             }
 
-            $outputFile = @fopen($destinationPath, "w");
+            $outputFile = @fopen($destinationPath, 'w');
 
-            if ($outputFile === false) {
+            if (false === $outputFile) {
                 return;
             }
 
@@ -462,13 +462,13 @@
             foreach ($sourceLines as $sourceLine) {
                 if (preg_match("/background: url\\(([\"'])([^\"']+)(\\1)\\)/", $sourceLine, $matches)) {
                     $oldRelativeResourcePath = $matches[2];
-                    $fullResourcePath = "/" . normalizePath($sourceDir . $oldRelativeResourcePath);
+                    $fullResourcePath = '/'.normalizePath($sourceDir.$oldRelativeResourcePath);
 
                     $newRelativePath = calculateRelativeResourcePath($fullResourcePath, $destinationDir);
 
                     $newLine = preg_replace(
                         "/(\\s+background: url\\()([\"'])([^\"']+)(\\2)(\\).*)/",
-                        "$1$2" . $newRelativePath . "$4$5",
+                        '$1$2'.$newRelativePath.'$4$5',
                         $sourceLine
                     );
                 } else {
@@ -486,16 +486,16 @@
 
     function getMonstaPageTitle($isHostEdition)
     {
-        if (defined("MFTP_PAGE_TITLE") && $isHostEdition) {
+        if (defined('MFTP_PAGE_TITLE') && $isHostEdition) {
             return MFTP_PAGE_TITLE;
         }
 
-        return "Monsta FTP";
+        return 'Monsta FTP';
     }
 
     function addressIsIpV6($address)
     {
-        return strpos($address, ":") !== false;
+        return false !== strpos($address, ':');
     }
 
     function escapeIpAddress($address)
@@ -516,15 +516,15 @@
         $remoteAddressLong = ip2long($remoteAddress);
 
         foreach ($allowedAddresses as $allowedAddress) {
-            $slashCount = substr_count($allowedAddress, "/");
+            $slashCount = substr_count($allowedAddress, '/');
             if ($slashCount > 1) {
                 return false;
             } // invalid CIDR representation, failsafe to failure
-            elseif ($slashCount == 0) {
+            elseif (0 == $slashCount) {
                 $network = $allowedAddress;
                 $mask = 32;
             } else {
-                list($network, $mask) = explode("/", $allowedAddress);
+                list($network, $mask) = explode('/', $allowedAddress);
             }
 
             $networkLong = ip2long($network);

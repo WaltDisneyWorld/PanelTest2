@@ -1,36 +1,28 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * JavaScript management
- *
- * @package PhpMyAdmin
+ * JavaScript management.
  */
-namespace PhpMyAdmin;
 
-use PhpMyAdmin\Header;
-use PhpMyAdmin\Sanitize;
-use PhpMyAdmin\Url;
+namespace PhpMyAdmin;
 
 /**
  * Collects information about which JavaScript
  * files and objects are necessary to render
  * the page and generates the relevant code.
- *
- * @package PhpMyAdmin
  */
 class Scripts
 {
     /**
-     * An array of SCRIPT tags
+     * An array of SCRIPT tags.
      *
-     * @access private
      * @var array of strings
      */
     private $_files;
     /**
-     * An array of discrete javascript code snippets
+     * An array of discrete javascript code snippets.
      *
-     * @access private
      * @var array of strings
      */
     private $_code;
@@ -40,42 +32,39 @@ class Scripts
      *
      * @param array $files The list of js file to include
      *
-     * @return string HTML code for javascript inclusion.
+     * @return string HTML code for javascript inclusion
      */
     private function _includeFiles(array $files)
     {
         $result = '';
         foreach ($files as $value) {
-            if (strpos($value['filename'], ".php") !== false) {
-                $file_name = $value['filename'] . Url::getCommon($value['params'] + array('v' => PMA_VERSION));
+            if (false !== strpos($value['filename'], '.php')) {
+                $file_name = $value['filename'].Url::getCommon($value['params'] + array('v' => PMA_VERSION));
                 $result .= "<script data-cfasync='false' "
-                    . "type='text/javascript' src='js/" . $file_name
-                    . "'></script>\n";
+                    ."type='text/javascript' src='js/".$file_name
+                    ."'></script>\n";
             } else {
                 $result .= '<script data-cfasync="false" type="text/javascript" src="js/'
-                    .  $value['filename'] . '?' . Header::getVersionParameter() . '"></script>' . "\n";
+                    .$value['filename'].'?'.Header::getVersionParameter().'"></script>'."\n";
             }
         }
         return $result;
     }
 
     /**
-     * Generates new Scripts objects
-     *
+     * Generates new Scripts objects.
      */
     public function __construct()
     {
-        $this->_files  = array();
-        $this->_code   = '';
+        $this->_files = array();
+        $this->_code = '';
     }
 
     /**
-     * Adds a new file to the list of scripts
+     * Adds a new file to the list of scripts.
      *
      * @param string $filename The name of the file to include
      * @param array  $params   Additional parameters to pass to the file
-     *
-     * @return void
      */
     public function addFile(
         $filename,
@@ -95,11 +84,9 @@ class Scripts
     }
 
     /**
-     * Add new files to the list of scripts
+     * Add new files to the list of scripts.
      *
      * @param array $filelist The array of file names
-     *
-     * @return void
      */
     public function addFiles(array $filelist)
     {
@@ -109,7 +96,7 @@ class Scripts
     }
 
     /**
-     * Determines whether to fire up an onload event for a file
+     * Determines whether to fire up an onload event for a file.
      *
      * @param string $filename The name of the file to be checked
      *                         against the blacklist
@@ -118,11 +105,11 @@ class Scripts
      */
     private function _eventBlacklist($filename)
     {
-        if (strpos($filename, 'jquery') !== false
-            || strpos($filename, 'codemirror') !== false
-            || strpos($filename, 'messages.php') !== false
-            || strpos($filename, 'ajax.js') !== false
-            || strpos($filename, 'cross_framing_protection.js') !== false
+        if (false !== strpos($filename, 'jquery')
+            || false !== strpos($filename, 'codemirror')
+            || false !== strpos($filename, 'messages.php')
+            || false !== strpos($filename, 'ajax.js')
+            || false !== strpos($filename, 'cross_framing_protection.js')
         ) {
             return 0;
         }
@@ -131,11 +118,9 @@ class Scripts
     }
 
     /**
-     * Adds a new code snippet to the code to be executed
+     * Adds a new code snippet to the code to be executed.
      *
      * @param string $code The JS code to be added
-     *
-     * @return void
      */
     public function addCode($code)
     {
@@ -144,7 +129,7 @@ class Scripts
 
     /**
      * Returns a list with filenames and a flag to indicate
-     * whether to register onload events for this file
+     * whether to register onload events for this file.
      *
      * @return array
      */
@@ -153,19 +138,19 @@ class Scripts
         $retval = array();
         foreach ($this->_files as $file) {
             //If filename contains a "?", continue.
-            if (strpos($file['filename'], "?") !== false) {
+            if (false !== strpos($file['filename'], '?')) {
                 continue;
             }
             $retval[] = array(
                 'name' => $file['filename'],
-                'fire' => $file['has_onload']
+                'fire' => $file['has_onload'],
             );
         }
         return $retval;
     }
 
     /**
-     * Renders all the JavaScript file inclusions, code and events
+     * Renders all the JavaScript file inclusions, code and events.
      *
      * @return string
      */

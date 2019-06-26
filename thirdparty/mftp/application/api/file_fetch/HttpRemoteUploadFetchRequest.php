@@ -1,8 +1,8 @@
 <?php
-    require_once(dirname(__FILE__) . "/../lib/HttpFetchRequest.php");
+    require_once dirname(__FILE__).'/../lib/HttpFetchRequest.php';
 
     /**
-     * Class HttpRemoteUploadFetchRequest
+     * Class HttpRemoteUploadFetchRequest.
      */
     class HttpRemoteUploadFetchRequest extends HttpFetchRequest
     {
@@ -13,6 +13,7 @@
 
         /**
          * HttpRemoteUploadFetchRequest constructor.
+         *
          * @param $url string
          * @param $destinationDirectory string
          */

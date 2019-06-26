@@ -43,7 +43,7 @@ onlyadmin();
 <center><h1><?php
 include 'config.php';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
 // Check connection
     $sql = "SELECT value FROM settings WHERE code =  'register' LIMIT 0 , 30";
 if ($result = mysqli_query($con, $sql)) {
@@ -57,7 +57,7 @@ if ($result = mysqli_query($con, $sql)) {
 mysqli_close($con);
 ?></h1><p>The license is currently activated under a <?php echo $edition; ?> of IntISP <?php echo $intisp_ver; ?>.</p></center>
 <?php
-if (isset($_GET["debug"])) {
+if (isset($_GET['debug'])) {
     ?>
 <h1>Debug</h1>
 <textarea style="margin: 0px; height: 345px; width: 744px;" disabled>
@@ -71,19 +71,19 @@ function is_connected($addr)
             return true;
         }
     }
-    if (is_connected("example.com")) {
+    if (is_connected('example.com')) {
         echo "Detected a valid internet connection [OK]\n";
     } else {
         echo "COULD NOT CONNECT TO THE INTERNET [FAIL]\n";
     }
     $ip = gethostbyname('www.enyrx.com');
     echo "Detected Enyrx is pointing to $ip\n";
-    if (is_connected("enyrx.com")) {
+    if (is_connected('enyrx.com')) {
         echo "Stable connection to Enyrx Servers [OK]\n";
     } else {
         echo "COULD NOT CONNECT TO ENYRX [FAIL]\n";
     }
-    echo "The Debug process has completed."; ?>
+    echo 'The Debug process has completed.'; ?>
 </textarea>
 <br><?php
 }

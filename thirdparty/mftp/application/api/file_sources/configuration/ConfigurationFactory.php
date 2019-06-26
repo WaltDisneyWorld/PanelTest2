@@ -1,10 +1,10 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/../Validation.php');
+    require_once dirname(__FILE__).'/../Validation.php';
 
-    require_once(dirname(__FILE__) . '/FTPConfiguration.php');
-    require_once(dirname(__FILE__) . '/SFTPConfiguration.php');
-    require_once(dirname(__FILE__) . '/MockConnectionConfiguration.php');
+    require_once dirname(__FILE__).'/FTPConfiguration.php';
+    require_once dirname(__FILE__).'/SFTPConfiguration.php';
+    require_once dirname(__FILE__).'/MockConnectionConfiguration.php';
 
     class ConfigurationFactory
     {

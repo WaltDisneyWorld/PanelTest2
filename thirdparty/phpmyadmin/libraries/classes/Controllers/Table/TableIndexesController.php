@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Holds the PhpMyAdmin\Controllers\Table\TableIndexesController
- *
- * @package PhpMyAdmin\Controllers
+ * Holds the PhpMyAdmin\Controllers\Table\TableIndexesController.
  */
+
 namespace PhpMyAdmin\Controllers\Table;
 
 use PhpMyAdmin\Controllers\TableController;
@@ -15,19 +15,17 @@ use PhpMyAdmin\Template;
 use PhpMyAdmin\Util;
 
 /**
- * Class TableIndexesController
- *
- * @package PhpMyAdmin\Controllers
+ * Class TableIndexesController.
  */
 class TableIndexesController extends TableController
 {
     /**
-     * @var Index $index
+     * @var Index
      */
     protected $index;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Index $index Index
      */
@@ -44,9 +42,7 @@ class TableIndexesController extends TableController
     }
 
     /**
-     * Index
-     *
-     * @return void
+     * Index.
      */
     public function indexAction()
     {
@@ -59,9 +55,7 @@ class TableIndexesController extends TableController
     }
 
     /**
-     * Display the form to edit/create an index
-     *
-     * @return void
+     * Display the form to edit/create an index.
      */
     public function displayFormAction()
     {
@@ -84,7 +78,7 @@ class TableIndexesController extends TableController
         if (isset($_POST['create_edit_table'])) {
             $fields = json_decode($_POST['columns'], true);
             $index_params = array(
-                'Non_unique' => ($_POST['index']['Index_choice'] == 'UNIQUE')
+                'Non_unique' => ('UNIQUE' == $_POST['index']['Index_choice'])
                     ? '0' : '1',
             );
             $this->index->set($index_params);
@@ -116,7 +110,7 @@ class TableIndexesController extends TableController
                     'index' => $this->index,
                     'form_params' => $form_params,
                     'add_fields' => $add_fields,
-                    'create_edit_table' => isset($_POST['create_edit_table'])
+                    'create_edit_table' => isset($_POST['create_edit_table']),
                 )
             )
         );
@@ -125,9 +119,7 @@ class TableIndexesController extends TableController
     /**
      * Process the data from the edit/create index form,
      * run the query to build the new index
-     * and moves back to "tbl_sql.php"
-     *
-     * @return void
+     * and moves back to "tbl_sql.php".
      */
     public function doSaveDataAction()
     {
@@ -143,7 +135,7 @@ class TableIndexesController extends TableController
                 Template::get('preview_sql')
                     ->render(
                         array(
-                            'query_data' => $sql_query
+                            'query_data' => $sql_query,
                         )
                     )
             );

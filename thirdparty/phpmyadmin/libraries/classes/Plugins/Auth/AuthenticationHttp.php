@@ -1,12 +1,11 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * HTTP Authentication plugin for phpMyAdmin.
  * NOTE: Requires PHP loaded as a Apache module.
- *
- * @package    PhpMyAdmin-Authentication
- * @subpackage HTTP
  */
+
 namespace PhpMyAdmin\Plugins\Auth;
 
 use PhpMyAdmin\Plugins\AuthenticationPlugin;
@@ -18,16 +17,14 @@ use PhpMyAdmin\Core;
 require_once './libraries/hash.lib.php';
 
 /**
- * Handles the HTTP authentication methods
- *
- * @package PhpMyAdmin-Authentication
+ * Handles the HTTP authentication methods.
  */
 class AuthenticationHttp extends AuthenticationPlugin
 {
     /**
-     * Displays authentication form and redirect as necessary
+     * Displays authentication form and redirect as necessary.
      *
-     * @return boolean   always true (no return indeed)
+     * @return bool always true (no return indeed)
      */
     public function showLoginForm()
     {
@@ -47,9 +44,9 @@ class AuthenticationHttp extends AuthenticationPlugin
     }
 
     /**
-     * Displays authentication form
+     * Displays authentication form.
      *
-     * @return boolean
+     * @return bool
      */
     public function authForm()
     {
@@ -59,7 +56,7 @@ class AuthenticationHttp extends AuthenticationPlugin
             } else {
                 $server_message = $GLOBALS['cfg']['Server']['verbose'];
             }
-            $realm_message = 'phpMyAdmin ' . $server_message;
+            $realm_message = 'phpMyAdmin '.$server_message;
         } else {
             $realm_message = $GLOBALS['cfg']['Server']['auth_http_realm'];
         }
@@ -68,7 +65,7 @@ class AuthenticationHttp extends AuthenticationPlugin
 
         // remove non US-ASCII to respect RFC2616
         $realm_message = preg_replace('/[^\x20-\x7e]/i', '', $realm_message);
-        $response->header('WWW-Authenticate: Basic realm="' . $realm_message . '"');
+        $response->header('WWW-Authenticate: Basic realm="'.$realm_message.'"');
         $response->setHttpResponseCode(401);
 
         /* HTML header */
@@ -100,9 +97,9 @@ class AuthenticationHttp extends AuthenticationPlugin
     }
 
     /**
-     * Gets authentication credentials
+     * Gets authentication credentials.
      *
-     * @return boolean   whether we get authentication settings or not
+     * @return bool whether we get authentication settings or not
      */
     public function readCredentials()
     {
@@ -156,7 +153,7 @@ class AuthenticationHttp extends AuthenticationPlugin
 
         // Decode possibly encoded information (used by IIS/CGI/FastCGI)
         // (do not use explode() because a user might have a colon in his password
-        if (strcmp(substr($this->user, 0, 6), 'Basic ') == 0) {
+        if (0 == strcmp(substr($this->user, 0, 6), 'Basic ')) {
             $usr_pass = base64_decode(substr($this->user, 6));
             if (!empty($usr_pass)) {
                 $colon = strpos($usr_pass, ':');
@@ -174,7 +171,7 @@ class AuthenticationHttp extends AuthenticationPlugin
 
         // User logged out -> ensure the new username is not the same
         $old_usr = isset($_REQUEST['old_usr']) ? $_REQUEST['old_usr'] : '';
-        if (! empty($old_usr)
+        if (!empty($old_usr)
             && (isset($this->user) && hash_equals($old_usr, $this->user))
         ) {
             $this->user = '';
@@ -185,17 +182,15 @@ class AuthenticationHttp extends AuthenticationPlugin
     }
 
     /**
-     * User is not allowed to login to MySQL -> authentication failed
+     * User is not allowed to login to MySQL -> authentication failed.
      *
      * @param string $failure String describing why authentication has failed
-     *
-     * @return void
      */
     public function showFailure($failure)
     {
         parent::showFailure($failure);
         $error = $GLOBALS['dbi']->getError();
-        if ($error && $GLOBALS['errno'] != 1045) {
+        if ($error && 1045 != $GLOBALS['errno']) {
             Core::fatalError($error);
         } else {
             $this->authForm();
@@ -209,6 +204,6 @@ class AuthenticationHttp extends AuthenticationPlugin
      */
     public function getLoginFormURL()
     {
-        return './index.php?old_usr=' . $this->user;
+        return './index.php?old_usr='.$this->user;
     }
 }

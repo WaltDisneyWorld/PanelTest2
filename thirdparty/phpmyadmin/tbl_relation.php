@@ -1,7 +1,8 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Display table relations for viewing and editing
+ * Display table relations for viewing and editing.
  *
  * includes phpMyAdmin relations and InnoDB relations
  *
@@ -11,9 +12,7 @@
  * @todo check foreign fields to be from same type and size, all other makes no sense
  * @todo if above todos are fullfilled we can add all fields meet requirements
  * in the select dropdown
- * @package PhpMyAdmin
  */
-
 use PhpMyAdmin\Controllers\Table\TableRelationController;
 use PhpMyAdmin\Di\Container;
 use PhpMyAdmin\Relation;
@@ -50,10 +49,10 @@ $tbl_storage_engine = mb_strtoupper(
 $upd_query = new Table($table, $db, $dbi);
 
 $dependency_definitions = array(
-    "options_array" => $options_array,
-    "cfgRelation" => $cfgRelation,
-    "tbl_storage_engine" => $tbl_storage_engine,
-    "upd_query" => $upd_query
+    'options_array' => $options_array,
+    'cfgRelation' => $cfgRelation,
+    'tbl_storage_engine' => $tbl_storage_engine,
+    'upd_query' => $upd_query,
 );
 if ($cfgRelation['relwork']) {
     $dependency_definitions['existrel'] = $relation->getForeigners(

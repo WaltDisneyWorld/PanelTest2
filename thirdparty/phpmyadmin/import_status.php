@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Import progress bar backend
- *
- * @package PhpMyAdmin
+ * Import progress bar backend.
  */
-
 use PhpMyAdmin\Core;
 use PhpMyAdmin\Display\ImportAjax;
 
@@ -80,8 +78,7 @@ if (defined('SESSIONUPLOAD')) {
  */
 
 // $_GET["message"] is used for asking for an import message
-if (isset($_GET["message"]) && $_GET["message"]) {
-
+if (isset($_GET['message']) && $_GET['message']) {
     // AJAX requests can't be cached!
     Core::noCacheHeader();
 
@@ -94,7 +91,7 @@ if (isset($_GET["message"]) && $_GET["message"]) {
     $maximumTime = ini_get('max_execution_time');
     $timestamp = time();
     // wait until message is available
-    while ($_SESSION['Import_message']['message'] == null) {
+    while (null == $_SESSION['Import_message']['message']) {
         // close session before sleeping
         session_write_close();
         // sleep
@@ -113,8 +110,8 @@ if (isset($_GET["message"]) && $_GET["message"]) {
     echo $_SESSION['Import_message']['message'];
     echo '<fieldset class="tblFooters">' , "\n";
     echo '    [ <a href="' , $_SESSION['Import_message']['go_back_url']
-        . '">' , __('Back') , '</a> ]' , "\n";
+        .'">' , __('Back') , '</a> ]' , "\n";
     echo '</fieldset>' , "\n";
 } else {
-    ImportAjax::status($_GET["id"]);
+    ImportAjax::status($_GET['id']);
 }

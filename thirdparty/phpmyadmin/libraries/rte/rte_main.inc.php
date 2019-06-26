@@ -1,9 +1,8 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Common code for Routines, Triggers and Events.
- *
- * @package PhpMyAdmin
  */
 use PhpMyAdmin\Response;
 use PhpMyAdmin\Rte\Events;
@@ -11,17 +10,17 @@ use PhpMyAdmin\Rte\Routines;
 use PhpMyAdmin\Rte\Triggers;
 use PhpMyAdmin\Url;
 
-if (! defined('PHPMYADMIN')) {
+if (!defined('PHPMYADMIN')) {
     exit;
 }
 
 $response = Response::getInstance();
 
-if (! $response->isAjax()) {
-    /**
+if (!$response->isAjax()) {
+    /*
      * Displays the header and tabs
      */
-    if (! empty($table) && in_array($table, $GLOBALS['dbi']->getTables($db))) {
+    if (!empty($table) && in_array($table, $GLOBALS['dbi']->getTables($db))) {
         include_once './libraries/tbl_common.inc.php';
     } else {
         $table = '';
@@ -40,17 +39,17 @@ if (! $response->isAjax()) {
         ) = PhpMyAdmin\Util::getDbInfo($db, isset($sub_part) ? $sub_part : '');
     }
 } else {
-    /**
+    /*
      * Since we did not include some libraries, we need
      * to manually select the required database and
      * create the missing $url_query variable
      */
     if (strlen($db) > 0) {
         $GLOBALS['dbi']->selectDb($db);
-        if (! isset($url_query)) {
+        if (!isset($url_query)) {
             $url_query = Url::getCommon(
                 array(
-                    'db' => $db, 'table' => $table
+                    'db' => $db, 'table' => $table,
                 )
             );
         }
@@ -58,7 +57,7 @@ if (! $response->isAjax()) {
 }
 
 /**
- * Create labels for the list
+ * Create labels for the list.
  */
 $titles = PhpMyAdmin\Util::buildActionTitles();
 
@@ -68,8 +67,7 @@ $titles = PhpMyAdmin\Util::buildActionTitles();
  */
 $errors = array();
 
-
-/**
+/*
  * Call the appropriate main function
  */
 switch ($_PMA_RTE) {

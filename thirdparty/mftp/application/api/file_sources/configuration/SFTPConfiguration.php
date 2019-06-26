@@ -1,7 +1,7 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/../../constants.php');
-    require_once(dirname(__FILE__) . '/ConfigurationBase.php');
+    require_once dirname(__FILE__).'/../../constants.php';
+    require_once dirname(__FILE__).'/ConfigurationBase.php';
 
     abstract class SFTPAuthenticationMode
     {
@@ -13,21 +13,21 @@
         public static function fromString($modeName)
         {
             switch ($modeName) {
-                case "Password":
+                case 'Password':
                     return SFTPAuthenticationMode::Password;
                     break;
-                case "PublicKeyFile":
+                case 'PublicKeyFile':
                     return SFTPAuthenticationMode::PublicKeyFile;
                     break;
-                case "HostKeyFile":
+                case 'HostKeyFile':
                     return SFTPAuthenticationMode::HostKeyFile;
                     break;
-                case "Agent":
+                case 'Agent':
                     return SFTPAuthenticationMode::Agent;
                     break;
                 default:
-                    throw new InvalidArgumentException("SFTPAuthenticationMode must be one of Password, PublicKeyFile, 
-                    HostKeyFile or Agent.");
+                    throw new InvalidArgumentException('SFTPAuthenticationMode must be one of Password, PublicKeyFile, 
+                    HostKeyFile or Agent.');
             }
         }
     }
@@ -40,7 +40,7 @@
         private $host;
 
         /**
-         * @var integer
+         * @var int
          */
         private $authenticationMode;
 
@@ -114,10 +114,10 @@
                 Validation::validateNonEmptyString($hostKey, 'hostKey');
             }
 
-            if ($authenticationMode == SFTPAuthenticationMode::Password) {
+            if (SFTPAuthenticationMode::Password == $authenticationMode) {
                 $this->validatePasswordAuthenticationParameters($password, 'password');
-            } elseif ($authenticationMode == SFTPAuthenticationMode::PublicKeyFile
-                || $authenticationMode == SFTPAuthenticationMode::HostKeyFile) {
+            } elseif (SFTPAuthenticationMode::PublicKeyFile == $authenticationMode
+                || SFTPAuthenticationMode::HostKeyFile == $authenticationMode) {
                 $this->validateKeyAuthenticationParameters($publicKeyFilePath, $privateKeyFilePath);
             }
 
@@ -141,7 +141,7 @@
             }
             if ($authenticationMode < SFTPAuthenticationMode::Password
                 || $authenticationMode > SFTPAuthenticationMode::Agent) {
-                throw new InvalidArgumentException("AuthenticationMode is out of range.");
+                throw new InvalidArgumentException('AuthenticationMode is out of range.');
             }
         }
 
@@ -152,12 +152,12 @@
 
         private function validateKeyAuthenticationParameters($publicKeyFilePath, $privateKeyFilePath)
         {
-            if (!is_string($publicKeyFilePath) || strlen($publicKeyFilePath) == 0) {
-                throw new InvalidArgumentException("Public key file must be provided for public key authentication.");
+            if (!is_string($publicKeyFilePath) || 0 == strlen($publicKeyFilePath)) {
+                throw new InvalidArgumentException('Public key file must be provided for public key authentication.');
             }
 
-            if (!is_string($privateKeyFilePath) || strlen($privateKeyFilePath) == 0) {
-                throw new InvalidArgumentException("Private key file must be provided for public key authentication.");
+            if (!is_string($privateKeyFilePath) || 0 == strlen($privateKeyFilePath)) {
+                throw new InvalidArgumentException('Private key file must be provided for public key authentication.');
             }
         }
 
@@ -193,49 +193,34 @@
             return $this->initialDirectory;
         }
 
-        /**
-         * @return null
-         */
         public function getPassword()
         {
             return $this->password;
         }
 
-        /**
-         * @return null string
-         */
         public function getPublicKeyFilePath()
         {
             return $this->publicKeyFilePath;
         }
 
-        /**
-         * @return null string
-         */
         public function getPrivateKeyFilePath()
         {
             return $this->privateKeyFilePath;
         }
 
-        /**
-         * @return null string
-         */
         public function getLocalUsername()
         {
             return $this->localUsername;
         }
 
         /**
-         * @return boolean
+         * @return bool
          */
         public function isValidateHostKey()
         {
             return $this->validateHostKey;
         }
 
-        /**
-         * @return null string
-         */
         public function getHostKey()
         {
             return $this->hostKey;
@@ -254,7 +239,7 @@
          */
         public function isAuthenticationModePassword()
         {
-            return $this->getAuthenticationMode() == SFTPAuthenticationMode::Password;
+            return SFTPAuthenticationMode::Password == $this->getAuthenticationMode();
         }
 
         /**
@@ -262,7 +247,7 @@
          */
         public function isAuthenticationModePublicKeyFile()
         {
-            return $this->getAuthenticationMode() == SFTPAuthenticationMode::PublicKeyFile;
+            return SFTPAuthenticationMode::PublicKeyFile == $this->getAuthenticationMode();
         }
 
         /**
@@ -270,6 +255,6 @@
          */
         public function isAuthenticationModeAgent()
         {
-            return $this->getAuthenticationMode() == SFTPAuthenticationMode::Agent;
+            return SFTPAuthenticationMode::Agent == $this->getAuthenticationMode();
         }
     }

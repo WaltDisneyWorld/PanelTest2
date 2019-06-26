@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * User preferences form
- *
- * @package PhpMyAdmin
+ * User preferences form.
  */
+
 namespace PhpMyAdmin\Config\Forms\User;
 
 use PhpMyAdmin\Config\Forms\BaseForm;
@@ -41,19 +41,19 @@ class FeaturesForm extends BaseForm
                 'CharTextareaRows',
                 'TextareaCols',
                 'TextareaRows',
-                'LongtextDoubleTextarea'
+                'LongtextDoubleTextarea',
             ),
             'Page_titles' => array(
                 'TitleDefault',
                 'TitleTable',
                 'TitleDatabase',
-                'TitleServer'
+                'TitleServer',
             ),
             'Warnings' => array(
                 'PmaNoRelation_DisableWarning',
                 'SuhosinDisableWarning',
                 'LoginCookieValidityDisableWarning',
-                'ReservedWordDisableWarning'
+                'ReservedWordDisableWarning',
             ),
             'Console' => array(
                 'Console/Mode',
@@ -71,7 +71,7 @@ class FeaturesForm extends BaseForm
         // skip Developer form if no setting is available
         if ($GLOBALS['cfg']['UserprefsDeveloperTab']) {
             $result['Developer'] = array(
-                'DBG/sql'
+                'DBG/sql',
             );
         }
         return $result;

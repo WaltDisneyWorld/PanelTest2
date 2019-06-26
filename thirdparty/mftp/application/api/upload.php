@@ -1,17 +1,17 @@
 <?php
     session_start();
 
-    require_once(dirname(__FILE__) . "/constants.php");
+    require_once dirname(__FILE__).'/constants.php';
     includeMonstaConfig();
-    require_once(dirname(__FILE__) . '/request_processor/RequestMarshaller.php');
-    require_once(dirname(__FILE__) . '/lib/helpers.php');
-    require_once(dirname(__FILE__) . '/lib/response_helpers.php');
-    require_once(dirname(__FILE__) . '/file_sources/PathOperations.php');
-    require_once(dirname(__FILE__) . '/file_sources/connection/ArchiveExtractor.php');
+    require_once dirname(__FILE__).'/request_processor/RequestMarshaller.php';
+    require_once dirname(__FILE__).'/lib/helpers.php';
+    require_once dirname(__FILE__).'/lib/response_helpers.php';
+    require_once dirname(__FILE__).'/file_sources/PathOperations.php';
+    require_once dirname(__FILE__).'/file_sources/connection/ArchiveExtractor.php';
 
     dieIfNotPOST();
 
-    require_once(dirname(__FILE__) . '/lib/access_check.php');
+    require_once dirname(__FILE__).'/lib/access_check.php';
 
     $marshaller = new RequestMarshaller();
 
@@ -36,27 +36,27 @@
 
         $request['context']['localPath'] = $uploadPath;
         try {
-            if ($request['actionName'] == "uploadArchive") {
+            if ('uploadArchive' == $request['actionName']) {
                 $extractor = new ArchiveExtractor($uploadPath, null);
 
                 $archiveFileCount = $extractor->getFileCount(); // will throw exception if it's not valid
 
                 $fileKey = generateRandomString(16);
 
-                $_SESSION[MFTP_SESSION_KEY_PREFIX . $fileKey] = array(
-                    "archivePath" => $uploadPath,
-                    "extractDirectory" => PathOperations::remoteDirname($request['context']['remotePath'])
+                $_SESSION[MFTP_SESSION_KEY_PREFIX.$fileKey] = array(
+                    'archivePath' => $uploadPath,
+                    'extractDirectory' => PathOperations::remoteDirname($request['context']['remotePath']),
                 );
 
                 $response = array(
-                    "success" => true,
-                    "fileKey" => $fileKey,
-                    "fileCount" => $archiveFileCount
+                    'success' => true,
+                    'fileKey' => $fileKey,
+                    'fileCount' => $archiveFileCount,
                 );
 
-                print json_encode($response);
+                echo json_encode($response);
             } else {
-                print $marshaller->marshallRequest($request);
+                echo $marshaller->marshallRequest($request);
                 cleanupTempTransferPath($uploadPath);
             }
         } catch (Exception $e) {

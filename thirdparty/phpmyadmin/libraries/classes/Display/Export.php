@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * functions for displaying server, database and table export
- *
- * @package PhpMyAdmin
+ * functions for displaying server, database and table export.
  */
+
 namespace PhpMyAdmin\Display;
 
 use PhpMyAdmin\Core;
@@ -17,23 +17,20 @@ use PhpMyAdmin\Relation;
 use PhpMyAdmin\Response;
 use PhpMyAdmin\Table;
 use PhpMyAdmin\Template;
-use PhpMyAdmin\Url;
 use PhpMyAdmin\Util;
 
 /**
- * PhpMyAdmin\Display\Export class
- *
- * @package PhpMyAdmin
+ * PhpMyAdmin\Display\Export class.
  */
 class Export
 {
     /**
-     * @var Relation $relation
+     * @var Relation
      */
     private $relation;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -45,7 +42,7 @@ class Export
      *
      * @param string $str option name
      *
-     * @return boolean
+     * @return bool
      */
     private function checkboxCheck($str)
     {
@@ -54,7 +51,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Selection Options
+     * Prints Html For Export Selection Options.
      *
      * @param string $tmpSelect Tmp selected method of export
      *
@@ -66,7 +63,7 @@ class Export
         // (from clicking Back button on export.php)
         if (isset($_POST['db_select'])) {
             $_POST['db_select'] = urldecode($_POST['db_select']);
-            $_POST['db_select'] = explode(",", $_POST['db_select']);
+            $_POST['db_select'] = explode(',', $_POST['db_select']);
         }
 
         $databases = [];
@@ -81,8 +78,8 @@ class Export
                 }
             } elseif (!empty($tmpSelect)) {
                 if (mb_strpos(
-                    ' ' . $tmpSelect,
-                    '|' . $currentDb . '|'
+                    ' '.$tmpSelect,
+                    '|'.$currentDb.'|'
                 )) {
                     $isSelected = true;
                 }
@@ -101,7 +98,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Hidden Input
+     * Prints Html For Export Hidden Input.
      *
      * @param string $exportType  Selected Export Type
      * @param string $db          Selected DB
@@ -123,7 +120,7 @@ class Export
         // If the export method was not set, the default is quick
         if (isset($_POST['export_method'])) {
             $cfg['Export']['method'] = $_POST['export_method'];
-        } elseif (! isset($cfg['Export']['method'])) {
+        } elseif (!isset($cfg['Export']['method'])) {
             $cfg['Export']['method'] = 'quick';
         }
 
@@ -143,7 +140,7 @@ class Export
     }
 
     /**
-     * Returns HTML for the options in template dropdown
+     * Returns HTML for the options in template dropdown.
      *
      * @param string $exportType export type - server, database, or table
      *
@@ -154,18 +151,18 @@ class Export
         // Get the relation settings
         $cfgRelation = $this->relation->getRelationsParam();
 
-        $query = "SELECT `id`, `template_name` FROM "
-           . Util::backquote($cfgRelation['db']) . '.'
-           . Util::backquote($cfgRelation['export_templates'])
-           . " WHERE `username` = "
-           . "'" . $GLOBALS['dbi']->escapeString($GLOBALS['cfg']['Server']['user'])
-            . "' AND `export_type` = '" . $GLOBALS['dbi']->escapeString($exportType) . "'"
-           . " ORDER BY `template_name`;";
+        $query = 'SELECT `id`, `template_name` FROM '
+           .Util::backquote($cfgRelation['db']).'.'
+           .Util::backquote($cfgRelation['export_templates'])
+           .' WHERE `username` = '
+           ."'".$GLOBALS['dbi']->escapeString($GLOBALS['cfg']['Server']['user'])
+            ."' AND `export_type` = '".$GLOBALS['dbi']->escapeString($exportType)."'"
+           .' ORDER BY `template_name`;';
 
         $result = $this->relation->queryAsControlUser($query);
 
         $templates = [];
-        if ($result !== false) {
+        if (false !== $result) {
             while ($row = $GLOBALS['dbi']->fetchAssoc($result, DatabaseInterface::CONNECT_CONTROL)) {
                 $templates[] = [
                     'name' => $row['template_name'],
@@ -181,7 +178,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Method
+     * Prints Html For Export Options Method.
      *
      * @return string
      */
@@ -200,7 +197,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Selection
+     * Prints Html For Export Options Selection.
      *
      * @param string $exportType  Selected Export Type
      * @param string $multiValues Export Options
@@ -216,7 +213,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Format dropdown
+     * Prints Html For Export Options Format dropdown.
      *
      * @param ExportPlugin[] $exportList Export List
      *
@@ -231,7 +228,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Format-specific options
+     * Prints Html For Export Options Format-specific options.
      *
      * @param ExportPlugin[] $exportList Export List
      *
@@ -250,7 +247,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Rows
+     * Prints Html For Export Options Rows.
      *
      * @param string $db           Selected DB
      * @param string $table        Selected Table
@@ -273,7 +270,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Quick Export
+     * Prints Html For Export Options Quick Export.
      *
      * @return string
      */
@@ -296,7 +293,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Save Dir
+     * Prints Html For Export Options Save Dir.
      *
      * @return string
      */
@@ -318,9 +315,8 @@ class Export
         ]);
     }
 
-
     /**
-     * Prints Html For Export Options
+     * Prints Html For Export Options.
      *
      * @param string $exportType Selected Export Type
      *
@@ -328,11 +324,11 @@ class Export
      */
     private function getHtmlForOptionsOutputFormat($exportType)
     {
-        $trans = new Message;
+        $trans = new Message();
         $trans->addText(__('@SERVER@ will become the server name'));
-        if ($exportType == 'database' || $exportType == 'table') {
+        if ('database' == $exportType || 'table' == $exportType) {
             $trans->addText(__(', @DATABASE@ will become the database name'));
-            if ($exportType == 'table') {
+            if ('table' == $exportType) {
                 $trans->addText(__(', @TABLE@ will become the table name'));
             }
         }
@@ -340,32 +336,32 @@ class Export
         $msg = new Message(
             __(
                 'This value is interpreted using %1$sstrftime%2$s, '
-                . 'so you can use time formatting strings. '
-                . 'Additionally the following transformations will happen: %3$s. '
-                . 'Other text will be kept as is. See the %4$sFAQ%5$s for details.'
+                .'so you can use time formatting strings. '
+                .'Additionally the following transformations will happen: %3$s. '
+                .'Other text will be kept as is. See the %4$sFAQ%5$s for details.'
             )
         );
         $msg->addParamHtml(
-            '<a href="' . Core::linkURL(Core::getPHPDocLink('function.strftime.php'))
-            . '" target="documentation" title="' . __('Documentation') . '">'
+            '<a href="'.Core::linkURL(Core::getPHPDocLink('function.strftime.php'))
+            .'" target="documentation" title="'.__('Documentation').'">'
         );
         $msg->addParamHtml('</a>');
         $msg->addParam($trans);
         $docUrl = Util::getDocuLink('faq', 'faq6-27');
         $msg->addParamHtml(
-            '<a href="' . $docUrl . '" target="documentation">'
+            '<a href="'.$docUrl.'" target="documentation">'
         );
         $msg->addParamHtml('</a>');
 
         if (isset($_POST['filename_template'])) {
             $filenameTemplate = $_POST['filename_template'];
         } else {
-            if ($exportType == 'database') {
+            if ('database' == $exportType) {
                 $filenameTemplate = $GLOBALS['PMA_Config']->getUserValue(
                     'pma_db_filename_template',
                     $GLOBALS['cfg']['Export']['file_template_database']
                 );
-            } elseif ($exportType == 'table') {
+            } elseif ('table' == $exportType) {
                 $filenameTemplate = $GLOBALS['PMA_Config']->getUserValue(
                     'pma_table_filename_template',
                     $GLOBALS['cfg']['Export']['file_template_table']
@@ -386,7 +382,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Charset
+     * Prints Html For Export Options Charset.
      *
      * @return string
      */
@@ -401,7 +397,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Compression
+     * Prints Html For Export Options Compression.
      *
      * @return string
      */
@@ -435,7 +431,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Radio
+     * Prints Html For Export Options Radio.
      *
      * @return string
      */
@@ -448,7 +444,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options Checkbox - Separate files
+     * Prints Html For Export Options Checkbox - Separate files.
      *
      * @param string $exportType Selected Export Type
      *
@@ -465,7 +461,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options
+     * Prints Html For Export Options.
      *
      * @param string $exportType Selected Export Type
      *
@@ -493,7 +489,7 @@ class Export
         }
         $optionsOutputCompression = $this->getHtmlForOptionsOutputCompression();
         $optionsOutputSeparateFiles = '';
-        if ($exportType == 'server' || $exportType == 'database') {
+        if ('server' == $exportType || 'database' == $exportType) {
             $optionsOutputSeparateFiles = $this->getHtmlForOptionsOutputSeparateFiles(
                 $exportType
             );
@@ -519,7 +515,7 @@ class Export
     }
 
     /**
-     * Prints Html For Export Options
+     * Prints Html For Export Options.
      *
      * @param string         $exportType   Selected Export Type
      * @param string         $db           Selected DB
@@ -546,7 +542,7 @@ class Export
         $html .= $this->getHtmlForOptionsSelection($exportType, $multiValues);
 
         $tableObject = new Table($table, $db);
-        if (strlen($table) > 0 && empty($numTables) && ! $tableObject->isMerge()) {
+        if (strlen($table) > 0 && empty($numTables) && !$tableObject->isMerge()) {
             $html .= $this->getHtmlForOptionsRows($db, $table, $unlimNumRows);
         }
 
@@ -561,15 +557,15 @@ class Export
     }
 
     /**
-     * Generate Html For currently defined aliases
+     * Generate Html For currently defined aliases.
      *
      * @return string
      */
     private function getHtmlForCurrentAlias()
     {
         $result = '<table id="alias_data"><thead><tr><th colspan="4">'
-            . __('Defined aliases')
-            . '</th></tr></thead><tbody>';
+            .__('Defined aliases')
+            .'</th></tr></thead><tbody>';
 
         $template = Template::get('export/alias_item');
         if (isset($_SESSION['tmpval']['aliases'])) {
@@ -578,30 +574,30 @@ class Export
                     $result .= $template->render(array(
                         'type' => _pgettext('Alias', 'Database'),
                         'name' => $db,
-                        'field' => 'aliases[' . $db . '][alias]',
+                        'field' => 'aliases['.$db.'][alias]',
                         'value' => $dbData['alias'],
                     ));
                 }
-                if (! isset($dbData['tables'])) {
+                if (!isset($dbData['tables'])) {
                     continue;
                 }
                 foreach ($dbData['tables'] as $table => $tableData) {
                     if (isset($tableData['alias'])) {
                         $result .= $template->render(array(
                             'type' => _pgettext('Alias', 'Table'),
-                            'name' => $db . '.' . $table,
-                            'field' => 'aliases[' . $db . '][tables][' . $table . '][alias]',
+                            'name' => $db.'.'.$table,
+                            'field' => 'aliases['.$db.'][tables]['.$table.'][alias]',
                             'value' => $tableData['alias'],
                         ));
                     }
-                    if (! isset($tableData['columns'])) {
+                    if (!isset($tableData['columns'])) {
                         continue;
                     }
                     foreach ($tableData['columns'] as $column => $columnName) {
                         $result .= $template->render(array(
                             'type' => _pgettext('Alias', 'Column'),
-                            'name' => $db . '.' . $table . '.'. $column,
-                            'field' => 'aliases[' . $db . '][tables][' . $table . '][colums][' . $column . ']',
+                            'name' => $db.'.'.$table.'.'.$column,
+                            'field' => 'aliases['.$db.'][tables]['.$table.'][colums]['.$column.']',
                             'value' => $columnName,
                         ));
                     }
@@ -610,15 +606,15 @@ class Export
         }
 
         // Empty row for javascript manipulations
-        $result .= '</tbody><tfoot class="hide">' . $template->render(array(
-            'type' => '', 'name' => '', 'field' => 'aliases_new', 'value' => ''
-        )) . '</tfoot>';
+        $result .= '</tbody><tfoot class="hide">'.$template->render(array(
+            'type' => '', 'name' => '', 'field' => 'aliases_new', 'value' => '',
+        )).'</tfoot>';
 
-        return $result . '</table>';
+        return $result.'</table>';
     }
 
     /**
-     * Generate Html For Alias Modal Dialog
+     * Generate Html For Alias Modal Dialog.
      *
      * @return string
      */
@@ -626,7 +622,7 @@ class Export
     {
         $title = __('Rename exported databases/tables/columns');
 
-        $html = '<div id="alias_modal" class="hide" title="' . $title . '">';
+        $html = '<div id="alias_modal" class="hide" title="'.$title.'">';
         $html .= $this->getHtmlForCurrentAlias();
         $html .= Template::get('export/alias_add')->render();
 
@@ -635,7 +631,7 @@ class Export
     }
 
     /**
-     * Gets HTML to display export dialogs
+     * Gets HTML to display export dialogs.
      *
      * @param string $exportType   export type: server|database|table
      * @param string $db           selected DB
@@ -665,11 +661,11 @@ class Export
         /* Scan for plugins */
         /* @var $exportList ExportPlugin[] */
         $exportList = Plugins::getPlugins(
-            "export",
+            'export',
             'libraries/classes/Plugins/Export/',
             array(
                 'export_type' => $exportType,
-                'single_table' => isset($GLOBALS['single_table'])
+                'single_table' => isset($GLOBALS['single_table']),
             )
         );
 
@@ -694,7 +690,7 @@ class Export
         }
 
         $html .= '<form method="post" action="export.php" '
-            . ' name="dump" class="disableAjax">';
+            .' name="dump" class="disableAjax">';
 
         //output Hidden Inputs
         $singleTableStr = isset($GLOBALS['single_table']) ? $GLOBALS['single_table']
@@ -723,11 +719,9 @@ class Export
     }
 
     /**
-     * Handles export template actions
+     * Handles export template actions.
      *
      * @param array $cfgRelation Relation configuration
-     *
-     * @return void
      */
     public function handleTemplateActions(array $cfgRelation)
     {
@@ -737,34 +731,34 @@ class Export
             $id = '';
         }
 
-        $templateTable = Util::backquote($cfgRelation['db']) . '.'
-           . Util::backquote($cfgRelation['export_templates']);
+        $templateTable = Util::backquote($cfgRelation['db']).'.'
+           .Util::backquote($cfgRelation['export_templates']);
         $user = $GLOBALS['dbi']->escapeString($GLOBALS['cfg']['Server']['user']);
 
         switch ($_POST['templateAction']) {
         case 'create':
-            $query = "INSERT INTO " . $templateTable . "("
-                . " `username`, `export_type`,"
-                . " `template_name`, `template_data`"
-                . ") VALUES ("
-                . "'" . $user . "', "
-                . "'" . $GLOBALS['dbi']->escapeString($_POST['exportType'])
-                . "', '" . $GLOBALS['dbi']->escapeString($_POST['templateName'])
-                . "', '" . $GLOBALS['dbi']->escapeString($_POST['templateData'])
-                . "');";
+            $query = 'INSERT INTO '.$templateTable.'('
+                .' `username`, `export_type`,'
+                .' `template_name`, `template_data`'
+                .') VALUES ('
+                ."'".$user."', "
+                ."'".$GLOBALS['dbi']->escapeString($_POST['exportType'])
+                ."', '".$GLOBALS['dbi']->escapeString($_POST['templateName'])
+                ."', '".$GLOBALS['dbi']->escapeString($_POST['templateData'])
+                ."');";
             break;
         case 'load':
-            $query = "SELECT `template_data` FROM " . $templateTable
-                 . " WHERE `id` = " . $id  . " AND `username` = '" . $user . "'";
+            $query = 'SELECT `template_data` FROM '.$templateTable
+                 .' WHERE `id` = '.$id." AND `username` = '".$user."'";
             break;
         case 'update':
-            $query = "UPDATE " . $templateTable . " SET `template_data` = "
-              . "'" . $GLOBALS['dbi']->escapeString($_POST['templateData']) . "'"
-              . " WHERE `id` = " . $id  . " AND `username` = '" . $user . "'";
+            $query = 'UPDATE '.$templateTable.' SET `template_data` = '
+              ."'".$GLOBALS['dbi']->escapeString($_POST['templateData'])."'"
+              .' WHERE `id` = '.$id." AND `username` = '".$user."'";
             break;
         case 'delete':
-            $query = "DELETE FROM " . $templateTable
-               . " WHERE `id` = " . $id  . " AND `username` = '" . $user . "'";
+            $query = 'DELETE FROM '.$templateTable
+               .' WHERE `id` = '.$id." AND `username` = '".$user."'";
             break;
         default:
             $query = '';
@@ -774,7 +768,7 @@ class Export
         $result = $this->relation->queryAsControlUser($query, false);
 
         $response = Response::getInstance();
-        if (! $result) {
+        if (!$result) {
             $error = $GLOBALS['dbi']->getError(DatabaseInterface::CONNECT_CONTROL);
             $response->setRequestStatus(false);
             $response->addJSON('message', $error);

@@ -14,7 +14,7 @@ function onlymasterreseller()
 }
 function onlyadmin()
 {
-    if ($_SESSION['user'] == 'admin') {
+    if ('admin' == $_SESSION['user']) {
     } else {
         die();
     }

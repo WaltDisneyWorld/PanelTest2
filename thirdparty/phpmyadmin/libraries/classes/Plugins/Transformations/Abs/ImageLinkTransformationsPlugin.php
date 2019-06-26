@@ -1,11 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Abstract class for the link transformations plugins
- *
- * @package    PhpMyAdmin-Transformations
- * @subpackage Link
+ * Abstract class for the link transformations plugins.
  */
+
 namespace PhpMyAdmin\Plugins\Transformations\Abs;
 
 use PhpMyAdmin\Plugins\TransformationsPlugin;
@@ -16,13 +15,11 @@ if (!defined('PHPMYADMIN')) {
 
 /**
  * Provides common methods for all of the link transformations plugins.
- *
- * @package PhpMyAdmin
  */
 abstract class ImageLinkTransformationsPlugin extends TransformationsPlugin
 {
     /**
-     * Gets the transformation description of the specific plugin
+     * Gets the transformation description of the specific plugin.
      *
      * @return string
      */
@@ -47,18 +44,18 @@ abstract class ImageLinkTransformationsPlugin extends TransformationsPlugin
         // must disable the page loader, see
         // https://wiki.phpmyadmin.net/pma/Page_loader#Bypassing_the_page_loader
         return '<a class="disableAjax" target="_blank" rel="noopener noreferrer" href="transformation_wrapper.php'
-            . $options['wrapper_link'] . '" alt="[' . htmlspecialchars($buffer) . ']">[BLOB]</a>';
+            .$options['wrapper_link'].'" alt="['.htmlspecialchars($buffer).']">[BLOB]</a>';
     }
 
     /* ~~~~~~~~~~~~~~~~~~~~ Getters and Setters ~~~~~~~~~~~~~~~~~~~~ */
 
     /**
-     * Gets the transformation name of the specific plugin
+     * Gets the transformation name of the specific plugin.
      *
      * @return string
      */
     public static function getName()
     {
-        return "ImageLink";
+        return 'ImageLink';
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/ListItem.php');
-    require_once(dirname(__FILE__) . '/IntegerPermissionSet.php');
-    require_once(dirname(__FILE__) . '/../Validation.php');
+    require_once dirname(__FILE__).'/ListItem.php';
+    require_once dirname(__FILE__).'/IntegerPermissionSet.php';
+    require_once dirname(__FILE__).'/../Validation.php';
 
     class StatOutputListItem extends ListItem
     {

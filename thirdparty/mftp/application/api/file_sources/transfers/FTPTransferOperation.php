@@ -1,6 +1,6 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/TransferOperation.php');
+    require_once dirname(__FILE__).'/TransferOperation.php';
 
     class FTPTransferOperation extends TransferOperation
     {
@@ -28,8 +28,8 @@
          */
         public function setTransferMode($transferMode)
         {
-            if ($transferMode != FTP_ASCII && $transferMode != FTP_BINARY) {
-                throw new InvalidArgumentException("Transfer mode must be FTP_ASCII or FTP_BINARY");
+            if (FTP_ASCII != $transferMode && FTP_BINARY != $transferMode) {
+                throw new InvalidArgumentException('Transfer mode must be FTP_ASCII or FTP_BINARY');
             }
             $this->transferMode = $transferMode;
         }

@@ -1,14 +1,14 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/../../lib/helpers.php");
-    require_once(dirname(__FILE__) . "/../PathOperations.php");
-    require_once(dirname(__FILE__) . "/../../lib/LocalizableException.php");
-    require_once(dirname(__FILE__) . "/../../lib/helpers.php");
-    require_once(dirname(__FILE__) . "/ConnectionFactory.php");
-    require_once(dirname(__FILE__) . "/../../vendor/autoload.php");
-    require_once(dirname(__FILE__) . "/ArchiveExtractor.php");
+    require_once dirname(__FILE__).'/../../lib/helpers.php';
+    require_once dirname(__FILE__).'/../PathOperations.php';
+    require_once dirname(__FILE__).'/../../lib/LocalizableException.php';
+    require_once dirname(__FILE__).'/../../lib/helpers.php';
+    require_once dirname(__FILE__).'/ConnectionFactory.php';
+    require_once dirname(__FILE__).'/../../vendor/autoload.php';
+    require_once dirname(__FILE__).'/ArchiveExtractor.php';
 
-    use \wapmorgan\UnifiedArchive\UnifiedArchive;
+    use wapmorgan\UnifiedArchive\UnifiedArchive;
 
     function recursiveDirectoryDelete($dir)
     {
@@ -21,11 +21,11 @@
         }
 
         foreach (scandir($dir) as $item) {
-            if ($item == '.' || $item == '..') {
+            if ('.' == $item || '..' == $item) {
                 continue;
             }
 
-            if (!recursiveDirectoryDelete($dir . DIRECTORY_SEPARATOR . $item)) {
+            if (!recursiveDirectoryDelete($dir.DIRECTORY_SEPARATOR.$item)) {
                 return false;
             }
         }
@@ -55,7 +55,7 @@
 
         private function getSessionKey()
         {
-            return "archive_contents_" . md5($this->getArchivePath());
+            return 'archive_contents_'.md5($this->getArchivePath());
         }
 
         private function getArchivePath()
@@ -70,7 +70,7 @@
 
         private function setupArchiveHandle()
         {
-            if ($this->archiveHandle !== null) {
+            if (null !== $this->archiveHandle) {
                 return;
             }
 
@@ -78,11 +78,11 @@
 
             $this->archiveHandle = UnifiedArchive::open($archivePath);
 
-            if (isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()])) {
-                $this->flatFileList = $_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()];
+            if (isset($_SESSION[MFTP_SESSION_KEY_PREFIX.$this->getSessionKey()])) {
+                $this->flatFileList = $_SESSION[MFTP_SESSION_KEY_PREFIX.$this->getSessionKey()];
             } else {
                 $this->flatFileList = $this->archiveHandle->getFileNames();
-                $_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()] = $this->flatFileList;
+                $_SESSION[MFTP_SESSION_KEY_PREFIX.$this->getSessionKey()] = $this->flatFileList;
             }
         }
 
@@ -98,7 +98,7 @@
 
             $fileName = $fileInfo->filename;
 
-            $isDirectory = substr($fileName, strlen($fileName) - 1) == "/";
+            $isDirectory = '/' == substr($fileName, strlen($fileName) - 1);
 
             return array($fileName, $isDirectory);
         }
@@ -145,8 +145,8 @@
 
         private function cleanup()
         {
-            if (isset($_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()])) {
-                unset($_SESSION[MFTP_SESSION_KEY_PREFIX . $this->getSessionKey()]);
+            if (isset($_SESSION[MFTP_SESSION_KEY_PREFIX.$this->getSessionKey()])) {
+                unset($_SESSION[MFTP_SESSION_KEY_PREFIX.$this->getSessionKey()]);
             }
         }
 
@@ -155,15 +155,15 @@
             return TransferOperationFactory::getTransferOperation(
                 strtolower($connection->getProtocolName()),
                 array(
-                    "localPath" => $localPath,
-                    "remotePath" => $remotePath
+                    'localPath' => $localPath,
+                    'remotePath' => $remotePath,
                 )
             );
         }
 
         private function createExtractDirectory()
         {
-            $tempPath = tempnam(getMonstaSharedTransferDirectory(), monstaBasename($this->archivePath) . "extract-dir");
+            $tempPath = tempnam(getMonstaSharedTransferDirectory(), monstaBasename($this->archivePath).'extract-dir');
 
             if (file_exists($tempPath)) {
                 unlink($tempPath);
@@ -171,7 +171,7 @@
 
             mkdir($tempPath);
             if (!is_dir($tempPath)) {
-                throw new Exception("Temp archive dir was not a dir");
+                throw new Exception('Temp archive dir was not a dir');
             }
 
             $this->extractDirectory = $tempPath;
@@ -179,20 +179,19 @@
 
         private function isPathTraversalPath($itemName)
         {
-            return strpos($itemName, "../") !== false || strpos($itemName, "..\\") !== false;
+            return false !== strpos($itemName, '../') || false !== strpos($itemName, '..\\');
         }
 
         private function extractFileToDisk($archive, $extractDir, $itemPath)
         {
-            if ($this->archiveExtension == "gz") {
-                $node = "/";
+            if ('gz' == $this->archiveExtension) {
+                $node = '/';
             } // gzip may only be extracted all at once
             else {
-                $node = "/" . $itemPath;
+                $node = '/'.$itemPath;
             }
 
-
-            if ($archive->extractNode($extractDir, $node) === false) {
+            if (false === $archive->extractNode($extractDir, $node)) {
                 throw new Exception("Unable to extract $node from archive");
             }
         }
@@ -205,12 +204,12 @@
                 return;
             }
 
-            $itemIsDirectory = $itemInfo[1] === true;
+            $itemIsDirectory = true === $itemInfo[1];
 
             $archiveInternalPath = $this->extractArchiveFilePath($itemInfo[0]);
 
-            if (DIRECTORY_SEPARATOR == "\\") {
-                $archiveInternalPath = str_replace("\\", "/", $archiveInternalPath);
+            if (DIRECTORY_SEPARATOR == '\\') {
+                $archiveInternalPath = str_replace('\\', '/', $archiveInternalPath);
             } // fix in windows
 
             if (!$itemIsDirectory) {
@@ -252,7 +251,7 @@
         private function directoryRecordExists($directoryPath)
         {
             // this is not true directory exists function, just if we have created it or a subdirectory in this object
-            return array_search(PathOperations::normalize($directoryPath), $this->existingDirectories) !== false;
+            return false !== array_search(PathOperations::normalize($directoryPath), $this->existingDirectories);
         }
 
         private function recordDirectoryExists($directoryPath)

@@ -32,7 +32,7 @@ error_reporting(0);
           <div class="button is-dark">
             <strong>V<?php
             $tempxaaa = 1;
-            require("../includes/classes/communication.class.php");
+            require '../includes/classes/communication.class.php';
             echo $intisp_ver;
             ?></strong>
           </div>
@@ -45,61 +45,56 @@ error_reporting(0);
 </nav>
 <div class="columns">
     <div class="column"> <a class="panel-block <?php
-    if (!isset($_GET["pg"])) {
+    if (!isset($_GET['pg'])) {
         ?>
       is-active
       <?php
     }
-    
-    
+
     ?>">
  
     Welcome
   </a>
   <a class="panel-block <?php
-    if (isset($_GET["pg"]) && $_GET["pg"] == "req") {
+    if (isset($_GET['pg']) && 'req' == $_GET['pg']) {
         ?>
       is-active
       <?php
     }
-    
-    
+
     ?>">
    
     Requirements
   </a>
   <a class="panel-block <?php
-    if (isset($_GET["pg"]) && $_GET["pg"] == "license") {
+    if (isset($_GET['pg']) && 'license' == $_GET['pg']) {
         ?>
       is-active
       <?php
     }
-    
-    
+
     ?>">
  
     EULA
   </a>
   <a class="panel-block <?php
-    if (isset($_GET["pg"]) && $_GET["pg"] == "db") {
+    if (isset($_GET['pg']) && 'db' == $_GET['pg']) {
         ?>
       is-active
       <?php
     }
-    
-    
+
     ?>">
   
     Configuration
   </a>
   <a class="panel-block <?php
-    if (isset($_GET["pg"]) && $_GET["pg"] == "installation") {
+    if (isset($_GET['pg']) && 'installation' == $_GET['pg']) {
         ?>
       is-active
       <?php
     }
-    
-    
+
     ?>">
   
     Installation
@@ -109,24 +104,24 @@ error_reporting(0);
     
     
    <?php
-   define("HOMEBASE", 1);
-    if (!isset($_GET["pg"])) {
-        require("pages/welcome.php");
+   define('HOMEBASE', 1);
+    if (!isset($_GET['pg'])) {
+        require 'pages/welcome.php';
     } ?>
        
          <?php
-          if (isset($_GET["pg"]) && $_GET["pg"] == "req") {
-              require("pages/req.php");
+          if (isset($_GET['pg']) && 'req' == $_GET['pg']) {
+              require 'pages/req.php';
           }
-   if (isset($_GET["pg"]) && $_GET["pg"] == "license") {
-       require("pages/license.php");
+   if (isset($_GET['pg']) && 'license' == $_GET['pg']) {
+       require 'pages/license.php';
    } ?>
          <?php
-   if (isset($_GET["pg"]) && $_GET["pg"] == "db") {
-       require("pages/db.php");
+   if (isset($_GET['pg']) && 'db' == $_GET['pg']) {
+       require 'pages/db.php';
    }
-     if (isset($_GET["pg"]) && $_GET["pg"] == "installation") {
-         require("pages/install.php");
+     if (isset($_GET['pg']) && 'installation' == $_GET['pg']) {
+         require 'pages/install.php';
      } ?>
 </div>
     </div>

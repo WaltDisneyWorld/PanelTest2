@@ -1,11 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Export to Texy! text.
- *
- * @package    PhpMyAdmin-Export
- * @subpackage Texy!text
  */
+
 namespace PhpMyAdmin\Plugins\Export;
 
 use PhpMyAdmin\DatabaseInterface;
@@ -22,15 +21,12 @@ use PhpMyAdmin\Transformations;
 use PhpMyAdmin\Util;
 
 /**
- * Handles the export for the Texy! text class
- *
- * @package    PhpMyAdmin-Export
- * @subpackage Texy!text
+ * Handles the export for the Texy! text class.
  */
 class ExportTexytext extends ExportPlugin
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -39,9 +35,7 @@ class ExportTexytext extends ExportPlugin
     }
 
     /**
-     * Sets the export Texy! text properties
-     *
-     * @return void
+     * Sets the export Texy! text properties.
      */
     protected function setProperties()
     {
@@ -55,20 +49,20 @@ class ExportTexytext extends ExportPlugin
         // $exportPluginProperties
         // this will be shown as "Format specific options"
         $exportSpecificOptions = new OptionsPropertyRootGroup(
-            "Format Specific Options"
+            'Format Specific Options'
         );
 
         // what to dump (structure/data/both) main group
         $dumpWhat = new OptionsPropertyMainGroup(
-            "general_opts",
+            'general_opts',
             __('Dump table')
         );
         // create primary items and add them to the group
-        $leaf = new RadioPropertyItem("structure_or_data");
+        $leaf = new RadioPropertyItem('structure_or_data');
         $leaf->setValues(
             array(
-                'structure'          => __('structure'),
-                'data'               => __('data'),
+                'structure' => __('structure'),
+                'data' => __('data'),
                 'structure_and_data' => __('structure and data'),
             )
         );
@@ -78,13 +72,13 @@ class ExportTexytext extends ExportPlugin
 
         // data options main group
         $dataOptions = new OptionsPropertyMainGroup(
-            "data",
+            'data',
             __('Data dump options')
         );
         $dataOptions->setForce('structure');
         // create primary items and add them to the group
         $leaf = new BoolPropertyItem(
-            "columns",
+            'columns',
             __('Put columns names in the first row')
         );
         $dataOptions->addProperty($leaf);
@@ -102,7 +96,7 @@ class ExportTexytext extends ExportPlugin
     }
 
     /**
-     * Outputs export header
+     * Outputs export header.
      *
      * @return bool Whether it succeeded
      */
@@ -112,7 +106,7 @@ class ExportTexytext extends ExportPlugin
     }
 
     /**
-     * Outputs export footer
+     * Outputs export footer.
      *
      * @return bool Whether it succeeded
      */
@@ -122,7 +116,7 @@ class ExportTexytext extends ExportPlugin
     }
 
     /**
-     * Outputs database header
+     * Outputs database header.
      *
      * @param string $db       Database name
      * @param string $db_alias Alias of db
@@ -136,12 +130,12 @@ class ExportTexytext extends ExportPlugin
         }
 
         return Export::outputHandler(
-            '===' . __('Database') . ' ' . $db_alias . "\n\n"
+            '==='.__('Database').' '.$db_alias."\n\n"
         );
     }
 
     /**
-     * Outputs database footer
+     * Outputs database footer.
      *
      * @param string $db Database name
      *
@@ -153,7 +147,7 @@ class ExportTexytext extends ExportPlugin
     }
 
     /**
-     * Outputs CREATE DATABASE statement
+     * Outputs CREATE DATABASE statement.
      *
      * @param string $db          Database name
      * @param string $export_type 'server', 'database', 'table'
@@ -167,7 +161,7 @@ class ExportTexytext extends ExportPlugin
     }
 
     /**
-     * Outputs the content of a table in NHibernate format
+     * Outputs the content of a table in NHibernate format.
      *
      * @param string $db        database name
      * @param string $table     table name
@@ -193,7 +187,7 @@ class ExportTexytext extends ExportPlugin
         $this->initAlias($aliases, $db_alias, $table_alias);
 
         if (!Export::outputHandler(
-            '== ' . __('Dumping data for table') . ' ' . $table_alias . "\n\n"
+            '== '.__('Dumping data for table').' '.$table_alias."\n\n"
         )
         ) {
             return false;
@@ -208,15 +202,15 @@ class ExportTexytext extends ExportPlugin
         $fields_cnt = $GLOBALS['dbi']->numFields($result);
 
         // If required, get fields name at the first line
-        if (isset($GLOBALS[$what . '_columns'])) {
+        if (isset($GLOBALS[$what.'_columns'])) {
             $text_output = "|------\n";
-            for ($i = 0; $i < $fields_cnt; $i++) {
+            for ($i = 0; $i < $fields_cnt; ++$i) {
                 $col_as = $GLOBALS['dbi']->fieldName($result, $i);
                 if (!empty($aliases[$db]['tables'][$table]['columns'][$col_as])) {
                     $col_as = $aliases[$db]['tables'][$table]['columns'][$col_as];
                 }
                 $text_output .= '|'
-                    . htmlspecialchars(stripslashes($col_as));
+                    .htmlspecialchars(stripslashes($col_as));
             } // end for
             $text_output .= "\n|------\n";
             if (!Export::outputHandler($text_output)) {
@@ -227,16 +221,16 @@ class ExportTexytext extends ExportPlugin
         // Format the data
         while ($row = $GLOBALS['dbi']->fetchRow($result)) {
             $text_output = '';
-            for ($j = 0; $j < $fields_cnt; $j++) {
+            for ($j = 0; $j < $fields_cnt; ++$j) {
                 if (!isset($row[$j]) || is_null($row[$j])) {
-                    $value = $GLOBALS[$what . '_null'];
-                } elseif ($row[$j] == '0' || $row[$j] != '') {
+                    $value = $GLOBALS[$what.'_null'];
+                } elseif ('0' == $row[$j] || '' != $row[$j]) {
                     $value = $row[$j];
                 } else {
                     $value = ' ';
                 }
                 $text_output .= '|'
-                    . str_replace(
+                    .str_replace(
                         '|',
                         '&#124;',
                         htmlspecialchars($value)
@@ -253,7 +247,7 @@ class ExportTexytext extends ExportPlugin
     }
 
     /**
-     * Returns a stand-in CREATE definition to resolve view dependencies
+     * Returns a stand-in CREATE definition to resolve view dependencies.
      *
      * @param string $db      the database name
      * @param string $view    the view name
@@ -267,31 +261,31 @@ class ExportTexytext extends ExportPlugin
         $text_output = '';
 
         /**
-         * Get the unique keys in the table
+         * Get the unique keys in the table.
          */
         $unique_keys = array();
         $keys = $GLOBALS['dbi']->getTableIndexes($db, $view);
         foreach ($keys as $key) {
-            if ($key['Non_unique'] == 0) {
+            if (0 == $key['Non_unique']) {
                 $unique_keys[] = $key['Column_name'];
             }
         }
 
-        /**
+        /*
          * Gets fields properties
          */
         $GLOBALS['dbi']->selectDb($db);
 
-        /**
+        /*
          * Displays the table structure
          */
 
         $text_output .= "|------\n"
-            . '|' . __('Column')
-            . '|' . __('Type')
-            . '|' . __('Null')
-            . '|' . __('Default')
-            . "\n|------\n";
+            .'|'.__('Column')
+            .'|'.__('Type')
+            .'|'.__('Null')
+            .'|'.__('Default')
+            ."\n|------\n";
 
         $columns = $GLOBALS['dbi']->getColumns($db, $view);
         foreach ($columns as $column) {
@@ -311,7 +305,7 @@ class ExportTexytext extends ExportPlugin
     }
 
     /**
-     * Returns $table's CREATE definition
+     * Returns $table's CREATE definition.
      *
      * @param string $db            the database name
      * @param string $table         the table name
@@ -351,17 +345,17 @@ class ExportTexytext extends ExportPlugin
         $text_output = '';
 
         /**
-         * Get the unique keys in the table
+         * Get the unique keys in the table.
          */
         $unique_keys = array();
         $keys = $GLOBALS['dbi']->getTableIndexes($db, $table);
         foreach ($keys as $key) {
-            if ($key['Non_unique'] == 0) {
+            if (0 == $key['Non_unique']) {
                 $unique_keys[] = $key['Column_name'];
             }
         }
 
-        /**
+        /*
          * Gets fields properties
          */
         $GLOBALS['dbi']->selectDb($db);
@@ -373,24 +367,24 @@ class ExportTexytext extends ExportPlugin
             $table
         );
 
-        /**
+        /*
          * Displays the table structure
          */
 
         $text_output .= "|------\n";
-        $text_output .= '|' . __('Column');
-        $text_output .= '|' . __('Type');
-        $text_output .= '|' . __('Null');
-        $text_output .= '|' . __('Default');
+        $text_output .= '|'.__('Column');
+        $text_output .= '|'.__('Type');
+        $text_output .= '|'.__('Null');
+        $text_output .= '|'.__('Default');
         if ($do_relation && $have_rel) {
-            $text_output .= '|' . __('Links to');
+            $text_output .= '|'.__('Links to');
         }
         if ($do_comments) {
-            $text_output .= '|' . __('Comments');
+            $text_output .= '|'.__('Comments');
             $comments = $this->relation->getComments($db, $table);
         }
         if ($do_mime && $cfgRelation['mimework']) {
-            $text_output .= '|' . htmlspecialchars('MIME');
+            $text_output .= '|'.htmlspecialchars('MIME');
             $mime_map = Transformations::getMIME($db, $table, true);
         }
         $text_output .= "\n|------\n";
@@ -408,7 +402,7 @@ class ExportTexytext extends ExportPlugin
             );
             $field_name = $column['Field'];
             if ($do_relation && $have_rel) {
-                $text_output .= '|' . htmlspecialchars(
+                $text_output .= '|'.htmlspecialchars(
                     $this->getRelationString(
                         $res_rel,
                         $field_name,
@@ -419,13 +413,13 @@ class ExportTexytext extends ExportPlugin
             }
             if ($do_comments && $cfgRelation['commwork']) {
                 $text_output .= '|'
-                    . (isset($comments[$field_name])
+                    .(isset($comments[$field_name])
                         ? htmlspecialchars($comments[$field_name])
                         : '');
             }
             if ($do_mime && $cfgRelation['mimework']) {
                 $text_output .= '|'
-                    . (isset($mime_map[$field_name])
+                    .(isset($mime_map[$field_name])
                         ? htmlspecialchars(
                             str_replace('_', '/', $mime_map[$field_name]['mimetype'])
                         )
@@ -436,10 +430,12 @@ class ExportTexytext extends ExportPlugin
         } // end foreach
 
         return $text_output;
-    } // end of the '$this->getTableDef()' function
+    }
+
+ // end of the '$this->getTableDef()' function
 
     /**
-     * Outputs triggers
+     * Outputs triggers.
      *
      * @param string $db    database name
      * @param string $table table name
@@ -449,19 +445,19 @@ class ExportTexytext extends ExportPlugin
     public function getTriggers($db, $table)
     {
         $dump = "|------\n";
-        $dump .= '|' . __('Name');
-        $dump .= '|' . __('Time');
-        $dump .= '|' . __('Event');
-        $dump .= '|' . __('Definition');
+        $dump .= '|'.__('Name');
+        $dump .= '|'.__('Time');
+        $dump .= '|'.__('Event');
+        $dump .= '|'.__('Definition');
         $dump .= "\n|------\n";
 
         $triggers = $GLOBALS['dbi']->getTriggers($db, $table);
 
         foreach ($triggers as $trigger) {
-            $dump .= '|' . $trigger['name'];
-            $dump .= '|' . $trigger['action_timing'];
-            $dump .= '|' . $trigger['event_manipulation'];
-            $dump .= '|' .
+            $dump .= '|'.$trigger['name'];
+            $dump .= '|'.$trigger['action_timing'];
+            $dump .= '|'.$trigger['event_manipulation'];
+            $dump .= '|'.
                 str_replace(
                     '|',
                     '&#124;',
@@ -474,7 +470,7 @@ class ExportTexytext extends ExportPlugin
     }
 
     /**
-     * Outputs table's structure
+     * Outputs table's structure.
      *
      * @param string $db          database name
      * @param string $table       table name
@@ -516,8 +512,8 @@ class ExportTexytext extends ExportPlugin
 
         switch ($export_mode) {
         case 'create_table':
-            $dump .= '== ' . __('Table structure for table') . ' '
-                . $table_alias . "\n\n";
+            $dump .= '== '.__('Table structure for table').' '
+                .$table_alias."\n\n";
             $dump .= $this->getTableDef(
                 $db,
                 $table,
@@ -536,12 +532,12 @@ class ExportTexytext extends ExportPlugin
             $dump = '';
             $triggers = $GLOBALS['dbi']->getTriggers($db, $table);
             if ($triggers) {
-                $dump .= '== ' . __('Triggers') . ' ' . $table_alias . "\n\n";
+                $dump .= '== '.__('Triggers').' '.$table_alias."\n\n";
                 $dump .= $this->getTriggers($db, $table);
             }
             break;
         case 'create_view':
-            $dump .= '== ' . __('Structure for view') . ' ' . $table_alias . "\n\n";
+            $dump .= '== '.__('Structure for view').' '.$table_alias."\n\n";
             $dump .= $this->getTableDef(
                 $db,
                 $table,
@@ -557,8 +553,8 @@ class ExportTexytext extends ExportPlugin
             );
             break;
         case 'stand_in':
-            $dump .= '== ' . __('Stand-in structure for view')
-                . ' ' . $table . "\n\n";
+            $dump .= '== '.__('Stand-in structure for view')
+                .' '.$table."\n\n";
             // export a stand-in definition to resolve view dependencies
             $dump .= $this->getTableDefStandIn($db, $table, $crlf, $aliases);
         } // end switch
@@ -567,7 +563,7 @@ class ExportTexytext extends ExportPlugin
     }
 
     /**
-     * Formats the definition for one column
+     * Formats the definition for one column.
      *
      * @param array  $column      info about this column
      * @param array  $unique_keys unique keys for this table
@@ -591,7 +587,7 @@ class ExportTexytext extends ExportPlugin
         }
 
         if (!isset($column['Default'])) {
-            if ($column['Null'] != 'NO') {
+            if ('NO' != $column['Null']) {
                 $column['Default'] = 'NULL';
             }
         }
@@ -599,21 +595,21 @@ class ExportTexytext extends ExportPlugin
         $fmt_pre = '';
         $fmt_post = '';
         if (in_array($column['Field'], $unique_keys)) {
-            $fmt_pre = '**' . $fmt_pre;
-            $fmt_post = $fmt_post . '**';
+            $fmt_pre = '**'.$fmt_pre;
+            $fmt_post = $fmt_post.'**';
         }
-        if ($column['Key'] == 'PRI') {
-            $fmt_pre = '//' . $fmt_pre;
-            $fmt_post = $fmt_post . '//';
+        if ('PRI' == $column['Key']) {
+            $fmt_pre = '//'.$fmt_pre;
+            $fmt_post = $fmt_post.'//';
         }
         $definition = '|'
-            . $fmt_pre . htmlspecialchars($col_alias) . $fmt_post;
-        $definition .= '|' . htmlspecialchars($type);
+            .$fmt_pre.htmlspecialchars($col_alias).$fmt_post;
+        $definition .= '|'.htmlspecialchars($type);
         $definition .= '|'
-            . (($column['Null'] == '' || $column['Null'] == 'NO')
+            .(('' == $column['Null'] || 'NO' == $column['Null'])
                 ? __('No') : __('Yes'));
         $definition .= '|'
-            . htmlspecialchars(
+            .htmlspecialchars(
                 isset($column['Default']) ? $column['Default'] : ''
             );
 

@@ -14,7 +14,7 @@ if (!isset($HOME)) {
 require 'includes/classes/head.class.php';
 $safe = false;
 $noshow = true;
-require "plugins/" . $_GET["pl"];
+require 'plugins/'.$_GET['pl'];
 if ($menu_only_admin) {
     onlyadmin();
 }

@@ -4,9 +4,9 @@ if (!isset($HOME)) {
 }
 require 'includes/classes/head.class.php';
 onlyadmin();
-if (isset($_GET["a"])) {
-    $con           = mysqli_connect($host, $user, $pass, $data);
-    $sql    = 'delete from mail where id = ' . $_GET["a"];
+if (isset($_GET['a'])) {
+    $con = mysqli_connect($host, $user, $pass, $data);
+    $sql = 'delete from mail where id = '.$_GET['a'];
     $result = mysqli_query($con, $sql);
 }
 
@@ -27,14 +27,14 @@ if (isset($_GET["a"])) {
     <tbody>
             <?php
 
-            $con    = mysqli_connect($host, $user, $pass, $data);
-            $sql    = 'SELECT * FROM mail';
+            $con = mysqli_connect($host, $user, $pass, $data);
+            $sql = 'SELECT * FROM mail';
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_row($result)) {
                 echo ' <tr>
         <td>'.$row[1].'</td>
         <td>'.$row[2].'</td>
-        <td><a href="?page=mail&a=' . $row[0] . '"><i class="fa fa-times-circle-o fa-5x" aria-hidden="true"></i>
+        <td><a href="?page=mail&a='.$row[0].'"><i class="fa fa-times-circle-o fa-5x" aria-hidden="true"></i>
 </a></td>
       </tr>';
             }

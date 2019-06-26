@@ -1,11 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Get user's global privileges and some db-specific privileges
- *
- * @package PhpMyAdmin
+ * Get user's global privileges and some db-specific privileges.
  */
-if (! defined('PHPMYADMIN')) {
+if (!defined('PHPMYADMIN')) {
     exit;
 }
 
@@ -14,7 +13,7 @@ use PhpMyAdmin\CheckUserPrivileges;
 $checkUserPrivileges = new CheckUserPrivileges($GLOBALS['dbi']);
 
 list($username, $hostname) = $GLOBALS['dbi']->getCurrentUserAndHost();
-if ($username === '') { // MySQL is started with --skip-grant-tables
+if ('' === $username) { // MySQL is started with --skip-grant-tables
     $GLOBALS['is_create_db_priv'] = true;
     $GLOBALS['is_reload_priv'] = true;
     $GLOBALS['db_to_create'] = '';

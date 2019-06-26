@@ -1,7 +1,7 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/../constants.php");
-    require_once(dirname(__FILE__) . "/LocalizableException.php");
+    require_once dirname(__FILE__).'/../constants.php';
+    require_once dirname(__FILE__).'/LocalizableException.php';
 
     function handleExceptionInRequest($exception)
     {
@@ -15,19 +15,19 @@
         // Custom code so we can determine if it's an exception we've handled. 77 is M in ASCII
 
         $errResponse = array(
-            'errors' => array($exception->getMessage())
+            'errors' => array($exception->getMessage()),
         );
 
-        if (is_a($exception, "LocalizableException")) {
+        if (is_a($exception, 'LocalizableException')) {
             $errResponse['localizedErrors'] = array(
                 array(
-                    "errorName" => LocalizableExceptionCodeLookup::codeToName($exception->getCode()),
-                    "context" => $exception->getContext()
-                )
+                    'errorName' => LocalizableExceptionCodeLookup::codeToName($exception->getCode()),
+                    'context' => $exception->getContext(),
+                ),
             );
         }
 
-        print json_encode($errResponse);
+        echo json_encode($errResponse);
         exit();
     }
 
@@ -36,8 +36,8 @@
         header('HTTP/1.1 404 Not Found', true, 404);
 
         if (!is_null($error)) {
-            header("Content-type: text/plain");
-            print($error);
+            header('Content-type: text/plain');
+            echo $error;
         }
 
         exit();
@@ -45,9 +45,9 @@
 
     function dieIfNotPOST()
     {
-        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        if ('POST' != $_SERVER['REQUEST_METHOD']) {
             header('HTTP/1.1 405 Method Not Allowed', true, 405);
-            header("Allow: POST");
+            header('Allow: POST');
             exit();
         }
     }

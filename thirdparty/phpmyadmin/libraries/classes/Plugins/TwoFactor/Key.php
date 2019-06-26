@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Second authentication factor handling
- *
- * @package PhpMyAdmin
+ * Second authentication factor handling.
  */
+
 namespace PhpMyAdmin\Plugins\TwoFactor;
 
 use PhpMyAdmin\Response;
@@ -15,7 +15,7 @@ use Samyoul\U2F\U2FServer\U2FServer;
 use Samyoul\U2F\U2FServer\U2FException;
 
 /**
- * Hardware key based two-factor authentication
+ * Hardware key based two-factor authentication.
  *
  * Supports FIDO U2F tokens
  */
@@ -27,7 +27,7 @@ class Key extends TwoFactorPlugin
     public static $id = 'key';
 
     /**
-     * Creates object
+     * Creates object.
      *
      * @param TwoFactor $twofactor TwoFactor instance
      */
@@ -40,7 +40,7 @@ class Key extends TwoFactorPlugin
     }
 
     /**
-     * Returns array of U2F registration objects
+     * Returns array of U2F registration objects.
      *
      * @return array
      */
@@ -48,7 +48,7 @@ class Key extends TwoFactorPlugin
     {
         $result = [];
         foreach ($this->_twofactor->config['settings']['registrations'] as $index => $data) {
-            $reg = new \StdClass;
+            $reg = new \StdClass();
             $reg->keyHandle = $data['keyHandle'];
             $reg->publicKey = $data['publicKey'];
             $reg->certificate = $data['certificate'];
@@ -60,9 +60,9 @@ class Key extends TwoFactorPlugin
     }
 
     /**
-     * Checks authentication, returns true on success
+     * Checks authentication, returns true on success.
      *
-     * @return boolean
+     * @return bool
      */
     public function check()
     {
@@ -91,9 +91,7 @@ class Key extends TwoFactorPlugin
     }
 
     /**
-     * Loads needed javascripts into the page
-     *
-     * @return void
+     * Loads needed javascripts into the page.
      */
     public function loadScripts()
     {
@@ -104,7 +102,7 @@ class Key extends TwoFactorPlugin
     }
 
     /**
-     * Renders user interface to enter two-factor authentication
+     * Renders user interface to enter two-factor authentication.
      *
      * @return string HTML code
      */
@@ -123,7 +121,7 @@ class Key extends TwoFactorPlugin
     }
 
     /**
-     * Renders user interface to configure two-factor authentication
+     * Renders user interface to configure two-factor authentication.
      *
      * @return string HTML code
      */
@@ -144,14 +142,14 @@ class Key extends TwoFactorPlugin
     }
 
     /**
-     * Performs backend configuration
+     * Performs backend configuration.
      *
-     * @return boolean
+     * @return bool
      */
     public function configure()
     {
         $this->_provided = false;
-        if (! isset($_POST['u2f_registration_response']) || ! isset($_SESSION['registrationRequest'])) {
+        if (!isset($_POST['u2f_registration_response']) || !isset($_SESSION['registrationRequest'])) {
             return false;
         }
         $this->_provided = true;
@@ -178,7 +176,7 @@ class Key extends TwoFactorPlugin
     }
 
     /**
-     * Get user visible name
+     * Get user visible name.
      *
      * @return string
      */
@@ -188,7 +186,7 @@ class Key extends TwoFactorPlugin
     }
 
     /**
-     * Get user visible description
+     * Get user visible description.
      *
      * @return string
      */

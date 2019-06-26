@@ -3,10 +3,10 @@
     if (!function_exists('hex2bin')) {
         function hex2bin($str)
         {
-            $sbin = "";
+            $sbin = '';
             $len = strlen($str);
             for ($i = 0; $i < $len; $i += 2) {
-                $sbin .= pack("H*", substr($str, $i, 2));
+                $sbin .= pack('H*', substr($str, $i, 2));
             }
 
             return $sbin;
@@ -24,31 +24,31 @@
 
         public function splitMethodIVAndPayload($methodIVAndPayload)
         {
-            return explode("|", $methodIVAndPayload, 3);
+            return explode('|', $methodIVAndPayload, 3);
         }
 
         public function combineMethodIVAndPayload($method, $iv, $payload)
         {
-            return $method . "|" . $iv . "|" . $payload;
+            return $method.'|'.$iv.'|'.$payload;
         }
 
         public function buildLengthPayload($message)
         {
-            return strlen($message) . "|" . $message;
+            return strlen($message).'|'.$message;
         }
 
         public function extractMessageFromPayload($payload)
         {
-            $lengthAndMessage = explode("|", $payload, 2);
+            $lengthAndMessage = explode('|', $payload, 2);
 
-            if (count($lengthAndMessage) != 2) {
+            if (2 != count($lengthAndMessage)) {
                 throw new EncryptionException(
-                    "Could not read configuration, the password is probably incorrect.",
+                    'Could not read configuration, the password is probably incorrect.',
                     LocalizableExceptionDefinition::$PROBABLE_INCORRECT_PASSWORD_ERROR
                 );
             }
 
-            return substr($lengthAndMessage[1], 0, (int)$lengthAndMessage[0]);
+            return substr($lengthAndMessage[1], 0, (int) $lengthAndMessage[0]);
         }
 
         public function encryptWithMethod($methodName, $message, $key)
@@ -57,9 +57,9 @@
             $ivLength = openssl_cipher_iv_length($methodName);
             $iv = openssl_random_pseudo_bytes($ivLength);
 
-            if ($iv === false) {
+            if (false === $iv) {
                 throw new EncryptionException(
-                    "Could not generate an iv, got FALSE",
+                    'Could not generate an iv, got FALSE',
                     LocalizableExceptionDefinition::$IV_GENERATE_ERROR
                 );
             }

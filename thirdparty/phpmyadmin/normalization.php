@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Normalization process (temporarily specific to 1NF)
- *
- * @package PhpMyAdmin
+ * Normalization process (temporarily specific to 1NF).
  */
-
 use PhpMyAdmin\Core;
 use PhpMyAdmin\Normalization;
 use PhpMyAdmin\Response;
@@ -16,8 +14,8 @@ require_once 'libraries/common.inc.php';
 $normalization = new Normalization($GLOBALS['dbi']);
 
 if (isset($_POST['getColumns'])) {
-    $html = '<option selected disabled>' . __('Select one…') . '</option>'
-        . '<option value="no_such_col">' . __('No such column') . '</option>';
+    $html = '<option selected disabled>'.__('Select one…').'</option>'
+        .'<option value="no_such_col">'.__('No such column').'</option>';
     //get column whose datatype falls under string category
     $html .= $normalization->getHtmlForColumnsList(
         $db,
@@ -36,7 +34,7 @@ if (isset($_POST['splitColumn'])) {
 }
 if (isset($_POST['addNewPrimary'])) {
     $num_fields = 1;
-    $columnMeta = array('Field'=>$table . "_id", 'Extra'=>'auto_increment');
+    $columnMeta = array('Field' => $table.'_id', 'Extra' => 'auto_increment');
     $html = $normalization->getHtmlForCreateNewColumn(
         $num_fields,
         $db,
@@ -121,10 +119,10 @@ if (isset($_POST['step1'])) {
 } elseif (isset($_POST['step4'])) {
     $res = $normalization->getHtmlContentsFor1NFStep4($db, $table);
     $response->addJSON($res);
-} elseif (isset($_POST['step']) && $_POST['step'] == '2.1') {
+} elseif (isset($_POST['step']) && '2.1' == $_POST['step']) {
     $res = $normalization->getHtmlFor2NFstep1($db, $table);
     $response->addJSON($res);
-} elseif (isset($_POST['step']) && $_POST['step'] == '3.1') {
+} elseif (isset($_POST['step']) && '3.1' == $_POST['step']) {
     $tables = $_POST['tables'];
     $res = $normalization->getHtmlFor3NFstep1($db, $tables);
     $response->addJSON($res);

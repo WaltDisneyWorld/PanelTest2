@@ -1,11 +1,11 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * The top-level class of the "Options" subtree of the object-oriented
  * properties system (the other subtree is "Plugin").
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin\Properties\Options;
 
 use PhpMyAdmin\Properties\PropertyItem;
@@ -13,33 +13,31 @@ use PhpMyAdmin\Properties\PropertyItem;
 /**
  * Superclass for
  *  - PhpMyAdmin\Properties\Options\OptionsPropertyOneItem and
- *  - OptionsProperty Group
- *
- * @package PhpMyAdmin
+ *  - OptionsProperty Group.
  */
 abstract class OptionsPropertyItem extends PropertyItem
 {
     /**
-     * Name
+     * Name.
      *
      * @var string
      */
     private $_name;
     /**
-     * Text
+     * Text.
      *
      * @var string
      */
     private $_text;
     /**
-     * What to force
+     * What to force.
      *
      * @var string
      */
     private $_force;
 
     /**
-     * constructor
+     * constructor.
      *
      * @param string $name Item name
      * @param string $text Item text
@@ -57,7 +55,7 @@ abstract class OptionsPropertyItem extends PropertyItem
     /* ~~~~~~~~~~~~~~~~~~~~ Getters and Setters ~~~~~~~~~~~~~~~~~~~~ */
 
     /**
-     * Gets the name
+     * Gets the name.
      *
      * @return string
      */
@@ -67,11 +65,9 @@ abstract class OptionsPropertyItem extends PropertyItem
     }
 
     /**
-     * Sets the name
+     * Sets the name.
      *
      * @param string $name name
-     *
-     * @return void
      */
     public function setName($name)
     {
@@ -79,7 +75,7 @@ abstract class OptionsPropertyItem extends PropertyItem
     }
 
     /**
-     * Gets the text
+     * Gets the text.
      *
      * @return string
      */
@@ -89,11 +85,9 @@ abstract class OptionsPropertyItem extends PropertyItem
     }
 
     /**
-     * Sets the text
+     * Sets the text.
      *
      * @param string $text text
-     *
-     * @return void
      */
     public function setText($text)
     {
@@ -101,7 +95,7 @@ abstract class OptionsPropertyItem extends PropertyItem
     }
 
     /**
-     * Gets the force parameter
+     * Gets the force parameter.
      *
      * @return string
      */
@@ -111,11 +105,9 @@ abstract class OptionsPropertyItem extends PropertyItem
     }
 
     /**
-     * Sets the force parameter
+     * Sets the force parameter.
      *
      * @param string $force force parameter
-     *
-     * @return void
      */
     public function setForce($force)
     {
@@ -129,6 +121,6 @@ abstract class OptionsPropertyItem extends PropertyItem
      */
     public function getPropertyType()
     {
-        return "options";
+        return 'options';
     }
 }

@@ -1,11 +1,9 @@
 <?php
 /**
  * Theme based generator for SVG gradient.
- *
- * @package PhpMyAdmin-theme
  */
 header('Content-Type: image/svg+xml');
-header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 3600) . ' GMT');
+header('Expires: '.gmdate('D, d M Y H:i:s', time() + 3600).' GMT');
 
 /**
  * Gets single color from GET parameters validating it.
@@ -21,7 +19,7 @@ function PMA_gradientGetColor($get_name, $default)
     $opts = array('options' => array('regexp' => '/^[a-z0-9]+$/i'));
     $color = filter_input(INPUT_GET, $get_name, FILTER_VALIDATE_REGEXP, $opts);
     if (preg_match('/^[a-f0-9]{6}$/', $color)) {
-        return '#' . $color;
+        return '#'.$color;
     }
     return $color ? $color : $default;
 }

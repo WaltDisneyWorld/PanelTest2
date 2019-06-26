@@ -1,73 +1,64 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Configuration handling.
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin;
 
 use DirectoryIterator;
-use PhpMyAdmin\Core;
-use PhpMyAdmin\Error;
-use PhpMyAdmin\LanguageManager;
-use PhpMyAdmin\ThemeManager;
-use PhpMyAdmin\Url;
-use PhpMyAdmin\UserPreferences;
-use PhpMyAdmin\Util;
 use PhpMyAdmin\Utils\HttpRequest;
 
-/**
+/*
  * Indication for error handler (see end of this file).
  */
 $GLOBALS['pma_config_loading'] = false;
 
 /**
- * Configuration class
- *
- * @package PhpMyAdmin
+ * Configuration class.
  */
 class Config
 {
     /**
-     * @var string  default config source
+     * @var string default config source
      */
     public $default_source = './libraries/config.default.php';
 
     /**
-     * @var array   default configuration settings
+     * @var array default configuration settings
      */
     public $default = array();
 
     /**
-     * @var array   configuration settings, without user preferences applied
+     * @var array configuration settings, without user preferences applied
      */
     public $base_settings = array();
 
     /**
-     * @var array   configuration settings
+     * @var array configuration settings
      */
     public $settings = array();
 
     /**
-     * @var string  config source
+     * @var string config source
      */
     public $source = '';
 
     /**
-     * @var int     source modification time
+     * @var int source modification time
      */
     public $source_mtime = 0;
     public $default_source_mtime = 0;
     public $set_mtime = 0;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $error_config_file = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $error_config_default_file = false;
 
@@ -77,9 +68,9 @@ class Config
     public $default_server = array();
 
     /**
-     * @var boolean whether init is done or not
-     * set this to false to force some initial checks
-     * like checking for required functions
+     * @var bool whether init is done or not
+     *           set this to false to force some initial checks
+     *           like checking for required functions
      */
     public $done = false;
 
@@ -89,7 +80,7 @@ class Config
     private $userPreferences;
 
     /**
-     * constructor
+     * constructor.
      *
      * @param string $source source to read config from
      */
@@ -110,9 +101,7 @@ class Config
     }
 
     /**
-     * sets system and application settings
-     *
-     * @return void
+     * sets system and application settings.
      */
     public function checkSystem()
     {
@@ -133,9 +122,7 @@ class Config
     }
 
     /**
-     * whether to use gzip output compression or not
-     *
-     * @return void
+     * whether to use gzip output compression or not.
      */
     public function checkOutputCompression()
     {
@@ -146,17 +133,15 @@ class Config
         }
 
         // enable output-buffering (if set to 'auto')
-        if (strtolower($this->get('OBGzip')) == 'auto') {
+        if ('auto' == strtolower($this->get('OBGzip'))) {
             $this->set('OBGzip', true);
         }
     }
 
     /**
-     * Sets the client platform based on user agent
+     * Sets the client platform based on user agent.
      *
      * @param string $user_agent the user agent
-     *
-     * @return void
      */
     private function _setClientPlatform($user_agent)
     {
@@ -177,11 +162,9 @@ class Config
 
     /**
      * Determines platform (OS), browser and version of the user
-     * Based on a phpBuilder article:
+     * Based on a phpBuilder article:.
      *
      * @see http://www.phpbuilder.net/columns/tim20000821.php
-     *
-     * @return void
      */
     public function checkClient()
     {
@@ -261,11 +244,11 @@ class Config
         ) {
             $this->set(
                 'PMA_USR_BROWSER_VER',
-                $mozilla_version[1] . '.' . $log_version[1]
+                $mozilla_version[1].'.'.$log_version[1]
             );
             $this->set('PMA_USR_BROWSER_AGENT', 'SAFARI');
         // Firefox
-        } elseif (! mb_strstr($HTTP_USER_AGENT, 'compatible')
+        } elseif (!mb_strstr($HTTP_USER_AGENT, 'compatible')
             && preg_match('@Firefox/([\w.]+)@', $HTTP_USER_AGENT, $log_version)
         ) {
             $this->set(
@@ -286,18 +269,16 @@ class Config
     }
 
     /**
-     * Whether GD2 is present
-     *
-     * @return void
+     * Whether GD2 is present.
      */
     public function checkGd2()
     {
-        if ($this->get('GD2Available') == 'yes') {
+        if ('yes' == $this->get('GD2Available')) {
             $this->set('PMA_IS_GD2', 1);
             return;
         }
 
-        if ($this->get('GD2Available') == 'no') {
+        if ('no' == $this->get('GD2Available')) {
             $this->set('PMA_IS_GD2', 0);
             return;
         }
@@ -309,7 +290,7 @@ class Config
 
         if (function_exists('gd_info')) {
             $gd_nfo = gd_info();
-            if (mb_strstr($gd_nfo["GD Version"], '2.')) {
+            if (mb_strstr($gd_nfo['GD Version'], '2.')) {
                 $this->set('PMA_IS_GD2', 1);
             } else {
                 $this->set('PMA_IS_GD2', 0);
@@ -320,9 +301,7 @@ class Config
     }
 
     /**
-     * Whether the Web server php is running on is IIS
-     *
-     * @return void
+     * Whether the Web server php is running on is IIS.
      */
     public function checkWebServer()
     {
@@ -339,9 +318,7 @@ class Config
     }
 
     /**
-     * Whether the os php is running on is windows or not
-     *
-     * @return void
+     * Whether the os php is running on is windows or not.
      */
     public function checkWebServerOs()
     {
@@ -360,9 +337,9 @@ class Config
     }
 
     /**
-     * detects if Git revision
+     * detects if Git revision.
      *
-     * @return boolean
+     * @return bool
      */
     public function isGitRevision()
     {
@@ -379,8 +356,8 @@ class Config
         }
         // find out if there is a .git folder
         $git_folder = '.git';
-        if (! @file_exists($git_folder)
-            || ! @file_exists($git_folder . '/config')
+        if (!@file_exists($git_folder)
+            || !@file_exists($git_folder.'/config')
         ) {
             $_SESSION['is_git_revision'] = false;
             return false;
@@ -390,19 +367,17 @@ class Config
     }
 
     /**
-     * detects Git revision, if running inside repo
-     *
-     * @return void
+     * detects Git revision, if running inside repo.
      */
     public function checkGitRevision()
     {
         // find out if there is a .git folder
         $git_folder = '.git';
-        if (! $this->isGitRevision()) {
+        if (!$this->isGitRevision()) {
             return;
         }
 
-        if (! $ref_head = @file_get_contents($git_folder . '/HEAD')) {
+        if (!$ref_head = @file_get_contents($git_folder.'/HEAD')) {
             return;
         }
 
@@ -411,36 +386,36 @@ class Config
         if (strstr($ref_head, '/')) {
             // remove ref: prefix
             $ref_head = substr(trim($ref_head), 5);
-            if (substr($ref_head, 0, 11) === 'refs/heads/') {
+            if ('refs/heads/' === substr($ref_head, 0, 11)) {
                 $branch = substr($ref_head, 11);
             } else {
                 $branch = basename($ref_head);
             }
 
-            $ref_file = $git_folder . '/' . $ref_head;
+            $ref_file = $git_folder.'/'.$ref_head;
             if (@file_exists($ref_file)) {
                 $hash = @file_get_contents($ref_file);
-                if (! $hash) {
+                if (!$hash) {
                     return;
                 }
                 $hash = trim($hash);
             } else {
                 // deal with packed refs
-                $packed_refs = @file_get_contents($git_folder . '/packed-refs');
-                if (! $packed_refs) {
+                $packed_refs = @file_get_contents($git_folder.'/packed-refs');
+                if (!$packed_refs) {
                     return;
                 }
                 // split file to lines
                 $ref_lines = explode("\n", $packed_refs);
                 foreach ($ref_lines as $line) {
                     // skip comments
-                    if ($line[0] == '#') {
+                    if ('#' == $line[0]) {
                         continue;
                     }
                     // parse line
                     $parts = explode(' ', $line);
                     // care only about named refs
-                    if (count($parts) != 2) {
+                    if (2 != count($parts)) {
                         continue;
                     }
                     // have found our ref?
@@ -449,7 +424,7 @@ class Config
                         break;
                     }
                 }
-                if (! isset($hash)) {
+                if (!isset($hash)) {
                     // Could not find ref
                     return;
                 }
@@ -459,24 +434,24 @@ class Config
         }
 
         $commit = false;
-        if (! preg_match('/^[0-9a-f]{40}$/i', $hash)) {
+        if (!preg_match('/^[0-9a-f]{40}$/i', $hash)) {
             $commit = false;
-        } elseif (isset($_SESSION['PMA_VERSION_COMMITDATA_' . $hash])) {
-            $commit = $_SESSION['PMA_VERSION_COMMITDATA_' . $hash];
+        } elseif (isset($_SESSION['PMA_VERSION_COMMITDATA_'.$hash])) {
+            $commit = $_SESSION['PMA_VERSION_COMMITDATA_'.$hash];
         } elseif (function_exists('gzuncompress')) {
-            $git_file_name = $git_folder . '/objects/'
-                . substr($hash, 0, 2) . '/' . substr($hash, 2);
+            $git_file_name = $git_folder.'/objects/'
+                .substr($hash, 0, 2).'/'.substr($hash, 2);
             if (@file_exists($git_file_name)) {
-                if (! $commit = @file_get_contents($git_file_name)) {
+                if (!$commit = @file_get_contents($git_file_name)) {
                     return;
                 }
                 $commit = explode("\0", gzuncompress($commit), 2);
                 $commit = explode("\n", $commit[1]);
-                $_SESSION['PMA_VERSION_COMMITDATA_' . $hash] = $commit;
+                $_SESSION['PMA_VERSION_COMMITDATA_'.$hash] = $commit;
             } else {
                 $pack_names = array();
                 // work with packed data
-                $packs_file = $git_folder . '/objects/info/packs';
+                $packs_file = $git_folder.'/objects/info/packs';
                 if (@file_exists($packs_file)
                     && $packs = @file_get_contents($packs_file)
                 ) {
@@ -484,11 +459,11 @@ class Config
                     // packs. (to look for them in .git/object/pack directory later)
                     foreach (explode("\n", $packs) as $line) {
                         // skip blank lines
-                        if (strlen(trim($line)) == 0) {
+                        if (0 == strlen(trim($line))) {
                             continue;
                         }
                         // skip non pack lines
-                        if ($line[0] != 'P') {
+                        if ('P' != $line[0]) {
                             continue;
                         }
                         // parse names
@@ -501,12 +476,12 @@ class Config
                     // directory for all the .pack files and use that list of
                     // files instead
                     $dirIterator = new DirectoryIterator(
-                        $git_folder . '/objects/pack'
+                        $git_folder.'/objects/pack'
                     );
                     foreach ($dirIterator as $file_info) {
                         $file_name = $file_info->getFilename();
                         // if this is a .pack file
-                        if ($file_info->isFile() && substr($file_name, -5) == '.pack'
+                        if ($file_info->isFile() && '.pack' == substr($file_name, -5)
                         ) {
                             $pack_names[] = $file_name;
                         }
@@ -518,23 +493,23 @@ class Config
 
                     // load index
                     $index_data = @file_get_contents(
-                        $git_folder . '/objects/pack/' . $index_name
+                        $git_folder.'/objects/pack/'.$index_name
                     );
-                    if (! $index_data) {
+                    if (!$index_data) {
                         continue;
                     }
                     // check format
-                    if (substr($index_data, 0, 4) != "\377tOc") {
+                    if ("\377tOc" != substr($index_data, 0, 4)) {
                         continue;
                     }
                     // check version
                     $version = unpack('N', substr($index_data, 4, 4));
-                    if ($version[1] != 2) {
+                    if (2 != $version[1]) {
                         continue;
                     }
                     // parse fanout table
                     $fanout = unpack(
-                        "N*",
+                        'N*',
                         substr($index_data, 8, 256 * 4)
                     );
 
@@ -542,7 +517,7 @@ class Config
                     $firstbyte = intval(substr($hash, 0, 2), 16);
                     // array is indexed from 1 and we need to get
                     // previous entry for start
-                    if ($firstbyte == 0) {
+                    if (0 == $firstbyte) {
                         $start = 0;
                     } else {
                         $start = $fanout[$firstbyte];
@@ -552,7 +527,7 @@ class Config
                     // stupid linear search for our sha
                     $found = false;
                     $offset = 8 + (256 * 4);
-                    for ($position = $start; $position < $end; $position++) {
+                    for ($position = $start; $position < $end; ++$position) {
                         $sha = strtolower(
                             bin2hex(
                                 substr($index_data, $offset + ($position * 20), 20)
@@ -563,7 +538,7 @@ class Config
                             break;
                         }
                     }
-                    if (! $found) {
+                    if (!$found) {
                         continue;
                     }
                     // read pack offset
@@ -576,10 +551,10 @@ class Config
 
                     // open pack file
                     $pack_file = fopen(
-                        $git_folder . '/objects/pack/' . $pack_name,
+                        $git_folder.'/objects/pack/'.$pack_name,
                         'rb'
                     );
-                    if ($pack_file === false) {
+                    if (false === $pack_file) {
                         continue;
                     }
                     // seek to start
@@ -600,7 +575,7 @@ class Config
                     }
 
                     // we care only about commit objects
-                    if ($type != 1) {
+                    if (1 != $type) {
                         continue;
                     }
 
@@ -608,7 +583,7 @@ class Config
                     $commit = fread($pack_file, $size);
                     $commit = gzuncompress($commit);
                     $commit = explode("\n", $commit);
-                    $_SESSION['PMA_VERSION_COMMITDATA_' . $hash] = $commit;
+                    $_SESSION['PMA_VERSION_COMMITDATA_'.$hash] = $commit;
                     fclose($pack_file);
                 }
             }
@@ -617,17 +592,17 @@ class Config
         $httpRequest = new HttpRequest();
 
         // check if commit exists in Github
-        if ($commit !== false
-            && isset($_SESSION['PMA_VERSION_REMOTECOMMIT_' . $hash])
+        if (false !== $commit
+            && isset($_SESSION['PMA_VERSION_REMOTECOMMIT_'.$hash])
         ) {
-            $is_remote_commit = $_SESSION['PMA_VERSION_REMOTECOMMIT_' . $hash];
+            $is_remote_commit = $_SESSION['PMA_VERSION_REMOTECOMMIT_'.$hash];
         } else {
-            $link = 'https://www.phpmyadmin.net/api/commit/' . $hash . '/';
+            $link = 'https://www.phpmyadmin.net/api/commit/'.$hash.'/';
             $is_found = $httpRequest->create($link, 'GET');
             switch ($is_found) {
             case false:
                 $is_remote_commit = false;
-                $_SESSION['PMA_VERSION_REMOTECOMMIT_' . $hash] = false;
+                $_SESSION['PMA_VERSION_REMOTECOMMIT_'.$hash] = false;
                 break;
             case null:
                 // no remote link for now, but don't cache this as Github is down
@@ -635,8 +610,8 @@ class Config
                 break;
             default:
                 $is_remote_commit = true;
-                $_SESSION['PMA_VERSION_REMOTECOMMIT_' . $hash] = true;
-                if ($commit === false) {
+                $_SESSION['PMA_VERSION_REMOTECOMMIT_'.$hash] = true;
+                if (false === $commit) {
                     // if no local commit data, try loading from Github
                     $commit_json = json_decode($is_found);
                 }
@@ -645,21 +620,21 @@ class Config
         }
 
         $is_remote_branch = false;
-        if ($is_remote_commit && $branch !== false) {
+        if ($is_remote_commit && false !== $branch) {
             // check if branch exists in Github
-            if (isset($_SESSION['PMA_VERSION_REMOTEBRANCH_' . $hash])) {
-                $is_remote_branch = $_SESSION['PMA_VERSION_REMOTEBRANCH_' . $hash];
+            if (isset($_SESSION['PMA_VERSION_REMOTEBRANCH_'.$hash])) {
+                $is_remote_branch = $_SESSION['PMA_VERSION_REMOTEBRANCH_'.$hash];
             } else {
-                $link = 'https://www.phpmyadmin.net/api/tree/' . $branch . '/';
+                $link = 'https://www.phpmyadmin.net/api/tree/'.$branch.'/';
                 $is_found = $httpRequest->create($link, 'GET', true);
                 switch ($is_found) {
                 case true:
                     $is_remote_branch = true;
-                    $_SESSION['PMA_VERSION_REMOTEBRANCH_' . $hash] = true;
+                    $_SESSION['PMA_VERSION_REMOTEBRANCH_'.$hash] = true;
                     break;
                 case false:
                     $is_remote_branch = false;
-                    $_SESSION['PMA_VERSION_REMOTEBRANCH_' . $hash] = false;
+                    $_SESSION['PMA_VERSION_REMOTEBRANCH_'.$hash] = false;
                     break;
                 case null:
                     // no remote link for now, but don't cache this as Github is down
@@ -669,7 +644,7 @@ class Config
             }
         }
 
-        if ($commit !== false) {
+        if (false !== $commit) {
             $author = array('name' => '', 'email' => '', 'date' => '');
             $committer = array('name' => '', 'email' => '', 'date' => '');
 
@@ -683,23 +658,23 @@ class Config
                     $user2 = array(
                         'name' => trim($user[1]),
                         'email' => trim($user[2]),
-                        'date' => date('Y-m-d H:i:s', $user[3]));
+                        'date' => date('Y-m-d H:i:s', $user[3]), );
                     if (isset($user[4])) {
                         $user2['date'] .= $user[4];
                     }
                     $$linetype = $user2;
                 }
-            } while ($dataline != '');
+            } while ('' != $dataline);
             $message = trim(implode(' ', $commit));
         } elseif (isset($commit_json) && isset($commit_json->author) && isset($commit_json->committer)) {
             $author = array(
                 'name' => $commit_json->author->name,
                 'email' => $commit_json->author->email,
-                'date' => $commit_json->author->date);
+                'date' => $commit_json->author->date, );
             $committer = array(
                 'name' => $commit_json->committer->name,
                 'email' => $commit_json->committer->email,
-                'date' => $commit_json->committer->date);
+                'date' => $commit_json->committer->date, );
             $message = trim($commit_json->message);
         } else {
             return;
@@ -716,14 +691,14 @@ class Config
     }
 
     /**
-     * loads default values from default source
+     * loads default values from default source.
      *
-     * @return boolean     success
+     * @return bool success
      */
     public function loadDefaults()
     {
         $cfg = array();
-        if (! @file_exists($this->default_source)) {
+        if (!@file_exists($this->default_source)) {
             $this->error_config_default_file = true;
             return false;
         }
@@ -735,7 +710,7 @@ class Config
         ob_end_clean();
         error_reporting($old_error_reporting);
 
-        if ($eval_result === false) {
+        if (false === $eval_result) {
             $this->error_config_default_file = true;
             return false;
         }
@@ -755,7 +730,7 @@ class Config
 
     /**
      * loads configuration from $source, usually the config file
-     * should be called on object creation
+     * should be called on object creation.
      *
      * @param string $source config file
      *
@@ -769,7 +744,7 @@ class Config
             $this->setSource($source);
         }
 
-        if (! $this->checkConfigSource()) {
+        if (!$this->checkConfigSource()) {
             return false;
         }
 
@@ -787,7 +762,7 @@ class Config
         ob_end_clean();
         error_reporting($old_error_reporting);
 
-        if ($eval_result === false) {
+        if (false === $eval_result) {
             $this->error_config_file = true;
         } else {
             $this->error_config_file = false;
@@ -795,7 +770,7 @@ class Config
         }
 
         /**
-         * Ignore keys with / as we do not use these
+         * Ignore keys with / as we do not use these.
          *
          * These can be confusing for user configuration layer as it
          * flatten array using / and thus don't see difference between
@@ -811,13 +786,13 @@ class Config
         $matched_keys = array_filter(
             array_keys($cfg),
             function ($key) {
-                return strpos($key, '/') === false;
+                return false === strpos($key, '/');
             }
         );
 
         $cfg = array_intersect_key($cfg, array_flip($matched_keys));
 
-        /**
+        /*
          * Backward compatibility code
          */
         if (!empty($cfg['DefaultTabTable'])) {
@@ -849,14 +824,12 @@ class Config
     }
 
     /**
-     * Sets the connection collation
-     *
-     * @return void
+     * Sets the connection collation.
      */
     private function _setConnectionCollation()
     {
         $collation_connection = $this->get('DefaultConnectionCollation');
-        if (! empty($collation_connection)
+        if (!empty($collation_connection)
             && $collation_connection != $GLOBALS['collation_connection']
         ) {
             $GLOBALS['dbi']->setCollation($collation_connection);
@@ -865,9 +838,7 @@ class Config
 
     /**
      * Loads user preferences and merges them with current config
-     * must be called after control connection has been established
-     *
-     * @return void
+     * must be called after control connection has been established.
      */
     public function loadUserPreferences()
     {
@@ -878,11 +849,11 @@ class Config
             : (!empty($GLOBALS['cfg']['ServerDefault'])
                 ? $GLOBALS['cfg']['ServerDefault']
                 : 0);
-        $cache_key = 'server_' . $server;
+        $cache_key = 'server_'.$server;
         if ($server > 0 && !defined('PMA_MINIMUM_COMMON')) {
             $config_mtime = max($this->default_source_mtime, $this->source_mtime);
             // cache user preferences, use database only when needed
-            if (! isset($_SESSION['cache'][$cache_key]['userprefs'])
+            if (!isset($_SESSION['cache'][$cache_key]['userprefs'])
                 || $_SESSION['cache'][$cache_key]['config_mtime'] < $config_mtime
             ) {
                 $prefs = $this->userPreferences->load();
@@ -892,8 +863,8 @@ class Config
                 $_SESSION['cache'][$cache_key]['userprefs_type'] = $prefs['type'];
                 $_SESSION['cache'][$cache_key]['config_mtime'] = $config_mtime;
             }
-        } elseif ($server == 0
-            || ! isset($_SESSION['cache'][$cache_key]['userprefs'])
+        } elseif (0 == $server
+            || !isset($_SESSION['cache'][$cache_key]['userprefs'])
         ) {
             $this->set('user_preferences', false);
             return;
@@ -924,8 +895,8 @@ class Config
         /** @var ThemeManager $tmanager */
         $tmanager = ThemeManager::getInstance();
         if ($tmanager->getThemeCookie() || isset($_REQUEST['set_theme'])) {
-            if ((! isset($config_data['ThemeDefault'])
-                && $tmanager->theme->getId() != 'original')
+            if ((!isset($config_data['ThemeDefault'])
+                && 'original' != $tmanager->theme->getId())
                 || isset($config_data['ThemeDefault'])
                 && $config_data['ThemeDefault'] != $tmanager->theme->getId()
             ) {
@@ -949,8 +920,8 @@ class Config
 
         // save language
         if (isset($_COOKIE['pma_lang']) || isset($_POST['lang'])) {
-            if ((! isset($config_data['lang'])
-                && $GLOBALS['lang'] != 'en')
+            if ((!isset($config_data['lang'])
+                && 'en' != $GLOBALS['lang'])
                 || isset($config_data['lang'])
                 && $GLOBALS['lang'] != $config_data['lang']
             ) {
@@ -962,7 +933,7 @@ class Config
                 $language = LanguageManager::getInstance()->getLanguage(
                     $config_data['lang']
                 );
-                if ($language !== false) {
+                if (false !== $language) {
                     $language->activate();
                     $this->setCookie('pma_lang', $language->getCode());
                 }
@@ -998,14 +969,14 @@ class Config
         // use permanent user preferences if possible
         $prefs_type = $this->get('user_preferences');
         if ($prefs_type) {
-            if ($default_value === null) {
+            if (null === $default_value) {
                 $default_value = Core::arrayRead($cfg_path, $this->default);
             }
             $result = $this->userPreferences->persistOption($cfg_path, $new_cfg_value, $default_value);
         }
-        if ($prefs_type != 'db' && $cookie_name) {
+        if ('db' != $prefs_type && $cookie_name) {
             // fall back to cookies
-            if ($default_value === null) {
+            if (null === $default_value) {
                 $default_value = Core::arrayRead($cfg_path, $this->settings);
             }
             $this->setCookie($cookie_name, $new_cfg_value, $default_value);
@@ -1016,7 +987,7 @@ class Config
     }
 
     /**
-     * Reads value stored by {@link setUserValue()}
+     * Reads value stored by {@link setUserValue()}.
      *
      * @param string $cookie_name cookie name
      * @param mixed  $cfg_value   config value
@@ -1027,7 +998,7 @@ class Config
     {
         $cookie_exists = isset($_COOKIE) && !empty($_COOKIE[$cookie_name]);
         $prefs_type = $this->get('user_preferences');
-        if ($prefs_type == 'db') {
+        if ('db' == $prefs_type) {
             // permanent user preferences value exists, remove cookie
             if ($cookie_exists) {
                 $this->removeCookie($cookie_name);
@@ -1040,11 +1011,9 @@ class Config
     }
 
     /**
-     * set source
+     * set source.
      *
      * @param string $source source
-     *
-     * @return void
      */
     public function setSource($source)
     {
@@ -1052,33 +1021,33 @@ class Config
     }
 
     /**
-     * check config source
+     * check config source.
      *
-     * @return boolean whether source is valid or not
+     * @return bool whether source is valid or not
      */
     public function checkConfigSource()
     {
-        if (! $this->getSource()) {
+        if (!$this->getSource()) {
             // no configuration file set at all
             return false;
         }
 
-        if (! @file_exists($this->getSource())) {
+        if (!@file_exists($this->getSource())) {
             $this->source_mtime = 0;
             return false;
         }
 
-        if (! @is_readable($this->getSource())) {
+        if (!@is_readable($this->getSource())) {
             // manually check if file is readable
             // might be bug #3059806 Supporting running from CIFS/Samba shares
 
             $contents = false;
             $handle = @fopen($this->getSource(), 'r');
-            if ($handle !== false) {
+            if (false !== $handle) {
                 $contents = @fread($handle, 1); // reading 1 byte is enough to test
                 fclose($handle);
             }
-            if ($contents === false) {
+            if (false === $contents) {
                 $this->source_mtime = 0;
                 Core::fatalError(
                     sprintf(
@@ -1097,24 +1066,22 @@ class Config
 
     /**
      * verifies the permissions on config file (if asked by configuration)
-     * (must be called after config.inc.php has been merged)
-     *
-     * @return void
+     * (must be called after config.inc.php has been merged).
      */
     public function checkPermissions()
     {
         // Check for permissions (on platforms that support it):
         if ($this->get('CheckConfigurationPermissions') && @file_exists($this->getSource())) {
             $perms = @fileperms($this->getSource());
-            if (!($perms === false) && ($perms & 2)) {
+            if (!(false === $perms) && ($perms & 2)) {
                 // This check is normally done after loading configuration
                 $this->checkWebServerOs();
-                if ($this->get('PMA_IS_WINDOWS') == 0) {
+                if (0 == $this->get('PMA_IS_WINDOWS')) {
                     $this->source_mtime = 0;
                     Core::fatalError(
                         __(
                             'Wrong permissions on configuration file, '
-                            . 'should not be world writable!'
+                            .'should not be world writable!'
                         )
                     );
                 }
@@ -1124,9 +1091,7 @@ class Config
 
     /**
      * Checks for errors
-     * (must be called after config.inc.php has been merged)
-     *
-     * @return void
+     * (must be called after config.inc.php has been merged).
      */
     public function checkErrors()
     {
@@ -1140,20 +1105,20 @@ class Config
         }
 
         if ($this->error_config_file) {
-            $error = '[strong]' . __('Failed to read configuration file!') . '[/strong]'
-                . '[br][br]'
-                . __(
+            $error = '[strong]'.__('Failed to read configuration file!').'[/strong]'
+                .'[br][br]'
+                .__(
                     'This usually means there is a syntax error in it, '
-                    . 'please check any errors shown below.'
+                    .'please check any errors shown below.'
                 )
-                . '[br][br]'
-                . '[conferr]';
+                .'[br][br]'
+                .'[conferr]';
             trigger_error($error, E_USER_ERROR);
         }
     }
 
     /**
-     * returns specific config setting
+     * returns specific config setting.
      *
      * @param string $setting config setting
      *
@@ -1168,16 +1133,14 @@ class Config
     }
 
     /**
-     * sets configuration variable
+     * sets configuration variable.
      *
      * @param string $setting configuration option
      * @param mixed  $value   new value for configuration option
-     *
-     * @return void
      */
     public function set($setting, $value)
     {
-        if (! isset($this->settings[$setting])
+        if (!isset($this->settings[$setting])
             || $this->settings[$setting] !== $value
         ) {
             $this->settings[$setting] = $value;
@@ -1186,9 +1149,9 @@ class Config
     }
 
     /**
-     * returns source for current config
+     * returns source for current config.
      *
-     * @return string  config source
+     * @return string config source
      */
     public function getSource()
     {
@@ -1197,10 +1160,10 @@ class Config
 
     /**
      * returns a unique value to force a CSS reload if either the config
-     * or the theme changes
+     * or the theme changes.
      *
      * @return int Summary of unix timestamps and fontsize,
-     * to be unique on theme parameters change
+     *             to be unique on theme parameters change
      */
     public function getThemeUniqueValue()
     {
@@ -1209,19 +1172,17 @@ class Config
         } else {
             $fontsize = 0;
         }
-        return (
+        return 
             $fontsize +
             $this->source_mtime +
             $this->default_source_mtime +
             $this->get('user_preferences_mtime') +
             $GLOBALS['PMA_Theme']->mtime_info +
-            $GLOBALS['PMA_Theme']->filesize_info);
+            $GLOBALS['PMA_Theme']->filesize_info;
     }
 
     /**
-     * checks if upload is enabled
-     *
-     * @return void
+     * checks if upload is enabled.
      */
     public function checkUpload()
     {
@@ -1240,16 +1201,14 @@ class Config
 
     /**
      * Maximum upload size as limited by PHP
-     * Used with permission from Moodle (https://moodle.org/) by Martin Dougiamas
+     * Used with permission from Moodle (https://moodle.org/) by Martin Dougiamas.
      *
      * this section generates $max_upload_size in bytes
-     *
-     * @return void
      */
     public function checkUploadSize()
     {
-        if (! $filesize = ini_get('upload_max_filesize')) {
-            $filesize = "5M";
+        if (!$filesize = ini_get('upload_max_filesize')) {
+            $filesize = '5M';
         }
 
         if ($postsize = ini_get('post_max_size')) {
@@ -1263,7 +1222,7 @@ class Config
     }
 
     /**
-     * Checks if protocol is https
+     * Checks if protocol is https.
      *
      * This function checks if the https protocol on the active connection.
      *
@@ -1278,22 +1237,22 @@ class Config
         $url = $this->get('PmaAbsoluteUri');
 
         $is_https = false;
-        if (! empty($url) && parse_url($url, PHP_URL_SCHEME) === 'https') {
+        if (!empty($url) && 'https' === parse_url($url, PHP_URL_SCHEME)) {
             $is_https = true;
-        } elseif (strtolower(Core::getenv('HTTP_SCHEME')) == 'https') {
+        } elseif ('https' == strtolower(Core::getenv('HTTP_SCHEME'))) {
             $is_https = true;
-        } elseif (strtolower(Core::getenv('HTTPS')) == 'on') {
+        } elseif ('on' == strtolower(Core::getenv('HTTPS'))) {
             $is_https = true;
-        } elseif (substr(strtolower(Core::getenv('REQUEST_URI')), 0, 6) == 'https:') {
+        } elseif ('https:' == substr(strtolower(Core::getenv('REQUEST_URI')), 0, 6)) {
             $is_https = true;
-        } elseif (strtolower(Core::getenv('HTTP_HTTPS_FROM_LB')) == 'on') {
+        } elseif ('on' == strtolower(Core::getenv('HTTP_HTTPS_FROM_LB'))) {
             // A10 Networks load balancer
             $is_https = true;
-        } elseif (strtolower(Core::getenv('HTTP_FRONT_END_HTTPS')) == 'on') {
+        } elseif ('on' == strtolower(Core::getenv('HTTP_FRONT_END_HTTPS'))) {
             $is_https = true;
-        } elseif (strtolower(Core::getenv('HTTP_X_FORWARDED_PROTO')) == 'https') {
+        } elseif ('https' == strtolower(Core::getenv('HTTP_X_FORWARDED_PROTO'))) {
             $is_https = true;
-        } elseif (Core::getenv('SERVER_PORT') == 443) {
+        } elseif (443 == Core::getenv('SERVER_PORT')) {
             $is_https = true;
         }
 
@@ -1303,7 +1262,7 @@ class Config
     }
 
     /**
-     * Get phpMyAdmin root path
+     * Get phpMyAdmin root path.
      *
      * @return string
      */
@@ -1317,11 +1276,11 @@ class Config
 
         $url = $this->get('PmaAbsoluteUri');
 
-        if (! empty($url)) {
+        if (!empty($url)) {
             $path = parse_url($url, PHP_URL_PATH);
-            if (! empty($path)) {
-                if (substr($path, -1) != '/') {
-                    return $path . '/';
+            if (!empty($path)) {
+                if ('/' != substr($path, -1)) {
+                    return $path.'/';
                 }
                 return $path;
             }
@@ -1335,7 +1294,7 @@ class Config
         );
 
         /* Remove filename */
-        if (substr($parts[count($parts) - 1], -4) == '.php') {
+        if ('.php' == substr($parts[count($parts) - 1], -4)) {
             $parts = array_slice($parts, 0, count($parts) - 1);
         }
 
@@ -1350,18 +1309,16 @@ class Config
     }
 
     /**
-     * enables backward compatibility
-     *
-     * @return void
+     * enables backward compatibility.
      */
     public function enableBc()
     {
-        $GLOBALS['cfg']             = $this->settings;
-        $GLOBALS['default_server']  = $this->default_server;
+        $GLOBALS['cfg'] = $this->settings;
+        $GLOBALS['default_server'] = $this->default_server;
         unset($this->default_server);
-        $GLOBALS['is_upload']       = $this->get('enable_upload');
+        $GLOBALS['is_upload'] = $this->get('enable_upload');
         $GLOBALS['max_upload_size'] = $this->get('max_upload_size');
-        $GLOBALS['is_https']        = $this->get('is_https');
+        $GLOBALS['is_https'] = $this->get('is_https');
 
         $defines = array(
             'PMA_VERSION',
@@ -1372,18 +1329,18 @@ class Config
             'PMA_IS_GD2',
             'PMA_USR_OS',
             'PMA_USR_BROWSER_VER',
-            'PMA_USR_BROWSER_AGENT'
+            'PMA_USR_BROWSER_AGENT',
             );
 
         foreach ($defines as $define) {
-            if (! defined($define)) {
+            if (!defined($define)) {
                 define($define, $this->get($define));
             }
         }
     }
 
     /**
-     * returns options for font size selection
+     * returns options for font size selection.
      *
      * @param string $current_size current selected font size with unit
      *
@@ -1396,21 +1353,21 @@ class Config
 
         $factors = array();
         $options = array();
-        $options["$value"] = $value . $unit;
+        $options["$value"] = $value.$unit;
 
-        if ($unit === '%') {
+        if ('%' === $unit) {
             $factors[] = 1;
             $factors[] = 5;
             $factors[] = 10;
             $options['100'] = '100%';
-        } elseif ($unit === 'em') {
+        } elseif ('em' === $unit) {
             $factors[] = 0.05;
             $factors[] = 0.2;
             $factors[] = 1;
-        } elseif ($unit === 'pt') {
+        } elseif ('pt' === $unit) {
             $factors[] = 0.5;
             $factors[] = 2;
-        } elseif ($unit === 'px') {
+        } elseif ('px' === $unit) {
             $factors[] = 1;
             $factors[] = 5;
             $factors[] = 10;
@@ -1427,9 +1384,9 @@ class Config
             $option_inc = $value + $factor;
             $option_dec = $value - $factor;
             while (count($options) < 21) {
-                $options["$option_inc"] = $option_inc . $unit;
+                $options["$option_inc"] = $option_inc.$unit;
                 if ($option_dec > $factors[0]) {
-                    $options["$option_dec"] = $option_dec . $unit;
+                    $options["$option_dec"] = $option_dec.$unit;
                 }
                 $option_inc += $factor;
                 $option_dec -= $factor;
@@ -1445,7 +1402,7 @@ class Config
     }
 
     /**
-     * returns html selectbox for font sizes
+     * returns html selectbox for font sizes.
      *
      * @return string html selectbox
      */
@@ -1458,16 +1415,16 @@ class Config
         }
         $options = Config::getFontsizeOptions($current_size);
 
-        $return = '<label for="select_fontsize">' . __('Font size')
-            . ':</label>' . "\n"
-            . '<select name="set_fontsize" id="select_fontsize"'
-            . ' class="autosubmit">' . "\n";
+        $return = '<label for="select_fontsize">'.__('Font size')
+            .':</label>'."\n"
+            .'<select name="set_fontsize" id="select_fontsize"'
+            .' class="autosubmit">'."\n";
         foreach ($options as $option) {
-            $return .= '<option value="' . $option . '"';
+            $return .= '<option value="'.$option.'"';
             if ($option == $current_size) {
                 $return .= ' selected="selected"';
             }
-            $return .= '>' . $option . '</option>' . "\n";
+            $return .= '>'.$option.'</option>'."\n";
         }
         $return .= '</select>';
 
@@ -1475,25 +1432,25 @@ class Config
     }
 
     /**
-     * return complete font size selection form
+     * return complete font size selection form.
      *
      * @return string html selectbox
      */
     public static function getFontsizeForm()
     {
         return '<form name="form_fontsize_selection" id="form_fontsize_selection"'
-            . ' method="post" action="index.php" class="disableAjax">' . "\n"
-            . Url::getHiddenInputs() . "\n"
-            . Config::getFontsizeSelection() . "\n"
-            . '</form>';
+            .' method="post" action="index.php" class="disableAjax">'."\n"
+            .Url::getHiddenInputs()."\n"
+            .Config::getFontsizeSelection()."\n"
+            .'</form>';
     }
 
     /**
-     * removes cookie
+     * removes cookie.
      *
      * @param string $cookie name of cookie to remove
      *
-     * @return boolean result of setcookie()
+     * @return bool result of setcookie()
      */
     public function removeCookie($cookie)
     {
@@ -1515,7 +1472,7 @@ class Config
 
     /**
      * sets cookie if value is different from current cookie value,
-     * or removes if value is equal to default
+     * or removes if value is equal to default.
      *
      * @param string $cookie   name of cookie to remove
      * @param mixed  $value    new cookie value
@@ -1523,7 +1480,7 @@ class Config
      * @param int    $validity validity of cookie in seconds (default is one month)
      * @param bool   $httponly whether cookie is only for HTTP (and not for scripts)
      *
-     * @return boolean result of setcookie()
+     * @return bool result of setcookie()
      */
     public function setCookie(
         $cookie,
@@ -1542,18 +1499,18 @@ class Config
             return false;
         }
 
-        if (strlen($value) === 0 && isset($_COOKIE[$cookie])) {
+        if (0 === strlen($value) && isset($_COOKIE[$cookie])) {
             // remove cookie, value is empty
             return $this->removeCookie($cookie);
         }
 
-        if (! isset($_COOKIE[$cookie]) || $_COOKIE[$cookie] !== $value) {
+        if (!isset($_COOKIE[$cookie]) || $_COOKIE[$cookie] !== $value) {
             // set cookie with new value
             /* Calculate cookie validity */
-            if ($validity === null) {
+            if (null === $validity) {
                 /* Valid for one month */
                 $validity = time() + 2592000;
-            } elseif ($validity == 0) {
+            } elseif (0 == $validity) {
                 /* Valid for session */
                 $validity = 0;
             } else {
@@ -1578,14 +1535,12 @@ class Config
         return true;
     }
 
-
     /**
      * Error handler to catch fatal errors when loading configuration
-     * file
+     * file.
      *
      *
      * PMA_Config_fatalErrorHandler
-     * @return void
      */
     public static function fatalErrorHandler()
     {
@@ -1596,7 +1551,7 @@ class Config
         }
 
         $error = error_get_last();
-        if ($error === null) {
+        if (null === $error) {
             return;
         }
 
@@ -1611,7 +1566,7 @@ class Config
     }
 
     /**
-     * Wrapper for footer/header rendering
+     * Wrapper for footer/header rendering.
      *
      * @param string $filename File to check and render
      * @param string $id       Div ID
@@ -1622,7 +1577,7 @@ class Config
     {
         $retval = '';
         if (@file_exists($filename)) {
-            $retval .= '<div id="' . $id . '">';
+            $retval .= '<div id="'.$id.'">';
             ob_start();
             include $filename;
             $retval .= ob_get_contents();
@@ -1633,7 +1588,7 @@ class Config
     }
 
     /**
-     * Renders user configured footer
+     * Renders user configured footer.
      *
      * @return string
      */
@@ -1643,7 +1598,7 @@ class Config
     }
 
     /**
-     * Renders user configured footer
+     * Renders user configured footer.
      *
      * @return string
      */
@@ -1653,7 +1608,7 @@ class Config
     }
 
     /**
-     * Returns temporary dir path
+     * Returns temporary dir path.
      *
      * @param string $name Directory name
      *
@@ -1671,11 +1626,11 @@ class Config
         if (empty($path)) {
             $path = null;
         } else {
-            $path .= '/' . $name;
-            if (! @is_dir($path)) {
+            $path .= '/'.$name;
+            if (!@is_dir($path)) {
                 @mkdir($path, 0770, true);
             }
-            if (! @is_dir($path) || ! @is_writable($path)) {
+            if (!@is_dir($path) || !@is_writable($path)) {
                 $path = null;
             }
         }
@@ -1685,7 +1640,7 @@ class Config
     }
 
     /**
-     * Returns temporary directory
+     * Returns temporary directory.
      *
      * @return string
      */
@@ -1700,7 +1655,7 @@ class Config
         );
 
         foreach ($dirs as $dir) {
-            if (! empty($dir) && @is_writable($dir)) {
+            if (!empty($dir) && @is_writable($dir)) {
                 return realpath($dir);
             }
         }
@@ -1711,18 +1666,18 @@ class Config
     /**
      * Selects server based on request parameters.
      *
-     * @return integer
+     * @return int
      */
     public function selectServer()
     {
         $server = 0;
         $request = empty($_REQUEST['server']) ? 0 : $_REQUEST['server'];
 
-        /**
+        /*
          * Lookup server by name
          * (see FAQ 4.8)
          */
-        if (! is_numeric($request)) {
+        if (!is_numeric($request)) {
             foreach ($this->settings['Servers'] as $i => $server) {
                 $verboseToLower = mb_strtolower($server['verbose']);
                 $serverToLower = mb_strtolower($request);
@@ -1748,8 +1703,7 @@ class Config
          * present a choice of servers in the case that there are multiple servers
          * and '$this->settings['ServerDefault'] = 0' is set.
          */
-
-        if (is_numeric($request) && ! empty($request) && ! empty($this->settings['Servers'][$request])) {
+        if (is_numeric($request) && !empty($request) && !empty($this->settings['Servers'][$request])) {
             $server = $request;
             $this->settings['Server'] = $this->settings['Servers'][$server];
         } else {
@@ -1767,13 +1721,11 @@ class Config
 
     /**
      * Checks whether Servers configuration is valid and possibly apply fixups.
-     *
-     * @return void
      */
     public function checkServers()
     {
         // Do we have some server?
-        if (! isset($this->settings['Servers']) || count($this->settings['Servers']) == 0) {
+        if (!isset($this->settings['Servers']) || 0 == count($this->settings['Servers'])) {
             // No server => create one with defaults
             $this->settings['Servers'] = array(1 => $this->default_server);
         } else {
@@ -1781,7 +1733,6 @@ class Config
             $new_servers = array();
 
             foreach ($this->settings['Servers'] as $server_index => $each_server) {
-
                 // Detect wrong configuration
                 if (!is_int($server_index) || $server_index < 1) {
                     trigger_error(

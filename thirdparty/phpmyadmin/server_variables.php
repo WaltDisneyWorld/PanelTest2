@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Handles server variables page.
- *
- * @package PhpMyAdmin
  */
-
 use PhpMyAdmin\Controllers\Server\ServerVariablesController;
 use PhpMyAdmin\Di\Container;
 use PhpMyAdmin\Response;

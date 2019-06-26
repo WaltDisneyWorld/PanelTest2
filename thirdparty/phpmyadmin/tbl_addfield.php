@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Displays add field form and handles it
- *
- * @package PhpMyAdmin
+ * Displays add field form and handles it.
  */
-
 use PhpMyAdmin\CreateAddField;
 use PhpMyAdmin\Message;
 use PhpMyAdmin\Response;
@@ -14,29 +12,29 @@ use PhpMyAdmin\Url;
 use PhpMyAdmin\Util;
 
 /**
- * Get some core libraries
+ * Get some core libraries.
  */
 require_once 'libraries/common.inc.php';
 
 $response = Response::getInstance();
-$header   = $response->getHeader();
-$scripts  = $header->getScripts();
+$header = $response->getHeader();
+$scripts = $header->getScripts();
 $scripts->addFile('tbl_structure.js');
 
 // Check parameters
 Util::checkParameters(array('db', 'table'));
 
 /**
- * Defines the url to return to in case of error in a sql statement
+ * Defines the url to return to in case of error in a sql statement.
  */
-$err_url = 'tbl_sql.php' . Url::getCommon(
+$err_url = 'tbl_sql.php'.Url::getCommon(
     array(
-        'db' => $db, 'table' => $table
+        'db' => $db, 'table' => $table,
     )
 );
 
 /**
- * The form used to define the field to add has been submitted
+ * The form used to define the field to add has been submitted.
  */
 $abort = false;
 
@@ -68,7 +66,7 @@ if (isset($_POST['do_save_data'])) {
 
     list($result, $sql_query) = $createAddField->tryColumnCreationQuery($db, $table, $err_url);
 
-    if ($result === true) {
+    if (true === $result) {
         // Update comment table for mime types [MIME]
         if (isset($_POST['field_mimetype'])
             && is_array($_POST['field_mimetype'])
@@ -116,18 +114,18 @@ if (isset($_POST['do_save_data'])) {
     }
 } // end do alter table
 
-/**
+/*
  * Displays the form used to define the new field
  */
-if ($abort == false) {
+if (false == $abort) {
     /**
-     * Gets tables information
+     * Gets tables information.
      */
     include_once 'libraries/tbl_common.inc.php';
 
     $active_page = 'tbl_structure.php';
     /**
-     * Display the form
+     * Display the form.
      */
     $action = 'tbl_addfield.php';
     include_once 'libraries/tbl_columns_definition_form.inc.php';

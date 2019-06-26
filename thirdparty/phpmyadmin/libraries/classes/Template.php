@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * hold PhpMyAdmin\Template class
- *
- * @package PhpMyAdmin
+ * hold PhpMyAdmin\Template class.
  */
+
 namespace PhpMyAdmin;
 
 use PhpMyAdmin\Twig\CharsetsExtension;
@@ -28,28 +28,26 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 /**
- * Class Template
+ * Class Template.
  *
  * Handle front end templating
- *
- * @package PhpMyAdmin
  */
 class Template
 {
     /**
-     * Name of the template
+     * Name of the template.
      */
     protected $name = null;
 
     /**
-     * Twig environment
+     * Twig environment.
      */
     protected static $twig;
 
     const BASE_PATH = 'templates/';
 
     /**
-     * Template constructor
+     * Template constructor.
      *
      * @param string $name Template name
      */
@@ -91,7 +89,7 @@ class Template
     }
 
     /**
-     * Template getter
+     * Template getter.
      *
      * @param string $name Template name
      *
@@ -103,7 +101,7 @@ class Template
     }
 
     /**
-     * Render template
+     * Render template.
      *
      * @param array $data Variables to be provided to the template
      *
@@ -112,11 +110,11 @@ class Template
     public function render(array $data = array())
     {
         try {
-            $template = $this::$twig->load($this->name . '.twig');
+            $template = $this::$twig->load($this->name.'.twig');
         } catch (\RuntimeException $e) {
             /* Retry with disabled cache */
             $this::$twig->setCache(false);
-            $template = $this::$twig->load($this->name . '.twig');
+            $template = $this::$twig->load($this->name.'.twig');
             /*
              * The trigger error is intentionally after second load
              * to avoid triggering error when disabling cache does not

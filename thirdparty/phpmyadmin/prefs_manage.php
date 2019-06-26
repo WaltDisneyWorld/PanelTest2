@@ -1,9 +1,7 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * User preferences management page
- *
- * @package PhpMyAdmin
+ * User preferences management page.
  */
 use PhpMyAdmin\Config\ConfigFile;
 use PhpMyAdmin\Config\Forms\User\UserFormList;
@@ -18,7 +16,7 @@ use PhpMyAdmin\UserPreferences;
 use PhpMyAdmin\Util;
 
 /**
- * Gets some core libraries and displays a top message if required
+ * Gets some core libraries and displays a top message if required.
  */
 require_once 'libraries/common.inc.php';
 
@@ -31,29 +29,29 @@ $response = Response::getInstance();
 $error = '';
 if (isset($_POST['submit_export'])
     && isset($_POST['export_type'])
-    && $_POST['export_type'] == 'text_file'
+    && 'text_file' == $_POST['export_type']
 ) {
     // export to JSON file
     $response->disable();
-    $filename = 'phpMyAdmin-config-' . urlencode(Core::getenv('HTTP_HOST')) . '.json';
+    $filename = 'phpMyAdmin-config-'.urlencode(Core::getenv('HTTP_HOST')).'.json';
     Core::downloadHeader($filename, 'application/json');
     $settings = $userPreferences->load();
     echo json_encode($settings['config_data'], JSON_PRETTY_PRINT);
     exit;
 } elseif (isset($_POST['submit_export'])
     && isset($_POST['export_type'])
-    && $_POST['export_type'] == 'php_file'
+    && 'php_file' == $_POST['export_type']
 ) {
     // export to JSON file
     $response->disable();
-    $filename = 'phpMyAdmin-config-' . urlencode(Core::getenv('HTTP_HOST')) . '.php';
+    $filename = 'phpMyAdmin-config-'.urlencode(Core::getenv('HTTP_HOST')).'.php';
     Core::downloadHeader($filename, 'application/php');
     $settings = $userPreferences->load();
-    echo '/* ' . __('phpMyAdmin configuration snippet') . " */\n\n";
-    echo '/* ' . __('Paste it to your config.inc.php') . " */\n\n";
+    echo '/* '.__('phpMyAdmin configuration snippet')." */\n\n";
+    echo '/* '.__('Paste it to your config.inc.php')." */\n\n";
     foreach ($settings['config_data'] as $key => $val) {
-        echo '$cfg[\'' . str_replace('/', '\'][\'', $key) . '\'] = ';
-        echo var_export($val, true) . ";\n";
+        echo '$cfg[\''.str_replace('/', '\'][\'', $key).'\'] = ';
+        echo var_export($val, true).";\n";
     }
     exit;
 } elseif (isset($_POST['submit_get_json'])) {
@@ -65,9 +63,9 @@ if (isset($_POST['submit_export'])
     // load from JSON file
     $json = '';
     if (isset($_POST['import_type'])
-        && $_POST['import_type'] == 'text_file'
+        && 'text_file' == $_POST['import_type']
         && isset($_FILES['import_file'])
-        && $_FILES['import_file']['error'] == UPLOAD_ERR_OK
+        && UPLOAD_ERR_OK == $_FILES['import_file']['error']
         && is_uploaded_file($_FILES['import_file']['tmp_name'])
     ) {
         $import_handle = new File($_FILES['import_file']['tmp_name']);
@@ -88,8 +86,8 @@ if (isset($_POST['submit_export'])
 
     $config = json_decode($json, true);
     $return_url = isset($_POST['return_url']) ? $_POST['return_url'] : null;
-    if (! is_array($config)) {
-        if (! isset($error)) {
+    if (!is_array($config)) {
+        if (!isset($error)) {
             $error = __('Could not import configuration');
         }
     } else {
@@ -129,7 +127,7 @@ if (isset($_POST['submit_export'])
             echo '<input type="hidden" name="json" value="'
                 , htmlspecialchars($json) , '" />';
             echo '<input type="hidden" name="fix_errors" value="1" />';
-            if (! empty($_POST['import_merge'])) {
+            if (!empty($_POST['import_merge'])) {
                 echo '<input type="hidden" name="import_merge" value="1" />';
             }
             if ($return_url) {
@@ -165,15 +163,15 @@ if (isset($_POST['submit_export'])
 
         // save settings
         $result = $userPreferences->save($cf->getConfigArray());
-        if ($result === true) {
+        if (true === $result) {
             if ($return_url) {
-                $query =  PhpMyAdmin\Util::splitURLQuery($return_url);
+                $query = PhpMyAdmin\Util::splitURLQuery($return_url);
                 $return_url = parse_url($return_url, PHP_URL_PATH);
 
                 foreach ($query as $q) {
                     $pos = mb_strpos($q, '=');
                     $k = mb_substr($q, 0, $pos);
-                    if ($k == 'token') {
+                    if ('token' == $k) {
                         continue;
                     }
                     $params[$k] = mb_substr($q, $pos + 1);
@@ -191,7 +189,7 @@ if (isset($_POST['submit_export'])
     }
 } elseif (isset($_POST['submit_clear'])) {
     $result = $userPreferences->save(array());
-    if ($result === true) {
+    if (true === $result) {
         $params = array();
         $GLOBALS['PMA_Config']->removeCookie('pma_collaction_connection');
         $GLOBALS['PMA_Config']->removeCookie('pma_lang');
@@ -204,7 +202,7 @@ if (isset($_POST['submit_export'])
 }
 
 $response = Response::getInstance();
-$header   = $response->getHeader();
+$header = $response->getHeader();
 $scripts = $header->getScripts();
 $scripts->addFile('config.js');
 
@@ -233,7 +231,7 @@ echo '<h2>' , __('Import') , '</h2>'
     , '<input type="hidden" name="json" value="" />'
     , '<input type="radio" id="import_text_file" name="import_type"'
     , ' value="text_file" checked="checked" />'
-    , '<label for="import_text_file">' . __('Import from file') . '</label>'
+    , '<label for="import_text_file">'.__('Import from file').'</label>'
     , '<div id="opts_import_text_file" class="prefsmanage_opts">'
     , '<label for="input_import_file">' , __('Browse your computer:') , '</label>'
     , '<input type="file" name="import_file" id="input_import_file" />'
@@ -261,24 +259,24 @@ echo '</div>'
     , '</div>'
     , '<input type="checkbox" id="import_merge" name="import_merge" />'
     , '<label for="import_merge">'
-    , __('Merge with current configuration') . '</label>'
+    , __('Merge with current configuration').'</label>'
     , '<br /><br />'
     , '<input type="submit" name="submit_import" value="'
-    , __('Go') . '" />'
+    , __('Go').'" />'
     , '</form>'
     , '</div>';
-if (@file_exists('setup/index.php') && ! @file_exists(CONFIG_FILE)) {
+if (@file_exists('setup/index.php') && !@file_exists(CONFIG_FILE)) {
     // show only if setup script is available, allows to disable this message
     // by simply removing setup directory
     // Also do not show in config exists (and setup would refuse to work) ?>
             <div class="group">
-            <h2><?php echo __('More settings') ?></h2>
+            <h2><?php echo __('More settings'); ?></h2>
             <div class="group-cnt">
                 <?php
                 echo sprintf(
                 __(
                         'You can set more settings by modifying config.inc.php, eg. '
-                        . 'by using %sSetup script%s.'
+                        .'by using %sSetup script%s.'
                     ),
                 '<a href="setup/index.php" target="_blank">',
                 '</a>'
@@ -324,7 +322,7 @@ if (@file_exists('setup/index.php') && ! @file_exists(CONFIG_FILE)) {
                         <?php
                         echo __(
                     'Settings will be saved in your browser\'s local '
-                            . 'storage.'
+                            .'storage.'
                         );
                         ?>
                         <div class="localStorage-exists">
@@ -360,7 +358,7 @@ if (@file_exists('setup/index.php') && ! @file_exists(CONFIG_FILE)) {
                 <?php
                 echo Url::getHiddenInputs() , __(
                     'You can reset all your settings and restore them to default '
-                    . 'values.'
+                    .'values.'
                 );
                 ?>
                 <br /><br />

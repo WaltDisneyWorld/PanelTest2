@@ -9,6 +9,7 @@
 
         /**
          * ProPackageIDGenerator constructor.
+         *
          * @param $salt string
          */
         public function __construct($salt)
@@ -18,9 +19,9 @@
 
         public function idFromEmail($email)
         {
-            $hash = sha1($this->salt . strtolower($email), true);
+            $hash = sha1($this->salt.strtolower($email), true);
             $encodedHash = base64_encode($hash);
-            $plainTextEncoded = str_replace(array("=", "+", "/"), "", $encodedHash);
+            $plainTextEncoded = str_replace(array('=', '+', '/'), '', $encodedHash);
             return substr($plainTextEncoded, 0, $this::$PRO_PACKAGE_ID_LENGTH);
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/../lib/JsonSerializable.php');
+    require_once dirname(__FILE__).'/../lib/JsonSerializable.php';
 
     abstract class MonstaLicense implements JsonSerializable
     {

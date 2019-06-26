@@ -1,19 +1,17 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * hold PhpMyAdmin\Twig\PartitionExtension class
- *
- * @package PhpMyAdmin\Twig
+ * hold PhpMyAdmin\Twig\PartitionExtension class.
  */
+
 namespace PhpMyAdmin\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * Class PartitionExtension
- *
- * @package PhpMyAdmin\Twig
+ * Class PartitionExtension.
  */
 class PartitionExtension extends AbstractExtension
 {

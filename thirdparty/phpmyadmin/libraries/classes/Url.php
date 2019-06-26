@@ -1,16 +1,14 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Static methods for URL/hidden inputs generating
- *
- * @package PhpMyAdmin
+ * Static methods for URL/hidden inputs generating.
  */
+
 namespace PhpMyAdmin;
 
 /**
- * Static methods for URL/hidden inputs generating
- *
- * @package PhpMyAdmin
+ * Static methods for URL/hidden inputs generating.
  */
 class Url
 {
@@ -26,9 +24,7 @@ class Url
      *
      * @see Url::getCommon()
      *
-     * @return string   string with input fields
-     *
-     * @access  public
+     * @return string string with input fields
      */
     public static function getHiddenInputs(
         $db = '',
@@ -37,11 +33,11 @@ class Url
         $skip = array()
     ) {
         if (is_array($db)) {
-            $params  =& $db;
+            $params = &$db;
             $_indent = empty($table) ? $indent : $table;
-            $_skip   = empty($indent) ? $skip : $indent;
-            $indent  =& $_indent;
-            $skip    =& $_skip;
+            $_skip = empty($indent) ? $skip : $indent;
+            $indent = &$_indent;
+            $skip = &$_skip;
         } else {
             $params = array();
             if (strlen($db) > 0) {
@@ -52,16 +48,16 @@ class Url
             }
         }
 
-        if (! empty($GLOBALS['server'])
+        if (!empty($GLOBALS['server'])
             && $GLOBALS['server'] != $GLOBALS['cfg']['ServerDefault']
         ) {
             $params['server'] = $GLOBALS['server'];
         }
-        if (empty($_COOKIE['pma_lang']) && ! empty($GLOBALS['lang'])) {
+        if (empty($_COOKIE['pma_lang']) && !empty($GLOBALS['lang'])) {
             $params['lang'] = $GLOBALS['lang'];
         }
 
-        if (! is_array($skip)) {
+        if (!is_array($skip)) {
             if (isset($params[$skip])) {
                 unset($params[$skip]);
             }
@@ -77,7 +73,7 @@ class Url
     }
 
     /**
-     * create hidden form fields from array with name => value
+     * create hidden form fields from array with name => value.
      *
      * <code>
      * $values = array(
@@ -111,13 +107,13 @@ class Url
         $fields = '';
 
         /* Always include token in plain forms */
-        if ($pre === '') {
+        if ('' === $pre) {
             $values['token'] = $_SESSION[' PMA_token '];
         }
 
         foreach ($values as $name => $value) {
-            if (! empty($pre)) {
-                $name = $pre . '[' . $name . ']';
+            if (!empty($pre)) {
+                $name = $pre.'['.$name.']';
             }
 
             if (is_array($value)) {
@@ -126,8 +122,8 @@ class Url
                 // do not generate an ending "\n" because
                 // Url::getHiddenInputs() is sometimes called
                 // from a JS document.write()
-                $fields .= '<input type="hidden" name="' . htmlspecialchars($name)
-                    . '" value="' . htmlspecialchars($value) . '" />';
+                $fields .= '<input type="hidden" name="'.htmlspecialchars($name)
+                    .'" value="'.htmlspecialchars($value).'" />';
             }
         }
 
@@ -160,8 +156,7 @@ class Url
      * @param mixed  $params  optional, Contains an associative array with url params
      * @param string $divider optional character to use instead of '?'
      *
-     * @return string   string with URL parameters
-     * @access  public
+     * @return string string with URL parameters
      */
     public static function getCommon($params = array(), $divider = '?')
     {
@@ -196,8 +191,7 @@ class Url
      * @param mixed  $params  optional, Contains an associative array with url params
      * @param string $divider optional character to use instead of '?'
      *
-     * @return string   string with URL parameters
-     * @access  public
+     * @return string string with URL parameters
      */
     public static function getCommonRaw($params = array(), $divider = '?')
     {
@@ -206,36 +200,35 @@ class Url
         // avoid overwriting when creating navi panel links to servers
         if (isset($GLOBALS['server'])
             && $GLOBALS['server'] != $GLOBALS['cfg']['ServerDefault']
-            && ! isset($params['server'])
-            && ! $GLOBALS['PMA_Config']->get('is_setup')
+            && !isset($params['server'])
+            && !$GLOBALS['PMA_Config']->get('is_setup')
         ) {
             $params['server'] = $GLOBALS['server'];
         }
 
-        if (empty($_COOKIE['pma_lang']) && ! empty($GLOBALS['lang'])) {
+        if (empty($_COOKIE['pma_lang']) && !empty($GLOBALS['lang'])) {
             $params['lang'] = $GLOBALS['lang'];
         }
 
         $query = http_build_query($params, null, $separator);
 
-        if ($divider != '?' || strlen($query) > 0) {
-            return $divider . $query;
+        if ('?' != $divider || strlen($query) > 0) {
+            return $divider.$query;
         }
 
         return '';
     }
 
     /**
-     * Returns url separator
+     * Returns url separator.
      *
      * extracted from arg_separator.input as set in php.ini
      * we do not use arg_separator.output to avoid problems with &amp; and &
      *
      * @param string $encode whether to encode separator or not,
-     * currently 'none' or 'html'
+     *                       currently 'none' or 'html'
      *
-     * @return string  character used for separating url parts usually ; or &
-     * @access  public
+     * @return string character used for separating url parts usually ; or &
      */
     public static function getArgSeparator($encode = 'none')
     {
@@ -248,10 +241,10 @@ class Url
             // (see https://www.w3.org/TR/1999/REC-html401-19991224/appendix
             // /notes.html#h-B.2.2)
             $arg_separator = ini_get('arg_separator.input');
-            if (mb_strpos($arg_separator, ';') !== false) {
+            if (false !== mb_strpos($arg_separator, ';')) {
                 $separator = ';';
             } elseif (strlen($arg_separator) > 0) {
-                $separator = $arg_separator{0};
+                $separator = $arg_separator[0];
             } else {
                 $separator = '&';
             }

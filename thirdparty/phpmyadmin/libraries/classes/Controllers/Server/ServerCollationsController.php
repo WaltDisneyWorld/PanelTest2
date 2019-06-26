@@ -1,10 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 
 /**
- * Holds the PhpMyAdmin\Controllers\Server\ServerCollationsController
- *
- * @package PhpMyAdmin\Controllers
+ * Holds the PhpMyAdmin\Controllers\Server\ServerCollationsController.
  */
 
 namespace PhpMyAdmin\Controllers\Server;
@@ -15,16 +14,12 @@ use PhpMyAdmin\Server\Common;
 use PhpMyAdmin\Template;
 
 /**
- * Handles viewing character sets and collations
- *
- * @package PhpMyAdmin\Controllers
+ * Handles viewing character sets and collations.
  */
 class ServerCollationsController extends Controller
 {
     /**
-     * Index action
-     *
-     * @return void
+     * Index action.
      */
     public function indexAction()
     {
@@ -32,7 +27,7 @@ class ServerCollationsController extends Controller
         $disableIs = $GLOBALS['cfg']['Server']['DisableIS'];
 
         /**
-         * Does the common work
+         * Does the common work.
          */
         include_once 'libraries/server_common.inc.php';
 

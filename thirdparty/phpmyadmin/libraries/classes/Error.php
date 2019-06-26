@@ -1,101 +1,98 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Holds class PhpMyAdmin\Error
- *
- * @package PhpMyAdmin
+ * Holds class PhpMyAdmin\Error.
  */
+
 namespace PhpMyAdmin;
 
 use Exception;
-use PhpMyAdmin\Message;
 
 /**
- * a single error
- *
- * @package PhpMyAdmin
+ * a single error.
  */
 class Error extends Message
 {
     /**
-     * Error types
+     * Error types.
      *
      * @var array
      */
     public static $errortype = array(
-        0                    => 'Internal error',
-        E_ERROR              => 'Error',
-        E_WARNING            => 'Warning',
-        E_PARSE              => 'Parsing Error',
-        E_NOTICE             => 'Notice',
-        E_CORE_ERROR         => 'Core Error',
-        E_CORE_WARNING       => 'Core Warning',
-        E_COMPILE_ERROR      => 'Compile Error',
-        E_COMPILE_WARNING    => 'Compile Warning',
-        E_USER_ERROR         => 'User Error',
-        E_USER_WARNING       => 'User Warning',
-        E_USER_NOTICE        => 'User Notice',
-        E_STRICT             => 'Runtime Notice',
-        E_DEPRECATED         => 'Deprecation Notice',
-        E_RECOVERABLE_ERROR  => 'Catchable Fatal Error',
+        0 => 'Internal error',
+        E_ERROR => 'Error',
+        E_WARNING => 'Warning',
+        E_PARSE => 'Parsing Error',
+        E_NOTICE => 'Notice',
+        E_CORE_ERROR => 'Core Error',
+        E_CORE_WARNING => 'Core Warning',
+        E_COMPILE_ERROR => 'Compile Error',
+        E_COMPILE_WARNING => 'Compile Warning',
+        E_USER_ERROR => 'User Error',
+        E_USER_WARNING => 'User Warning',
+        E_USER_NOTICE => 'User Notice',
+        E_STRICT => 'Runtime Notice',
+        E_DEPRECATED => 'Deprecation Notice',
+        E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
     );
 
     /**
-     * Error levels
+     * Error levels.
      *
      * @var array
      */
     public static $errorlevel = array(
-        0                    => 'error',
-        E_ERROR              => 'error',
-        E_WARNING            => 'error',
-        E_PARSE              => 'error',
-        E_NOTICE             => 'notice',
-        E_CORE_ERROR         => 'error',
-        E_CORE_WARNING       => 'error',
-        E_COMPILE_ERROR      => 'error',
-        E_COMPILE_WARNING    => 'error',
-        E_USER_ERROR         => 'error',
-        E_USER_WARNING       => 'error',
-        E_USER_NOTICE        => 'notice',
-        E_STRICT             => 'notice',
-        E_DEPRECATED         => 'notice',
-        E_RECOVERABLE_ERROR  => 'error',
+        0 => 'error',
+        E_ERROR => 'error',
+        E_WARNING => 'error',
+        E_PARSE => 'error',
+        E_NOTICE => 'notice',
+        E_CORE_ERROR => 'error',
+        E_CORE_WARNING => 'error',
+        E_COMPILE_ERROR => 'error',
+        E_COMPILE_WARNING => 'error',
+        E_USER_ERROR => 'error',
+        E_USER_WARNING => 'error',
+        E_USER_NOTICE => 'notice',
+        E_STRICT => 'notice',
+        E_DEPRECATED => 'notice',
+        E_RECOVERABLE_ERROR => 'error',
     );
 
     /**
-     * The file in which the error occurred
+     * The file in which the error occurred.
      *
      * @var string
      */
     protected $file = '';
 
     /**
-     * The line in which the error occurred
+     * The line in which the error occurred.
      *
-     * @var integer
+     * @var int
      */
     protected $line = 0;
 
     /**
-     * Holds the backtrace for this error
+     * Holds the backtrace for this error.
      *
      * @var array
      */
     protected $backtrace = array();
 
     /**
-     * Hide location of errors
+     * Hide location of errors.
      */
     protected $hide_location = false;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param integer $errno   error number
-     * @param string  $errstr  error message
-     * @param string  $errfile file
-     * @param integer $errline line
+     * @param int    $errno   error number
+     * @param string $errstr  error message
+     * @param string $errfile file
+     * @param int    $errline line
      */
     public function __construct($errno, $errstr, $errfile, $errline)
     {
@@ -118,7 +115,7 @@ class Error extends Message
     }
 
     /**
-     * Process backtrace to avoid path disclossures, objects and so on
+     * Process backtrace to avoid path disclossures, objects and so on.
      *
      * @param array $backtrace backtrace
      *
@@ -158,11 +155,9 @@ class Error extends Message
     }
 
     /**
-     * Toggles location hiding
+     * Toggles location hiding.
      *
-     * @param boolean $hide Whether to hide
-     *
-     * @return void
+     * @param bool $hide Whether to hide
      */
     public function setHideLocation($hide)
     {
@@ -170,13 +165,11 @@ class Error extends Message
     }
 
     /**
-     * sets PhpMyAdmin\Error::$_backtrace
+     * sets PhpMyAdmin\Error::$_backtrace.
      *
      * We don't store full arguments to avoid wakeup or memory problems.
      *
      * @param array $backtrace backtrace
-     *
-     * @return void
      */
     public function setBacktrace(array $backtrace)
     {
@@ -184,11 +177,9 @@ class Error extends Message
     }
 
     /**
-     * sets PhpMyAdmin\Error::$_line
+     * sets PhpMyAdmin\Error::$_line.
      *
-     * @param integer $line the line
-     *
-     * @return void
+     * @param int $line the line
      */
     public function setLine($line)
     {
@@ -196,20 +187,17 @@ class Error extends Message
     }
 
     /**
-     * sets PhpMyAdmin\Error::$_file
+     * sets PhpMyAdmin\Error::$_file.
      *
      * @param string $file the file
-     *
-     * @return void
      */
     public function setFile($file)
     {
         $this->file = self::relPath($file);
     }
 
-
     /**
-     * returns unique PhpMyAdmin\Error::$hash, if not exists it will be created
+     * returns unique PhpMyAdmin\Error::$hash, if not exists it will be created.
      *
      * @return string PhpMyAdmin\Error::$hash
      */
@@ -220,12 +208,12 @@ class Error extends Message
         } catch (Exception $e) {
             $backtrace = '';
         }
-        if ($this->hash === null) {
+        if (null === $this->hash) {
             $this->hash = md5(
-                $this->getNumber() .
-                $this->getMessage() .
-                $this->getFile() .
-                $this->getLine() .
+                $this->getNumber().
+                $this->getMessage().
+                $this->getFile().
+                $this->getLine().
                 $backtrace
             );
         }
@@ -238,20 +226,20 @@ class Error extends Message
      * pass $count = -1 to get full backtrace.
      * The same can be done by not passing $count at all.
      *
-     * @param integer $count Number of stack frames.
+     * @param int $count number of stack frames
      *
      * @return array PhpMyAdmin\Error::$_backtrace
      */
     public function getBacktrace($count = -1)
     {
-        if ($count != -1) {
+        if (-1 != $count) {
             return array_slice($this->backtrace, 0, $count);
         }
         return $this->backtrace;
     }
 
     /**
-     * returns PhpMyAdmin\Error::$file
+     * returns PhpMyAdmin\Error::$file.
      *
      * @return string PhpMyAdmin\Error::$file
      */
@@ -261,9 +249,9 @@ class Error extends Message
     }
 
     /**
-     * returns PhpMyAdmin\Error::$line
+     * returns PhpMyAdmin\Error::$line.
      *
-     * @return integer PhpMyAdmin\Error::$line
+     * @return int PhpMyAdmin\Error::$line
      */
     public function getLine()
     {
@@ -271,9 +259,9 @@ class Error extends Message
     }
 
     /**
-     * returns type of error
+     * returns type of error.
      *
-     * @return string  type of error
+     * @return string type of error
      */
     public function getType()
     {
@@ -281,9 +269,9 @@ class Error extends Message
     }
 
     /**
-     * returns level of error
+     * returns level of error.
      *
-     * @return string  level of error
+     * @return string level of error
      */
     public function getLevel()
     {
@@ -291,9 +279,9 @@ class Error extends Message
     }
 
     /**
-     * returns title prepared for HTML Title-Tag
+     * returns title prepared for HTML Title-Tag.
      *
-     * @return string   HTML escaped and truncated title
+     * @return string HTML escaped and truncated title
      */
     public function getHtmlTitle()
     {
@@ -303,17 +291,17 @@ class Error extends Message
     }
 
     /**
-     * returns title for error
+     * returns title for error.
      *
      * @return string
      */
     public function getTitle()
     {
-        return $this->getType() . ': ' . $this->getMessage();
+        return $this->getType().': '.$this->getMessage();
     }
 
     /**
-     * Get HTML backtrace
+     * Get HTML backtrace.
      *
      * @return string
      */
@@ -327,7 +315,7 @@ class Error extends Message
     }
 
     /**
-     * return formatted backtrace field
+     * return formatted backtrace field.
      *
      * @param array  $backtrace Backtrace data
      * @param string $separator Arguments separator to use
@@ -342,10 +330,10 @@ class Error extends Message
         foreach ($backtrace as $step) {
             if (isset($step['file']) && isset($step['line'])) {
                 $retval .= self::relPath($step['file'])
-                    . '#' . $step['line'] . ': ';
+                    .'#'.$step['line'].': ';
             }
             if (isset($step['class'])) {
-                $retval .= $step['class'] . $step['type'];
+                $retval .= $step['class'].$step['type'];
             }
             $retval .= self::getFunctionCall($step, $separator);
             $retval .= $lines;
@@ -355,7 +343,7 @@ class Error extends Message
     }
 
     /**
-     * Formats function call in a backtrace
+     * Formats function call in a backtrace.
      *
      * @param array  $step      backtrace step
      * @param string $separator Arguments separator to use
@@ -364,14 +352,14 @@ class Error extends Message
      */
     public static function getFunctionCall(array $step, $separator)
     {
-        $retval = $step['function'] . '(';
+        $retval = $step['function'].'(';
         if (isset($step['args'])) {
             if (count($step['args']) > 1) {
                 $retval .= $separator;
                 foreach ($step['args'] as $arg) {
                     $retval .= "\t";
                     $retval .= $arg;
-                    $retval .= ',' . $separator;
+                    $retval .= ','.$separator;
                 }
             } elseif (count($step['args']) > 0) {
                 foreach ($step['args'] as $arg) {
@@ -384,7 +372,7 @@ class Error extends Message
     }
 
     /**
-     * Get a single function argument
+     * Get a single function argument.
      *
      * if $function is one of include/require
      * the $arg is converted to a relative path
@@ -409,43 +397,43 @@ class Error extends Message
             'mysqli_connect',
             'mysqli_real_connect',
             'connect',
-            '_realConnect'
+            '_realConnect',
         );
 
         if (in_array($function, $include_functions)) {
             $retval .= self::relPath($arg);
         } elseif (in_array($function, $connect_functions)
-            && getType($arg) === 'string'
+            && 'string' === gettype($arg)
         ) {
-            $retval .= getType($arg) . ' ********';
+            $retval .= gettype($arg).' ********';
         } elseif (is_scalar($arg)) {
-            $retval .= getType($arg) . ' '
-                . htmlspecialchars(var_export($arg, true));
+            $retval .= gettype($arg).' '
+                .htmlspecialchars(var_export($arg, true));
         } elseif (is_object($arg)) {
-            $retval .= '<Class:' . get_class($arg) . '>';
+            $retval .= '<Class:'.get_class($arg).'>';
         } else {
-            $retval .= getType($arg);
+            $retval .= gettype($arg);
         }
 
         return $retval;
     }
 
     /**
-     * Gets the error as string of HTML
+     * Gets the error as string of HTML.
      *
      * @return string
      */
     public function getDisplay()
     {
         $this->isDisplayed(true);
-        $retval = '<div class="' . $this->getLevel() . '">';
-        if (! $this->isUserError()) {
-            $retval .= '<strong>' . $this->getType() . '</strong>';
-            $retval .= ' in ' . $this->getFile() . '#' . $this->getLine();
+        $retval = '<div class="'.$this->getLevel().'">';
+        if (!$this->isUserError()) {
+            $retval .= '<strong>'.$this->getType().'</strong>';
+            $retval .= ' in '.$this->getFile().'#'.$this->getLine();
             $retval .= "<br />\n";
         }
         $retval .= $this->getMessage();
-        if (! $this->isUserError()) {
+        if (!$this->isUserError()) {
             $retval .= "<br />\n";
             $retval .= "<br />\n";
             $retval .= "<strong>Backtrace</strong><br />\n";
@@ -458,9 +446,9 @@ class Error extends Message
     }
 
     /**
-     * whether this error is a user error
+     * whether this error is a user error.
      *
-     * @return boolean
+     * @return bool
      */
     public function isUserError()
     {
@@ -469,7 +457,7 @@ class Error extends Message
     }
 
     /**
-     * return short relative path to phpMyAdmin basedir
+     * return short relative path to phpMyAdmin basedir.
      *
      * prevent path disclosure in error message,
      * and make users feel safe to submit error reports
@@ -483,13 +471,13 @@ class Error extends Message
         $dest = @realpath($path);
 
         /* Probably affected by open_basedir */
-        if ($dest === false) {
+        if (false === $dest) {
             return basename($path);
         }
 
         $Ahere = explode(
             DIRECTORY_SEPARATOR,
-            realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..')
+            realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..')
         );
         $Adest = explode(DIRECTORY_SEPARATOR, $dest);
 
@@ -498,14 +486,14 @@ class Error extends Message
         while (implode(DIRECTORY_SEPARATOR, $Adest) != implode(DIRECTORY_SEPARATOR, $Ahere)) {
             if (count($Ahere) > count($Adest)) {
                 array_pop($Ahere);
-                $result .= DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..';
+                $result .= DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..';
             } else {
                 array_pop($Adest);
             }
         }
-        $path = $result . str_replace(implode(DIRECTORY_SEPARATOR, $Adest), '', $dest);
+        $path = $result.str_replace(implode(DIRECTORY_SEPARATOR, $Adest), '', $dest);
         return str_replace(
-            DIRECTORY_SEPARATOR . PATH_SEPARATOR,
+            DIRECTORY_SEPARATOR.PATH_SEPARATOR,
             DIRECTORY_SEPARATOR,
             $path
         );

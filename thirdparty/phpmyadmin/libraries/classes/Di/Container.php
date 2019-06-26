@@ -1,23 +1,21 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Holds the PhpMyAdmin\Di\Container class
- *
- * @package PhpMyAdmin\Di
+ * Holds the PhpMyAdmin\Di\Container class.
  */
+
 namespace PhpMyAdmin\Di;
 
 use Psr\Container\ContainerInterface;
 
 /**
- * Class Container
- *
- * @package PhpMyAdmin\Di
+ * Class Container.
  */
 class Container implements ContainerInterface
 {
     /**
-     * @var Item[] $content
+     * @var Item[]
      */
     protected $content = array();
 
@@ -27,7 +25,7 @@ class Container implements ContainerInterface
     protected static $defaultContainer;
 
     /**
-     * Create a dependency injection container
+     * Create a dependency injection container.
      *
      * @param Container $base Container
      */
@@ -42,13 +40,13 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Get an object with given name and parameters
+     * Get an object with given name and parameters.
      *
      * @param string $name   Name
      * @param array  $params Parameters
      *
-     * @throws NotFoundException  No entry was found for **this** identifier.
-     * @throws ContainerException Error while retrieving the entry.
+     * @throws NotFoundException  no entry was found for **this** identifier
+     * @throws ContainerException error while retrieving the entry
      *
      * @return mixed
      */
@@ -63,7 +61,7 @@ class Container implements ContainerInterface
         } elseif (isset($GLOBALS[$name])) {
             return $GLOBALS[$name];
         } else {
-            throw new ContainerException("Error while retrieving the entry.");
+            throw new ContainerException('Error while retrieving the entry.');
         }
     }
 
@@ -74,7 +72,7 @@ class Container implements ContainerInterface
      * `has($name)` returning true does not mean that `get($name)` will not throw an exception.
      * It does however mean that `get($name)` will not throw a `NotFoundException`.
      *
-     * @param string $name Identifier of the entry to look for.
+     * @param string $name identifier of the entry to look for
      *
      * @return bool
      */
@@ -84,11 +82,9 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Remove an object from container
+     * Remove an object from container.
      *
      * @param string $name Name
-     *
-     * @return void
      */
     public function remove($name)
     {
@@ -96,12 +92,10 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Rename an object in container
+     * Rename an object in container.
      *
      * @param string $name    Name
      * @param string $newName New name
-     *
-     * @return void
      */
     public function rename($name, $newName)
     {
@@ -110,12 +104,10 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Set values in the container
+     * Set values in the container.
      *
      * @param string|array $name  Name
      * @param mixed        $value Value
-     *
-     * @return void
      */
     public function set($name, $value = null)
     {
@@ -129,12 +121,10 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Register a service in the container
+     * Register a service in the container.
      *
      * @param string $name    Name
      * @param mixed  $service Service
-     *
-     * @return void
      */
     public function service($name, $service = null)
     {
@@ -145,12 +135,10 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Register a factory in the container
+     * Register a factory in the container.
      *
      * @param string $name    Name
      * @param mixed  $factory Factory
-     *
-     * @return void
      */
     public function factory($name, $factory = null)
     {
@@ -161,12 +149,10 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Register an alias in the container
+     * Register an alias in the container.
      *
      * @param string $name   Name
      * @param string $target Target
-     *
-     * @return void
      */
     public function alias($name, $target)
     {
@@ -175,7 +161,7 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Get the global default container
+     * Get the global default container.
      *
      * @return Container
      */

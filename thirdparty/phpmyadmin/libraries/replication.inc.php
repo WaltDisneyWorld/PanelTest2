@@ -1,27 +1,26 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Replication helpers
- *
- * @package PhpMyAdmin
+ * Replication helpers.
  */
-if (! defined('PHPMYADMIN')) {
+if (!defined('PHPMYADMIN')) {
     exit;
 }
 
 use PhpMyAdmin\Replication;
 
 /**
- * get master replication from server
+ * get master replication from server.
  */
 $server_master_replication = $GLOBALS['dbi']->fetchResult('SHOW MASTER STATUS');
 
-/**
+/*
  * set selected master server
  */
-if (! empty($_POST['master_connection'])) {
+if (!empty($_POST['master_connection'])) {
     /**
-     * check for multi-master replication functionality
+     * check for multi-master replication functionality.
      */
     $server_slave_multi_replication = $GLOBALS['dbi']->fetchResult(
         'SHOW ALL SLAVES STATUS'
@@ -29,27 +28,26 @@ if (! empty($_POST['master_connection'])) {
     if ($server_slave_multi_replication) {
         $GLOBALS['dbi']->query(
             "SET @@default_master_connection = '"
-            . $GLOBALS['dbi']->escapeString(
+            .$GLOBALS['dbi']->escapeString(
                 $_POST['master_connection']
-            ) . "'"
+            )."'"
         );
         $GLOBALS['url_params']['master_connection'] = $_POST['master_connection'];
     }
 }
 
 /**
- * get slave replication from server
+ * get slave replication from server.
  */
 $server_slave_replication = $GLOBALS['dbi']->fetchResult('SHOW SLAVE STATUS');
 
 /**
- * replication types
+ * replication types.
  */
 $replication_types = array('master', 'slave');
 
-
 /**
- * define variables for master status
+ * define variables for master status.
  */
 $master_variables = array(
     'File',
@@ -59,9 +57,9 @@ $master_variables = array(
 );
 
 /**
- * Define variables for slave status
+ * Define variables for slave status.
  */
-$slave_variables  = array(
+$slave_variables = array(
     'Slave_IO_State',
     'Master_Host',
     'Master_User',
@@ -98,7 +96,7 @@ $slave_variables  = array(
 );
 /**
  * define important variables, which need to be watched for
- * correct running of replication in slave mode
+ * correct running of replication in slave mode.
  *
  * @usedby PhpMyAdmin\ReplicationGui::getHtmlForReplicationStatusTable()
  */
@@ -127,7 +125,7 @@ foreach ($replication_types as $type) {
         $GLOBALS['replication_info'][$type]['status'] = false;
     }
     if ($GLOBALS['replication_info'][$type]['status']) {
-        if ($type == "master") {
+        if ('master' == $type) {
             Replication::fillInfo(
                 $type,
                 'Do_DB',
@@ -141,7 +139,7 @@ foreach ($replication_types as $type) {
                 $server_master_replication[0],
                 'Binlog_Ignore_DB'
             );
-        } elseif ($type == "slave") {
+        } elseif ('slave' == $type) {
             Replication::fillInfo(
                 $type,
                 'Do_DB',

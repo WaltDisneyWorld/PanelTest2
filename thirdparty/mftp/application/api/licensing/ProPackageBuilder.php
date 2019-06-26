@@ -1,7 +1,7 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/ProPackageIDGenerator.php');
-    require_once(dirname(__FILE__) . "/ProConfigBuilder.php");
+    require_once dirname(__FILE__).'/ProPackageIDGenerator.php';
+    require_once dirname(__FILE__).'/ProConfigBuilder.php';
 
     class ProPackageBuilder
     {
@@ -38,12 +38,12 @@
 
         private function addIndexHtmlToZip($archive)
         {
-            $archive->addFromString("license/index.html", "");
+            $archive->addFromString('license/index.html', '');
         }
 
         private function addHtaccessToZip($archive)
         {
-            $archive->addFile($this->htaccessPath, "license/.htaccess");
+            $archive->addFile($this->htaccessPath, 'license/.htaccess');
         }
 
         private function generateRelativeProfilePath($proPackageID)
@@ -61,18 +61,18 @@
         private function addEmptyProfileToZip($archive, $proPackageID)
         {
             $profileLocalPath = $this->generateRelativeProfilePath($proPackageID);
-            $archive->addFromString("license/" . $profileLocalPath, "");
+            $archive->addFromString('license/'.$profileLocalPath, '');
         }
 
         private function addLicenseToZip($archive, $proPackageID)
         {
             $licenseLocalPath = $this->generateRelativeLicensePath($proPackageID);
-            $archive->addFromString("license/" . $licenseLocalPath, $this->licenseData);
+            $archive->addFromString('license/'.$licenseLocalPath, $this->licenseData);
         }
 
         private function addConfigToZip($archive, $proPackageID)
         {
             $renderedConfig = $this->renderProConfig($proPackageID);
-            $archive->addFromString("license/config_pro.php", $renderedConfig);
+            $archive->addFromString('license/config_pro.php', $renderedConfig);
         }
     }

@@ -1,43 +1,46 @@
 <?php
-    require_once(dirname(__FILE__) . "/../lib/LocalizableException.php");
-    require_once(dirname(__FILE__) . "/../file_sources/PathOperations.php");
-    require_once(dirname(__FILE__) . "/MonstaInstallContext.php");
+    require_once dirname(__FILE__).'/../lib/LocalizableException.php';
+    require_once dirname(__FILE__).'/../file_sources/PathOperations.php';
+    require_once dirname(__FILE__).'/MonstaInstallContext.php';
 
     class MonstaUpdateInstallContext extends MonstaInstallContext
     {
         private static $monstaTestItems = array(
-            "application",
-            "license",
-            "settings",
-            "application/api",
-            "application/frontend",
-            "index.php"
+            'application',
+            'license',
+            'settings',
+            'application/api',
+            'application/frontend',
+            'index.php',
         );
 
         /**
          * @param $extractDir
          * @param $extractGroupRootItem
+         *
          * @return mixed
          */
         private static function getBackupPath($extractDir, $extractGroupRootItem)
         {
-            $destinationBackupPath = PathOperations::join($extractDir, PathOperations::stripTrailingSlash($extractGroupRootItem) . ".bak");
+            $destinationBackupPath = PathOperations::join($extractDir, PathOperations::stripTrailingSlash($extractGroupRootItem).'.bak');
             return $destinationBackupPath;
         }
 
         /**
          * @param $rootItem
+         *
          * @return bool
          */
         private static function getItemIsDirectory($rootItem)
         {
-            return substr($rootItem, -1) === "/";
+            return '/' === substr($rootItem, -1);
         }
 
         /**
          * @param $extractDir
          * @param $version
          * @param $rootItem
+         *
          * @return mixed
          */
         private static function buildItemExtractDirPath($extractDir, $version, $rootItem)
@@ -46,12 +49,13 @@
 
             $rootItemName = $itemIsDirectory ? substr($rootItem, 0, strlen($rootItem) - 1) : $rootItem;
 
-            return PathOperations::join($extractDir, $rootItemName . "-" . $version);
+            return PathOperations::join($extractDir, $rootItemName.'-'.$version);
         }
 
         /**
          * @param $updateManifest
          * @param $archiveFileName
+         *
          * @return mixed
          */
         private static function getManifestIndexForFileRoot($updateManifest, $archiveFileName)
@@ -75,7 +79,7 @@
                 throw new LocalizableException(
                     "Could not update in $installDirectory as it does not appear to be a Monsta FTP install; missing $itemPath",
                     LocalizableExceptionDefinition::$INSTALL_DIRECTORY_INVALID_ERROR,
-                    array("installPath" => $installDirectory, "itemPath" => $itemPath)
+                    array('installPath' => $installDirectory, 'itemPath' => $itemPath)
                 );
             }
         }
@@ -86,7 +90,7 @@
                 throw new LocalizableException(
                     "Could not update in $installDirectory as the directory does not exist",
                     LocalizableExceptionDefinition::$INSTALL_DIRECTORY_DOES_NOT_EXIST_ERROR,
-                    array("path" => $installDirectory)
+                    array('path' => $installDirectory)
                 );
             }
 
@@ -98,16 +102,16 @@
                 throw new LocalizableException(
                     "Could not update $installDirectory as the directory is not writable",
                     LocalizableExceptionDefinition::$INSTALL_PATH_NOT_WRITABLE_ERROR,
-                    array("path" => $installDirectory)
+                    array('path' => $installDirectory)
                 );
             }
         }
 
         private function extractVersionFromArchive($archivePath, $archiveHandle)
         {
-            $version = $archiveHandle->getFromName(self::$archiveParentPath . "application/api/VERSION");
+            $version = $archiveHandle->getFromName(self::$archiveParentPath.'application/api/VERSION');
 
-            if ($version === false) {
+            if (false === $version) {
                 $this->throwInvalidArchiveError($archivePath, $archiveHandle);
             }
 
@@ -167,7 +171,7 @@
             if ($errorOccurred) {
                 // things have gone pretty wrong here so here's a hail mary
                 throw new LocalizableException(
-                    "Restoring backup after failed install failed.",
+                    'Restoring backup after failed install failed.',
                     LocalizableExceptionDefinition::$INSTALL_SETUP_BACKUP_RESTORE_ERROR
                 );
             }
@@ -204,8 +208,8 @@
                     "Install setup failed moving '$destination' to '$destinationBackupPath'.",
                     LocalizableExceptionDefinition::$INSTALL_SETUP_RENAME_ERROR,
                     array(
-                        "source" => $destination, // lmao looks weird but is correct
-                        "destination" => $destinationBackupPath
+                        'source' => $destination, // lmao looks weird but is correct
+                        'destination' => $destinationBackupPath,
                     )
                 );
             }
@@ -215,8 +219,8 @@
                     "Install setup failed moving '$source to '$destination'.",
                     LocalizableExceptionDefinition::$INSTALL_SETUP_RENAME_ERROR,
                     array(
-                        "source" => $source,
-                        "destination" => $destination
+                        'source' => $source,
+                        'destination' => $destination,
                     )
                 );
             }
@@ -237,7 +241,7 @@
             }
 
             if (!$this->cleanUpBackups($extractDir, $extractGroups)) {
-                $this->setWarning("BACKUP_CLEANUP_ERROR", "Cleaning up of backups created during update failed.");
+                $this->setWarning('BACKUP_CLEANUP_ERROR', 'Cleaning up of backups created during update failed.');
             }
         }
 
@@ -257,7 +261,7 @@
                 $this->cleanUpAfterExtract($installDirectory, $newMonstaVersion, $extractGroups);
 
                 throw new LocalizableException(
-                    "Extract of install archive failed.",
+                    'Extract of install archive failed.',
                     LocalizableExceptionDefinition::$INSTALL_ARCHIVE_EXTRACT_ERROR
                 );
             }
@@ -273,6 +277,7 @@
         /**
          * @param $archiveHandle ZipArchive
          * @param $updateManifest array
+         *
          * @return mixed
          */
         private function buildExtractGroupsFromArchive($archiveHandle, $updateManifest)
@@ -282,7 +287,7 @@
             foreach (self::listArchive($archiveHandle) as $archiveFileName) {
                 $manifestIndex = self::getManifestIndexForFileRoot($updateManifest, $archiveFileName);
 
-                if ($manifestIndex === false) {
+                if (false === $manifestIndex) {
                     continue;
                 }
 

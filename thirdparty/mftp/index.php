@@ -1,24 +1,24 @@
 <?php
 session_start();
 error_reporting(0);
-if (!isset($_SESSION["user"])) {
+if (!isset($_SESSION['user'])) {
     die();
 }
-    require_once(dirname(__FILE__) . "/application/api/constants.php");
+    require_once dirname(__FILE__).'/application/api/constants.php';
     includeMonstaConfig();
-    require_once(dirname(__FILE__) . '/application/api/lib/helpers.php');
-    require_once(dirname(__FILE__) . '/application/api/lib/entry_handlers.php');
-    if (file_exists(dirname(__FILE__) . '/mftp_extensions.php')) {
-        include_once(dirname(__FILE__) . '/mftp_extensions.php');
+    require_once dirname(__FILE__).'/application/api/lib/helpers.php';
+    require_once dirname(__FILE__).'/application/api/lib/entry_handlers.php';
+    if (file_exists(dirname(__FILE__).'/mftp_extensions.php')) {
+        include_once dirname(__FILE__).'/mftp_extensions.php';
     }
 
-    require_once(dirname(__FILE__) . '/application/api/lib/access_check.php');
+    require_once dirname(__FILE__).'/application/api/lib/access_check.php';
 
-    require_once(dirname(__FILE__) . '/application/api/system/ApplicationSettings.php');
+    require_once dirname(__FILE__).'/application/api/system/ApplicationSettings.php';
 
     $applicationSettings = new ApplicationSettings(APPLICATION_SETTINGS_PATH);
 
-    $languageDir = dirname(__FILE__) . "/application/languages/";
+    $languageDir = dirname(__FILE__).'/application/languages/';
 
     $languages = readLanguagesFromDirectory($languageDir);
 
@@ -33,20 +33,20 @@ if (!isset($_SESSION["user"])) {
     $forgotPasswordAvailable = false;
 
     if ($isHostEdition) {
-        if (function_exists("mftpInitialLoadValidation")) {
+        if (function_exists('mftpInitialLoadValidation')) {
             if (!mftpInitialLoadValidation($isPostEntry)) {
                 exit();
             }
         }
 
-        $resetPasswordAvailable = function_exists("mftpResetPasswordHandler");
-        $forgotPasswordAvailable = function_exists("mftpForgotPasswordHandler");
+        $resetPasswordAvailable = function_exists('mftpResetPasswordHandler');
+        $forgotPasswordAvailable = function_exists('mftpForgotPasswordHandler');
     }
 ?>
 <!DOCTYPE html>
 <html ng-app="MonstaFTP">
 <head>
-    <title><?php print getMonstaPageTitle($isHostEdition); ?></title>
+    <title><?php echo getMonstaPageTitle($isHostEdition); ?></title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport"
@@ -56,41 +56,41 @@ if (!isset($_SESSION["user"])) {
     <link rel="apple-touch-icon" href="application/frontend/images/logo-webclip.png">
 
     <script>
-        var g_defaultLanguage = "<?php print $applicationSettings->getLanguage(); ?>";
+        var g_defaultLanguage = "<?php echo $applicationSettings->getLanguage(); ?>";
         var g_upgradeURL = "http://www.monstaftp.com/upgrade";
         var g_loadComplete = false;
-        var g_xhrTimeoutSeconds = <?php print $applicationSettings->getXhrTimeoutSeconds(); ?>;
+        var g_xhrTimeoutSeconds = <?php echo $applicationSettings->getXhrTimeoutSeconds(); ?>;
         var g_isMonstaPostEntry = false;
-        var g_isNewWindowsInstall = <?php print booleanToJsValue(getNormalizedOSName() == "Windows" && !$isLicensed); ?>;
-        var g_ftpConnectionAvailable = <?php print booleanToJsValue(ftpConnectionAvailable()); ?>;
-        var g_openSslAvailable = <?php print booleanToJsValue(function_exists("openssl_get_publickey")); ?>;
-        var g_resetPasswordAvailable = <?php print booleanToJsValue($resetPasswordAvailable); ?>;
-        var g_forgotPasswordAvailable = <?php print booleanToJsValue($forgotPasswordAvailable); ?>;
+        var g_isNewWindowsInstall = <?php echo booleanToJsValue('Windows' == getNormalizedOSName() && !$isLicensed); ?>;
+        var g_ftpConnectionAvailable = <?php echo booleanToJsValue(ftpConnectionAvailable()); ?>;
+        var g_openSslAvailable = <?php echo booleanToJsValue(function_exists('openssl_get_publickey')); ?>;
+        var g_resetPasswordAvailable = <?php echo booleanToJsValue($resetPasswordAvailable); ?>;
+        var g_forgotPasswordAvailable = <?php echo booleanToJsValue($forgotPasswordAvailable); ?>;
 
         <?php
         if ($isLicensed && $isPostEntry) {
             ?>
         g_isMonstaPostEntry = true;
-        var g_monstaPostEntryVars = <?php print json_encode(extractMonstaPostEntryVars($_POST)); ?>;
+        var g_monstaPostEntryVars = <?php echo json_encode(extractMonstaPostEntryVars($_POST)); ?>;
         <?php
         }
         ?>
     </script>
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,600,300">
-    <script src="application/frontend/assets-<?php print MONSTA_VERSION; ?>/vendor.js"></script>
+    <script src="application/frontend/assets-<?php echo MONSTA_VERSION; ?>/vendor.js"></script>
 
     <link rel="stylesheet" href="application/frontend/css/monsta.css">
     <link rel="stylesheet" href="settings/theme.css">
     
-    <script src="application/frontend/js/monsta-min-<?php print MONSTA_VERSION; ?>.js"></script>
-    <script src="application/frontend/js/templates-<?php print MONSTA_VERSION; ?>.js"></script>
+    <script src="application/frontend/js/monsta-min-<?php echo MONSTA_VERSION; ?>.js"></script>
+    <script src="application/frontend/js/templates-<?php echo MONSTA_VERSION; ?>.js"></script>
 
     <?php
         if ($applicationSettings->isSettingsReadFailed()) {
             ?>
             <script>
-                var g_settingsReadFailureMesage = "Reading settings.json failed. <?php echo $applicationSettings->getSettingsReadError()?>.\n\nCheck the file is readable and " +
+                var g_settingsReadFailureMesage = "Reading settings.json failed. <?php echo $applicationSettings->getSettingsReadError(); ?>.\n\nCheck the file is readable and " +
                     "has no syntax errors (http://jsonlint.com might help). You are using the default settings.";
 
                 alert(g_settingsReadFailureMesage);
@@ -99,7 +99,7 @@ if (!isset($_SESSION["user"])) {
         }
     ?>
     <script>
-        var g_languageFiles = <?php print json_encode($languages); ?>;
+        var g_languageFiles = <?php echo json_encode($languages); ?>;
     </script>
 </head>
 <body>
@@ -159,7 +159,7 @@ if (!isset($_SESSION["user"])) {
 <?php
     } ?>
     <script>
-        var versionQS = <?php print json_encode($versionQS); ?> + getFpQs();
+        var versionQS = <?php echo json_encode($versionQS); ?> + getFpQs();
         document.write('<scri' + 'pt async src="//monstaftp.com/_callbacks/latest-version.php?' + versionQS + '"></scr' + 'ipt>')
     </script>
 </body>

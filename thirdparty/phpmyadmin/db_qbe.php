@@ -1,9 +1,8 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * query by example the whole database
- *
- * @package PhpMyAdmin
+ * query by example the whole database.
  */
 use PhpMyAdmin\Database\Qbe;
 use PhpMyAdmin\Message;
@@ -16,7 +15,7 @@ use PhpMyAdmin\Url;
 use PhpMyAdmin\Util;
 
 /**
- * requirements
+ * requirements.
  */
 require_once 'libraries/common.inc.php';
 
@@ -79,11 +78,11 @@ if ($cfgRelation['savedsearcheswork']) {
 }
 
 /**
- * A query has been submitted -> (maybe) execute it
+ * A query has been submitted -> (maybe) execute it.
  */
 $message_to_display = false;
-if (isset($_POST['submit_sql']) && ! empty($sql_query)) {
-    if (! preg_match('@^SELECT@i', $sql_query)) {
+if (isset($_POST['submit_sql']) && !empty($sql_query)) {
+    if (!preg_match('@^SELECT@i', $sql_query)) {
         $message_to_display = true;
     } else {
         $goto = 'db_sql.php';
@@ -111,7 +110,7 @@ if (isset($_POST['submit_sql']) && ! empty($sql_query)) {
     }
 }
 
-$sub_part  = '_qbe';
+$sub_part = '_qbe';
 require 'libraries/db_common.inc.php';
 $url_query .= '&amp;goto=db_qbe.php';
 $url_params['goto'] = 'db_qbe.php';
@@ -156,7 +155,7 @@ $response->addHTML(
     ])
 );
 
-$url = 'db_designer.php' . Url::getCommon(
+$url = 'db_designer.php'.Url::getCommon(
     array_merge(
         $url_params,
         array('query' => 1)
@@ -166,13 +165,13 @@ $response->addHTML(
     Message::notice(
         sprintf(
             __('Switch to %svisual builder%s'),
-            '<a href="' . $url . '">',
+            '<a href="'.$url.'">',
             '</a>'
         )
     )
 );
 
-/**
+/*
  * Displays the Query by example form
  */
 $response->addHTML($db_qbe->getSelectionForm());

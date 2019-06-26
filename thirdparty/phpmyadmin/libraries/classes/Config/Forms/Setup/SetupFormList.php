@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Setup preferences form
- *
- * @package PhpMyAdmin
+ * Setup preferences form.
  */
+
 namespace PhpMyAdmin\Config\Forms\Setup;
 
 use PhpMyAdmin\Config\Forms\BaseFormList;

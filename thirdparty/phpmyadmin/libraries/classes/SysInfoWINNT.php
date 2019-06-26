@@ -1,19 +1,16 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Hold PhpMyAdmin\SysInfoWINNT class
- *
- * @package PhpMyAdmin
+ * Hold PhpMyAdmin\SysInfoWINNT class.
  */
+
 namespace PhpMyAdmin;
 
 use COM;
-use PhpMyAdmin\SysInfoBase;
 
 /**
- * Windows NT based SysInfo class
- *
- * @package PhpMyAdmin
+ * Windows NT based SysInfo class.
  */
 class SysInfoWINNT extends SysInfoBase
 {
@@ -35,19 +32,19 @@ class SysInfoWINNT extends SysInfoBase
     }
 
     /**
-     * Gets load information
+     * Gets load information.
      *
      * @return array with load data
      */
     public function loadavg()
     {
-        $loadavg = "";
+        $loadavg = '';
         $sum = 0;
         $buffer = $this->_getWMI('Win32_Processor', array('LoadPercentage'));
 
         foreach ($buffer as $load) {
             $value = $load['LoadPercentage'];
-            $loadavg .= $value . ' ';
+            $loadavg .= $value.' ';
             $sum += $value;
         }
 
@@ -55,7 +52,7 @@ class SysInfoWINNT extends SysInfoBase
     }
 
     /**
-     * Checks whether class is supported in this environment
+     * Checks whether class is supported in this environment.
      *
      * @return true on success
      */
@@ -65,7 +62,7 @@ class SysInfoWINNT extends SysInfoBase
     }
 
     /**
-     * Reads data from WMI
+     * Reads data from WMI.
      *
      * @param string $strClass Class to read
      * @param array  $strValue Values to read
@@ -95,14 +92,14 @@ class SysInfoWINNT extends SysInfoBase
     }
 
     /**
-     * Gets information about memory usage
+     * Gets information about memory usage.
      *
      * @return array with memory usage data
      */
     public function memory()
     {
         $buffer = $this->_getWMI(
-            "Win32_OperatingSystem",
+            'Win32_OperatingSystem',
             array('TotalVisibleMemorySize', 'FreePhysicalMemory')
         );
         $mem = array();

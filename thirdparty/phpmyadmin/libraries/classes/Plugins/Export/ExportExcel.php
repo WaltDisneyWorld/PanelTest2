@@ -1,11 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Class for exporting CSV dumps of tables for excel
- *
- * @package    PhpMyAdmin-Export
- * @subpackage CSV-Excel
+ * Class for exporting CSV dumps of tables for excel.
  */
+
 namespace PhpMyAdmin\Plugins\Export;
 
 use PhpMyAdmin\Properties\Plugins\ExportPluginProperties;
@@ -17,17 +16,12 @@ use PhpMyAdmin\Properties\Options\Items\SelectPropertyItem;
 use PhpMyAdmin\Properties\Options\Items\TextPropertyItem;
 
 /**
- * Handles the export for the CSV-Excel format
- *
- * @package    PhpMyAdmin-Export
- * @subpackage CSV-Excel
+ * Handles the export for the CSV-Excel format.
  */
 class ExportExcel extends ExportCsv
 {
     /**
-     * Sets the export CSV for Excel properties
-     *
-     * @return void
+     * Sets the export CSV for Excel properties.
      */
     protected function setProperties()
     {
@@ -41,11 +35,11 @@ class ExportExcel extends ExportCsv
         // $exportPluginProperties
         // this will be shown as "Format specific options"
         $exportSpecificOptions = new OptionsPropertyRootGroup(
-            "Format Specific Options"
+            'Format Specific Options'
         );
 
         // general options main group
-        $generalOptions = new OptionsPropertyMainGroup("general_opts");
+        $generalOptions = new OptionsPropertyMainGroup('general_opts');
         // create primary items and add them to the group
         $leaf = new TextPropertyItem(
             'null',
@@ -68,7 +62,7 @@ class ExportExcel extends ExportCsv
         );
         $leaf->setValues(
             array(
-                'win'           => 'Windows',
+                'win' => 'Windows',
                 'mac_excel2003' => 'Excel 2003 / Macintosh',
                 'mac_excel2008' => 'Excel 2008 / Macintosh',
             )

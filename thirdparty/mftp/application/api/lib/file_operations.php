@@ -4,11 +4,11 @@
     {
         $realPath = @realpath($path);
 
-        if ($realPath !== false) {
+        if (false !== $realPath) {
             $path = $realPath;
         }
 
-        if ($realPath === false || !@file_exists($path)) {
+        if (false === $realPath || !@file_exists($path)) {
             throw new Exception("Unable to read file at $path, the file does not appear to exist.");
         }
 

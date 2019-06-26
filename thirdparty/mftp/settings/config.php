@@ -6,14 +6,14 @@
 
     // GENERAL VARIABLES //
 
-    $configPathSettings = dirname(__FILE__) . "/settings.json";
-    $configTimeZone = "UTC";
-    $configTempDir = "";
-    $configMaxFileSize = "1024M";
+    $configPathSettings = dirname(__FILE__).'/settings.json';
+    $configTimeZone = 'UTC';
+    $configTempDir = '';
+    $configMaxFileSize = '1024M';
     $configMaxExecutionTimeSeconds = 1800;
     $configSSHAgentAuthEnabled = false;
     $configSSHKeyAuthEnabled = false;
-    $configPageTitle = "Monsta FTP";
+    $configPageTitle = 'Monsta FTP';
 
     $configMaxLoginFailures = 3;
     $configLoginFailuresResetTimeMinutes = 5;
@@ -25,23 +25,22 @@
     $configMftpLogFilePath = null;
     $configMftpLogLevelThreshold = LOG_WARNING;
 
-
     // DEFINE THE VARIABLES //
 
-    define("APPLICATION_SETTINGS_PATH", $configPathSettings);
-    define("MONSTA_TEMP_DIRECTORY", $configTempDir);
-    define("SSH_AGENT_AUTH_ENABLED", $configSSHAgentAuthEnabled);
-    define("SSH_KEY_AUTH_ENABLED", $configSSHKeyAuthEnabled);
-    define("MFTP_PAGE_TITLE", $configPageTitle);
-    define("MFTP_MAX_LOGIN_FAILURES", $configMaxLoginFailures);
-    define("MFTP_LOGIN_FAILURES_RESET_TIME_MINUTES", $configLoginFailuresResetTimeMinutes);
+    define('APPLICATION_SETTINGS_PATH', $configPathSettings);
+    define('MONSTA_TEMP_DIRECTORY', $configTempDir);
+    define('SSH_AGENT_AUTH_ENABLED', $configSSHAgentAuthEnabled);
+    define('SSH_KEY_AUTH_ENABLED', $configSSHKeyAuthEnabled);
+    define('MFTP_PAGE_TITLE', $configPageTitle);
+    define('MFTP_MAX_LOGIN_FAILURES', $configMaxLoginFailures);
+    define('MFTP_LOGIN_FAILURES_RESET_TIME_MINUTES', $configLoginFailuresResetTimeMinutes);
 
-    define("MFTP_LOG_TO_SYSLOG", $configLogToSyslog);
-    define("MFTP_LOG_SYSLOG_FACILITY", $configMftpSyslogFacility);
+    define('MFTP_LOG_TO_SYSLOG', $configLogToSyslog);
+    define('MFTP_LOG_SYSLOG_FACILITY', $configMftpSyslogFacility);
 
-    define("MFTP_LOG_TO_FILE", $configLogToFile);
-    define("MFTP_LOG_FILE_PATH", $configMftpLogFilePath);
-    define("MFTP_LOG_LEVEL_THRESHOLD", $configMftpLogLevelThreshold);
+    define('MFTP_LOG_TO_FILE', $configLogToFile);
+    define('MFTP_LOG_FILE_PATH', $configMftpLogFilePath);
+    define('MFTP_LOG_LEVEL_THRESHOLD', $configMftpLogLevelThreshold);
 
     date_default_timezone_set($configTimeZone);
 
@@ -50,23 +49,23 @@
 
     $maxUploadSizeBytes = formattedSizeToBytes($configMaxFileSize);
 
-    if ($currentMemoryLimit != -1) {
+    if (-1 != $currentMemoryLimit) {
         if ($maxUploadSizeBytes > $currentMemoryLimit) {
             ini_set('memory_limit', $configMaxFileSize);
         }
     }
 
-    define("MFTP_MAX_UPLOAD_SIZE", $maxUploadSizeBytes);
+    define('MFTP_MAX_UPLOAD_SIZE', $maxUploadSizeBytes);
 
     ini_set('max_execution_time', $configMaxExecutionTimeSeconds);
 
-    $proConfigurationPath = dirname(__FILE__) . "/../license/config_pro.php";
+    $proConfigurationPath = dirname(__FILE__).'/../license/config_pro.php';
 
     if (file_exists($proConfigurationPath)) {
-        require_once($proConfigurationPath);
+        require_once $proConfigurationPath;
     } else {
-        define("AUTHENTICATION_FILE_PATH", "");
-        define("MONSTA_LICENSE_PATH", "");
+        define('AUTHENTICATION_FILE_PATH', '');
+        define('MONSTA_LICENSE_PATH', '');
     }
 
-    define("MONSTA_UPLOAD_LOGGING", false);
+    define('MONSTA_UPLOAD_LOGGING', false);

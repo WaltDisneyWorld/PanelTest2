@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Table partition definition
- *
- * @package PhpMyAdmin
+ * Table partition definition.
  */
-
 use PhpMyAdmin\Core;
 
 if (!isset($partitionDetails)) {
@@ -28,7 +26,7 @@ if (!isset($partitionDetails)) {
         $partition_count = 0;
     }
     $partitionDetails['partition_count']
-        = ($partition_count === 0) ? '' : $partition_count;
+        = (0 === $partition_count) ? '' : $partition_count;
     if (Core::isValid($_POST['subpartition_count'], 'numeric')) {
         // MySQL's limit is 8192, so do not allow more
         $subpartition_count = min(intval($_POST['subpartition_count']), 8192);
@@ -36,22 +34,22 @@ if (!isset($partitionDetails)) {
         $subpartition_count = 0;
     }
     $partitionDetails['subpartition_count']
-        = ($subpartition_count === 0) ? '' : $subpartition_count;
+        = (0 === $subpartition_count) ? '' : $subpartition_count;
 
     // Only LIST and RANGE type parameters allow subpartitioning
     $partitionDetails['can_have_subpartitions'] = $partition_count > 1
         && isset($_POST['partition_by'])
-        && ($_POST['partition_by'] == 'RANGE'
-        || $_POST['partition_by'] == 'RANGE COLUMNS'
-        || $_POST['partition_by'] == 'LIST'
-        || $_POST['partition_by'] == 'LIST COLUMNS');
+        && ('RANGE' == $_POST['partition_by']
+        || 'RANGE COLUMNS' == $_POST['partition_by']
+        || 'LIST' == $_POST['partition_by']
+        || 'LIST COLUMNS' == $_POST['partition_by']);
 
     // Values are specified only for LIST and RANGE type partitions
     $partitionDetails['value_enabled'] = isset($_POST['partition_by'])
-        && ($_POST['partition_by'] == 'RANGE'
-        || $_POST['partition_by'] == 'RANGE COLUMNS'
-        || $_POST['partition_by'] == 'LIST'
-        || $_POST['partition_by'] == 'LIST COLUMNS');
+        && ('RANGE' == $_POST['partition_by']
+        || 'RANGE COLUMNS' == $_POST['partition_by']
+        || 'LIST' == $_POST['partition_by']
+        || 'LIST COLUMNS' == $_POST['partition_by']);
 
     // Has partitions
     if ($partition_count > 1) {
@@ -63,10 +61,10 @@ if (!isset($partitionDetails)) {
         // when number of partitions have been reduced
         array_splice($partitions, $partition_count);
 
-        for ($i = 0; $i < $partition_count; $i++) {
-            if (! isset($partitions[$i])) { // Newly added partition
+        for ($i = 0; $i < $partition_count; ++$i) {
+            if (!isset($partitions[$i])) { // Newly added partition
                 $partitions[$i] = array(
-                    'name' => 'p' . $i,
+                    'name' => 'p'.$i,
                     'value_type' => '',
                     'value' => '',
                     'engine' => '',
@@ -80,15 +78,15 @@ if (!isset($partitionDetails)) {
                 );
             }
 
-            $partition =& $partitions[$i];
-            $partition['prefix'] = 'partitions[' . $i . ']';
+            $partition = &$partitions[$i];
+            $partition['prefix'] = 'partitions['.$i.']';
 
             // Changing from HASH/KEY to RANGE/LIST
-            if (! isset($partition['value_type'])) {
+            if (!isset($partition['value_type'])) {
                 $partition['value_type'] = '';
                 $partition['value'] = '';
             }
-            if (! isset($partition['engine'])) { // When removing subpartitioning
+            if (!isset($partition['engine'])) { // When removing subpartitioning
                 $partition['engine'] = '';
                 $partition['comment'] = '';
                 $partition['data_directory'] = '';
@@ -100,23 +98,23 @@ if (!isset($partitionDetails)) {
             }
 
             if ($subpartition_count > 1
-                && $partitionDetails['can_have_subpartitions'] == true
+                && true == $partitionDetails['can_have_subpartitions']
             ) { // Has subpartitions
                 $partition['subpartition_count'] = $subpartition_count;
 
-                if (! isset($partition['subpartitions'])) {
+                if (!isset($partition['subpartitions'])) {
                     $partition['subpartitions'] = array();
                 }
-                $subpartitions =& $partition['subpartitions'];
+                $subpartitions = &$partition['subpartitions'];
 
                 // Remove details of the additional subpartitions
                 // when number of subpartitions have been reduced
                 array_splice($subpartitions, $subpartition_count);
 
-                for ($j = 0; $j < $subpartition_count; $j++) {
-                    if (! isset($subpartitions[$j])) { // Newly added subpartition
+                for ($j = 0; $j < $subpartition_count; ++$j) {
+                    if (!isset($subpartitions[$j])) { // Newly added subpartition
                         $subpartitions[$j] = array(
-                            'name' => $partition['name'] . '_s' . $j,
+                            'name' => $partition['name'].'_s'.$j,
                             'engine' => '',
                             'comment' => '',
                             'data_directory' => '',
@@ -128,9 +126,9 @@ if (!isset($partitionDetails)) {
                         );
                     }
 
-                    $subpartition =& $subpartitions[$j];
-                    $subpartition['prefix'] = 'partitions[' . $i . ']'
-                        . '[subpartitions][' . $j . ']';
+                    $subpartition = &$subpartitions[$j];
+                    $subpartition['prefix'] = 'partitions['.$i.']'
+                        .'[subpartitions]['.$j.']';
                 }
             } else { // No subpartitions
                 unset($partition['subpartitions']);

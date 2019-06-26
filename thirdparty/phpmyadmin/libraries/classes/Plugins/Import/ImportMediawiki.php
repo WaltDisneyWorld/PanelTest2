@@ -1,11 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * MediaWiki import plugin for phpMyAdmin
- *
- * @package    PhpMyAdmin-Import
- * @subpackage MediaWiki
+ * MediaWiki import plugin for phpMyAdmin.
  */
+
 namespace PhpMyAdmin\Plugins\Import;
 
 use PhpMyAdmin\Import;
@@ -14,22 +13,19 @@ use PhpMyAdmin\Plugins\ImportPlugin;
 use PhpMyAdmin\Properties\Plugins\ImportPluginProperties;
 
 /**
- * Handles the import for the MediaWiki format
- *
- * @package    PhpMyAdmin-Import
- * @subpackage MediaWiki
+ * Handles the import for the MediaWiki format.
  */
 class ImportMediawiki extends ImportPlugin
 {
     /**
-     * Whether to analyze tables
+     * Whether to analyze tables.
      *
      * @var bool
      */
     private $_analyze;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -39,13 +35,11 @@ class ImportMediawiki extends ImportPlugin
     /**
      * Sets the import plugin properties.
      * Called in the constructor.
-     *
-     * @return void
      */
     protected function setProperties()
     {
         $this->_setAnalyze(false);
-        if ($GLOBALS['plugin_param'] !== 'table') {
+        if ('table' !== $GLOBALS['plugin_param']) {
             $this->_setAnalyze(true);
         }
 
@@ -60,11 +54,9 @@ class ImportMediawiki extends ImportPlugin
     }
 
     /**
-     * Handles the whole import logic
+     * Handles the whole import logic.
      *
      * @param array &$sql_data 2-element array with sql data
-     *
-     * @return void
      */
     public function doImport(array &$sql_data = array())
     {
@@ -90,16 +82,16 @@ class ImportMediawiki extends ImportPlugin
         $mediawiki_new_line = "\n";
 
         // Initialize the name of the current table
-        $cur_table_name = "";
+        $cur_table_name = '';
 
         while (!$finished && !$error && !$timeout_passed) {
             $data = Import::getNextChunk();
 
-            if ($data === false) {
+            if (false === $data) {
                 // Subtract data we didn't handle yet and stop processing
                 $GLOBALS['offset'] -= mb_strlen($buffer);
                 break;
-            } elseif ($data === true) {
+            } elseif (true === $data) {
                 // Handle rest of buffer
             } else {
                 // Append new data to buffer
@@ -107,7 +99,7 @@ class ImportMediawiki extends ImportPlugin
                 unset($data);
                 // Don't parse string if we're not at the end
                 // and don't have a new line inside
-                if (mb_strpos($buffer, $mediawiki_new_line) === false) {
+                if (false === mb_strpos($buffer, $mediawiki_new_line)) {
                     continue;
                 }
             }
@@ -116,7 +108,7 @@ class ImportMediawiki extends ImportPlugin
             // contains only a portion of an actual line from the imported file.
             // Therefore, we have to append it to the last line from the previous
             // chunk. If we are at the first chunk, $last_chunk_line should be empty.
-            $buffer = $last_chunk_line . $buffer;
+            $buffer = $last_chunk_line.$buffer;
 
             // Process the buffer line by line
             $buffer_lines = explode($mediawiki_new_line, $buffer);
@@ -124,7 +116,7 @@ class ImportMediawiki extends ImportPlugin
             $full_buffer_lines_count = count($buffer_lines);
             // If the reading is not finalised, the final line of the current chunk
             // will not be complete
-            if (! $finished) {
+            if (!$finished) {
                 $last_chunk_line = $buffer_lines[--$full_buffer_lines_count];
             }
 
@@ -132,7 +124,7 @@ class ImportMediawiki extends ImportPlugin
                 $cur_buffer_line = trim($buffer_lines[$line_nr]);
 
                 // If the line is empty, go to the next one
-                if ($cur_buffer_line === '') {
+                if ('' === $cur_buffer_line) {
                     continue;
                 }
 
@@ -140,12 +132,12 @@ class ImportMediawiki extends ImportPlugin
                 $matches = array();
 
                 // Check beginning of comment
-                if (!strcmp(mb_substr($cur_buffer_line, 0, 4), "<!--")) {
+                if (!strcmp(mb_substr($cur_buffer_line, 0, 4), '<!--')) {
                     $inside_comment = true;
                     continue;
                 } elseif ($inside_comment) {
                     // Check end of comment
-                    if (!strcmp(mb_substr($cur_buffer_line, 0, 4), "-->")
+                    if (!strcmp(mb_substr($cur_buffer_line, 0, 4), '-->')
                     ) {
                         // Only data comments are closed. The structure comments
                         // will be closed when a data comment begins (in order to
@@ -162,7 +154,7 @@ class ImportMediawiki extends ImportPlugin
                         // Check table name
                         $match_table_name = array();
                         if (preg_match(
-                            "/^Table data for `(.*)`$/",
+                            '/^Table data for `(.*)`$/',
                             $cur_buffer_line,
                             $match_table_name
                         )
@@ -175,7 +167,7 @@ class ImportMediawiki extends ImportPlugin
                                     $inside_structure_comment
                                 );
                         } elseif (preg_match(
-                            "/^Table structure for `(.*)`$/",
+                            '/^Table structure for `(.*)`$/',
                             $cur_buffer_line,
                             $match_table_name
                         )
@@ -202,9 +194,9 @@ class ImportMediawiki extends ImportPlugin
                     $in_table_header = false;
                 // End processing because the current line does not
                     // contain any column information
-                } elseif (mb_substr($cur_buffer_line, 0, 2) === '|-'
-                    || mb_substr($cur_buffer_line, 0, 2) === '|+'
-                    || mb_substr($cur_buffer_line, 0, 2) === '|}'
+                } elseif ('|-' === mb_substr($cur_buffer_line, 0, 2)
+                    || '|+' === mb_substr($cur_buffer_line, 0, 2)
+                    || '|}' === mb_substr($cur_buffer_line, 0, 2)
                 ) {
                     // Check begin row or end table
 
@@ -218,7 +210,7 @@ class ImportMediawiki extends ImportPlugin
                             $cur_temp_table_headers = $cur_temp_line;
                         } else {
                             // Normal line, add it to the table
-                            $cur_temp_table [] = $cur_temp_line;
+                            $cur_temp_table[] = $cur_temp_line;
                         }
                     }
 
@@ -226,7 +218,7 @@ class ImportMediawiki extends ImportPlugin
                     $cur_temp_line = array();
 
                     // No more processing required at the end of the table
-                    if (mb_substr($cur_buffer_line, 0, 2) === '|}') {
+                    if ('|}' === mb_substr($cur_buffer_line, 0, 2)) {
                         $current_table = array(
                             $cur_table_name,
                             $cur_temp_table_headers,
@@ -237,14 +229,14 @@ class ImportMediawiki extends ImportPlugin
                         $this->_importDataOneTable($current_table, $sql_data);
 
                         // Reset table name
-                        $cur_table_name = "";
+                        $cur_table_name = '';
                     }
                     // What's after the row tag is now only attributes
-                } elseif (($first_character === '|') || ($first_character === '!')) {
+                } elseif (('|' === $first_character) || ('!' === $first_character)) {
                     // Check cell elements
 
                     // Header cells
-                    if ($first_character === '!') {
+                    if ('!' === $first_character) {
                         // Mark as table header, but treat as normal row
                         $cur_buffer_line = str_replace('!!', '||', $cur_buffer_line);
                         // Will be used to set $cur_temp_line as table header
@@ -260,13 +252,13 @@ class ImportMediawiki extends ImportPlugin
 
                         // Delete the beginning of the column, if there is one
                         $cell = trim($cell);
-                        $col_start_chars = array("|", "!");
+                        $col_start_chars = array('|', '!');
                         foreach ($col_start_chars as $col_start_char) {
                             $cell = $this->_getCellContent($cell, $col_start_char);
                         }
 
                         // Add the cell to the row
-                        $cur_temp_line [] = $cell;
+                        $cur_temp_line[] = $cell;
                     } // foreach $cells
                 } else {
                     // If it's none of the above, then the current line has a bad
@@ -282,7 +274,7 @@ class ImportMediawiki extends ImportPlugin
     }
 
     /**
-     * Imports data from a single table
+     * Imports data from a single table.
      *
      * @param array $table     containing all table info:
      *                         <code>
@@ -290,12 +282,9 @@ class ImportMediawiki extends ImportPlugin
      *                         $table[1] - array[]   of table headers
      *                         $table[2] - array[][] of table content rows
      *                         </code>
-     *
      * @param array &$sql_data 2-element array with sql data
      *
      * @global bool $analyze whether to scan for column types
-     *
-     * @return void
      */
     private function _importDataOneTable(array $table, array &$sql_data)
     {
@@ -309,11 +298,11 @@ class ImportMediawiki extends ImportPlugin
 
             // Create the tables array to be used in Import::buildSql()
             $tables = array();
-            $tables [] = array($table[0], $table[1], $table[2]);
+            $tables[] = array($table[0], $table[1], $table[2]);
 
             // Obtain the best-fit MySQL types for each column
             $analyses = array();
-            $analyses [] = Import::analyzeTable($tables[0]);
+            $analyses[] = Import::analyzeTable($tables[0]);
 
             $this->_executeImportTables($tables, $analyses, $sql_data);
         }
@@ -323,29 +312,25 @@ class ImportMediawiki extends ImportPlugin
     }
 
     /**
-     * Sets the table name
+     * Sets the table name.
      *
      * @param string &$table_name reference to the name of the table
-     *
-     * @return void
      */
     private function _setTableName(&$table_name)
     {
         if (empty($table_name)) {
             $result = $GLOBALS['dbi']->fetchResult('SHOW TABLES');
             // todo check if the name below already exists
-            $table_name = 'TABLE ' . (count($result) + 1);
+            $table_name = 'TABLE '.(count($result) + 1);
         }
     }
 
     /**
-     * Set generic names for table headers, if they don't exist
+     * Set generic names for table headers, if they don't exist.
      *
      * @param array &$table_headers reference to the array containing the headers
      *                              of a table
      * @param array $table_row      array containing the first content row
-     *
-     * @return void
      */
     private function _setTableHeaders(array &$table_headers, array $table_row)
     {
@@ -354,14 +339,14 @@ class ImportMediawiki extends ImportPlugin
             // If they are not set, generic names will be given (COL 1, COL 2, etc)
             $num_cols = count($table_row);
             for ($i = 0; $i < $num_cols; ++$i) {
-                $table_headers [$i] = 'COL ' . ($i + 1);
+                $table_headers[$i] = 'COL '.($i + 1);
             }
         }
     }
 
     /**
      * Sets the database name and additional options and calls Import::buildSql()
-     * Used in PMA_importDataAllTables() and $this->_importDataOneTable()
+     * Used in PMA_importDataAllTables() and $this->_importDataOneTable().
      *
      * @param array &$tables   structure:
      *                         array(
@@ -375,8 +360,6 @@ class ImportMediawiki extends ImportPlugin
      * @param array &$sql_data 2-element array with sql data
      *
      * @global string $db      name of the database to import in
-     *
-     * @return void
      */
     private function _executeImportTables(array &$tables, array &$analyses, array &$sql_data)
     {
@@ -400,7 +383,7 @@ class ImportMediawiki extends ImportPlugin
 
     /**
      * Replaces all instances of the '||' separator between delimiters
-     * in a given string
+     * in a given string.
      *
      * @param string $replace the string to be replaced with
      * @param string $subject the text to be replaced
@@ -410,7 +393,7 @@ class ImportMediawiki extends ImportPlugin
     private function _delimiterReplace($replace, $subject)
     {
         // String that will be returned
-        $cleaned = "";
+        $cleaned = '';
         // Possible states of current character
         $inside_tag = false;
         $inside_attribute = false;
@@ -422,10 +405,10 @@ class ImportMediawiki extends ImportPlugin
         $partial_separator = false;
 
         // Parse text char by char
-        for ($i = 0; $i < strlen($subject); $i++) {
+        for ($i = 0; $i < strlen($subject); ++$i) {
             $cur_char = $subject[$i];
             // Check for separators
-            if ($cur_char == '|') {
+            if ('|' == $cur_char) {
                 // If we're not inside a tag, then this is part of a real separator,
                 // so we append it to the current segment
                 if (!$inside_attribute) {
@@ -448,7 +431,7 @@ class ImportMediawiki extends ImportPlugin
                 // not '|', but the previous one was, it means that the single '|'
                 // was not appended, so we append it now
                 if ($partial_separator && $inside_attribute) {
-                    $cleaned .= "|";
+                    $cleaned .= '|';
                 }
                 // If the char is different from "|", no separator can be formed
                 $partial_separator = false;
@@ -456,13 +439,13 @@ class ImportMediawiki extends ImportPlugin
                 // any other character should be appended to the current segment
                 $cleaned .= $cur_char;
 
-                if ($cur_char == '<' && !$inside_attribute) {
+                if ('<' == $cur_char && !$inside_attribute) {
                     // start of a tag
                     $inside_tag = true;
-                } elseif ($cur_char == '>' && !$inside_attribute) {
+                } elseif ('>' == $cur_char && !$inside_attribute) {
                     // end of a tag
                     $inside_tag = false;
-                } elseif (($cur_char == '"' || $cur_char == "'") && $inside_tag) {
+                } elseif (('"' == $cur_char || "'" == $cur_char) && $inside_tag) {
                     // start or end of an attribute
                     if (!$inside_attribute) {
                         $inside_attribute = true;
@@ -486,7 +469,7 @@ class ImportMediawiki extends ImportPlugin
      * Separates a string into items, similarly to explode
      * Uses the '||' separator (which is standard in the mediawiki format)
      * and ignores any instances of it inside markup tags
-     * Used in parsing buffer lines containing data cells
+     * Used in parsing buffer lines containing data cells.
      *
      * @param string $text text to be split
      *
@@ -494,7 +477,7 @@ class ImportMediawiki extends ImportPlugin
      */
     private function _explodeMarkup($text)
     {
-        $separator = "||";
+        $separator = '||';
         $placeholder = "\x00";
 
         // Remove placeholder instances
@@ -512,11 +495,10 @@ class ImportMediawiki extends ImportPlugin
         return $items;
     }
 
-
     /* ~~~~~~~~~~~~~~~~~~~~ Getters and Setters ~~~~~~~~~~~~~~~~~~~~ */
 
     /**
-     * Returns true if the table should be analyzed, false otherwise
+     * Returns true if the table should be analyzed, false otherwise.
      *
      * @return bool
      */
@@ -526,11 +508,9 @@ class ImportMediawiki extends ImportPlugin
     }
 
     /**
-     * Sets to true if the table should be analyzed, false otherwise
+     * Sets to true if the table should be analyzed, false otherwise.
      *
      * @param bool $analyze status
-     *
-     * @return void
      */
     private function _setAnalyze($analyze)
     {
@@ -538,7 +518,7 @@ class ImportMediawiki extends ImportPlugin
     }
 
     /**
-     * Get cell
+     * Get cell.
      *
      * @param string $cell Cell
      *
@@ -551,11 +531,11 @@ class ImportMediawiki extends ImportPlugin
 
         // A '|' inside an invalid link should not
         // be mistaken as delimiting cell parameters
-        if (mb_strpos($cell_data[0], '[[') === false) {
+        if (false === mb_strpos($cell_data[0], '[[')) {
             return $cell;
         }
 
-        if (count($cell_data) == 1) {
+        if (1 == count($cell_data)) {
             return $cell_data[0];
         }
 
@@ -563,9 +543,9 @@ class ImportMediawiki extends ImportPlugin
     }
 
     /**
-     * Manage $inside_structure_comment
+     * Manage $inside_structure_comment.
      *
-     * @param boolean $inside_structure_comment Value to test
+     * @param bool $inside_structure_comment Value to test
      *
      * @return bool
      */
@@ -580,7 +560,7 @@ class ImportMediawiki extends ImportPlugin
     }
 
     /**
-     * Get cell content
+     * Get cell content.
      *
      * @param string $cell           Cell
      * @param string $col_start_char Start char
@@ -589,7 +569,7 @@ class ImportMediawiki extends ImportPlugin
      */
     private function _getCellContent($cell, $col_start_char)
     {
-        if (mb_strpos($cell, $col_start_char) === 0) {
+        if (0 === mb_strpos($cell, $col_start_char)) {
             $cell = trim(mb_substr($cell, 1));
         }
 

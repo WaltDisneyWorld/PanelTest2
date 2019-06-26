@@ -2,11 +2,8 @@
 
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Central Columns view/edit
- *
- * @package PhpMyAdmin
+ * Central Columns view/edit.
  */
-
 use PhpMyAdmin\CentralColumns;
 use PhpMyAdmin\Core;
 use PhpMyAdmin\Message;
@@ -14,7 +11,7 @@ use PhpMyAdmin\Response;
 use PhpMyAdmin\Url;
 
 /**
- * Gets some core libraries
+ * Gets some core libraries.
  */
 require_once 'libraries/common.inc.php';
 
@@ -26,11 +23,11 @@ if (isset($_POST['edit_save']) || isset($_POST['add_new_column'])) {
         $orig_col_name = $_POST['orig_col_name'];
     }
     $col_default = $_POST['col_default'];
-    if ($col_default == 'NONE' && $_POST['col_default_sel'] != 'USER_DEFINED') {
-        $col_default = "";
+    if ('NONE' == $col_default && 'USER_DEFINED' != $_POST['col_default_sel']) {
+        $col_default = '';
     }
     $col_extra = isset($_POST['col_extra']) ? $_POST['col_extra'] : '';
-    $col_isNull = isset($_POST['col_isNull'])?1:0;
+    $col_isNull = isset($_POST['col_isNull']) ? 1 : 0;
     $col_length = $_POST['col_length'];
     $col_attribute = $_POST['col_attribute'];
     $col_type = $_POST['col_type'];
@@ -52,7 +49,7 @@ if (isset($_POST['edit_save']) || isset($_POST['add_new_column'])) {
     } else {
         $tmp_msg = $centralColumns->updateOneColumn(
             $db,
-            "",
+            '',
             $col_name,
             $col_type,
             $col_attribute,
@@ -141,9 +138,9 @@ $addNewColumn = $centralColumns->getHtmlForAddNewColumn($db, $total_rows);
 $response->addHTML($addNewColumn);
 if ($total_rows <= 0) {
     $response->addHTML(
-        '<fieldset>' . __(
+        '<fieldset>'.__(
             'The central list of columns for the current database is empty.'
-        ) . '</fieldset>'
+        ).'</fieldset>'
     );
     $columnAdd = $centralColumns->getHtmlForAddColumn($total_rows, $pos, $db);
     $response->addHTML($columnAdd);
@@ -158,17 +155,17 @@ $response->addHTML($table_navigation_html);
 $columnAdd = $centralColumns->getHtmlForAddColumn($total_rows, $pos, $db);
 $response->addHTML($columnAdd);
 $deleteRowForm = '<form method="post" id="del_form" action="db_central_columns.php">'
-        . Url::getHiddenInputs(
+        .Url::getHiddenInputs(
             $db
         )
-        . '<input id="del_col_name" type="hidden" name="col_name" value="">'
-        . '<input type="hidden" name="pos" value="' . $pos . '">'
-        . '<input type="hidden" name="delete_save" value="delete"></form>';
+        .'<input id="del_col_name" type="hidden" name="col_name" value="">'
+        .'<input type="hidden" name="pos" value="'.$pos.'">'
+        .'<input type="hidden" name="delete_save" value="delete"></form>';
 $response->addHTML($deleteRowForm);
 $table_struct = '<div id="tableslistcontainer">'
-        . '<form name="tableslistcontainer">'
-        . '<table id="table_columns" class="tablesorter" '
-        . 'class="data">';
+        .'<form name="tableslistcontainer">'
+        .'<table id="table_columns" class="tablesorter" '
+        .'class="data">';
 $response->addHTML($table_struct);
 $tableheader = $centralColumns->getTableHeader(
     'column_heading',
@@ -185,7 +182,7 @@ foreach ($result as $row) {
         $db
     );
     $response->addHTML($tableHtmlRow);
-    $row_num++;
+    ++$row_num;
 }
 $response->addHTML('</table>');
 $tablefooter = $centralColumns->getTableFooter($pmaThemeImage, $text_dir);
@@ -194,6 +191,6 @@ $response->addHTML('</form></div>');
 $message = Message::success(
     sprintf(__('Showing rows %1$s - %2$s.'), ($pos + 1), ($pos + count($result)))
 );
-if (isset($tmp_msg) && $tmp_msg !== true) {
+if (isset($tmp_msg) && true !== $tmp_msg) {
     $message = $tmp_msg;
 }

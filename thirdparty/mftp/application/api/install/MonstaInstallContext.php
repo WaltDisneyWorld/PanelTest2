@@ -1,15 +1,15 @@
 <?php
-    require_once(dirname(__FILE__) . "/../lib/LocalizableException.php");
+    require_once dirname(__FILE__).'/../lib/LocalizableException.php';
 
     abstract class MonstaInstallContext
     {
-        protected static $archiveParentPath = "mftp/";
-        protected static $archiveManifestPath = "README/UPDATE.txt";
+        protected static $archiveParentPath = 'mftp/';
+        protected static $archiveManifestPath = 'README/UPDATE.txt';
         protected static $defaultManifest = array(
-            "index.php",
-            "application/api/",
-            "application/frontend/",
-            "application/languages/en_us.json"
+            'index.php',
+            'application/api/',
+            'application/frontend/',
+            'application/languages/en_us.json',
         );
 
         private $warningExists = false;
@@ -18,7 +18,8 @@
 
         /**
          * Validate if the install directory is valid for this context (e.g. if update should be an existing Monsta
-         * directory, for a fresh install the directory should not exist)
+         * directory, for a fresh install the directory should not exist).
+         *
          * @param $installDirectory string
          */
         abstract public function validateInstallDirectory($installDirectory);
@@ -52,14 +53,14 @@
             throw new LocalizableException(
                 "$archivePath is unreadable or not a Monsta FTP install archive.",
                 LocalizableExceptionDefinition::$INSTALL_PATH_NOT_WRITABLE_ERROR,
-                array("path" => $archivePath)
+                array('path' => $archivePath)
             );
         }
 
         private function testArchiveForDefaultManifest($archivePath, $archiveHandle)
         {
             foreach (self::$defaultManifest as $manifestItem) {
-                if (is_null($archiveHandle->getFromName(self::$archiveParentPath . $manifestItem))) {
+                if (is_null($archiveHandle->getFromName(self::$archiveParentPath.$manifestItem))) {
                     $this->throwInvalidArchiveError($archivePath, $archiveHandle);
                 }
             }
@@ -67,7 +68,7 @@
 
         private function extractUpdateText($archiveHandle)
         {
-            return $archiveHandle->getFromName(self::$archiveParentPath . self::$archiveManifestPath);
+            return $archiveHandle->getFromName(self::$archiveParentPath.self::$archiveManifestPath);
         }
 
         private function getUpdateManifest($archivePath, $archiveHandle)
@@ -76,7 +77,7 @@
 
             $updateText = $this->extractUpdateText($archiveHandle);
 
-            if ($updateText === false) {
+            if (false === $updateText) {
                 $this->testArchiveForDefaultManifest($archivePath, $archiveHandle);
                 return self::$defaultManifest;
             }
@@ -91,7 +92,7 @@
                 $manifest[] = trim(substr($manifestLine, 1));
             }
 
-            if (count($manifest) === 0) {
+            if (0 === count($manifest)) {
                 $this->throwInvalidArchiveError($archivePath, $archiveHandle);
             }
 
@@ -101,7 +102,7 @@
         private function getArchiveHandle($archivePath)
         {
             $zip = new ZipArchive();
-            if ($zip->open($archivePath) === false) {
+            if (false === $zip->open($archivePath)) {
                 $this->throwInvalidArchiveError($archivePath);
             }
 

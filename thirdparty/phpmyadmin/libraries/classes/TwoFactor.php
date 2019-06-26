@@ -1,16 +1,14 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Two authentication factor handling
- *
- * @package PhpMyAdmin
+ * Two authentication factor handling.
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\UserPreferences;
-
 /**
- * Two factor authentication wrapper class
+ * Two factor authentication wrapper class.
  */
 class TwoFactor
 {
@@ -45,7 +43,7 @@ class TwoFactor
     private $userPreferences;
 
     /**
-     * Creates new TwoFactor object
+     * Creates new TwoFactor object.
      *
      * @param string $user User name
      */
@@ -55,12 +53,12 @@ class TwoFactor
         $this->user = $user;
         $this->_available = $this->getAvailable();
         $this->config = $this->readConfig();
-        $this->_writable = ($this->config['type'] == 'db');
+        $this->_writable = ('db' == $this->config['type']);
         $this->_backend = $this->getBackend();
     }
 
     /**
-     * Reads the configuration
+     * Reads the configuration.
      *
      * @return array
      */
@@ -72,17 +70,17 @@ class TwoFactor
             $result = $config['config_data']['2fa'];
         }
         $result['type'] = $config['type'];
-        if (! isset($result['backend'])) {
+        if (!isset($result['backend'])) {
             $result['backend'] = '';
         }
-        if (! isset($result['settings'])) {
+        if (!isset($result['settings'])) {
             $result['settings'] = [];
         }
         return $result;
     }
 
     /**
-     * Get any property of this class
+     * Get any property of this class.
      *
      * @param string $property name of the property
      *
@@ -104,7 +102,7 @@ class TwoFactor
     }
 
     /**
-     * Returns list of available backends
+     * Returns list of available backends.
      *
      * @return array
      */
@@ -124,7 +122,7 @@ class TwoFactor
     }
 
     /**
-     * Returns list of missing dependencies
+     * Returns list of missing dependencies.
      *
      * @return array
      */
@@ -153,7 +151,7 @@ class TwoFactor
     }
 
     /**
-     * Returns class name for given name
+     * Returns class name for given name.
      *
      * @param string $name Backend name
      *
@@ -163,15 +161,15 @@ class TwoFactor
     {
         $result = 'PhpMyAdmin\\Plugins\\TwoFactorPlugin';
         if (in_array($name, $this->_available)) {
-            $result = 'PhpMyAdmin\\Plugins\\TwoFactor\\' . ucfirst($name);
-        } elseif (! empty($name)) {
+            $result = 'PhpMyAdmin\\Plugins\\TwoFactor\\'.ucfirst($name);
+        } elseif (!empty($name)) {
             $result = 'PhpMyAdmin\\Plugins\\TwoFactor\\Invalid';
         }
         return $result;
     }
 
     /**
-     * Returns backend for current user
+     * Returns backend for current user.
      *
      * @return PhpMyAdmin\Plugins\TwoFactorPlugin
      */
@@ -182,9 +180,9 @@ class TwoFactor
     }
 
     /**
-     * Checks authentication, returns true on success
+     * Checks authentication, returns true on success.
      *
-     * @param boolean $skip_session Skip session cache
+     * @param bool $skip_session Skip session cache
      *
      * @return boolean
      */
@@ -200,23 +198,23 @@ class TwoFactor
     }
 
     /**
-     * Renders user interface to enter two-factor authentication
+     * Renders user interface to enter two-factor authentication.
      *
      * @return string HTML code
      */
     public function render()
     {
-        return $this->_backend->getError() . $this->_backend->render();
+        return $this->_backend->getError().$this->_backend->render();
     }
 
     /**
-     * Renders user interface to configure two-factor authentication
+     * Renders user interface to configure two-factor authentication.
      *
      * @return string HTML code
      */
     public function setup()
     {
-        return $this->_backend->getError() . $this->_backend->setup();
+        return $this->_backend->getError().$this->_backend->setup();
     }
 
     /**
@@ -230,7 +228,7 @@ class TwoFactor
     }
 
     /**
-     * Changes two-factor authentication settings
+     * Changes two-factor authentication settings.
      *
      * The object might stay in partialy changed setup
      * if configuration fails.
@@ -242,32 +240,32 @@ class TwoFactor
     public function configure($name)
     {
         $this->config = [
-            'backend' => $name
+            'backend' => $name,
         ];
-        if ($name === '') {
+        if ('' === $name) {
             $cls = $this->getBackendClass($name);
             $this->config['settings'] = [];
             $this->_backend = new $cls($this);
         } else {
-            if (! in_array($name, $this->_available)) {
+            if (!in_array($name, $this->_available)) {
                 return false;
             }
             $cls = $this->getBackendClass($name);
             $this->config['settings'] = [];
             $this->_backend = new $cls($this);
-            if (! $this->_backend->configure()) {
+            if (!$this->_backend->configure()) {
                 return false;
             }
         }
         $result = $this->save();
-        if ($result !== true) {
+        if (true !== $result) {
             $result->display();
         }
         return true;
     }
 
     /**
-     * Returns array with all available backends
+     * Returns array with all available backends.
      *
      * @return array
      */

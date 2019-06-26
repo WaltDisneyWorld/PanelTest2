@@ -1,7 +1,7 @@
 <?php if (!isset($HOME)) {
     die();
 }
-require 'includes/classes/head.class.php';?>
+require 'includes/classes/head.class.php'; ?>
         <div class="content-wrapper">
             <div class="container-fluid">
 

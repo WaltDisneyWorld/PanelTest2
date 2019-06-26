@@ -1,26 +1,24 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Functions for listing directories
- *
- * @package PhpMyAdmin
+ * Functions for listing directories.
  */
+
 namespace PhpMyAdmin;
 
 /**
- * PhpMyAdmin\FileListing class
- *
- * @package PhpMyAdmin
+ * PhpMyAdmin\FileListing class.
  */
 class FileListing
 {
     /**
-     * Returns array of filtered file names
+     * Returns array of filtered file names.
      *
      * @param string $dir        directory to list
      * @param string $expression regular expression to match files
      *
-     * @return array   sorted file list on success, false on failure
+     * @return array sorted file list on success, false on failure
      */
     public static function getDirContent($dir, $expression = '')
     {
@@ -29,13 +27,13 @@ class FileListing
         }
 
         $result = array();
-        if (substr($dir, -1) != '/') {
+        if ('/' != substr($dir, -1)) {
             $dir .= '/';
         }
         while ($file = @readdir($handle)) {
-            if (@is_file($dir . $file)
-                && ! @is_link($dir . $file)
-                && ($expression == '' || preg_match($expression, $file))
+            if (@is_file($dir.$file)
+                && !@is_link($dir.$file)
+                && ('' == $expression || preg_match($expression, $file))
             ) {
                 $result[] = $file;
             }
@@ -46,27 +44,27 @@ class FileListing
     }
 
     /**
-     * Returns options of filtered file names
+     * Returns options of filtered file names.
      *
      * @param string $dir        directory to list
      * @param string $extensions regular expression to match files
      * @param string $active     currently active choice
      *
-     * @return array   sorted file list on success, false on failure
+     * @return array sorted file list on success, false on failure
      */
     public static function getFileSelectOptions($dir, $extensions = '', $active = '')
     {
         $list = self::getDirContent($dir, $extensions);
-        if ($list === false) {
+        if (false === $list) {
             return false;
         }
         $result = '';
         foreach ($list as $val) {
-            $result .= '<option value="' . htmlspecialchars($val) . '"';
+            $result .= '<option value="'.htmlspecialchars($val).'"';
             if ($val == $active) {
                 $result .= ' selected="selected"';
             }
-            $result .= '>' . htmlspecialchars($val) . '</option>' . "\n";
+            $result .= '>'.htmlspecialchars($val).'</option>'."\n";
         }
         return $result;
     }

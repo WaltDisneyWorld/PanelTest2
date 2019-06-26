@@ -7,8 +7,8 @@ Version: 1.1
 Author: Thomas Wilbur
 Author URI: https://www.youtube.com/
  */
-$menu            = true;
-$menu_name       ="Example Plugin";
+$menu = true;
+$menu_name = 'Example Plugin';
 $menu_only_admin = true;
 if (!$safe) {
     function page()

@@ -1,22 +1,18 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 
 /**
- * Holds the PhpMyAdmin\Controllers\Server\ServerPluginsController
-*
-* @package PhpMyAdmin\Controllers
-*/
+ * Holds the PhpMyAdmin\Controllers\Server\ServerPluginsController.
+ */
 
 namespace PhpMyAdmin\Controllers\Server;
 
 use PhpMyAdmin\Controllers\Controller;
-use PhpMyAdmin\Server\Common;
 use PhpMyAdmin\Template;
 
 /**
- * Handles viewing server plugin details
- *
- * @package PhpMyAdmin\Controllers
+ * Handles viewing server plugin details.
  */
 class ServerPluginsController extends Controller
 {
@@ -26,7 +22,7 @@ class ServerPluginsController extends Controller
     protected $plugins;
 
     /**
-     * Constructs ServerPluginsController
+     * Constructs ServerPluginsController.
      */
     public function __construct($response, $dbi)
     {
@@ -35,20 +31,18 @@ class ServerPluginsController extends Controller
     }
 
     /**
-     * Index action
-     *
-     * @return void
+     * Index action.
      */
     public function indexAction()
     {
         include 'libraries/server_common.inc.php';
 
-        $header  = $this->response->getHeader();
+        $header = $this->response->getHeader();
         $scripts = $header->getScripts();
         $scripts->addFile('vendor/jquery/jquery.tablesorter.js');
         $scripts->addFile('server_plugins.js');
 
-        /**
+        /*
          * Displays the page
         */
         $this->response->addHTML(
@@ -60,9 +54,7 @@ class ServerPluginsController extends Controller
     }
 
     /**
-     * Sets details about server plugins
-     *
-     * @return void
+     * Sets details about server plugins.
      */
     private function _setServerPlugins()
     {
@@ -92,7 +84,7 @@ class ServerPluginsController extends Controller
      */
     private function _getPluginsHtml()
     {
-        $html  = '<div id="plugins_plugins">';
+        $html = '<div id="plugins_plugins">';
         $html .= Template::get('server/plugins/section_links')
             ->render(array('plugins' => $this->plugins));
 

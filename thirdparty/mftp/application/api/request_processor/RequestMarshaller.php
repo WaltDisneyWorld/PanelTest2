@@ -1,8 +1,8 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/RequestDispatcher.php');
-    require_once(dirname(__FILE__) . "/../lib/helpers.php");
-    require_once(dirname(__FILE__) . "/../system/ApplicationSettings.php");
+    require_once dirname(__FILE__).'/RequestDispatcher.php';
+    require_once dirname(__FILE__).'/../lib/helpers.php';
+    require_once dirname(__FILE__).'/../system/ApplicationSettings.php';
 
     class RequestMarshaller
     {
@@ -25,7 +25,7 @@
             $localPath = tempnam(getMonstaSharedTransferDirectory(), $remoteFileName);
             $downloadContext = array(
                 'localPath' => $localPath,
-                'remotePath' => $remotePath
+                'remotePath' => $remotePath,
             );
             return array($localPath, $downloadContext);
         }
@@ -33,8 +33,8 @@
         private static function validateActionName($request, $expectedActionName)
         {
             if ($request['actionName'] != $expectedActionName) {
-                throw new InvalidArgumentException("Got invalid action, expected \"$expectedActionName\", got \"" .
-                    $request['actionName'] . "\"");
+                throw new InvalidArgumentException("Got invalid action, expected \"$expectedActionName\", got \"".
+                    $request['actionName'].'"');
             }
         }
 
@@ -52,11 +52,11 @@
             if (is_array($connectionRestrictions)) {
                 if (key_exists($connectionType, $connectionRestrictions)) {
                     foreach ($connectionRestrictions[$connectionType] as $restrictionKey => $restrictionValue) {
-                        if ($restrictionKey === "host" && is_array($restrictionValue)) {
-                            if (array_search($configuration[$restrictionKey], $restrictionValue) !== false) {
+                        if ('host' === $restrictionKey && is_array($restrictionValue)) {
+                            if (false !== array_search($configuration[$restrictionKey], $restrictionValue)) {
                                 continue;
                             } else {
-                                throw new MFTPException("Attempting to connect with a host not specified in connection restrictions.");
+                                throw new MFTPException('Attempting to connect with a host not specified in connection restrictions.');
                             }
                         }
 
@@ -96,7 +96,7 @@
 
         public function disconnect()
         {
-            if ($this->requestDispatcher != null) {
+            if (null != $this->requestDispatcher) {
                 $this->requestDispatcher->disconnect();
             }
         }
@@ -107,9 +107,9 @@
 
             $response = array();
 
-            if ($request['actionName'] == 'putFileContents') {
+            if ('putFileContents' == $request['actionName']) {
                 $response = $this->putFileContents($request);
-            } elseif ($request['actionName'] == 'getFileContents') {
+            } elseif ('getFileContents' == $request['actionName']) {
                 $response = $this->getFileContents($request);
             } else {
                 $context = array_key_exists('context', $request) ? $request['context'] : null;
@@ -162,15 +162,14 @@
             }
 
             $fileContents = $request['context']['fileContents'];
-            $originalFileContents = array_key_exists("originalFileContents", $request['context']) ?
+            $originalFileContents = array_key_exists('originalFileContents', $request['context']) ?
                 $request['context']['originalFileContents'] : null;
 
-
-            if (array_key_exists("encoding", $request['context'])) {
+            if (array_key_exists('encoding', $request['context'])) {
                 $fileContentsEncoding = $request['context']['encoding'];
 
                 switch ($fileContentsEncoding) {
-                    case "rot13":
+                    case 'rot13':
                         $fileContents = str_rot13($fileContents);
                         if (!is_null($originalFileContents)) {
                             $originalFileContents = str_rot13($originalFileContents);
@@ -200,13 +199,13 @@
                 if ($serverFileContents === $decodedContents) {
                     // edited in server matches edited in browser no need to update
                     return array(
-                        'success' => true
+                        'success' => true,
                     );
                 }
 
                 if ($serverFileContents != $originalFileContents) {
                     throw new LocalizableException(
-                        "File has changed on server since last load.",
+                        'File has changed on server since last load.',
                         LocalizableExceptionDefinition::$FILE_CHANGED_ON_SERVER
                     );
                 }
@@ -226,7 +225,7 @@
             @unlink($localPath);
 
             return array(
-                'success' => true
+                'success' => true,
             );
         }
 
@@ -253,7 +252,7 @@
 
             return array(
                 'success' => true,
-                'data' => $encodedContents
+                'data' => $encodedContents,
             );
         }
     }

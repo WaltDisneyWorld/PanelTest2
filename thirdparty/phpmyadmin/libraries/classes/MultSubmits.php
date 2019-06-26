@@ -1,31 +1,21 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Holds the PhpMyAdmin\MultSubmits class
+ * Holds the PhpMyAdmin\MultSubmits class.
  *
  * @usedby  mult_submits.inc.php
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\Operations;
-use PhpMyAdmin\RelationCleanup;
-use PhpMyAdmin\Sql;
-use PhpMyAdmin\Table;
-use PhpMyAdmin\Transformations;
-use PhpMyAdmin\Url;
-use PhpMyAdmin\Util;
-
 /**
- * Functions for multi submit forms
- *
- * @package PhpMyAdmin
+ * Functions for multi submit forms.
  */
 class MultSubmits
 {
     /**
-     * Gets url params
+     * Gets url params.
      *
      * @param string     $what             mult submit type
      * @param bool       $reload           is reload
@@ -52,33 +42,33 @@ class MultSubmits
     ) {
         $urlParams = [
             'query_type' => $what,
-            'reload' => (! empty($reload) ? 1 : 0),
+            'reload' => (!empty($reload) ? 1 : 0),
         ];
-        if (mb_strpos(' ' . $action, 'db_') == 1) {
-            $urlParams['db']= $db;
-        } elseif (mb_strpos(' ' . $action, 'tbl_') == 1
-            || $what == 'row_delete'
+        if (1 == mb_strpos(' '.$action, 'db_')) {
+            $urlParams['db'] = $db;
+        } elseif (1 == mb_strpos(' '.$action, 'tbl_')
+            || 'row_delete' == $what
         ) {
             $urlParams['db'] = $db;
             $urlParams['table'] = $table;
         }
         foreach ($selected as $selectedValue) {
-            if ($what == 'row_delete') {
+            if ('row_delete' == $what) {
                 $urlParams['selected'][] = 'DELETE FROM '
-                    . Util::backquote($table)
-                    . ' WHERE ' . $selectedValue . ' LIMIT 1;';
+                    .Util::backquote($table)
+                    .' WHERE '.$selectedValue.' LIMIT 1;';
             } else {
                 $urlParams['selected'][] = $selectedValue;
             }
         }
-        if ($what == 'drop_tbl' && !empty($views)) {
+        if ('drop_tbl' == $what && !empty($views)) {
             foreach ($views as $current) {
                 $urlParams['views'][] = $current;
             }
         }
-        if ($what == 'row_delete') {
+        if ('row_delete' == $what) {
             $urlParams['original_sql_query'] = $originalSqlQuery;
-            if (! empty($originalUrlQuery)) {
+            if (!empty($originalUrlQuery)) {
                 $urlParams['original_url_query'] = $originalUrlQuery;
             }
         }
@@ -87,7 +77,7 @@ class MultSubmits
     }
 
     /**
-     * Builds or execute queries for multiple elements, depending on $queryType
+     * Builds or execute queries for multiple elements, depending on $queryType.
      *
      * @param string     $queryType  query type
      * @param array      $selected   selected tables
@@ -121,7 +111,7 @@ class MultSubmits
         $executeQueryLater = false;
         $result = null;
 
-        if ($queryType == 'drop_tbl') {
+        if ('drop_tbl' == $queryType) {
             $sqlQueryViews = '';
         }
 
@@ -129,7 +119,7 @@ class MultSubmits
         $deletes = false;
         $copyTable = false;
 
-        for ($i = 0; $i < $selectedCount; $i++) {
+        for ($i = 0; $i < $selectedCount; ++$i) {
             switch ($queryType) {
                 case 'row_delete':
                     $deletes = true;
@@ -140,7 +130,7 @@ class MultSubmits
                 case 'drop_db':
                     RelationCleanup::database($selected[$i]);
                     $aQuery = 'DROP DATABASE '
-                           . Util::backquote($selected[$i]);
+                           .Util::backquote($selected[$i]);
                     $reload = 1;
                     $runParts = true;
                     $rebuildDatabaseList = true;
@@ -151,41 +141,41 @@ class MultSubmits
                     $current = $selected[$i];
                     if (!empty($views) && in_array($current, $views)) {
                         $sqlQueryViews .= (empty($sqlQueryViews) ? 'DROP VIEW ' : ', ')
-                            . Util::backquote($current);
+                            .Util::backquote($current);
                     } else {
                         $sqlQuery .= (empty($sqlQuery) ? 'DROP TABLE ' : ', ')
-                            . Util::backquote($current);
+                            .Util::backquote($current);
                     }
-                    $reload    = 1;
+                    $reload = 1;
                     break;
 
                 case 'check_tbl':
                     $sqlQuery .= (empty($sqlQuery) ? 'CHECK TABLE ' : ', ')
-                        . Util::backquote($selected[$i]);
+                        .Util::backquote($selected[$i]);
                     $executeQueryLater = true;
                     break;
 
                 case 'optimize_tbl':
                     $sqlQuery .= (empty($sqlQuery) ? 'OPTIMIZE TABLE ' : ', ')
-                        . Util::backquote($selected[$i]);
+                        .Util::backquote($selected[$i]);
                     $executeQueryLater = true;
                     break;
 
                 case 'analyze_tbl':
                     $sqlQuery .= (empty($sqlQuery) ? 'ANALYZE TABLE ' : ', ')
-                        . Util::backquote($selected[$i]);
+                        .Util::backquote($selected[$i]);
                     $executeQueryLater = true;
                     break;
 
                 case 'checksum_tbl':
                     $sqlQuery .= (empty($sqlQuery) ? 'CHECKSUM TABLE ' : ', ')
-                        . Util::backquote($selected[$i]);
+                        .Util::backquote($selected[$i]);
                     $executeQueryLater = true;
                     break;
 
                 case 'repair_tbl':
                     $sqlQuery .= (empty($sqlQuery) ? 'REPAIR TABLE ' : ', ')
-                        . Util::backquote($selected[$i]);
+                        .Util::backquote($selected[$i]);
                     $executeQueryLater = true;
                     break;
 
@@ -199,66 +189,66 @@ class MultSubmits
                 case 'drop_fld':
                     RelationCleanup::column($db, $table, $selected[$i]);
                     $sqlQuery .= (empty($sqlQuery)
-                        ? 'ALTER TABLE ' . Util::backquote($table)
+                        ? 'ALTER TABLE '.Util::backquote($table)
                         : ',')
-                        . ' DROP ' . Util::backquote($selected[$i])
-                        . (($i == $selectedCount - 1) ? ';' : '');
+                        .' DROP '.Util::backquote($selected[$i])
+                        .(($i == $selectedCount - 1) ? ';' : '');
                     break;
 
                 case 'primary_fld':
                     $sqlQuery .= (empty($sqlQuery)
-                    ? 'ALTER TABLE ' . Util::backquote($table)
-                        . (empty($primary)
+                    ? 'ALTER TABLE '.Util::backquote($table)
+                        .(empty($primary)
                         ? ''
-                        : ' DROP PRIMARY KEY,') . ' ADD PRIMARY KEY( '
+                        : ' DROP PRIMARY KEY,').' ADD PRIMARY KEY( '
                     : ', ')
-                        . Util::backquote($selected[$i])
-                        . (($i == $selectedCount - 1) ? ');' : '');
+                        .Util::backquote($selected[$i])
+                        .(($i == $selectedCount - 1) ? ');' : '');
                     break;
 
                 case 'index_fld':
                     $sqlQuery .= (empty($sqlQuery)
-                    ? 'ALTER TABLE ' . Util::backquote($table)
-                        . ' ADD INDEX( '
+                    ? 'ALTER TABLE '.Util::backquote($table)
+                        .' ADD INDEX( '
                     : ', ')
-                        . Util::backquote($selected[$i])
-                        . (($i == $selectedCount - 1) ? ');' : '');
+                        .Util::backquote($selected[$i])
+                        .(($i == $selectedCount - 1) ? ');' : '');
                     break;
 
                 case 'unique_fld':
                     $sqlQuery .= (empty($sqlQuery)
-                    ? 'ALTER TABLE ' . Util::backquote($table)
-                        . ' ADD UNIQUE( '
+                    ? 'ALTER TABLE '.Util::backquote($table)
+                        .' ADD UNIQUE( '
                     : ', ')
-                        . Util::backquote($selected[$i])
-                        . (($i == $selectedCount - 1) ? ');' : '');
+                        .Util::backquote($selected[$i])
+                        .(($i == $selectedCount - 1) ? ');' : '');
                     break;
 
                 case 'spatial_fld':
                     $sqlQuery .= (empty($sqlQuery)
-                    ? 'ALTER TABLE ' . Util::backquote($table)
-                        . ' ADD SPATIAL( '
+                    ? 'ALTER TABLE '.Util::backquote($table)
+                        .' ADD SPATIAL( '
                     : ', ')
-                        . Util::backquote($selected[$i])
-                        . (($i == $selectedCount - 1) ? ');' : '');
+                        .Util::backquote($selected[$i])
+                        .(($i == $selectedCount - 1) ? ');' : '');
                     break;
 
                 case 'fulltext_fld':
                     $sqlQuery .= (empty($sqlQuery)
-                    ? 'ALTER TABLE ' . Util::backquote($table)
-                        . ' ADD FULLTEXT( '
+                    ? 'ALTER TABLE '.Util::backquote($table)
+                        .' ADD FULLTEXT( '
                     : ', ')
-                        . Util::backquote($selected[$i])
-                        . (($i == $selectedCount - 1) ? ');' : '');
+                        .Util::backquote($selected[$i])
+                        .(($i == $selectedCount - 1) ? ');' : '');
                     break;
 
                 case 'add_prefix_tbl':
-                    $newTableName = $_POST['add_prefix'] . $selected[$i];
+                    $newTableName = $_POST['add_prefix'].$selected[$i];
                     // ADD PREFIX TO TABLE NAME
                     $aQuery = 'ALTER TABLE '
-                    . Util::backquote($selected[$i])
-                    . ' RENAME '
-                    . Util::backquote($newTableName);
+                    .Util::backquote($selected[$i])
+                    .' RENAME '
+                    .Util::backquote($newTableName);
                     $runParts = true;
                     break;
 
@@ -271,7 +261,7 @@ class MultSubmits
                     );
                     if ($subFromPrefix == $fromPrefix) {
                         $newTableName = $toPrefix
-                            . mb_substr(
+                            .mb_substr(
                                 $current,
                                 mb_strlen($fromPrefix)
                             );
@@ -280,9 +270,9 @@ class MultSubmits
                     }
                     // CHANGE PREFIX PATTERN
                     $aQuery = 'ALTER TABLE '
-                    . Util::backquote($selected[$i])
-                    . ' RENAME '
-                    . Util::backquote($newTableName);
+                    .Util::backquote($selected[$i])
+                    .' RENAME '
+                    .Util::backquote($newTableName);
                     $runParts = true;
                     break;
 
@@ -291,7 +281,7 @@ class MultSubmits
                     $copyTable = true;
 
                     $current = $selected[$i];
-                    $newTableName = $toPrefix .
+                    $newTableName = $toPrefix.
                     mb_substr($current, mb_strlen($fromPrefix));
 
                     // COPY TABLE AND CHANGE PREFIX PATTERN
@@ -333,23 +323,23 @@ class MultSubmits
             // All "DROP TABLE", "DROP FIELD", "OPTIMIZE TABLE" and "REPAIR TABLE"
             // statements will be run at once below
             if ($runParts && !$copyTable) {
-                $sqlQuery .= $aQuery . ';' . "\n";
-                if ($queryType != 'drop_db') {
+                $sqlQuery .= $aQuery.';'."\n";
+                if ('drop_db' != $queryType) {
                     $GLOBALS['dbi']->selectDb($db);
                 }
                 $result = $GLOBALS['dbi']->query($aQuery);
 
-                if ($queryType == 'drop_db') {
+                if ('drop_db' == $queryType) {
                     Transformations::clear($selected[$i]);
-                } elseif ($queryType == 'drop_tbl') {
+                } elseif ('drop_tbl' == $queryType) {
                     Transformations::clear($db, $selected[$i]);
-                } elseif ($queryType == 'drop_fld') {
+                } elseif ('drop_fld' == $queryType) {
                     Transformations::clear($db, $table, $selected[$i]);
                 }
             } // end if
         } // end for
 
-        if ($deletes && ! empty($_REQUEST['pos'])) {
+        if ($deletes && !empty($_REQUEST['pos'])) {
             $sql = new Sql();
             $_REQUEST['pos'] = $sql->calculatePosForLastPage(
                 $db,
@@ -365,12 +355,12 @@ class MultSubmits
             $runParts,
             $executeQueryLater,
             $sqlQuery,
-            $sqlQueryViews
+            $sqlQueryViews,
         ];
     }
 
     /**
-     * Gets HTML for copy tables form
+     * Gets HTML for copy tables form.
      *
      * @param string $action    action type
      * @param array  $urlParams URL params
@@ -379,7 +369,7 @@ class MultSubmits
      */
     public function getHtmlForCopyMultipleTables($action, array $urlParams)
     {
-        $html = '<form id="ajax_form" action="' . $action . '" method="post">';
+        $html = '<form id="ajax_form" action="'.$action.'" method="post">';
         $html .= Url::getHiddenInputs($urlParams);
         $html .= '<fieldset class = "input">';
         $databasesList = $GLOBALS['dblist']->databases;
@@ -389,34 +379,34 @@ class MultSubmits
                 break;
             }
         }
-        $html .= '<strong><label for="db_name_dropdown">' . __('Database') . ':</label></strong>';
+        $html .= '<strong><label for="db_name_dropdown">'.__('Database').':</label></strong>';
         $html .= '<select id="db_name_dropdown" class="halfWidth" name="target_db" >'
-            . $databasesList->getHtmlOptions(true, false)
-            . '</select>';
+            .$databasesList->getHtmlOptions(true, false)
+            .'</select>';
         $html .= '<br><br>';
-        $html .= '<strong><label>' . __('Options') . ':</label></strong><br>';
+        $html .= '<strong><label>'.__('Options').':</label></strong><br>';
         $html .= '<input type="radio" id ="what_structure" value="structure" name="what"/>';
-        $html .= '<label for="what_structure">' . __('Structure only') . '</label><br>';
+        $html .= '<label for="what_structure">'.__('Structure only').'</label><br>';
         $html .= '<input type="radio" id ="what_data" value="data" name="what" checked="checked"/>';
-        $html .= '<label for="what_data">' . __('Structure and data') . '</label><br>';
+        $html .= '<label for="what_data">'.__('Structure and data').'</label><br>';
         $html .= '<input type="radio" id ="what_dataonly" value="dataonly" name="what"/>';
-        $html .= '<label for="what_dataonly">' . __('Data only') . '</label><br><br>';
+        $html .= '<label for="what_dataonly">'.__('Data only').'</label><br><br>';
         $html .= '<input type="checkbox" id="checkbox_drop" value="true" name="drop_if_exists"/>';
-        $html .= '<label for="checkbox_drop">' . __('Add DROP TABLE') . '</label><br>';
+        $html .= '<label for="checkbox_drop">'.__('Add DROP TABLE').'</label><br>';
         $html .= '<input type="checkbox" id="checkbox_auto_increment_cp" value="1" name="sql_auto_increment"/>';
-        $html .= '<label for="checkbox_auto_increment_cp">' . __('Add AUTO INCREMENT value') . '</label><br>';
+        $html .= '<label for="checkbox_auto_increment_cp">'.__('Add AUTO INCREMENT value').'</label><br>';
         $html .= '<input type="checkbox" id="checkbox_constraints" value="1" name="sql_auto_increment" checked="checked"/>';
-        $html .= '<label for="checkbox_constraints">' . __('Add constraints') . '</label><br><br>';
+        $html .= '<label for="checkbox_constraints">'.__('Add constraints').'</label><br><br>';
         $html .= '<input name="adjust_privileges" value="1" id="checkbox_adjust_privileges" checked="checked" type="checkbox"/>';
-        $html .= '<label for="checkbox_adjust_privileges">' . __('Adjust privileges') . '<a href="./doc/html/faq.html#faq6-39" target="documentation"><img src="themes/dot.gif" title="Documentation" alt="Documentation" class="icon ic_b_help"></a></label>';
+        $html .= '<label for="checkbox_adjust_privileges">'.__('Adjust privileges').'<a href="./doc/html/faq.html#faq6-39" target="documentation"><img src="themes/dot.gif" title="Documentation" alt="Documentation" class="icon ic_b_help"></a></label>';
         $html .= '</fieldset>';
-        $html .= '<input type="hidden" name="mult_btn" value="' . __('Yes') . '" />';
+        $html .= '<input type="hidden" name="mult_btn" value="'.__('Yes').'" />';
         $html .= '</form>';
         return $html;
     }
 
     /**
-     * Gets HTML for replace_prefix_tbl or copy_tbl_change_prefix
+     * Gets HTML for replace_prefix_tbl or copy_tbl_change_prefix.
      *
      * @param string $action    action type
      * @param array  $urlParams URL params
@@ -425,32 +415,32 @@ class MultSubmits
      */
     public function getHtmlForReplacePrefixTable($action, array $urlParams)
     {
-        $html  = '<form id="ajax_form" action="' . $action . '" method="post">';
+        $html = '<form id="ajax_form" action="'.$action.'" method="post">';
         $html .= Url::getHiddenInputs($urlParams);
         $html .= '<fieldset class = "input">';
         $html .= '<table>';
         $html .= '<tr>';
-        $html .= '<td>' . __('From') . '</td>';
+        $html .= '<td>'.__('From').'</td>';
         $html .= '<td>';
         $html .= '<input type="text" name="from_prefix" id="initialPrefix" />';
         $html .= '</td>';
         $html .= '</tr>';
         $html .= '<tr>';
-        $html .= '<td>' . __('To') . '</td>';
+        $html .= '<td>'.__('To').'</td>';
         $html .= '<td>';
         $html .= '<input type="text" name="to_prefix" id="newPrefix" />';
         $html .= '</td>';
         $html .= '</tr>';
         $html .= '</table>';
         $html .= '</fieldset>';
-        $html .= '<input type="hidden" name="mult_btn" value="' . __('Yes') . '" />';
+        $html .= '<input type="hidden" name="mult_btn" value="'.__('Yes').'" />';
         $html .= '</form>';
 
         return $html;
     }
 
     /**
-     * Gets HTML for add_prefix_tbl
+     * Gets HTML for add_prefix_tbl.
      *
      * @param string $action    action type
      * @param array  $urlParams URL params
@@ -459,12 +449,12 @@ class MultSubmits
      */
     public function getHtmlForAddPrefixTable($action, array $urlParams)
     {
-        $html  = '<form id="ajax_form" action="' . $action . '" method="post">';
+        $html = '<form id="ajax_form" action="'.$action.'" method="post">';
         $html .= Url::getHiddenInputs($urlParams);
         $html .= '<fieldset class = "input">';
         $html .= '<table>';
         $html .= '<tr>';
-        $html .= '<td>' . __('Add prefix') . '</td>';
+        $html .= '<td>'.__('Add prefix').'</td>';
         $html .= '<td>';
         $html .= '<input type="text" name="add_prefix" id="txtPrefix" />';
         $html .= '</td>';
@@ -472,14 +462,14 @@ class MultSubmits
         $html .= '<tr>';
         $html .= '</table>';
         $html .= '</fieldset>';
-        $html .= '<input type="hidden" name="mult_btn" value="' . __('Yes') . '" />';
+        $html .= '<input type="hidden" name="mult_btn" value="'.__('Yes').'" />';
         $html .= '</form>';
 
         return $html;
     }
 
     /**
-     * Gets HTML for other mult_submits actions
+     * Gets HTML for other mult_submits actions.
      *
      * @param string $what      mult_submit type
      * @param string $action    action type
@@ -490,28 +480,28 @@ class MultSubmits
      */
     public function getHtmlForOtherActions($what, $action, array $urlParams, $fullQuery)
     {
-        $html = '<form action="' . $action . '" method="post">';
+        $html = '<form action="'.$action.'" method="post">';
         $html .= Url::getHiddenInputs($urlParams);
         $html .= '<fieldset class="confirmation">';
         $html .= '<legend>';
-        if ($what == 'drop_db') {
-            $html .=  __('You are about to DESTROY a complete database!') . ' ';
+        if ('drop_db' == $what) {
+            $html .= __('You are about to DESTROY a complete database!').' ';
         }
         $html .= __('Do you really want to execute the following query?');
         $html .= '</legend>';
-        $html .= '<code>' . $fullQuery . '</code>';
+        $html .= '<code>'.$fullQuery.'</code>';
         $html .= '</fieldset>';
         $html .= '<fieldset class="tblFooters">';
         // Display option to disable foreign key checks while dropping tables
-        if ($what === 'drop_tbl' || $what === 'empty_tbl' || $what === 'row_delete') {
+        if ('drop_tbl' === $what || 'empty_tbl' === $what || 'row_delete' === $what) {
             $html .= '<div id="foreignkeychk">';
             $html .= Util::getFKCheckbox();
             $html .= '</div>';
         }
         $html .= '<input id="buttonYes" type="submit" name="mult_btn" value="'
-            . __('Yes') . '" />';
+            .__('Yes').'" />';
         $html .= '<input id="buttonNo" type="submit" name="mult_btn" value="'
-            . __('No') . '" />';
+            .__('No').'" />';
         $html .= '</fieldset>';
         $html .= '</form>';
 
@@ -519,7 +509,7 @@ class MultSubmits
     }
 
     /**
-     * Get query string from Selected
+     * Get query string from Selected.
      *
      * @param string $what     mult_submit type
      * @param string $table    table name
@@ -534,7 +524,7 @@ class MultSubmits
         $fullQueryViews = null;
         $fullQuery = '';
 
-        if ($what == 'drop_tbl') {
+        if ('drop_tbl' == $what) {
             $fullQueryViews = '';
         }
 
@@ -544,18 +534,18 @@ class MultSubmits
             switch ($what) {
                 case 'row_delete':
                     $fullQuery .= 'DELETE FROM '
-                    . Util::backquote(htmlspecialchars($table))
+                    .Util::backquote(htmlspecialchars($table))
                     // Do not append a "LIMIT 1" clause here
                     // (it's not binlog friendly).
                     // We don't need the clause because the calling panel permits
                     // this feature only when there is a unique index.
-                    . ' WHERE ' . htmlspecialchars($selectedValue)
-                    . ';<br />';
+                    .' WHERE '.htmlspecialchars($selectedValue)
+                    .';<br />';
                     break;
                 case 'drop_db':
                     $fullQuery .= 'DROP DATABASE '
-                    . Util::backquote(htmlspecialchars($selectedValue))
-                    . ';<br />';
+                    .Util::backquote(htmlspecialchars($selectedValue))
+                    .';<br />';
                     $reload = true;
                     break;
 
@@ -563,32 +553,32 @@ class MultSubmits
                     $current = $selectedValue;
                     if (!empty($views) && in_array($current, $views)) {
                         $fullQueryViews .= (empty($fullQueryViews) ? 'DROP VIEW ' : ', ')
-                        . Util::backquote(htmlspecialchars($current));
+                        .Util::backquote(htmlspecialchars($current));
                     } else {
                         $fullQuery .= (empty($fullQuery) ? 'DROP TABLE ' : ', ')
-                        . Util::backquote(htmlspecialchars($current));
+                        .Util::backquote(htmlspecialchars($current));
                     }
                     break;
 
                 case 'empty_tbl':
                     $fullQuery .= 'TRUNCATE ';
                     $fullQuery .= Util::backquote(htmlspecialchars($selectedValue))
-                            . ';<br />';
+                            .';<br />';
                     break;
 
                 case 'primary_fld':
-                    if ($fullQuery == '') {
+                    if ('' == $fullQuery) {
                         $fullQuery .= 'ALTER TABLE '
-                        . Util::backquote(htmlspecialchars($table))
-                        . '<br />&nbsp;&nbsp;DROP PRIMARY KEY,'
-                        . '<br />&nbsp;&nbsp; ADD PRIMARY KEY('
-                        . '<br />&nbsp;&nbsp;&nbsp;&nbsp; '
-                        . Util::backquote(htmlspecialchars($selectedValue))
-                        . ',';
+                        .Util::backquote(htmlspecialchars($table))
+                        .'<br />&nbsp;&nbsp;DROP PRIMARY KEY,'
+                        .'<br />&nbsp;&nbsp; ADD PRIMARY KEY('
+                        .'<br />&nbsp;&nbsp;&nbsp;&nbsp; '
+                        .Util::backquote(htmlspecialchars($selectedValue))
+                        .',';
                     } else {
                         $fullQuery .= '<br />&nbsp;&nbsp;&nbsp;&nbsp; '
-                        . Util::backquote(htmlspecialchars($selectedValue))
-                        . ',';
+                        .Util::backquote(htmlspecialchars($selectedValue))
+                        .',';
                     }
                     if ($i == $selectedCount - 1) {
                         $fullQuery = preg_replace('@,$@', ');<br />', $fullQuery);
@@ -596,27 +586,27 @@ class MultSubmits
                     break;
 
                 case 'drop_fld':
-                    if ($fullQuery == '') {
+                    if ('' == $fullQuery) {
                         $fullQuery .= 'ALTER TABLE '
-                        . Util::backquote(htmlspecialchars($table));
+                        .Util::backquote(htmlspecialchars($table));
                     }
                     $fullQuery .= '<br />&nbsp;&nbsp;DROP '
-                    . Util::backquote(htmlspecialchars($selectedValue))
-                    . ',';
+                    .Util::backquote(htmlspecialchars($selectedValue))
+                    .',';
                     if ($i == $selectedCount - 1) {
                         $fullQuery = preg_replace('@,$@', ';<br />', $fullQuery);
                     }
                     break;
             } // end switch
-            $i++;
+            ++$i;
         }
 
-        if ($what == 'drop_tbl') {
+        if ('drop_tbl' == $what) {
             if (!empty($fullQuery)) {
-                $fullQuery .= ';<br />' . "\n";
+                $fullQuery .= ';<br />'."\n";
             }
             if (!empty($fullQueryViews)) {
-                $fullQuery .= $fullQueryViews . ';<br />' . "\n";
+                $fullQuery .= $fullQueryViews.';<br />'."\n";
             }
             unset($fullQueryViews);
         }

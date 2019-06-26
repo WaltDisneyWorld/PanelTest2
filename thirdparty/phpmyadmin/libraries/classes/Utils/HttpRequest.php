@@ -1,16 +1,14 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Hold the PhpMyAdmin\Utils\HttpRequest class
- *
- * @package PhpMyAdmin
+ * Hold the PhpMyAdmin\Utils\HttpRequest class.
  */
+
 namespace PhpMyAdmin\Utils;
 
 /**
- * Handles HTTP requests
- *
- * @package PhpMyAdmin
+ * Handles HTTP requests.
  */
 class HttpRequest
 {
@@ -19,7 +17,7 @@ class HttpRequest
     private $proxyPass;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -31,7 +29,7 @@ class HttpRequest
     }
 
     /**
-     * Returns information with regards to handling the http request
+     * Returns information with regards to handling the http request.
      *
      * @param array $context Data about the context for which
      *                       to http request is sent
@@ -43,21 +41,21 @@ class HttpRequest
         if (strlen($this->proxyUrl) > 0) {
             $context['http'] = array(
                 'proxy' => $this->proxyUrl,
-                'request_fulluri' => true
+                'request_fulluri' => true,
             );
             if (strlen($this->proxyUser) > 0) {
                 $auth = base64_encode(
-                    $this->proxyUser . ':' . $this->proxyPass
+                    $this->proxyUser.':'.$this->proxyPass
                 );
                 $context['http']['header'] .= 'Proxy-Authorization: Basic '
-                    . $auth . "\r\n";
+                    .$auth."\r\n";
             }
         }
         return $context;
     }
 
     /**
-     * Creates HTTP request using curl
+     * Creates HTTP request using curl.
      *
      * @param mixed $response         HTTP response
      * @param int   $httpStatus       HTTP response status code
@@ -70,10 +68,10 @@ class HttpRequest
         $httpStatus,
         $returnOnlyStatus
     ) {
-        if ($httpStatus == 404) {
+        if (404 == $httpStatus) {
             return false;
         }
-        if ($httpStatus != 200) {
+        if (200 != $httpStatus) {
             return null;
         }
         if ($returnOnlyStatus) {
@@ -83,7 +81,7 @@ class HttpRequest
     }
 
     /**
-     * Creates HTTP request using curl
+     * Creates HTTP request using curl.
      *
      * @param string $url              Url to send the request
      * @param string $method           HTTP request method (GET, POST, PUT, DELETE, etc)
@@ -103,7 +101,7 @@ class HttpRequest
         $ssl = 0
     ) {
         $curlHandle = curl_init($url);
-        if ($curlHandle === false) {
+        if (false === $curlHandle) {
             return null;
         }
         $curlStatus = true;
@@ -113,20 +111,20 @@ class HttpRequest
                 $curlStatus &= curl_setopt(
                     $curlHandle,
                     CURLOPT_PROXYUSERPWD,
-                    $this->proxyUser . ':' . $this->proxyPass
+                    $this->proxyUser.':'.$this->proxyPass
                 );
             }
         }
         $curlStatus &= curl_setopt($curlHandle, CURLOPT_USERAGENT, 'phpMyAdmin');
 
-        if ($method != "GET") {
+        if ('GET' != $method) {
             $curlStatus &= curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, $method);
         }
         if ($header) {
             $curlStatus &= curl_setopt($curlHandle, CURLOPT_HTTPHEADER, array($header));
         }
 
-        if ($method == "POST") {
+        if ('POST' == $method) {
             $curlStatus &= curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $content);
         }
 
@@ -139,12 +137,12 @@ class HttpRequest
          *
          * See https://letsencrypt.org/certificates/
          */
-        $certsDir = dirname(__file__) . '/../../certs/';
+        $certsDir = dirname(__FILE__).'/../../certs/';
         /* See code below for logic */
-        if ($ssl == CURLOPT_CAPATH) {
+        if (CURLOPT_CAPATH == $ssl) {
             $curlStatus &= curl_setopt($curlHandle, CURLOPT_CAPATH, $certsDir);
-        } elseif ($ssl == CURLOPT_CAINFO) {
-            $curlStatus &= curl_setopt($curlHandle, CURLOPT_CAINFO, $certsDir . 'cacert.pem');
+        } elseif (CURLOPT_CAINFO == $ssl) {
+            $curlStatus &= curl_setopt($curlHandle, CURLOPT_CAINFO, $certsDir.'cacert.pem');
         }
 
         $curlStatus &= curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
@@ -153,11 +151,11 @@ class HttpRequest
         $curlStatus &= curl_setopt($curlHandle, CURLOPT_TIMEOUT, 10);
         $curlStatus &= curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, 10);
 
-        if (! $curlStatus) {
+        if (!$curlStatus) {
             return null;
         }
         $response = @curl_exec($curlHandle);
-        if ($response === false) {
+        if (false === $response) {
             /*
              * In case of SSL verification failure let's try configuring curl
              * certificate verification. Unfortunately it is tricky as setting
@@ -170,10 +168,10 @@ class HttpRequest
              * 3. Try setting CURLOPT_CAPATH.
              * 4. Fail.
              */
-            if (curl_getinfo($curlHandle, CURLINFO_SSL_VERIFYRESULT) != 0) {
-                if ($ssl == 0) {
+            if (0 != curl_getinfo($curlHandle, CURLINFO_SSL_VERIFYRESULT)) {
+                if (0 == $ssl) {
                     $this->curl($url, $method, $returnOnlyStatus, $content, $header, CURLOPT_CAINFO);
-                } elseif ($ssl == CURLOPT_CAINFO) {
+                } elseif (CURLOPT_CAINFO == $ssl) {
                     $this->curl($url, $method, $returnOnlyStatus, $content, $header, CURLOPT_CAPATH);
                 }
             }
@@ -184,7 +182,7 @@ class HttpRequest
     }
 
     /**
-     * Creates HTTP request using file_get_contents
+     * Creates HTTP request using file_get_contents.
      *
      * @param string $url              Url to send the request
      * @param string $method           HTTP request method (GET, POST, PUT, DELETE, etc)
@@ -203,17 +201,17 @@ class HttpRequest
     ) {
         $context = array(
             'http' => array(
-                'method'  => $method,
+                'method' => $method,
                 'request_fulluri' => true,
                 'timeout' => 10,
                 'user_agent' => 'phpMyAdmin',
-                'header' => "Accept: */*",
-            )
+                'header' => 'Accept: */*',
+            ),
         );
         if ($header) {
-            $context['http']['header'] .= "\n" . $header;
+            $context['http']['header'] .= "\n".$header;
         }
-        if ($method == "POST") {
+        if ('POST' == $method) {
             $context['http']['content'] = $content;
         }
         $context = $this->handleContext($context);
@@ -231,7 +229,7 @@ class HttpRequest
     }
 
     /**
-     * Creates HTTP request
+     * Creates HTTP request.
      *
      * @param string $url              Url to send the request
      * @param string $method           HTTP request method (GET, POST, PUT, DELETE, etc)

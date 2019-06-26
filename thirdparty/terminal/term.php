@@ -7,22 +7,22 @@
  * https://github.com/INTisp
  *
  */
-  require('../../includes/classes/php_error.class.php');
+  require '../../includes/classes/php_error.class.php';
      $options = array(
             'snippet_num_lines' => 3,
-            'background_text'  => 'IntISP',
+            'background_text' => 'IntISP',
             'error_reporting_off' => 0,
             'enable_saving' => 0,
             'display_line_numbers' => 0,
             'server_name' => 'IntISP has stopped because an exception has occured.',
-            'error_reporting_on' => E_ALL
+            'error_reporting_on' => E_ALL,
     );
         php_error\reportErrors($options);
-ini_set("session.cookie_lifetime", "360");
+ini_set('session.cookie_lifetime', '360');
     session_start();
     function onlyadmin()
     {
-        if ($_SESSION['user'] == 'admin') {
+        if ('admin' == $_SESSION['user']) {
         } else {
             die();
         }
@@ -36,37 +36,36 @@ $_SESSION['term_auth'] = 'true';
     //////////////////////////////////////////////////////////////////
     // Globals
     //////////////////////////////////////////////////////////////////
-    
+
     define('ROOT', '/');
     define('PASSWORD', 'accept');
     define('BLOCKED', 'ssh,telnet');
-    
+
     //////////////////////////////////////////////////////////////////
     // Terminal Class
     //////////////////////////////////////////////////////////////////
-    
+
     class Terminal
     {
-        
         ////////////////////////////////////////////////////
         // Properties
         ////////////////////////////////////////////////////
-        
-        public $command          = '';
-        public $output           = '';
-        public $directory        = '';
-        
+
+        public $command = '';
+        public $output = '';
+        public $directory = '';
+
         // Holder for commands fired by system
-        public $command_exec     = '';
-        
+        public $command_exec = '';
+
         ////////////////////////////////////////////////////
         // Constructor
         ////////////////////////////////////////////////////
-        
+
         public function __construct()
         {
             if (!isset($_SESSION['dir'])) {
-                if (ROOT=='') {
+                if (ROOT == '') {
                     $this->command_exec = 'pwd';
                     $this->Execute();
                     $_SESSION['dir'] = $this->output;
@@ -79,67 +78,66 @@ $_SESSION['term_auth'] = 'true';
                 $this->ChangeDirectory();
             }
         }
-        
+
         ////////////////////////////////////////////////////
         // Primary call
         ////////////////////////////////////////////////////
-        
+
         public function Process()
         {
             $this->ParseCommand();
             $this->Execute();
             return $this->output;
         }
-        
+
         ////////////////////////////////////////////////////
         // Parse command for special functions, blocks
         ////////////////////////////////////////////////////
-        
+
         public function ParseCommand()
         {
-            
             // Explode command
-            $command_parts = explode(" ", $this->command);
-            
+            $command_parts = explode(' ', $this->command);
+
             // Handle 'cd' command
             if (in_array('cd', $command_parts)) {
                 $cd_key = array_search('cd', $command_parts);
-                $cd_key++;
+                ++$cd_key;
                 $this->directory = $command_parts[$cd_key];
                 $this->ChangeDirectory();
                 // Remove from command
                 $this->command = str_replace('cd '.$this->directory, '', $this->command);
             }
-            
+
             // Replace text editors with cat
-            $editors       = array('vi','vim','nano');
+            $editors = array('vi', 'vim', 'nano');
             $this->command = str_replace($editors, 'cat', $this->command);
-            
+
             // Handle blocked commands
             $blocked = explode(',', BLOCKED);
             if (in_array($command_parts[0], $blocked)) {
                 $this->command = 'echo ERROR: Command not allowed';
             }
-            
+
             // Update exec command
-            $this->command_exec = $this->command . ' 2>&1';
+            $this->command_exec = $this->command.' 2>&1';
         }
-        
+
         ////////////////////////////////////////////////////
         // Chnage Directory
         ////////////////////////////////////////////////////
-        
+
         public function ChangeDirectory()
         {
             chdir($this->directory);
             // Store new directory
             $_SESSION['dir'] = exec('pwd');
         }
-        
+
         ////////////////////////////////////////////////////
         // Execute commands
         ////////////////////////////////////////////////////
-        
+
         public function Execute()
         {
             //system
@@ -171,46 +169,43 @@ $_SESSION['term_auth'] = 'true';
             }
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Processing
     //////////////////////////////////////////////////////////////////
-    
-    $command                                = '';
+
+    $command = '';
     if (!empty($_POST['command'])) {
         $command = $_POST['command'];
     }
-    
-    if (strtolower($command=='exit')) {
-        
+
+    if (strtolower('exit' == $command)) {
         //////////////////////////////////////////////////////////////
         // Exit
         //////////////////////////////////////////////////////////////
-        
+
         $_SESSION['term_auth'] = 'false';
-        $output                = '[CLOSED]';
-    } elseif ($_SESSION['term_auth']!='true') {
-        
+        $output = '[CLOSED]';
+    } elseif ('true' != $_SESSION['term_auth']) {
         //////////////////////////////////////////////////////////////
         // Authentication
         //////////////////////////////////////////////////////////////
-        
+
         $_SESSION['term_auth'] = 'true';
-        $output                = '[AUTHENTICATED]';
+        $output = '[AUTHENTICATED]';
     } else {
-    
         //////////////////////////////////////////////////////////////
         // Execution
         //////////////////////////////////////////////////////////////
-        
+
         // Split &&
         $Terminal = new Terminal();
-        $output   = '';
-        $command  = explode("&&", $command);
+        $output = '';
+        $command = explode('&&', $command);
         foreach ($command as $c) {
             $Terminal->command = $c;
             $output .= $Terminal->Process();
         }
     }
 
-    echo(htmlentities($output));
+    echo htmlentities($output);

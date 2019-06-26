@@ -1,108 +1,101 @@
 <?php
-    /**
-     * @license
-     *
-     * PHP Error
-     *
-     * Copyright (c) 2012 Joseph Lenton
-     * All rights reserved.
-     *
-     * Redistribution and use in source and binary forms, with or without
-     * modification, are permitted provided that the following conditions are met:
-     *     * Redistributions of source code must retain the above copyright
-     *       notice, this list of conditions and the following disclaimer.
-     *     * Redistributions in binary form must reproduce the above copyright
-     *       notice, this list of conditions and the following disclaimer in the
-     *       documentation and/or other materials provided with the distribution.
-     *     * Neither the name of the <organization> nor the
-     *       names of its contributors may be used to endorse or promote products
-     *       derived from this software without specific prior written permission.
-     *
-     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-     * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-     * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-     * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-     * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-     * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-     * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-     * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-     * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-     * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-     *
-     * Uses:
-     *      JSMin-php   https://github.com/rgrove/jsmin-php/
-     *      jQuery      http://jquery.com/
-     */
+/**
+ * @license
+ *
+ * PHP Error
+ *
+ * Copyright (c) 2012 Joseph Lenton
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Uses:
+ *      JSMin-php   https://github.com/rgrove/jsmin-php/
+ *      jQuery      http://jquery.com/
+ */
 
-    /**
-     * PHP Error
-     *
-     * --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-     *
-     * WARNING! It is downright _DANGEROUS_ to use this in production, on
-     * a live website. It should *ONLY* be used for development.
-     *
-     * PHP Error will kill your environment at will, clear the output
-     * buffers, and allows HTML injection from exceptions.
-     *
-     * In future versions it plans to do far more then that.
-     *
-     * If you use it in development, awesome! If you use it in production,
-     * you're an idiot.
-     *
-     * --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-     *
-     * = Info
-     *
-     * A small API for replacing the standard PHP errors, with prettier
-     * error reporting. This will change the error reporting level, and this
-     * is deliberate, as I believe in strict development errors.
-     *
-     * simple usage:
-     *
-     *      \php_error\reportErrors();
-     *
-     * Advanced example:
-     *
-     * There is more too it if you want more customized error handling. You
-     * can pass in options, to customize the setup, and you get back a
-     * handler you can alter at runtime.
-     *
-     *      $handler = new \php_error\ErrorHandler( $myOptions );
-     *      $handler->turnOn();
-     *
-     * There should only ever be one handler! This is an (underdstandable)
-     * limitation in PHP. It's because if an exception or error is raised,
-     * then there is a single point of handling it.
-     *
-     * = INI Options
-     *
-     * - php_error.force_disabled When set to a true value (such as on),
-     *                            this forces this to be off.
-     *                            This is so you can disable this script
-     *                            in your production servers ini file,
-     *                            incase you accidentally upload this there.
-     *
-     * --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-     *
-     * @author Joseph Lenton | https://github.com/josephlenton
-     */
+/**
+ * PHP Error.
+ *
+ * --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+ *
+ * WARNING! It is downright _DANGEROUS_ to use this in production, on
+ * a live website. It should *ONLY* be used for development.
+ *
+ * PHP Error will kill your environment at will, clear the output
+ * buffers, and allows HTML injection from exceptions.
+ *
+ * In future versions it plans to do far more then that.
+ *
+ * If you use it in development, awesome! If you use it in production,
+ * you're an idiot.
+ *
+ * --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+ *
+ * = Info
+ *
+ * A small API for replacing the standard PHP errors, with prettier
+ * error reporting. This will change the error reporting level, and this
+ * is deliberate, as I believe in strict development errors.
+ *
+ * simple usage:
+ *
+ *      \php_error\reportErrors();
+ *
+ * Advanced example:
+ *
+ * There is more too it if you want more customized error handling. You
+ * can pass in options, to customize the setup, and you get back a
+ * handler you can alter at runtime.
+ *
+ *      $handler = new \php_error\ErrorHandler( $myOptions );
+ *      $handler->turnOn();
+ *
+ * There should only ever be one handler! This is an (underdstandable)
+ * limitation in PHP. It's because if an exception or error is raised,
+ * then there is a single point of handling it.
+ *
+ * = INI Options
+ *
+ * - php_error.force_disabled When set to a true value (such as on),
+ *                            this forces this to be off.
+ *                            This is so you can disable this script
+ *                            in your production servers ini file,
+ *                            incase you accidentally upload this there.
+ *
+ * --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+ *
+ * @author Joseph Lenton | https://github.com/josephlenton
+ */
 
-    namespace php_error;
+namespace php_error;
 
-use \php_error\FileLinesSet;
-    use \php_error\ErrorHandler;
-    use \php_error\JSMin;
-    use \php_error\JSMinException;
-
-    use \Closure;
-    use \Exception;
-    use \ErrorException;
-    use \InvalidArgumentException;
-
-    use \ReflectionMethod;
-    use \ReflectionFunction;
-    use \ReflectionParameter;
+    use Closure;
+    use Exception;
+    use InvalidArgumentException;
+    use ReflectionMethod;
+    use ReflectionFunction;
+    use ReflectionParameter;
 
     global $_php_error_already_setup,
            $_php_error_global_handler,
@@ -134,12 +127,12 @@ use \php_error\FileLinesSet;
                 'T_TRAIT',
                 'T_TRAIT_C',
                 'T_YIELD',
-                'T_FINALLY'
+                'T_FINALLY',
         );
 
         $counter = 100001;
         foreach ($missingIdentifier as $id) {
-            if (! defined($id)) {
+            if (!defined($id)) {
                 define($id, $counter++);
             }
         }
@@ -147,7 +140,7 @@ use \php_error\FileLinesSet;
         /*
          * Check if it's empty, in case this file is loaded multiple times.
          */
-        if (! isset($_php_error_global_handler)) {
+        if (!isset($_php_error_global_handler)) {
             $_php_error_global_handler = null;
 
             $_php_error_is_ini_enabled = false;
@@ -158,9 +151,9 @@ use \php_error\FileLinesSet;
              * and ensure we are *not* a command line script.
              */
             $_php_error_is_ini_enabled =
-                    ! @get_cfg_var('php_error.force_disabled') &&
-                    ! @get_cfg_var('php_error.force_disable') &&
-                      @ini_get('display_errors') === '1'         &&
+                    !@get_cfg_var('php_error.force_disabled') &&
+                    !@get_cfg_var('php_error.force_disable') &&
+                      '1' === @ini_get('display_errors') &&
                        PHP_SAPI !== 'cli'
             ;
         }
@@ -173,13 +166,14 @@ use \php_error\FileLinesSet;
          * then this will silently do nothing.
          *
          * @param callback A PHP function to call.
-         * @return The result of calling the callback.
+         *
+         * @return The result of calling the callback
          */
         function withoutErrors($callback)
         {
             global $_php_error_global_handler;
 
-            if ($_php_error_global_handler !== null) {
+            if (null !== $_php_error_global_handler) {
                 return $_php_error_global_handler->withoutErrors($callback);
             } else {
                 return $callback();
@@ -202,9 +196,10 @@ use \php_error\FileLinesSet;
          * You can't use two at once!
          *
          * @param options Optional, options declaring how PHP Error should be setup and used.
-         * @return The ErrorHandler used for reporting errors.
+         *
+         * @return The errorHandler used for reporting errors
          */
-        function reportErrors($options=null)
+        function reportErrors($options = null)
         {
             $handler = new ErrorHandler($options);
             return $handler->turnOn();
@@ -224,7 +219,7 @@ use \php_error\FileLinesSet;
              * Matches:
              *  {closure}()
              *  blah::foo()
-             *  foo()
+             *  foo().
              *
              * It is:
              *      a closure
@@ -240,7 +235,7 @@ use \php_error\FileLinesSet;
              * 'END' matches it at the end of a string, the other one does not.
              */
             const REGEX_METHOD_OR_FUNCTION_END = '/(\\{closure\\})|(((\\\\)?(\b[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\\)*)?\b[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(::[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)?)\\(\\)$/';
-            const REGEX_METHOD_OR_FUNCTION     = '/(\\{closure\\})|(((\\\\)?(\b[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\\)*)?\b[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(::[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)?)\\(\\)/';
+            const REGEX_METHOD_OR_FUNCTION = '/(\\{closure\\})|(((\\\\)?(\b[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\\)*)?\b[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(::[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)?)\\(\\)/';
 
             const REGEX_VARIABLE = '/\b[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/';
 
@@ -257,8 +252,8 @@ use \php_error\FileLinesSet;
             const NUM_FILE_LINES = 13;
 
             const FILE_TYPE_APPLICATION = 1;
-            const FILE_TYPE_IGNORE      = 2;
-            const FILE_TYPE_ROOT        = 3;
+            const FILE_TYPE_IGNORE = 2;
+            const FILE_TYPE_ROOT = 3;
 
             /*
              * These are the various magic identifiers,
@@ -272,9 +267,9 @@ use \php_error\FileLinesSet;
             const PHP_ERROR_MAGIC_HEADER_VALUE = 'php_stack_error';
             const MAGIC_IS_PRETTY_ERRORS_MARKER = '<!-- __magic_php_error_is_a_stack_trace_constant__ -->';
 
-            const HEADER_SAVE_FILE        = 'PHP_ERROR_SAVE_FILES';
+            const HEADER_SAVE_FILE = 'PHP_ERROR_SAVE_FILES';
 
-            const POST_FILE_LOCATION      = 'php_error_upload_file';
+            const POST_FILE_LOCATION = 'php_error_upload_file';
 
             const PHP_ERROR_INI_PREFIX = 'php_error';
 
@@ -289,7 +284,7 @@ use \php_error\FileLinesSet;
 
             private static $SCALAR_TYPES = array(
                     'string', 'integer', 'float', 'boolean',
-                    'bool', 'int', 'number'
+                    'bool', 'int', 'number',
             );
 
             /**
@@ -297,232 +292,232 @@ use \php_error\FileLinesSet;
              * mapped to descriptions of them.
              */
             private static $PHP_SYMBOL_MAPPINGS = array(
-                    '$end'                          => 'end of file',
-                    'T_ABSTRACT'                    => 'abstract',
-                    'T_AND_EQUAL'                   => "'&='",
-                    'T_ARRAY'                       => 'array',
-                    'T_ARRAY_CAST'                  => 'array cast',
-                    'T_AS'                          => "'as'",
-                    'T_BOOLEAN_AND'                 => "'&&'",
-                    'T_BOOLEAN_OR'                  => "'||'",
-                    'T_BOOL_CAST'                   => 'boolean cast',
-                    'T_BREAK'                       => 'break',
-                    'T_CASE'                        => 'case',
-                    'T_CATCH'                       => 'catch',
-                    'T_CLASS'                       => 'class',
-                    'T_CLASS_C'                     => '__CLASS__',
-                    'T_CLONE'                       => 'clone',
-                    'T_CLOSE_TAG'                   => 'closing PHP tag',
-                    'T_CONCAT_EQUAL'                => "'.='",
-                    'T_CONST'                       => 'const',
-                    'T_CONSTANT_ENCAPSED_STRING'    => 'string',
-                    'T_CONTINUE'                    => 'continue',
-                    'T_CURLY_OPEN'                  => '\'{$\'',
-                    'T_DEC'                         => '-- (decrement)',
-                    'T_DECLARE'                     => 'declare',
-                    'T_DEFAULT'                     => 'default',
-                    'T_DIR'                         => '__DIR__',
-                    'T_DIV_EQUAL'                   => "'/='",
-                    'T_DNUMBER'                     => 'number',
-                    'T_DOLLAR_OPEN_CURLY_BRACES'    => '\'${\'',
-                    'T_DO'                          => "'do'",
-                    'T_DOUBLE_ARROW'                => "'=>'",
-                    'T_DOUBLE_CAST'                 => 'double cast',
-                    'T_DOUBLE_COLON'                => "'::'",
-                    'T_ECHO'                        => 'echo',
-                    'T_ELSE'                        => 'else',
-                    'T_ELSEIF'                      => 'elseif',
-                    'T_EMPTY'                       => 'empty',
-                    'T_ENCAPSED_AND_WHITESPACE'     => 'non-terminated string',
-                    'T_ENDDECLARE'                  => 'enddeclare',
-                    'T_ENDFOR'                      => 'endfor',
-                    'T_ENDFOREACH'                  => 'endforeach',
-                    'T_ENDIF'                       => 'endif',
-                    'T_ENDSWITCH'                   => 'endswitch',
-                    'T_ENDWHILE'                    => 'endwhile',
-                    'T_EVAL'                        => 'eval',
-                    'T_EXIT'                        => 'exit call',
-                    'T_EXTENDS'                     => 'extends',
-                    'T_FILE'                        => '__FILE__',
-                    'T_FINAL'                       => 'final',
-                    'T_FINALLY'                     => 'finally',
-                    'T_FOR'                         => 'for',
-                    'T_FOREACH'                     => 'foreach',
-                    'T_FUNCTION'                    => 'function',
-                    'T_FUNC_C'                      => '__FUNCTION__',
-                    'T_GLOBAL'                      => 'global',
-                    'T_GOTO'                        => 'goto',
-                    'T_HALT_COMPILER'               => '__halt_compiler',
-                    'T_IF'                          => 'if',
-                    'T_IMPLEMENTS'                  => 'implements',
-                    'T_INC'                         => '++ (increment)',
-                    'T_INCLUDE'                     => 'include',
-                    'T_INCLUDE_ONCE'                => 'include_once',
-                    'T_INSTANCEOF'                  => 'instanceof',
-                    'T_INSTEADOF'                   => 'insteadof',
-                    'T_INT_CAST'                    => 'int cast',
-                    'T_INTERFACE'                   => 'interface',
-                    'T_ISSET'                       => 'isset',
-                    'T_IS_EQUAL'                    => "'=='",
-                    'T_IS_GREATER_OR_EQUAL'         => "'>='",
-                    'T_IS_IDENTICAL'                => "'==='",
-                    'T_IS_NOT_EQUAL'                => "'!=' or '<>'",
-                    'T_IS_NOT_IDENTICAL'            => "'!=='",
-                    'T_IS_SMALLER_OR_EQUAL'         => "'<='",
-                    'T_LINE'                        => '__LINE__',
-                    'T_LIST'                        => 'list',
-                    'T_LNUMBER'                     => 'number',
-                    'T_LOGICAL_AND'                 => "'and'",
-                    'T_LOGICAL_OR'                  => "'or'",
-                    'T_LOGICAL_XOR'                 => "'xor'",
-                    'T_METHOD_C'                    => '__METHOD__',
-                    'T_MINUS_EQUAL'                 => "'-='",
-                    'T_MOD_EQUAL'                   => "'%='",
-                    'T_MUL_EQUAL'                   => "'*='",
-                    'T_NAMESPACE'                   => 'namespace',
-                    'T_NEW'                         => 'new',
-                    'T_NUM_STRING'                  => 'array index in a string',
-                    'T_NS_C'                        => '__NAMESPACE__',
-                    'T_NS_SEPARATOR'                => 'namespace seperator',
-                    'T_OBJECT_CAST'                 => 'object cast',
-                    'T_OBJECT_OPERATOR'             => "'->'",
-                    'T_OLD_FUNCTION'                => 'old_function',
-                    'T_OPEN_TAG'                    => "'<?php' or '<?'",
-                    'T_OPEN_TAG_WITH_ECHO'          => "'<?php echo '",
-                    'T_OR_EQUAL'                    => "'|='",
-                    'T_PAAMAYIM_NEKUDOTAYIM'        => "'::'",
-                    'T_PLUS_EQUAL'                  => "'+='",
-                    'T_PRINT'                       => 'print',
-                    'T_PRIVATE'                     => 'private',
-                    'T_PUBLIC'                      => 'public',
-                    'T_PROTECTED'                   => 'protected',
-                    'T_REQUIRE'                     => 'require',
-                    'T_REQUIRE_ONCE'                => 'require_once',
-                    'T_RETURN'                      => 'return',
-                    'T_SL'                          => "'<<'",
-                    'T_SL_EQUAL'                    => "'<<='",
-                    'T_SR'                          => "'>>'",
-                    'T_SR_EQUAL'                    => "'>>='",
-                    'T_START_HEREDOC'               => "'<<<'",
-                    'T_STATIC'                      => 'static',
-                    'T_STRING'                      => 'string',
-                    'T_STRING_CAST'                 => 'string cast',
-                    'T_SWITCH'                      => 'switch',
-                    'T_THROW'                       => 'throw',
-                    'T_TRY'                         => 'try',
-                    'T_TRAIT'                       => 'trait',
-                    'T_TRAIT_C'                     => '__trait__',
-                    'T_UNSET'                       => 'unset',
-                    'T_UNSET_CAST'                  => 'unset cast',
-                    'T_USE'                         => 'use',
-                    'T_VAR'                         => 'var',
-                    'T_VARIABLE'                    => 'variable',
-                    'T_WHILE'                       => 'while',
-                    'T_WHITESPACE'                  => 'whitespace',
-                    'T_XOR_EQUAL'                   => "'^='",
-                    'T_YIELD'                       => 'yield'
+                    '$end' => 'end of file',
+                    'T_ABSTRACT' => 'abstract',
+                    'T_AND_EQUAL' => "'&='",
+                    'T_ARRAY' => 'array',
+                    'T_ARRAY_CAST' => 'array cast',
+                    'T_AS' => "'as'",
+                    'T_BOOLEAN_AND' => "'&&'",
+                    'T_BOOLEAN_OR' => "'||'",
+                    'T_BOOL_CAST' => 'boolean cast',
+                    'T_BREAK' => 'break',
+                    'T_CASE' => 'case',
+                    'T_CATCH' => 'catch',
+                    'T_CLASS' => 'class',
+                    'T_CLASS_C' => '__CLASS__',
+                    'T_CLONE' => 'clone',
+                    'T_CLOSE_TAG' => 'closing PHP tag',
+                    'T_CONCAT_EQUAL' => "'.='",
+                    'T_CONST' => 'const',
+                    'T_CONSTANT_ENCAPSED_STRING' => 'string',
+                    'T_CONTINUE' => 'continue',
+                    'T_CURLY_OPEN' => '\'{$\'',
+                    'T_DEC' => '-- (decrement)',
+                    'T_DECLARE' => 'declare',
+                    'T_DEFAULT' => 'default',
+                    'T_DIR' => '__DIR__',
+                    'T_DIV_EQUAL' => "'/='",
+                    'T_DNUMBER' => 'number',
+                    'T_DOLLAR_OPEN_CURLY_BRACES' => '\'${\'',
+                    'T_DO' => "'do'",
+                    'T_DOUBLE_ARROW' => "'=>'",
+                    'T_DOUBLE_CAST' => 'double cast',
+                    'T_DOUBLE_COLON' => "'::'",
+                    'T_ECHO' => 'echo',
+                    'T_ELSE' => 'else',
+                    'T_ELSEIF' => 'elseif',
+                    'T_EMPTY' => 'empty',
+                    'T_ENCAPSED_AND_WHITESPACE' => 'non-terminated string',
+                    'T_ENDDECLARE' => 'enddeclare',
+                    'T_ENDFOR' => 'endfor',
+                    'T_ENDFOREACH' => 'endforeach',
+                    'T_ENDIF' => 'endif',
+                    'T_ENDSWITCH' => 'endswitch',
+                    'T_ENDWHILE' => 'endwhile',
+                    'T_EVAL' => 'eval',
+                    'T_EXIT' => 'exit call',
+                    'T_EXTENDS' => 'extends',
+                    'T_FILE' => '__FILE__',
+                    'T_FINAL' => 'final',
+                    'T_FINALLY' => 'finally',
+                    'T_FOR' => 'for',
+                    'T_FOREACH' => 'foreach',
+                    'T_FUNCTION' => 'function',
+                    'T_FUNC_C' => '__FUNCTION__',
+                    'T_GLOBAL' => 'global',
+                    'T_GOTO' => 'goto',
+                    'T_HALT_COMPILER' => '__halt_compiler',
+                    'T_IF' => 'if',
+                    'T_IMPLEMENTS' => 'implements',
+                    'T_INC' => '++ (increment)',
+                    'T_INCLUDE' => 'include',
+                    'T_INCLUDE_ONCE' => 'include_once',
+                    'T_INSTANCEOF' => 'instanceof',
+                    'T_INSTEADOF' => 'insteadof',
+                    'T_INT_CAST' => 'int cast',
+                    'T_INTERFACE' => 'interface',
+                    'T_ISSET' => 'isset',
+                    'T_IS_EQUAL' => "'=='",
+                    'T_IS_GREATER_OR_EQUAL' => "'>='",
+                    'T_IS_IDENTICAL' => "'==='",
+                    'T_IS_NOT_EQUAL' => "'!=' or '<>'",
+                    'T_IS_NOT_IDENTICAL' => "'!=='",
+                    'T_IS_SMALLER_OR_EQUAL' => "'<='",
+                    'T_LINE' => '__LINE__',
+                    'T_LIST' => 'list',
+                    'T_LNUMBER' => 'number',
+                    'T_LOGICAL_AND' => "'and'",
+                    'T_LOGICAL_OR' => "'or'",
+                    'T_LOGICAL_XOR' => "'xor'",
+                    'T_METHOD_C' => '__METHOD__',
+                    'T_MINUS_EQUAL' => "'-='",
+                    'T_MOD_EQUAL' => "'%='",
+                    'T_MUL_EQUAL' => "'*='",
+                    'T_NAMESPACE' => 'namespace',
+                    'T_NEW' => 'new',
+                    'T_NUM_STRING' => 'array index in a string',
+                    'T_NS_C' => '__NAMESPACE__',
+                    'T_NS_SEPARATOR' => 'namespace seperator',
+                    'T_OBJECT_CAST' => 'object cast',
+                    'T_OBJECT_OPERATOR' => "'->'",
+                    'T_OLD_FUNCTION' => 'old_function',
+                    'T_OPEN_TAG' => "'<?php' or '<?'",
+                    'T_OPEN_TAG_WITH_ECHO' => "'<?php echo '",
+                    'T_OR_EQUAL' => "'|='",
+                    'T_PAAMAYIM_NEKUDOTAYIM' => "'::'",
+                    'T_PLUS_EQUAL' => "'+='",
+                    'T_PRINT' => 'print',
+                    'T_PRIVATE' => 'private',
+                    'T_PUBLIC' => 'public',
+                    'T_PROTECTED' => 'protected',
+                    'T_REQUIRE' => 'require',
+                    'T_REQUIRE_ONCE' => 'require_once',
+                    'T_RETURN' => 'return',
+                    'T_SL' => "'<<'",
+                    'T_SL_EQUAL' => "'<<='",
+                    'T_SR' => "'>>'",
+                    'T_SR_EQUAL' => "'>>='",
+                    'T_START_HEREDOC' => "'<<<'",
+                    'T_STATIC' => 'static',
+                    'T_STRING' => 'string',
+                    'T_STRING_CAST' => 'string cast',
+                    'T_SWITCH' => 'switch',
+                    'T_THROW' => 'throw',
+                    'T_TRY' => 'try',
+                    'T_TRAIT' => 'trait',
+                    'T_TRAIT_C' => '__trait__',
+                    'T_UNSET' => 'unset',
+                    'T_UNSET_CAST' => 'unset cast',
+                    'T_USE' => 'use',
+                    'T_VAR' => 'var',
+                    'T_VARIABLE' => 'variable',
+                    'T_WHILE' => 'while',
+                    'T_WHITESPACE' => 'whitespace',
+                    'T_XOR_EQUAL' => "'^='",
+                    'T_YIELD' => 'yield',
             );
 
             private static $syntaxMap = array(
-                    'const'                       => 'syntax-literal',
-                    'reference_ampersand'         => 'syntax-function',
+                    'const' => 'syntax-literal',
+                    'reference_ampersand' => 'syntax-function',
 
-                    T_COMMENT                     => 'syntax-comment',
-                    T_DOC_COMMENT                 => 'syntax-comment',
+                    T_COMMENT => 'syntax-comment',
+                    T_DOC_COMMENT => 'syntax-comment',
 
-                    T_ABSTRACT                    => 'syntax-keyword',
-                    T_AS                          => 'syntax-keyword',
-                    T_BREAK                       => 'syntax-keyword',
-                    T_CASE                        => 'syntax-keyword',
-                    T_CATCH                       => 'syntax-keyword',
-                    T_CLASS                       => 'syntax-keyword',
+                    T_ABSTRACT => 'syntax-keyword',
+                    T_AS => 'syntax-keyword',
+                    T_BREAK => 'syntax-keyword',
+                    T_CASE => 'syntax-keyword',
+                    T_CATCH => 'syntax-keyword',
+                    T_CLASS => 'syntax-keyword',
 
-                    T_CONST                       => 'syntax-keyword',
+                    T_CONST => 'syntax-keyword',
 
-                    T_CONTINUE                    => 'syntax-keyword',
-                    T_DECLARE                     => 'syntax-keyword',
-                    T_DEFAULT                     => 'syntax-keyword',
-                    T_DO                          => 'syntax-keyword',
+                    T_CONTINUE => 'syntax-keyword',
+                    T_DECLARE => 'syntax-keyword',
+                    T_DEFAULT => 'syntax-keyword',
+                    T_DO => 'syntax-keyword',
 
-                    T_ELSE                        => 'syntax-keyword',
-                    T_ELSEIF                      => 'syntax-keyword',
-                    T_ENDDECLARE                  => 'syntax-keyword',
-                    T_ENDFOR                      => 'syntax-keyword',
-                    T_ENDFOREACH                  => 'syntax-keyword',
-                    T_ENDIF                       => 'syntax-keyword',
-                    T_ENDSWITCH                   => 'syntax-keyword',
-                    T_ENDWHILE                    => 'syntax-keyword',
-                    T_EXTENDS                     => 'syntax-keyword',
+                    T_ELSE => 'syntax-keyword',
+                    T_ELSEIF => 'syntax-keyword',
+                    T_ENDDECLARE => 'syntax-keyword',
+                    T_ENDFOR => 'syntax-keyword',
+                    T_ENDFOREACH => 'syntax-keyword',
+                    T_ENDIF => 'syntax-keyword',
+                    T_ENDSWITCH => 'syntax-keyword',
+                    T_ENDWHILE => 'syntax-keyword',
+                    T_EXTENDS => 'syntax-keyword',
 
-                    T_FINAL                       => 'syntax-keyword',
-                    T_FINALLY                     => 'syntax-keyword',
-                    T_FOR                         => 'syntax-keyword',
-                    T_FOREACH                     => 'syntax-keyword',
-                    T_FUNCTION                    => 'syntax-keyword',
-                    T_GLOBAL                      => 'syntax-keyword',
-                    T_GOTO                        => 'syntax-keyword',
+                    T_FINAL => 'syntax-keyword',
+                    T_FINALLY => 'syntax-keyword',
+                    T_FOR => 'syntax-keyword',
+                    T_FOREACH => 'syntax-keyword',
+                    T_FUNCTION => 'syntax-keyword',
+                    T_GLOBAL => 'syntax-keyword',
+                    T_GOTO => 'syntax-keyword',
 
-                    T_IF                          => 'syntax-keyword',
-                    T_IMPLEMENTS                  => 'syntax-keyword',
-                    T_INSTANCEOF                  => 'syntax-keyword',
-                    T_INSTEADOF                   => 'syntax-keyword',
-                    T_INTERFACE                   => 'syntax-keyword',
+                    T_IF => 'syntax-keyword',
+                    T_IMPLEMENTS => 'syntax-keyword',
+                    T_INSTANCEOF => 'syntax-keyword',
+                    T_INSTEADOF => 'syntax-keyword',
+                    T_INTERFACE => 'syntax-keyword',
 
-                    T_LOGICAL_AND                 => 'syntax-keyword',
-                    T_LOGICAL_OR                  => 'syntax-keyword',
-                    T_LOGICAL_XOR                 => 'syntax-keyword',
-                    T_NAMESPACE                   => 'syntax-keyword',
-                    T_NEW                         => 'syntax-keyword',
-                    T_PRIVATE                     => 'syntax-keyword',
-                    T_PUBLIC                      => 'syntax-keyword',
-                    T_PROTECTED                   => 'syntax-keyword',
-                    T_RETURN                      => 'syntax-keyword',
-                    T_STATIC                      => 'syntax-keyword',
-                    T_SWITCH                      => 'syntax-keyword',
-                    T_THROW                       => 'syntax-keyword',
-                    T_TRAIT                       => 'syntax-keyword',
-                    T_TRY                         => 'syntax-keyword',
-                    T_USE                         => 'syntax-keyword',
-                    T_VAR                         => 'syntax-keyword',
-                    T_WHILE                       => 'syntax-keyword',
-                    T_YIELD                       => 'syntax-keyword',
+                    T_LOGICAL_AND => 'syntax-keyword',
+                    T_LOGICAL_OR => 'syntax-keyword',
+                    T_LOGICAL_XOR => 'syntax-keyword',
+                    T_NAMESPACE => 'syntax-keyword',
+                    T_NEW => 'syntax-keyword',
+                    T_PRIVATE => 'syntax-keyword',
+                    T_PUBLIC => 'syntax-keyword',
+                    T_PROTECTED => 'syntax-keyword',
+                    T_RETURN => 'syntax-keyword',
+                    T_STATIC => 'syntax-keyword',
+                    T_SWITCH => 'syntax-keyword',
+                    T_THROW => 'syntax-keyword',
+                    T_TRAIT => 'syntax-keyword',
+                    T_TRY => 'syntax-keyword',
+                    T_USE => 'syntax-keyword',
+                    T_VAR => 'syntax-keyword',
+                    T_WHILE => 'syntax-keyword',
+                    T_YIELD => 'syntax-keyword',
 
                     // __VAR__ type magic constants
-                    T_CLASS_C                     => 'syntax-literal',
-                    T_DIR                         => 'syntax-literal',
-                    T_FILE                        => 'syntax-literal',
-                    T_FUNC_C                      => 'syntax-literal',
-                    T_LINE                        => 'syntax-literal',
-                    T_METHOD_C                    => 'syntax-literal',
-                    T_NS_C                        => 'syntax-literal',
-                    T_TRAIT_C                     => 'syntax-literal',
+                    T_CLASS_C => 'syntax-literal',
+                    T_DIR => 'syntax-literal',
+                    T_FILE => 'syntax-literal',
+                    T_FUNC_C => 'syntax-literal',
+                    T_LINE => 'syntax-literal',
+                    T_METHOD_C => 'syntax-literal',
+                    T_NS_C => 'syntax-literal',
+                    T_TRAIT_C => 'syntax-literal',
 
-                    T_DNUMBER                     => 'syntax-literal',
-                    T_LNUMBER                     => 'syntax-literal',
+                    T_DNUMBER => 'syntax-literal',
+                    T_LNUMBER => 'syntax-literal',
 
-                    T_CONSTANT_ENCAPSED_STRING    => 'syntax-string',
-                    T_VARIABLE                    => 'syntax-variable',
+                    T_CONSTANT_ENCAPSED_STRING => 'syntax-string',
+                    T_VARIABLE => 'syntax-variable',
 
                     // this is for unescaped strings, which appear differently
                     // this includes function names
-                    T_STRING                      => 'syntax-function',
+                    T_STRING => 'syntax-function',
 
                     // in build keywords, which work like functions
-                    T_ARRAY                       => 'syntax-function',
-                    T_CLONE                       => 'syntax-function',
-                    T_ECHO                        => 'syntax-function',
-                    T_EMPTY                       => 'syntax-function',
-                    T_EVAL                        => 'syntax-function',
-                    T_EXIT                        => 'syntax-function',
-                    T_HALT_COMPILER               => 'syntax-function',
-                    T_INCLUDE                     => 'syntax-function',
-                    T_INCLUDE_ONCE                => 'syntax-function',
-                    T_ISSET                       => 'syntax-function',
-                    T_LIST                        => 'syntax-function',
-                    T_REQUIRE_ONCE                => 'syntax-function',
-                    T_PRINT                       => 'syntax-function',
-                    T_REQUIRE                     => 'syntax-function',
-                    T_UNSET                       => 'syntax-function'
+                    T_ARRAY => 'syntax-function',
+                    T_CLONE => 'syntax-function',
+                    T_ECHO => 'syntax-function',
+                    T_EMPTY => 'syntax-function',
+                    T_EVAL => 'syntax-function',
+                    T_EXIT => 'syntax-function',
+                    T_HALT_COMPILER => 'syntax-function',
+                    T_INCLUDE => 'syntax-function',
+                    T_INCLUDE_ONCE => 'syntax-function',
+                    T_ISSET => 'syntax-function',
+                    T_LIST => 'syntax-function',
+                    T_REQUIRE_ONCE => 'syntax-function',
+                    T_PRINT => 'syntax-function',
+                    T_REQUIRE => 'syntax-function',
+                    T_UNSET => 'syntax-function',
             );
 
             /**
@@ -537,7 +532,7 @@ use \php_error\FileLinesSet;
                     'interface_exists',
                     'method_exists',
                     'property_exists',
-                    'is_subclass_of'
+                    'is_subclass_of',
             );
 
             /**
@@ -547,17 +542,17 @@ use \php_error\FileLinesSet;
              */
             private static $ALLOWED_RETURN_MIME_TYPES = array(
                     'text/html',
-                    'application/xhtml+xml'
+                    'application/xhtml+xml',
             );
 
             private static function isIIS()
             {
                 return (
                                 isset($_SERVER['SERVER_SOFTWARE']) &&
-                                strpos($_SERVER['SERVER_SOFTWARE'], 'IIS/') !== false
+                                false !== strpos($_SERVER['SERVER_SOFTWARE'], 'IIS/')
                         ) || (
                             isset($_SERVER['_FCGI_X_PIPE_']) &&
-                                strpos($_SERVER['_FCGI_X_PIPE_'], 'IISFCGI') !== false
+                                false !== strpos($_SERVER['_FCGI_X_PIPE_'], 'IISFCGI')
                         );
             }
 
@@ -566,8 +561,8 @@ use \php_error\FileLinesSet;
                 $response = ErrorHandler::getResponseHeaders();
 
                 foreach ($response as $key => $value) {
-                    if (strtolower($key) === 'content-transfer-encoding') {
-                        return strtolower($value) === 'binary';
+                    if ('content-transfer-encoding' === strtolower($key)) {
+                        return 'binary' === strtolower($value);
                     }
                 }
             }
@@ -595,9 +590,9 @@ use \php_error\FileLinesSet;
                 $response = ErrorHandler::getResponseHeaders();
 
                 foreach ($response as $key => $value) {
-                    if (strtolower($key) === 'content-type') {
+                    if ('content-type' === strtolower($key)) {
                         foreach (ErrorHandler::$ALLOWED_RETURN_MIME_TYPES as $type) {
-                            if (stripos($value, $type) !== false) {
+                            if (false !== stripos($value, $type)) {
                                 return false;
                             }
                         }
@@ -630,21 +625,22 @@ use \php_error\FileLinesSet;
              * This is then returned as HTML, ready to be dumped to the screen.
              *
              * @param code An array of code lines to syntax highlight.
-             * @return HTML version of the code given, syntax highlighted.
+             *
+             * @return HTML version of the code given, syntax highlighted
              */
             private static function syntaxHighlight($code)
             {
                 $syntaxMap = ErrorHandler::$syntaxMap;
 
                 // @supress invalid code raises a warning
-                $tokens = @token_get_all("<?php " . $code . " ?" . ">");
+                $tokens = @token_get_all('<?php '.$code.' ?'.'>');
                 $html = array();
-                $len = count($tokens)-1;
+                $len = count($tokens) - 1;
                 $inString = false;
                 $stringBuff = null;
                 $skip = false;
 
-                for ($i = 1; $i < $len; $i++) {
+                for ($i = 1; $i < $len; ++$i) {
                     $token = $tokens[$i];
 
                     if (is_array($token)) {
@@ -656,22 +652,22 @@ use \php_error\FileLinesSet;
                     }
 
                     // work out any whitespace padding
-                    if (strpos($code, "\n") !== false && trim($code) === '') {
+                    if (false !== strpos($code, "\n") && '' === trim($code)) {
                         if ($inString) {
-                            $html[]= "<span class='syntax-string'>" . join('', $stringBuff);
+                            $html[] = "<span class='syntax-string'>".join('', $stringBuff);
                             $stringBuff = array();
                         }
-                    } elseif ($code === '&') {
+                    } elseif ('&' === $code) {
                         if ($i < $len) {
-                            $next = $tokens[$i+1];
+                            $next = $tokens[$i + 1];
 
-                            if (is_array($next) && $next[0] === T_VARIABLE) {
+                            if (is_array($next) && T_VARIABLE === $next[0]) {
                                 $type = 'reference_ampersand';
                             }
                         }
-                    } elseif ($code === '"' || $code === "'") {
+                    } elseif ('"' === $code || "'" === $code) {
                         if ($inString) {
-                            $html[]= "<span class='syntax-string'>" . join('', $stringBuff) . htmlspecialchars($code) . "</span>";
+                            $html[] = "<span class='syntax-string'>".join('', $stringBuff).htmlspecialchars($code).'</span>';
                             $stringBuff = null;
                             $skip = true;
                         } else {
@@ -679,7 +675,7 @@ use \php_error\FileLinesSet;
                         }
 
                         $inString = !$inString;
-                    } elseif ($type === T_STRING) {
+                    } elseif (T_STRING === $type) {
                         $matches = array();
                         preg_match(ErrorHandler::REGEX_PHP_CONST_IDENTIFIER, $code, $matches);
 
@@ -693,37 +689,37 @@ use \php_error\FileLinesSet;
                     } else {
                         $code = htmlspecialchars($code);
 
-                        if ($type !== null && isset($syntaxMap[$type])) {
+                        if (null !== $type && isset($syntaxMap[$type])) {
                             $class = $syntaxMap[$type];
 
-                            if ($type === T_CONSTANT_ENCAPSED_STRING && strpos($code, "\n") !== false) {
-                                $append = "<span class='$class'>" .
+                            if (T_CONSTANT_ENCAPSED_STRING === $type && false !== strpos($code, "\n")) {
+                                $append = "<span class='$class'>".
                                             join(
                                                 "</span>\n<span class='$class'>",
                                                 explode("\n", $code)
-                                            ) .
-                                        "</span>" ;
-                            } elseif (strrpos($code, "\n") === strlen($code)-1) {
-                                $append = "<span class='$class'>" . substr($code, 0, strlen($code)-1) . "</span>\n";
+                                            ).
+                                        '</span>';
+                            } elseif (strrpos($code, "\n") === strlen($code) - 1) {
+                                $append = "<span class='$class'>".substr($code, 0, strlen($code) - 1)."</span>\n";
                             } else {
                                 $append = "<span class='$class'>$code</span>";
                             }
-                        } elseif ($inString && $code !== '"') {
+                        } elseif ($inString && '"' !== $code) {
                             $append = "<span class='syntax-string'>$code</span>";
                         } else {
                             $append = $code;
                         }
 
                         if ($inString) {
-                            $stringBuff[]= $append;
+                            $stringBuff[] = $append;
                         } else {
-                            $html[]= $append;
+                            $html[] = $append;
                         }
                     }
                 }
 
-                if ($stringBuff !== null) {
-                    $html[]= "<span class='syntax-string'>" . join('', $stringBuff) . '</span>';
+                if (null !== $stringBuff) {
+                    $html[] = "<span class='syntax-string'>".join('', $stringBuff).'</span>';
                     $stringBuff = null;
                 }
 
@@ -741,18 +737,19 @@ use \php_error\FileLinesSet;
              *      list( $class, $function ) = ErrorHandler::splitFunction( $name );
              *
              * @param name The function name to split.
-             * @return An array containing class and function name.
+             *
+             * @return An array containing class and function name
              */
             private static function splitFunction($name)
             {
                 $name = preg_replace('/\\(\\)$/', '', $name);
 
-                if (strpos($name, '::') !== false) {
+                if (false !== strpos($name, '::')) {
                     $parts = explode('::', $name);
                     $className = $parts[0];
                     $type = '::';
                     $functionName = $parts[1];
-                } elseif (strpos($name, '->') !== false) {
+                } elseif (false !== strpos($name, '->')) {
                     $parts = explode('->', $name);
                     $className = $parts[0];
                     $type = '->';
@@ -763,10 +760,10 @@ use \php_error\FileLinesSet;
                     $functionName = $name;
                 }
 
-                return array( $className, $type, $functionName );
+                return array($className, $type, $functionName);
             }
 
-            private static function newArgument($name, $type=false, $isPassedByReference=false, $isOptional=false, $optionalValue=null, $highlight=false)
+            private static function newArgument($name, $type = false, $isPassedByReference = false, $isOptional = false, $optionalValue = null, $highlight = false)
             {
                 if ($name instanceof ReflectionParameter) {
                     $highlight = func_num_args() > 1 ?
@@ -775,20 +772,20 @@ use \php_error\FileLinesSet;
 
                     $klass = $name->getDeclaringClass();
                     $functionName = $name->getDeclaringFunction()->name;
-                    if ($klass !== null) {
+                    if (null !== $klass) {
                         $klass = $klass->name;
                     }
 
                     $export = ReflectionParameter::export(
                         ($klass ?
-                                    array( "\\$klass", $functionName ) :
+                                    array("\\$klass", $functionName) :
                                     $functionName),
                         $name->name,
                         true
                     );
 
                     $paramType = preg_replace('/.*?(\w+)\s+\$'.$name->name.'.*/', '\\1', $export);
-                    if (strpos($paramType, '[') !== false || strlen($paramType) === 0) {
+                    if (false !== strpos($paramType, '[') || 0 === strlen($paramType)) {
                         $paramType = null;
                     }
 
@@ -806,26 +803,26 @@ use \php_error\FileLinesSet;
                     );
                 } else {
                     return array(
-                            'name'              => $name,
-                            'has_type'          => ($type !== false),
-                            'type'              => $type,
-                            'is_reference'      => $isPassedByReference,
-                            'has_default'       => $isOptional,
-                            'default_val'       => $optionalValue,
-                            'is_highlighted'    => $highlight
+                            'name' => $name,
+                            'has_type' => (false !== $type),
+                            'type' => $type,
+                            'is_reference' => $isPassedByReference,
+                            'has_default' => $isOptional,
+                            'default_val' => $optionalValue,
+                            'is_highlighted' => $highlight,
                     );
                 }
             }
 
-            private static function syntaxHighlightFunctionMatch($match, &$stackTrace, $highlightArg=null, &$numHighlighted=0)
+            private static function syntaxHighlightFunctionMatch($match, &$stackTrace, $highlightArg = null, &$numHighlighted = 0)
             {
                 list($className, $type, $functionName) = ErrorHandler::splitFunction($match);
 
                 // is class::method()
-                if ($className !== null) {
+                if (null !== $className) {
                     $reflectFun = new ReflectionMethod($className, $functionName);
                 // is a function
-                } elseif ($functionName === '{closure}') {
+                } elseif ('{closure}' === $functionName) {
                     return '<span class="syntax-variable">$closure</span>';
                 } else {
                     $reflectFun = new ReflectionFunction($functionName);
@@ -840,22 +837,22 @@ use \php_error\FileLinesSet;
                         foreach ($params as $i => $param) {
                             $arg = ErrorHandler::newArgument($param);
 
-                            if (! $arg['has_default']) {
+                            if (!$arg['has_default']) {
                                 $min = $i;
                             }
 
-                            $args[]= $arg;
+                            $args[] = $arg;
                         }
 
-                        if ($highlightArg !== null) {
-                            for ($i = $highlightArg; $i <= $min; $i++) {
+                        if (null !== $highlightArg) {
+                            for ($i = $highlightArg; $i <= $min; ++$i) {
                                 $args[$i]['is_highlighted'] = true;
                             }
 
-                            $numHighlighted = $min-$highlightArg;
+                            $numHighlighted = $min - $highlightArg;
                         }
 
-                        if ($className !== null) {
+                        if (null !== $className) {
                             if ($stackTrace && isset($stackTrace[1]) && isset($stackTrace[1]['type'])) {
                                 $type = htmlspecialchars($stackTrace[1]['type']);
                             }
@@ -882,73 +879,73 @@ use \php_error\FileLinesSet;
              *
              * Class and type can be null, to denote no class, but are not optional.
              */
-            private static function syntaxHighlightFunction($class, $type, $fun, &$args=null)
+            private static function syntaxHighlightFunction($class, $type, $fun, &$args = null)
             {
                 $info = array();
 
                 // set the info
                 if (isset($class) && $class && isset($type) && $type) {
-                    if ($type === '->') {
+                    if ('->' === $type) {
                         $type = '-&gt;';
                     }
 
-                    $info []= "<span class='syntax-class'>$class</span>$type";
+                    $info[] = "<span class='syntax-class'>$class</span>$type";
                 }
 
                 if (isset($fun) && $fun) {
-                    $info []= "<span class='syntax-function'>$fun</span>";
+                    $info[] = "<span class='syntax-function'>$fun</span>";
                 }
 
                 if ($args) {
-                    $info []= '( ';
+                    $info[] = '( ';
 
                     foreach ($args as $i => $arg) {
                         if ($i > 0) {
-                            $info[]= ', ';
+                            $info[] = ', ';
                         }
 
                         if (is_string($arg)) {
-                            $info[]= $arg;
+                            $info[] = $arg;
                         } else {
                             $highlight = $arg['is_highlighted'];
                             $name = $arg['name'];
 
                             if ($highlight) {
-                                $info[]= '<span class="syntax-higlight-variable">';
+                                $info[] = '<span class="syntax-higlight-variable">';
                             }
 
-                            if ($name === '_') {
-                                $info[]= '<span class="syntax-variable-not-important">';
+                            if ('_' === $name) {
+                                $info[] = '<span class="syntax-variable-not-important">';
                             }
 
                             if ($arg['has_type']) {
-                                $info []= "<span class='syntax-class'>";
-                                $info []= $arg['type'];
-                                $info []= '</span> ';
+                                $info[] = "<span class='syntax-class'>";
+                                $info[] = $arg['type'];
+                                $info[] = '</span> ';
                             }
 
                             if ($arg['is_reference']) {
-                                $info []= '<span class="syntax-function">&amp;</span>';
+                                $info[] = '<span class="syntax-function">&amp;</span>';
                             }
 
-                            $info []= "<span class='syntax-variable'>\$$name</span>";
+                            $info[] = "<span class='syntax-variable'>\$$name</span>";
 
                             if ($arg['has_default']) {
-                                $info []= '=<span class="syntax-literal">' . $arg['default_val'] . '</span>';
+                                $info[] = '=<span class="syntax-literal">'.$arg['default_val'].'</span>';
                             }
 
-                            if ($name === '_') {
-                                $info[]= '</span>';
+                            if ('_' === $name) {
+                                $info[] = '</span>';
                             }
                             if ($highlight) {
-                                $info[]= '</span>';
+                                $info[] = '</span>';
                             }
                         }
                     }
 
-                    $info []= ' )';
+                    $info[] = ' )';
                 } else {
-                    $info []= '()';
+                    $info[] = '()';
                 }
 
                 return join('', $info);
@@ -959,7 +956,7 @@ use \php_error\FileLinesSet;
              *
              * If it is not found, or if options is not an array, then the alt is returned.
              */
-            private static function optionsPop(&$options, $key, $alt=null)
+            private static function optionsPop(&$options, $key, $alt = null)
             {
                 if ($options && isset($options[$key])) {
                     $val = $options[$key];
@@ -967,9 +964,9 @@ use \php_error\FileLinesSet;
 
                     return $val;
                 } else {
-                    $iniAlt = @get_cfg_var(ErrorHandler::PHP_ERROR_INI_PREFIX . '.' . $key);
+                    $iniAlt = @get_cfg_var(ErrorHandler::PHP_ERROR_INI_PREFIX.'.'.$key);
 
-                    if ($iniAlt !== false) {
+                    if (false !== $iniAlt) {
                         return $iniAlt;
                     } else {
                         return $alt;
@@ -979,11 +976,11 @@ use \php_error\FileLinesSet;
 
             private static function folderTypeToCSS($type)
             {
-                if ($type === ErrorHandler::FILE_TYPE_ROOT) {
+                if (ErrorHandler::FILE_TYPE_ROOT === $type) {
                     return 'file-root';
-                } elseif ($type === ErrorHandler::FILE_TYPE_IGNORE) {
+                } elseif (ErrorHandler::FILE_TYPE_IGNORE === $type) {
                     return 'file-ignore';
-                } elseif ($type === ErrorHandler::FILE_TYPE_APPLICATION) {
+                } elseif (ErrorHandler::FILE_TYPE_APPLICATION === $type) {
                     return 'file-app';
                 } else {
                     return 'file-common';
@@ -996,15 +993,15 @@ use \php_error\FileLinesSet;
 
                 $len = min(count($parts), $longest);
 
-                for ($i = $len; $i > 0; $i--) {
+                for ($i = $len; $i > 0; --$i) {
                     if (isset($folders[$i])) {
-                        $folderParts = &$folders[ $i ];
+                        $folderParts = &$folders[$i];
 
                         $success = false;
-                        for ($j = 0; $j < count($folderParts); $j++) {
+                        for ($j = 0; $j < count($folderParts); ++$j) {
                             $folderNames = $folderParts[$j];
 
-                            for ($k = 0; $k < count($folderNames); $k++) {
+                            for ($k = 0; $k < count($folderNames); ++$k) {
                                 if ($folderNames[$k] === $parts[$k]) {
                                     $success = true;
                                 } else {
@@ -1036,28 +1033,28 @@ use \php_error\FileLinesSet;
                     } elseif (is_string($folders)) {
                         ErrorHandler::setFoldersInner($newFolders, $newLongest, $folders);
                     } else {
-                        throw new Exception("Unknown value given for folder: " . $folders);
+                        throw new Exception('Unknown value given for folder: '.$folders);
                     }
                 }
 
                 $origFolders = $newFolders;
-                $longest     = $newLongest;
+                $longest = $newLongest;
             }
 
             private static function setFoldersInner(&$newFolders, &$newLongest, $folder)
             {
                 $folder = str_replace('\\', '/', $folder);
                 $folder = preg_replace('/(^\\/+)|(\\/+$)/', '', $folder);
-                $parts  = explode('/', $folder);
-                $count  = count($parts);
+                $parts = explode('/', $folder);
+                $count = count($parts);
 
                 $newLongest = max($newLongest, $count);
 
                 if (isset($newFolders[$count])) {
                     $folds = &$newFolders[$count];
-                    $folds[]= $parts;
+                    $folds[] = $parts;
                 } else {
-                    $newFolders[$count] = array( $parts );
+                    $newFolders[$count] = array($parts);
                 }
             }
 
@@ -1069,9 +1066,9 @@ use \php_error\FileLinesSet;
                     $headers = array();
 
                     foreach ($_SERVER as $key => $value) {
-                        if (strpos($key, 'HTTP_') === 0) {
-                            $key = str_replace(" ", "-", ucwords(strtolower(str_replace("_", " ", substr($key, 5)))));
-                            $headers[ $key ] = $value;
+                        if (0 === strpos($key, 'HTTP_')) {
+                            $key = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
+                            $headers[$key] = $value;
                         }
                     }
 
@@ -1083,7 +1080,7 @@ use \php_error\FileLinesSet;
             {
                 $headers = function_exists('apache_response_headers') ?
                         apache_response_headers() :
-                        array() ;
+                        array();
 
                 /*
                  * Merge the headers_list into apache_response_headers.
@@ -1095,49 +1092,49 @@ use \php_error\FileLinesSet;
                     $hList = headers_list();
 
                     foreach ($hList as $header) {
-                        $header = explode(":", $header);
-                        $headers[ array_shift($header) ] = trim(implode(":", $header));
+                        $header = explode(':', $header);
+                        $headers[array_shift($header)] = trim(implode(':', $header));
                     }
                 }
 
                 return $headers;
             }
 
-            public static function identifyTypeHTML($arg, $recurseLevels=1)
+            public static function identifyTypeHTML($arg, $recurseLevels = 1)
             {
-                if (! is_array($arg) && !is_object($arg)) {
+                if (!is_array($arg) && !is_object($arg)) {
                     if (is_string($arg)) {
-                        return "<span class='syntax-string'>&quot;" . htmlentities($arg) . "&quot;</span>";
+                        return "<span class='syntax-string'>&quot;".htmlentities($arg).'&quot;</span>';
                     } else {
-                        return "<span class='syntax-literal'>" . var_export($arg, true) . '</span>';
+                        return "<span class='syntax-literal'>".var_export($arg, true).'</span>';
                     }
                 } elseif (is_array($arg)) {
-                    if (count($arg) === 0) {
-                        return "[]";
+                    if (0 === count($arg)) {
+                        return '[]';
                     } elseif ($recurseLevels > 0) {
                         $argArr = array();
 
                         foreach ($arg as $ag) {
-                            $argArr[]= ErrorHandler::identifyTypeHTML($ag, $recurseLevels-1);
+                            $argArr[] = ErrorHandler::identifyTypeHTML($ag, $recurseLevels - 1);
                         }
 
-                        if (($recurseLevels % 2) === 0) {
-                            return "["  . join(', ', $argArr) .  "]";
+                        if (0 === ($recurseLevels % 2)) {
+                            return '['.join(', ', $argArr).']';
                         } else {
-                            return "[ " . join(', ', $argArr) . " ]";
+                            return '[ '.join(', ', $argArr).' ]';
                         }
                     } else {
-                        return "[...]";
+                        return '[...]';
                     }
-                } elseif (get_class($arg) === 'Closure') {
+                } elseif ('Closure' === get_class($arg)) {
                     return '<span class="syntax-variable">$Closure</span>()';
                 } else {
                     $argKlass = get_class($arg);
 
                     if (preg_match(ErrorHandler::REGEX_PHP_CONST_IDENTIFIER, $argKlass)) {
-                        return '<span class="syntax-literal">$' . $argKlass . '</span>';
+                        return '<span class="syntax-literal">$'.$argKlass.'</span>';
                     } else {
-                        return '<span class="syntax-variable">$' . $argKlass . '</span>';
+                        return '<span class="syntax-variable">$'.$argKlass.'</span>';
                     }
                 }
             }
@@ -1182,7 +1179,7 @@ use \php_error\FileLinesSet;
             private $classNotFoundException;
 
             /**
-             * = Options =
+             * = Options =.
              *
              * All options are optional, and so is passing in an options item.
              * You don't have to supply any, it's up to you.
@@ -1245,13 +1242,14 @@ use \php_error\FileLinesSet;
              *                              Defaults to true!
              *
              * @param options Optional, an array of values to customize this handler.
-             * @throws Exception This is raised if given an options that does *not* exist (so you know that option is meaningless).
+             *
+             * @throws Exception this is raised if given an options that does *not* exist (so you know that option is meaningless)
              */
-            public function __construct($options=null)
+            public function __construct($options = null)
             {
                 // there can only be one to rule them all
                 global $_php_error_global_handler;
-                if ($_php_error_global_handler !== null) {
+                if (null !== $_php_error_global_handler) {
                     $this->lastGlobalErrorHandler = $_php_error_global_handler;
                 } else {
                     $this->lastGlobalErrorHandler = null;
@@ -1269,47 +1267,47 @@ use \php_error\FileLinesSet;
                  * They are removed one by one, and any left, will raise an error.
                  */
 
-                $ignoreFolders                  = ErrorHandler::optionsPop($options, 'ignore_folders', null);
-                $appFolders                     = ErrorHandler::optionsPop($options, 'application_folders', null);
+                $ignoreFolders = ErrorHandler::optionsPop($options, 'ignore_folders', null);
+                $appFolders = ErrorHandler::optionsPop($options, 'application_folders', null);
 
-                if ($ignoreFolders !== null) {
+                if (null !== $ignoreFolders) {
                     ErrorHandler::setFolders($this->ignoreFolders, $this->ignoreFoldersLongest, $ignoreFolders);
                 }
-                if ($appFolders !== null) {
+                if (null !== $appFolders) {
                     ErrorHandler::setFolders($this->applicationFolders, $this->applicationFoldersLongest, $appFolders);
                 }
 
-                $this->saveUrl                  = ErrorHandler::optionsPop($options, 'save_url', $_SERVER['REQUEST_URI']);
-                $this->isSavingEnabled          = ErrorHandler::optionsPop($options, 'enable_saving', true);
+                $this->saveUrl = ErrorHandler::optionsPop($options, 'save_url', $_SERVER['REQUEST_URI']);
+                $this->isSavingEnabled = ErrorHandler::optionsPop($options, 'enable_saving', true);
 
-                $this->defaultErrorReportingOn  = ErrorHandler::optionsPop($options, 'error_reporting_on', -1);
+                $this->defaultErrorReportingOn = ErrorHandler::optionsPop($options, 'error_reporting_on', -1);
                 $this->defaultErrorReportingOff = ErrorHandler::optionsPop($options, 'error_reporting_off', error_reporting());
 
-                $this->applicationRoot          = ErrorHandler::optionsPop($options, 'application_root', $_SERVER['DOCUMENT_ROOT']);
-                $this->serverName               = ErrorHandler::optionsPop($options, 'server_name', $_SERVER['SERVER_NAME']);
+                $this->applicationRoot = ErrorHandler::optionsPop($options, 'application_root', $_SERVER['DOCUMENT_ROOT']);
+                $this->serverName = ErrorHandler::optionsPop($options, 'server_name', $_SERVER['SERVER_NAME']);
 
                 /*
                  * Relative paths might be given for document root,
                  * so we make it explicit.
                  */
                 $dir = @realpath($this->applicationRoot);
-                if (! is_string($dir)) {
-                    throw new Exception("Document root not found: " . $this->applicationRoot);
+                if (!is_string($dir)) {
+                    throw new Exception('Document root not found: '.$this->applicationRoot);
                 } else {
-                    $this->applicationRoot =  str_replace('\\', '/', $dir);
+                    $this->applicationRoot = str_replace('\\', '/', $dir);
                 }
 
-                $this->catchClassNotFound       = !! ErrorHandler::optionsPop($options, 'catch_class_not_found', true);
-                $this->catchSurpressedErrors    = !! ErrorHandler::optionsPop($options, 'catch_supressed_errors', false);
-                $this->catchAjaxErrors          = !! ErrorHandler::optionsPop($options, 'catch_ajax_errors', true);
+                $this->catchClassNotFound = (bool) ErrorHandler::optionsPop($options, 'catch_class_not_found', true);
+                $this->catchSurpressedErrors = (bool) ErrorHandler::optionsPop($options, 'catch_supressed_errors', false);
+                $this->catchAjaxErrors = (bool) ErrorHandler::optionsPop($options, 'catch_ajax_errors', true);
 
-                $this->backgroundText           = ErrorHandler::optionsPop($options, 'background_text', '');
-                $this->numLines                 = ErrorHandler::optionsPop($options, 'snippet_num_lines', ErrorHandler::NUM_FILE_LINES);
-                $this->displayLineNumber        = ErrorHandler::optionsPop($options, 'display_line_numbers', true);
+                $this->backgroundText = ErrorHandler::optionsPop($options, 'background_text', '');
+                $this->numLines = ErrorHandler::optionsPop($options, 'snippet_num_lines', ErrorHandler::NUM_FILE_LINES);
+                $this->displayLineNumber = ErrorHandler::optionsPop($options, 'display_line_numbers', true);
 
-                $this->htmlOnly                 = !! ErrorHandler::optionsPop($options, 'html_only', true);
+                $this->htmlOnly = (bool) ErrorHandler::optionsPop($options, 'html_only', true);
 
-                $this->classNotFoundException   = null;
+                $this->classNotFoundException = null;
 
                 $wordpress = ErrorHandler::optionsPop($options, 'wordpress', false);
                 if ($wordpress) {
@@ -1330,7 +1328,7 @@ use \php_error\FileLinesSet;
 
                 $this->isAjax = (
                     isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-                                ($_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest')
+                                ('XMLHttpRequest' === $_SERVER['HTTP_X_REQUESTED_WITH'])
                         ) || (
                             isset($_REQUEST['php_error_is_ajax'])
                         );
@@ -1349,7 +1347,7 @@ use \php_error\FileLinesSet;
              */
 
             /**
-             * @return true if this is currently on, false if not.
+             * @return true if this is currently on, false if not
              */
             public function isOn()
             {
@@ -1357,7 +1355,7 @@ use \php_error\FileLinesSet;
             }
 
             /**
-             * @return If this is off, this returns true, otherwise false.
+             * @return If this is off, this returns true, otherwise false
              */
             public function isOff()
             {
@@ -1371,7 +1369,7 @@ use \php_error\FileLinesSet;
              * level you pass in when creating this using the 'error_reporting_on'
              * option.
              *
-             * @return This error reporting handler, for method chaining.
+             * @return $this error reporting handler, for method chaining
              */
             public function turnOn()
             {
@@ -1411,7 +1409,7 @@ use \php_error\FileLinesSet;
              * or one you have passed in if you used the 'error_reporting_off'
              * option when creating this.
              *
-             * @return This error reporting handler, for method chaining.
+             * @return $this error reporting handler, for method chaining
              */
             public function turnOff()
             {
@@ -1438,12 +1436,13 @@ use \php_error\FileLinesSet;
              * turned off.
              *
              * @param callback A PHP function to call.
-             * @return The result of calling the callback.
+             *
+             * @return The result of calling the callback
              */
             public function withoutErrors($callback)
             {
-                if (! is_callable($callback)) {
-                    throw new Exception("non callable callback given");
+                if (!is_callable($callback)) {
+                    throw new Exception('non callable callback given');
                 }
 
                 if ($this->isOn()) {
@@ -1474,9 +1473,9 @@ use \php_error\FileLinesSet;
                         // fatal and syntax errors
                         if (
                                 $error && (
-                                    $error['type'] ===  1 ||
-                                        $error['type'] ===  4 ||
-                                        $error['type'] === 64
+                                    1 === $error['type'] ||
+                                        4 === $error['type'] ||
+                                        64 === $error['type']
                                 )
                         ) {
                             $this->reportError($error['type'], $error['message'], $error['line'], $error['file']);
@@ -1497,7 +1496,7 @@ use \php_error\FileLinesSet;
 
             private function propagateTurnOff()
             {
-                if ($this->lastGlobalErrorHandler !== null) {
+                if (null !== $this->lastGlobalErrorHandler) {
                     $this->lastGlobalErrorHandler->turnOff();
                     $this->lastGlobalErrorHandler->propagateTurnOff();
                     $this->lastGlobalErrorHandler = null;
@@ -1525,14 +1524,14 @@ use \php_error\FileLinesSet;
                     ini_set('implicit_flush', false);
                     ob_implicit_flush(false);
 
-                    if (! @ini_get('output_buffering')) {
+                    if (!@ini_get('output_buffering')) {
                         @ini_set('output_buffering', 'on');
                     }
 
                     $output = '';
                     $bufferOutput = true;
 
-                    $this->bufferOutputStr  = &$output;
+                    $this->bufferOutputStr = &$output;
                     $this->bufferOutput = &$bufferOutput;
 
                     ob_start(function ($string) use (&$output, &$bufferOutput) {
@@ -1540,7 +1539,7 @@ use \php_error\FileLinesSet;
                             $output .= $string;
                             return '';
                         } else {
-                            $temp = $output . $string;
+                            $temp = $output.$string;
                             $output = '';
                             return $temp;
                         }
@@ -1596,19 +1595,19 @@ use \php_error\FileLinesSet;
             public function endBuffer()
             {
                 if ($this->isBufferSetup) {
-                    $content  = ob_get_contents();
+                    $content = ob_get_contents();
                     $handlers = ob_list_handlers();
 
                     $wasGZHandler = false;
 
                     $this->bufferOutput = true;
-                    for ($i = count($handlers)-1; $i >= 0; $i--) {
+                    for ($i = count($handlers) - 1; $i >= 0; --$i) {
                         $handler = $handlers[$i];
 
-                        if ($handler === 'ob_gzhandler') {
+                        if ('ob_gzhandler' === $handler) {
                             $wasGZHandler = true;
                             ob_end_clean();
-                        } elseif ($handler === 'default output handler') {
+                        } elseif ('default output handler' === $handler) {
                             ob_end_clean();
                         } else {
                             ob_end_flush();
@@ -1653,7 +1652,8 @@ use \php_error\FileLinesSet;
              * captures it's output, and then returns it.
              *
              * @param method The name of the method to call.
-             * @return All of the text outputted during the method call.
+             *
+             * @return All of the text outputted during the method call
              */
             private function getContent($method)
             {
@@ -1688,9 +1688,9 @@ use \php_error\FileLinesSet;
                 $testFile = $this->removeRootPath($root, $file);
 
                 // it's this file : (
-                if ($file === __FILE__) {
+                if (__FILE__ === $file) {
                     $type = ErrorHandler::FILE_TYPE_IGNORE;
-                } elseif (strpos($testFile, '/') === false) {
+                } elseif (false === strpos($testFile, '/')) {
                     $type = ErrorHandler::FILE_TYPE_ROOT;
                 } elseif ($this->isApplicationFolder($testFile)) {
                     $type = ErrorHandler::FILE_TYPE_APPLICATION;
@@ -1700,7 +1700,7 @@ use \php_error\FileLinesSet;
                     $type = false;
                 }
 
-                return array( $type, $testFile );
+                return array($type, $testFile);
             }
 
             /**
@@ -1714,7 +1714,8 @@ use \php_error\FileLinesSet;
              * it html safe.
              *
              * @param path The file to get the contents of.
-             * @return The file we are after, as an array of lines.
+             *
+             * @return The file we are after, as an array of lines
              */
             private function getFileContents($path)
             {
@@ -1733,7 +1734,7 @@ use \php_error\FileLinesSet;
                                 )
                         );
 
-                        $this->cachedFiles[ $path ] = $contents;
+                        $this->cachedFiles[$path] = $contents;
 
                         return $contents;
                     }
@@ -1758,7 +1759,7 @@ use \php_error\FileLinesSet;
                     if ($lines) {
                         $numLines = $this->numLines;
 
-                        $searchUp   = ceil($numLines*0.75);
+                        $searchUp = ceil($numLines * 0.75);
                         $searchDown = $numLines - $searchUp;
 
                         $countLines = count($lines);
@@ -1774,19 +1775,19 @@ use \php_error\FileLinesSet;
                          * we go down as far as we can,
                          * then work up the search area.
                          */
-                        if ($errLine+$searchDown > $countLines) {
-                            $minLine = max(0, $countLines-$numLines);
+                        if ($errLine + $searchDown > $countLines) {
+                            $minLine = max(0, $countLines - $numLines);
                             $maxLine = $countLines;
                         /*
                          * Go up as far as we can, up to half the search area.
                          * Then stretch down the whole search area.
                          */
                         } else {
-                            $minLine = max(0, $errLine-$searchUp);
-                            $maxLine = min($minLine+$numLines, count($lines));
+                            $minLine = max(0, $errLine - $searchUp);
+                            $maxLine = min($minLine + $numLines, count($lines));
                         }
 
-                        $fileLines = array_splice($lines, $minLine, $maxLine-$minLine);
+                        $fileLines = array_splice($lines, $minLine, $maxLine - $minLine);
 
                         $stripSize = -1;
                         foreach ($fileLines as $i => $line) {
@@ -1795,7 +1796,7 @@ use \php_error\FileLinesSet;
                             if (strlen($newLine) > 0) {
                                 $numSpaces = strlen($line) - strlen($newLine);
 
-                                if ($stripSize === -1) {
+                                if (-1 === $stripSize) {
                                     $stripSize = $numSpaces;
                                 } else {
                                     $stripSize = min($stripSize, $numSpaces);
@@ -1826,9 +1827,9 @@ use \php_error\FileLinesSet;
                         $fileLines = explode("\n", $fileLines);
 
                         $lines = array();
-                        for ($i = 0; $i < count($fileLines); $i++) {
+                        for ($i = 0; $i < count($fileLines); ++$i) {
                             // +1 is because line numbers start at 1, whilst arrays start at 0
-                            $lines[ $i+$minLine+1 ] = $fileLines[$i];
+                            $lines[$i + $minLine + 1] = $fileLines[$i];
                         }
                     }
 
@@ -1859,10 +1860,10 @@ use \php_error\FileLinesSet;
                 $filePath = str_replace('\\', '/', $path);
 
                 if (
-                        strpos($filePath, $root) === 0 &&
+                        0 === strpos($filePath, $root) &&
                         strlen($root) < strlen($filePath)
                 ) {
-                    return substr($filePath, strlen($root)+1);
+                    return substr($filePath, strlen($root) + 1);
                 } else {
                     return $filePath;
                 }
@@ -1891,12 +1892,12 @@ use \php_error\FileLinesSet;
                             $skipFirst = false;
                         } else {
                             if ($trace && isset($trace['file']) && isset($trace['line'])) {
-                                return array( $trace['file'], $trace['line'], $i );
+                                return array($trace['file'], $trace['line'], $i);
                             }
                         }
                     }
 
-                    return array( null, null, null );
+                    return array(null, null, null);
                 };
 
                 /*
@@ -1906,10 +1907,10 @@ use \php_error\FileLinesSet;
                  * place, even though we are already told this through line and
                  * file info. So we cut it out.
                  */
-                if ($code === 1) {
+                if (1 === $code) {
                     if (
-                            (strpos($message, " undefined method ") !== false) ||
-                            (strpos($message, " undefined function ") !== false)
+                            (false !== strpos($message, ' undefined method ')) ||
+                            (false !== strpos($message, ' undefined function '))
                     ) {
                         $matches = array();
                         preg_match('/\b[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*((->|::)[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)?\\(\\)$/', $message, $matches);
@@ -1923,8 +1924,8 @@ use \php_error\FileLinesSet;
                             if ($stackTrace && isset($stackTrace[1]) && $stackTrace[1]['args']) {
                                 $numArgs = count($stackTrace[1]['args']);
 
-                                for ($i = 0; $i < $numArgs; $i++) {
-                                    $args[]= ErrorHandler::newArgument("_");
+                                for ($i = 0; $i < $numArgs; ++$i) {
+                                    $args[] = ErrorHandler::newArgument('_');
                                 }
                             }
 
@@ -1934,14 +1935,14 @@ use \php_error\FileLinesSet;
                                 $message
                             );
                         }
-                    } elseif ($message === 'Using $this when not in object context') {
+                    } elseif ('Using $this when not in object context' === $message) {
                         $message = 'Using <span class="syntax-variable">$this</span> outside object context';
                     /*
                      * Class not found error.
                      */
                     } elseif (
-                        strpos($message, "Class ") !== false &&
-                        strpos($message, "not found") !== false
+                        false !== strpos($message, 'Class ') &&
+                        false !== strpos($message, 'not found')
                     ) {
                         $matches = array();
                         preg_match('/\'(\\\\)?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*((\\\\)?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)+\'/', $message, $matches);
@@ -1949,7 +1950,7 @@ use \php_error\FileLinesSet;
                         if (count($matches) > 0) {
                             // lose the 'quotes'
                             $className = $matches[0];
-                            $className = substr($className, 1, strlen($className)-2);
+                            $className = substr($className, 1, strlen($className) - 2);
 
                             $message = preg_replace(
                                 '/\'(\\\\)?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*((\\\\)?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)+\'/',
@@ -1958,8 +1959,8 @@ use \php_error\FileLinesSet;
                             );
                         }
                     }
-                } elseif ($code === 2) {
-                    if (strpos($message, "Missing argument ") === 0) {
+                } elseif (2 === $code) {
+                    if (0 === strpos($message, 'Missing argument ')) {
                         $message = preg_replace('/, called in .*$/', '', $message);
 
                         $matches = array();
@@ -1968,9 +1969,9 @@ use \php_error\FileLinesSet;
                         if ($matches) {
                             $argumentMathces = array();
                             preg_match('/^Missing argument ([0-9]+)/', $message, $argumentMathces);
-                            $highlightArg = count($argumentMathces) === 2 ?
-                                    (((int) $argumentMathces[1])-1) :
-                                    null ;
+                            $highlightArg = 2 === count($argumentMathces) ?
+                                    (((int) $argumentMathces[1]) - 1) :
+                                    null;
 
                             $numHighlighted = 0;
                             $altInfo = ErrorHandler::syntaxHighlightFunctionMatch($matches[0], $stackTrace, $highlightArg, $numHighlighted);
@@ -1986,10 +1987,10 @@ use \php_error\FileLinesSet;
                             }
                         }
                     } elseif (
-                            strpos($message, 'require(') === 0 ||
-                            strpos($message, 'include(') === 0
+                            0 === strpos($message, 'require(') ||
+                            0 === strpos($message, 'include(')
                     ) {
-                        $endI  = strpos($message, '):');
+                        $endI = strpos($message, '):');
 
                         if ($endI) {
                             // include( is the same length
@@ -1998,25 +1999,25 @@ use \php_error\FileLinesSet;
                             /*
                              * +2 to include the ): at the end of the string
                              */
-                            $postMessage = substr($message, $endI+2);
+                            $postMessage = substr($message, $endI + 2);
                             $postMessage = str_replace('failed to open stream: No ', 'no ', $postMessage);
-                            $message = substr_replace($message, $postMessage, $endI+2);
+                            $message = substr_replace($message, $postMessage, $endI + 2);
 
                             /*
                              * If this string is in there, and where we think it should be,
                              * swap it with a shorter message.
                              */
                             $replaceBit = 'failed to open stream: No ';
-                            if (strpos($message, $replaceBit) === $endI+2) {
-                                $message  = substr_replace($message, 'no ', $endI+2, strlen($replaceBit));
+                            if (strpos($message, $replaceBit) === $endI + 2) {
+                                $message = substr_replace($message, 'no ', $endI + 2, strlen($replaceBit));
                             }
 
                             /*
                              * Now put the string highlighting in there.
                              */
-                            $match = substr($message, $requireLen, $endI-$requireLen);
+                            $match = substr($message, $requireLen, $endI - $requireLen);
                             $newString = "<span class='syntax-string'>'$match'</span>),";
-                            $message  = substr_replace($message, $newString, $requireLen, ($endI-$requireLen)+2);
+                            $message = substr_replace($message, $newString, $requireLen, ($endI - $requireLen) + 2);
                         }
                     }
                     /*
@@ -2025,21 +2026,21 @@ use \php_error\FileLinesSet;
                      *
                      * This swaps the 'T_WHATEVER' for the symbolic representation.
                      */
-                } elseif ($code === 4) {
-                    if ($message === "syntax error, unexpected T_ENCAPSED_AND_WHITESPACE") {
-                        $message = "syntax error, string is not closed";
+                } elseif (4 === $code) {
+                    if ('syntax error, unexpected T_ENCAPSED_AND_WHITESPACE' === $message) {
+                        $message = 'syntax error, string is not closed';
                     } else {
                         $semiColonError = false;
-                        if (strpos($message, 'syntax error,') === 0 && $errLine > 2) {
+                        if (0 === strpos($message, 'syntax error,') && $errLine > 2) {
                             $lines = ErrorHandler::getFileContents($errFile);
 
-                            $line = $lines[$errLine-1];
-                            if (preg_match(ErrorHandler::REGEX_MISSING_SEMI_COLON_FOLLOWING_LINE, $line) !== 0) {
-                                $content = rtrim(join("\n", array_slice($lines, 0, $errLine-1)));
+                            $line = $lines[$errLine - 1];
+                            if (0 !== preg_match(ErrorHandler::REGEX_MISSING_SEMI_COLON_FOLLOWING_LINE, $line)) {
+                                $content = rtrim(join("\n", array_slice($lines, 0, $errLine - 1)));
 
-                                if (strrpos($content, ';') !== strlen($content)-1) {
-                                    $message = "Missing semi-colon";
-                                    $errLine--;
+                                if (strrpos($content, ';') !== strlen($content) - 1) {
+                                    $message = 'Missing semi-colon';
+                                    --$errLine;
                                     $srcErrLine = $errLine;
                                     $semiColonError = true;
                                 }
@@ -2062,7 +2063,7 @@ use \php_error\FileLinesSet;
 
                             if ($num > 0) {
                                 $match = $matches[0];
-                                $newMatch = str_replace(", expecting ", '', $match);
+                                $newMatch = str_replace(', expecting ', '', $match);
                                 $symbols = explode(' or ', $newMatch);
                                 foreach ($symbols as $i => $sym) {
                                     $symbols[$i] = ErrorHandler::phpSymbolToDescription($sym);
@@ -2073,24 +2074,24 @@ use \php_error\FileLinesSet;
                             }
                         }
                     }
-                    /**
+                    /*
                      * Undefined Variable, add syntax highlighting and make variable from 'foo' too '$foo'.
                      */
-                } elseif ($code === 8) {
+                } elseif (8 === $code) {
                     if (
-                        strpos($message, "Undefined variable:") !== false
+                        false !== strpos($message, 'Undefined variable:')
                     ) {
                         $matches = array();
                         preg_match(ErrorHandler::REGEX_VARIABLE, $message, $matches);
 
                         if (count($matches) > 0) {
-                            $message = 'Undefined variable <span class="syntax-variable">$' . $matches[0] . '</span>' ;
+                            $message = 'Undefined variable <span class="syntax-variable">$'.$matches[0].'</span>';
                         }
                     }
-                    /**
+                    /*
                      * Invalid type given.
                      */
-                } elseif ($code === 4096) {
+                } elseif (4096 === $code) {
                     if (strpos($message, 'must be an ')) {
                         $message = preg_replace('/, called in .*$/', '', $message);
 
@@ -2100,9 +2101,9 @@ use \php_error\FileLinesSet;
                         if ($matches) {
                             $argumentMathces = array();
                             preg_match('/^Argument ([0-9]+)/', $message, $argumentMathces);
-                            $highlightArg = count($argumentMathces) === 2 ?
-                                    (((int) $argumentMathces[1])-1) :
-                                    null ;
+                            $highlightArg = 2 === count($argumentMathces) ?
+                                    (((int) $argumentMathces[1]) - 1) :
+                                    null;
 
                             $fun = ErrorHandler::syntaxHighlightFunctionMatch($matches[0], $stackTrace, $highlightArg);
 
@@ -2115,26 +2116,26 @@ use \php_error\FileLinesSet;
                                  * scalars not supported.
                                  */
                                 $scalarType = null;
-                                if (! ErrorHandler::$IS_SCALAR_TYPE_HINTING_SUPPORTED) {
+                                if (!ErrorHandler::$IS_SCALAR_TYPE_HINTING_SUPPORTED) {
                                     foreach (ErrorHandler::$SCALAR_TYPES as $scalar) {
-                                        if (stripos($message, "must be an instance of $scalar,") !== false) {
+                                        if (false !== stripos($message, "must be an instance of $scalar,")) {
                                             $scalarType = $scalar;
                                             break;
                                         }
                                     }
                                 }
 
-                                if ($scalarType !== null) {
+                                if (null !== $scalarType) {
                                     $message = preg_replace('/^Argument [0-9]+ calling /', 'Incorrect type hinting for ', $message);
                                     $message = preg_replace(
-                                        '/ must be an instance of ' . ErrorHandler::REGEX_PHP_IDENTIFIER . '\b.*$/',
+                                        '/ must be an instance of '.ErrorHandler::REGEX_PHP_IDENTIFIER.'\b.*$/',
                                         ", ${scalarType} is not supported",
                                         $message
                                     );
 
                                     $prioritizeCaller = false;
                                 } else {
-                                    $message = preg_replace('/ must be an (instance of )?' . ErrorHandler::REGEX_PHP_IDENTIFIER . '\b/', '', $message);
+                                    $message = preg_replace('/ must be an (instance of )?'.ErrorHandler::REGEX_PHP_IDENTIFIER.'\b/', '', $message);
 
                                     if (preg_match('/, none given$/', $message)) {
                                         $message = preg_replace('/^Argument /', 'Missing argument ', $message);
@@ -2152,23 +2153,23 @@ use \php_error\FileLinesSet;
                     }
                 }
 
-                if ($stackTrace !== null) {
-                    $isEmpty = count($stackTrace) === 0 ;
+                if (null !== $stackTrace) {
+                    $isEmpty = 0 === count($stackTrace);
 
                     if ($isEmpty) {
                         array_unshift($stackTrace, array(
                                 'line' => $errLine,
-                                'file' => $errFile
+                                'file' => $errFile,
                         ));
                     } elseif (
                             count($stackTrace) > 0 && (
-                                (! isset($stackTrace[0]['line'])) ||
+                                (!isset($stackTrace[0]['line'])) ||
                                     ($stackTrace[0]['line'] !== $errLine)
                             )
                     ) {
                         array_unshift($stackTrace, array(
                                 'line' => $errLine,
-                                'file' => $errFile
+                                'file' => $errFile,
                         ));
                     }
 
@@ -2188,19 +2189,19 @@ use \php_error\FileLinesSet;
                          * If stackSearchI was not altered, then it just searches from top
                          * through to the bottom.
                          */
-                        for ($i = $stackSearchI; $i < $stackSearchI+$len; $i++) {
-                            $trace = &$stackTrace[ $i % $len ];
+                        for ($i = $stackSearchI; $i < $stackSearchI + $len; ++$i) {
+                            $trace = &$stackTrace[$i % $len];
 
                             if (isset($trace['file']) && isset($trace['line'])) {
                                 list($type, $_) = $this->getFolderType($root, $trace['file']);
 
-                                if ($type !== ErrorHandler::FILE_TYPE_IGNORE) {
-                                    if ($type === ErrorHandler::FILE_TYPE_APPLICATION) {
+                                if (ErrorHandler::FILE_TYPE_IGNORE !== $type) {
+                                    if (ErrorHandler::FILE_TYPE_APPLICATION === $type) {
                                         $srcErrLine = $trace['line'];
                                         $srcErrFile = $trace['file'];
 
                                         break;
-                                    } elseif (! $ignoreCommons) {
+                                    } elseif (!$ignoreCommons) {
                                         $srcErrLine = $trace['line'];
                                         $srcErrFile = $trace['file'];
 
@@ -2212,7 +2213,7 @@ use \php_error\FileLinesSet;
                     }
                 }
 
-                return array( $message, $srcErrFile, $srcErrLine, $altInfo );
+                return array($message, $srcErrFile, $srcErrLine, $altInfo);
             }
 
             /**
@@ -2224,9 +2225,9 @@ use \php_error\FileLinesSet;
              *
              * If stackTrace is null, then null is returned.
              */
-            private function parseStackTrace($code, $message, $errLine, $errFile, &$stackTrace, $root, $altInfo=null)
+            private function parseStackTrace($code, $message, $errLine, $errFile, &$stackTrace, $root, $altInfo = null)
             {
-                if ($stackTrace !== null) {
+                if (null !== $stackTrace) {
                     /*
                      * For whitespace padding.
                      */
@@ -2244,7 +2245,7 @@ use \php_error\FileLinesSet;
 
                             $info = '';
 
-                            if ($i === 0 && $altInfo !== null) {
+                            if (0 === $i && null !== $altInfo) {
                                 $info = $altInfo;
                             /*
                              * Skip for the first iteration,
@@ -2260,24 +2261,24 @@ use \php_error\FileLinesSet;
                                 $args = array();
                                 if (isset($trace['args'])) {
                                     foreach ($trace['args'] as $arg) {
-                                        $args[]= ErrorHandler::identifyTypeHTML($arg, 1);
+                                        $args[] = ErrorHandler::identifyTypeHTML($arg, 1);
                                     }
                                 }
 
                                 $info = ErrorHandler::syntaxHighlightFunction(
-                                    isset($trace['class'])      ? $trace['class']       : null,
-                                    isset($trace['type'])       ? $trace['type']        : null,
-                                    isset($trace['function'])   ? $trace['function']    : null,
+                                    isset($trace['class']) ? $trace['class'] : null,
+                                    isset($trace['type']) ? $trace['type'] : null,
+                                    isset($trace['function']) ? $trace['function'] : null,
                                     $args
                                 );
-                            } elseif (isset($trace['info']) && $trace['info'] !== '') {
+                            } elseif (isset($trace['info']) && '' !== $trace['info']) {
                                 $info = ErrorHandler::syntaxHighlight($trace['info']);
                             } elseif (isset($trace['file']) && !isset($trace['info'])) {
                                 $contents = $this->getFileContents($trace['file']);
 
                                 if ($contents) {
                                     $info = ErrorHandler::syntaxHighlight(
-                                        trim($contents[$trace['line']-1])
+                                        trim($contents[$trace['line'] - 1])
                                     );
                                 }
                             }
@@ -2329,9 +2330,9 @@ use \php_error\FileLinesSet;
                             if ($trace['is_native']) {
                                 $fileKlass = 'file-internal-php';
                             } else {
-                                $fileKlass = 'filename ' . ErrorHandler::folderTypeToCSS($trace['file_type']);
+                                $fileKlass = 'filename '.ErrorHandler::folderTypeToCSS($trace['file_type']);
                             }
-                            $file = $file . str_pad('', $fileLen-strlen($file), ' ', STR_PAD_LEFT);
+                            $file = $file.str_pad('', $fileLen - strlen($file), ' ', STR_PAD_LEFT);
 
                             // info
                             $info = $trace['info'];
@@ -2346,9 +2347,9 @@ use \php_error\FileLinesSet;
                             $file = trim($file);
 
                             $stackStr =
-                                    "<td class='linenumber'>$line</td>" .
-                                    "<td class='$fileKlass'>$file</td>" .
-                                    "<td class='lineinfo'>$info</td>"   ;
+                                    "<td class='linenumber'>$line</td>".
+                                    "<td class='$fileKlass'>$file</td>".
+                                    "<td class='lineinfo'>$info</td>";
 
                             if ($trace['is_native']) {
                                 $cssClass = 'is-native ';
@@ -2363,16 +2364,16 @@ use \php_error\FileLinesSet;
                             }
 
                             if (
-                                    $i !== 0 &&
+                                    0 !== $i &&
                                     isset($trace['exception']) &&
                                     $trace['exception']
                             ) {
                                 $ex = $trace['exception'];
 
-                                $exHtml = '<tr class="error-stack-trace-exception"><td>' .
-                                            'exception &quot;' .
-                                            htmlspecialchars($ex->getMessage()) .
-                                            '&quot;' .
+                                $exHtml = '<tr class="error-stack-trace-exception"><td>'.
+                                            'exception &quot;'.
+                                            htmlspecialchars($ex->getMessage()).
+                                            '&quot;'.
                                         '</td></tr>';
                             } else {
                                 $exHtml = '';
@@ -2380,32 +2381,32 @@ use \php_error\FileLinesSet;
 
                             $data = '';
                             if (isset($trace['file-id'])) {
-                                $data = ' data-file-id="' . $trace['file-id'] . '"' .
-                                            ' data-line="' . $line . '"' ;
+                                $data = ' data-file-id="'.$trace['file-id'].'"'.
+                                            ' data-line="'.$line.'"';
                             }
 
                             $stackTrace[$i] = "$exHtml<tr class='error-stack-trace-line $cssClass' $data>$stackStr</tr>";
                         }
                     }
 
-                    return '<table id="error-stack-trace">' . join("", $stackTrace) . '</table>';
+                    return '<table id="error-stack-trace">'.join('', $stackTrace).'</table>';
                 } else {
                     return null;
                 }
             }
 
-            private function logError($message, $file, $line, $ex=null)
+            private function logError($message, $file, $line, $ex = null)
             {
                 if ($ex) {
                     $trace = $ex->getTraceAsString();
                     $parts = explode("\n", $trace);
-                    $trace = "        " . join("\n        ", $parts);
+                    $trace = '        '.join("\n        ", $parts);
 
-                    if (! ErrorHandler::isIIS()) {
+                    if (!ErrorHandler::isIIS()) {
                         error_log("$message \n           $file, $line \n$trace");
                     }
                 } else {
-                    if (! ErrorHandler::isIIS()) {
+                    if (!ErrorHandler::isIIS()) {
                         error_log("$message \n           $file, $line");
                     }
                 }
@@ -2448,29 +2449,29 @@ use \php_error\FileLinesSet;
              * even when it's disabled with ini. It just does nothing
              * more than that.
              */
-            public function reportError($code, $message, $errLine, $errFile, $ex=null)
+            public function reportError($code, $message, $errLine, $errFile, $ex = null)
             {
                 $this->discardBuffer();
 
                 if (
-                        $ex === null &&
-                        $code === 1 &&
-                        strpos($message, "Class ") === 0 &&
-                        strpos($message, "not found") !== false &&
-                        $this->classNotFoundException !== null
+                        null === $ex &&
+                        1 === $code &&
+                        0 === strpos($message, 'Class ') &&
+                        false !== strpos($message, 'not found') &&
+                        null !== $this->classNotFoundException
                 ) {
                     $ex = $this->classNotFoundException;
 
-                    $code       = $ex->getCode();
-                    $message    = $ex->getMessage();
-                    $errLine    = $ex->getLine();
-                    $errFile    = $ex->getFile();
+                    $code = $ex->getCode();
+                    $message = $ex->getMessage();
+                    $errLine = $ex->getLine();
+                    $errFile = $ex->getFile();
                     $stackTrace = $ex->getTrace();
                 }
 
                 $this->logError($message, $errFile, $errLine, $ex);
 
-                /**
+                /*
                  * It runs if:
                  *  - it is globally enabled
                  *  - this error handler is enabled
@@ -2510,25 +2511,25 @@ use \php_error\FileLinesSet;
                     $errFileType = ErrorHandler::folderTypeToCSS($type);
 
                     $stackTrace = $this->parseStackTrace($code, $message, $errLine, $errFile, $stackTrace, $root, $altInfo);
-                    $fileLines  = $this->readCodeFile($srcErrFile, $srcErrLine);
+                    $fileLines = $this->readCodeFile($srcErrFile, $srcErrLine);
 
                     // load the session, if ...
                     //  - there *is* a session cookie to load
                     //  - the session has not yet been started
                     // Do not start the session without he cookie, because there may be no session ever.
-                    if (isset($_COOKIE[session_name()]) && session_id() === '') {
+                    if (isset($_COOKIE[session_name()]) && '' === session_id()) {
                         session_start();
                     }
 
-                    $request  = ErrorHandler::getRequestHeaders();
+                    $request = ErrorHandler::getRequestHeaders();
                     $response = ErrorHandler::getResponseHeaders();
 
                     $dump = $this->generateDumpHTML(
                         array(
-                                    'post'    => (isset($_POST)    ? $_POST    : array()),
-                                    'get'     => (isset($_GET)     ? $_GET     : array()),
+                                    'post' => (isset($_POST) ? $_POST : array()),
+                                    'get' => (isset($_GET) ? $_GET : array()),
                                     'session' => (isset($_SESSION) ? $_SESSION : array()),
-                                    'cookies' => (isset($_COOKIE)  ? $_COOKIE  : array())
+                                    'cookies' => (isset($_COOKIE) ? $_COOKIE : array()),
                             ),
                         $request,
                         $response,
@@ -2546,24 +2547,24 @@ use \php_error\FileLinesSet;
             {
                 $stackTrace = null;
 
-                if ($ex !== null) {
+                if (null !== $ex) {
                     $next = $ex;
                     $stackTrace = array();
                     $skipStacks = 0;
 
                     for (
                             $next = $ex;
-                            $next !== null;
+                            null !== $next;
                             $next = $next->getPrevious()
                     ) {
                         $ex = $next;
 
                         $stack = $ex->getTrace();
-                        $file  = $ex->getFile();
-                        $line  = $ex->getLine();
+                        $file = $ex->getFile();
+                        $line = $ex->getLine();
 
-                        if ($stackTrace !== null && count($stackTrace) > 0) {
-                            $stack = array_slice($stack, 0, count($stack)-count($stackTrace) + 1);
+                        if (null !== $stackTrace && count($stackTrace) > 0) {
+                            $stack = array_slice($stack, 0, count($stack) - count($stackTrace) + 1);
                         }
 
                         if (count($stack) > 0 && (
@@ -2574,13 +2575,13 @@ use \php_error\FileLinesSet;
                         )) {
                             array_unshift($stack, array(
                                     'file' => $file,
-                                    'line' => $line
+                                    'line' => $line,
                             ));
                         }
 
-                        $stackTrace = ($stackTrace !== null) ?
+                        $stackTrace = (null !== $stackTrace) ?
                                 array_merge($stack, $stackTrace) :
-                                $stack ;
+                                $stack;
 
                         if (count($stackTrace) > 0) {
                             $stackTrace[0]['exception'] = $ex;
@@ -2596,18 +2597,18 @@ use \php_error\FileLinesSet;
                     if (method_exists($ex, 'getSeverity')) {
                         $severity = $ex->getSeverity();
 
-                        if ($code === 0 && $severity !== 0 && $severity !== null) {
+                        if (0 === $code && 0 !== $severity && null !== $severity) {
                             $code = $severity;
                         }
                     }
                 }
 
-                return array( $ex, $stackTrace, $code, $errFile, $errLine );
+                return array($ex, $stackTrace, $code, $errFile, $errLine);
             }
 
             private function generateDumpHTML($arrays, $request, $response, $server)
             {
-                $arrToHtml = function ($name, $array, $css='') {
+                $arrToHtml = function ($name, $array, $css = '') {
                     $max = 0;
 
                     foreach ($array as $e => $v) {
@@ -2637,27 +2638,26 @@ use \php_error\FileLinesSet;
                     }
                 }
 
-                return "<div class='error-dumps'>" .
-                            $html .
-                            $arrToHtml('request', $request, 'dump_request') .
-                            $arrToHtml('response', $response, 'dump_response') .
-                            $arrToHtml('server', $server, 'dump_server') .
-                        "</div>";
+                return "<div class='error-dumps'>".
+                            $html.
+                            $arrToHtml('request', $request, 'dump_request').
+                            $arrToHtml('response', $response, 'dump_response').
+                            $arrToHtml('server', $server, 'dump_server').
+                        '</div>';
             }
 
             private function generateFileLineSets($srcErrFile, $srcErrLine, &$stackTrace)
             {
                 $fileLineID = 1;
                 $srcErrID = "file-line-$fileLineID";
-                $fileLineID++;
-
+                ++$fileLineID;
 
                 $lines = $this->getFileContents($srcErrFile);
                 $minSize = count($lines);
 
                 $srcFileSet = new FileLinesSet($srcErrFile, $srcErrID, $lines);
 
-                $seenFiles = array( $srcErrFile => $srcFileSet );
+                $seenFiles = array($srcErrFile => $srcFileSet);
 
                 if ($stackTrace) {
                     foreach ($stackTrace as $i => &$trace) {
@@ -2674,9 +2674,9 @@ use \php_error\FileLinesSet;
                                 $minSize = max($minSize, count($lines));
                                 $fileSet = new FileLinesSet($file, $traceFileID, $lines);
 
-                                $seenFiles[ $file ] = $fileSet;
+                                $seenFiles[$file] = $fileSet;
 
-                                $fileLineID++;
+                                ++$fileLineID;
                             }
 
                             $trace['file-id'] = $fileSet->getHTMLID();
@@ -2684,7 +2684,7 @@ use \php_error\FileLinesSet;
                     }
                 }
 
-                return array( array_values($seenFiles), $minSize );
+                return array(array_values($seenFiles), $minSize);
             }
 
             /*
@@ -2777,7 +2777,7 @@ use \php_error\FileLinesSet;
                                 /*
                                  * When using an @, the error reporting drops to 0.
                                  */
-                                if (error_reporting() !== 0 || $catchSurpressedErrors) {
+                                if (0 !== error_reporting() || $catchSurpressedErrors) {
                                     $ex = new \ErrorException($message, $code, 0, $file, $line);
 
                                     $self->reportException($ex);
@@ -2797,7 +2797,7 @@ use \php_error\FileLinesSet;
                         }
                     });
 
-                    if (! $self->isShutdownRegistered) {
+                    if (!$self->isShutdownRegistered) {
                         if ($self->catchClassNotFound) {
                             $classException = &$self->classNotFoundException;
                             $autoloaderFuns = ErrorHandler::$SAFE_AUTOLOADER_FUNCTIONS;
@@ -2837,9 +2837,9 @@ use \php_error\FileLinesSet;
                                                 break;
                                             // not us, and not the autoloader, so error!
                                             } elseif (
-                                                    $function !== '__autoload' &&
-                                                    $function !== 'spl_autoload_call' &&
-                                                    strpos($function, 'php_error\\') === false
+                                                    '__autoload' !== $function &&
+                                                    'spl_autoload_call' !== $function &&
+                                                    false === strpos($function, 'php_error\\')
                                             ) {
                                                 break;
                                             }
@@ -3136,7 +3136,7 @@ use \php_error\FileLinesSet;
                                         /*
                                          * It's null in some browsers, and an empty string in others.
                                          */
-                                        var header = inner.getResponseHeader( '<?php echo ErrorHandler::PHP_ERROR_MAGIC_HEADER_KEY ?>' );
+                                        var header = inner.getResponseHeader( '<?php echo ErrorHandler::PHP_ERROR_MAGIC_HEADER_KEY; ?>' );
 
                                         if ( header !== null && header !== '' ) {
                                             self.__.isAjaxError = true;
@@ -3274,12 +3274,12 @@ use \php_error\FileLinesSet;
              */
             private function displayError($message, $errLine, $errFile, $errFileType, $stackTrace, &$fileLinesSets, $numFileLines, $dumpInfo)
             {
-                $applicationRoot   = $this->applicationRoot;
-                $serverName        = $this->serverName;
-                $backgroundText    = $this->backgroundText;
+                $applicationRoot = $this->applicationRoot;
+                $serverName = $this->serverName;
+                $backgroundText = $this->backgroundText;
                 $displayLineNumber = $this->displayLineNumber;
-                $saveUrl           = $this->saveUrl;
-                $isSavingEnabled   = $this->isSavingEnabled;
+                $saveUrl = $this->saveUrl;
+                $isSavingEnabled = $this->isSavingEnabled;
 
                 /*
                  * When a query string is not provided,
@@ -3291,8 +3291,8 @@ use \php_error\FileLinesSet;
                     $requestUrlLen = strlen($requestUrl);
 
                     // remove the '?' if it's there (I suspect it isn't always, but don't take my word for it!)
-                    if ($requestUrlLen > 0 && substr($requestUrl, $requestUrlLen-1) === '?') {
-                        $requestUrl = substr($requestUrl, 0, $requestUrlLen-1);
+                    if ($requestUrlLen > 0 && '?' === substr($requestUrl, $requestUrlLen - 1)) {
+                        $requestUrl = substr($requestUrl, 0, $requestUrlLen - 1);
                     }
                 } else {
                     $requestUrl = $_SERVER['REQUEST_URI'];
@@ -3302,10 +3302,10 @@ use \php_error\FileLinesSet;
                 $this->displayHTML(
                         // pre, in the head
                         function () use ($message, $errFile, $errLine) {
-                            echo "<!--\n" .
-                                        "$message\n" .
-                                        "$errFile, $errLine\n" .
-                                    "-->";
+                            echo "<!--\n".
+                                        "$message\n".
+                                        "$errFile, $errLine\n".
+                                    '-->';
                         },
 
                         // the content
@@ -3321,24 +3321,24 @@ use \php_error\FileLinesSet;
                             if ($backgroundText) {
                                 ?>
                                 <div id="error-wrap">
-                                    <div id="error-back"><?php echo $backgroundText ?></div>
+                                    <div id="error-back"><?php echo $backgroundText; ?></div>
                                 </div>
                             <?php
                             } ?>
 
-                            <h2 id="error-file-root"><?php echo $serverName ?> | <?php echo $applicationRoot ?></h2>
+                            <h2 id="error-file-root"><?php echo $serverName; ?> | <?php echo $applicationRoot; ?></h2>
                             <h2 id="ajax-info">
                                 <span id="ajax-tab" class="ajax-button">AJAX PAUSED</span>
 
-                                <span class="ajax-url"><?php echo $serverName ?><?php echo $requestUrl ?></span>
+                                <span class="ajax-url"><?php echo $serverName; ?><?php echo $requestUrl; ?></span>
                                 <span class="ajax-buttons">
                                     <a href="#" id="ajax-close" class="ajax-button">X</a>
                                     <a href="#" id="ajax-retry" class="ajax-button">RETRY</a>
                                 </span>
                             </h2>
-                            <h1 id="error-title"><?php echo $message ?></h1>
-                            <div class="error-file-top <?php echo($fileLinesSets ? 'has_code' : '') ?>">
-                                <h2 id="error-file"><span id="error-linenumber"><?php echo $errLine ?></span> <span id="error-filename" class="<?php echo $errFileType ?>"><?php echo $errFile ?></span></h2>
+                            <h1 id="error-title"><?php echo $message; ?></h1>
+                            <div class="error-file-top <?php echo $fileLinesSets ? 'has_code' : ''; ?>">
+                                <h2 id="error-file"><span id="error-linenumber"><?php echo $errLine; ?></span> <span id="error-filename" class="<?php echo $errFileType; ?>"><?php echo $errFile; ?></span></h2>
                                 <?php if ($isSavingEnabled) {
                                 ?>
                                     <a href="#" class="error-file-save">save changes</a>
@@ -3349,7 +3349,7 @@ use \php_error\FileLinesSet;
 
                             if (!$fileLinesSets) {
                                 ?>
-                                    <div id="error-editor" class="<?php echo($displayLineNumber ? '' : 'no-line-nums') ?>">
+                                    <div id="error-editor" class="<?php echo $displayLineNumber ? '' : 'no-line-nums'; ?>">
                                         <noscript>
                                             <div id="noscript-editor">enable JavaScript to view source code</div>
                                         </noscript>
@@ -3358,27 +3358,27 @@ use \php_error\FileLinesSet;
                                 <?php
 
                                 foreach ($fileLinesSets as $i => $fileLinesSet) {
-                                    $id            = $fileLinesSet->getHTMLID();
-                                    $fileLines     = $fileLinesSet->getLines(); ?><div 
-                                            data-file-id="<?php echo $fileLinesSet->getHTMLID() ?>"
-                                            data-file-src="<?php echo $fileLinesSet->getSrc() ?>"
+                                    $id = $fileLinesSet->getHTMLID();
+                                    $fileLines = $fileLinesSet->getLines(); ?><div 
+                                            data-file-id="<?php echo $fileLinesSet->getHTMLID(); ?>"
+                                            data-file-src="<?php echo $fileLinesSet->getSrc(); ?>"
                                             class="error-editor-file"
-                                    ><?= htmlentities($fileLinesSet->getContent()) ?></div><?php
+                                    ><?= htmlentities($fileLinesSet->getContent()); ?></div><?php
                                 }
                             }
 
-                            if ($stackTrace !== null) {
+                            if (null !== $stackTrace) {
                                 echo $stackTrace;
                             }
 
-                            if ($dumpInfo !== null) {
+                            if (null !== $dumpInfo) {
                                 echo $dumpInfo;
                             }
                         },
 
                         /**
                          * Adds:
-                         *  = mouse movement for switching the code snippet in real time
+                         *  = mouse movement for switching the code snippet in real time.
                          */
                         function () use ($saveUrl) {
                             ?><script>
@@ -3524,11 +3524,11 @@ use \php_error\FileLinesSet;
                                             } else {
                                                 $.ajax({
                                                         type: "POST",
-                                                        url: "<?php echo $saveUrl ?>", 
+                                                        url: "<?php echo $saveUrl; ?>", 
                                                         dataType: "json",
 
                                                         data: {
-                                                            "<?php echo ErrorHandler::POST_FILE_LOCATION ?>": files
+                                                            "<?php echo ErrorHandler::POST_FILE_LOCATION; ?>": files
                                                         },
 
                                                         success: function(res, status, xhr) {
@@ -3536,7 +3536,7 @@ use \php_error\FileLinesSet;
                                                         },
 
                                                         beforeSend: function(xhr) {
-                                                            xhr.setRequestHeader( "<?php echo ErrorHandler::HEADER_SAVE_FILE ?>", 'true' );
+                                                            xhr.setRequestHeader( "<?php echo ErrorHandler::HEADER_SAVE_FILE; ?>", 'true' );
                                                         }
                                                 });
                                             }
@@ -3563,9 +3563,9 @@ use \php_error\FileLinesSet;
              *
              * Here there is only content.
              */
-            public function displayHTML(Closure $head, $body=null, $javascript=null)
+            public function displayHTML(Closure $head, $body = null, $javascript = null)
             {
-                if (func_num_args() === 2) {
+                if (2 === func_num_args()) {
                     $body = $head;
                     $head = null;
                 }
@@ -3577,13 +3577,13 @@ use \php_error\FileLinesSet;
                 }
 
                 if (!$this->htmlOnly && ErrorHandler::isNonPHPRequest()) {
-                    @header("Content-Type: text/html");
+                    @header('Content-Type: text/html');
                 }
-                @header(ErrorHandler::PHP_ERROR_MAGIC_HEADER_KEY . ': ' . ErrorHandler::PHP_ERROR_MAGIC_HEADER_VALUE);
+                @header(ErrorHandler::PHP_ERROR_MAGIC_HEADER_KEY.': '.ErrorHandler::PHP_ERROR_MAGIC_HEADER_VALUE);
 
                 echo '<!DOCTYPE html>';
 
-                if ($head !== null) {
+                if (null !== $head) {
                     $head();
                 }
 
@@ -4450,8 +4450,8 @@ use \php_error\FileLinesSet;
 
             public function __construct($src, $id, array $lines)
             {
-                $this->src   = $src;
-                $this->id    = $id;
+                $this->src = $src;
+                $this->id = $id;
                 $this->lines = $lines;
             }
 
@@ -4513,14 +4513,15 @@ use \php_error\FileLinesSet;
          * SOFTWARE.
          * --
          *
-         * @package JSMin
          * @author Ryan Grove <ryan@wonko.com>
          * @copyright 2002 Douglas Crockford <douglas@crockford.com> (jsmin.c)
          * @copyright 2008 Ryan Grove <ryan@wonko.com> (PHP port)
          * @copyright 2012 Adam Goforth <aag@adamgoforth.com> (Updates)
          * @license http://opensource.org/licenses/mit-license.php MIT License
+         *
          * @version 1.1.2 (2012-05-01)
-         * @link https://github.com/rgrove/jsmin-php
+         *
+         * @see https://github.com/rgrove/jsmin-php
          */
         class JSMin
         {
@@ -4541,11 +4542,13 @@ use \php_error\FileLinesSet;
             // -- Public Static Methods --------------------------------------------------
 
             /**
-             * Minify Javascript
+             * Minify Javascript.
              *
              * @uses __construct()
              * @uses min()
+             *
              * @param string $js Javascript to be minified
+             *
              * @return string
              */
             public static function minify($js)
@@ -4557,7 +4560,7 @@ use \php_error\FileLinesSet;
             // -- Public Instance Methods ------------------------------------------------
 
             /**
-             * Constructor
+             * Constructor.
              *
              * @param string $input Javascript to be minified
              */
@@ -4577,14 +4580,16 @@ use \php_error\FileLinesSet;
              *
              * @uses next()
              * @uses get()
+             *
              * @throws JSMinException If parser errors are found:
-             * - Unterminated string literal
-             * - Unterminated regular expression set in regex literal
-             * - Unterminated regular expression literal
+             *                        - Unterminated string literal
+             *                        - Unterminated regular expression set in regex literal
+             *                        - Unterminated regular expression literal
+             *
              * @param int $command One of class constants:
-             * ACTION_KEEP_A Output A. Copy B to A. Get the next B.
-             * ACTION_DELETE_A Copy B to A. Get the next B. (Delete A).
-             * ACTION_DELETE_A_B Get the next B. (Delete B).
+             *                     ACTION_KEEP_A Output A. Copy B to A. Get the next B.
+             *                     ACTION_DELETE_A Copy B to A. Get the next B. (Delete A).
+             *                     ACTION_DELETE_A_B Get the next B. (Delete B).
              */
             protected function action($command)
             {
@@ -4596,7 +4601,7 @@ use \php_error\FileLinesSet;
                     case self::ACTION_DELETE_A:
                         $this->a = $this->b;
 
-                        if ($this->a === "'" || $this->a === '"') {
+                        if ("'" === $this->a || '"' === $this->a) {
                             for (;;) {
                                 $this->output .= $this->a;
                                 $this->a = $this->get();
@@ -4609,7 +4614,7 @@ use \php_error\FileLinesSet;
                                     throw new JSMinException('Unterminated string literal.');
                                 }
 
-                                if ($this->a === '\\') {
+                                if ('\\' === $this->a) {
                                     $this->output .= $this->a;
                                     $this->a = $this->get();
                                 }
@@ -4620,19 +4625,19 @@ use \php_error\FileLinesSet;
                     case self::ACTION_DELETE_A_B:
                         $this->b = $this->next();
 
-                        if ($this->b === '/' && (
-                            $this->a === '(' || $this->a === ',' || $this->a === '=' ||
-                                $this->a === ':' || $this->a === '[' || $this->a === '!' ||
-                                $this->a === '&' || $this->a === '|' || $this->a === '?' ||
-                                $this->a === '{' || $this->a === '}' || $this->a === ';' ||
-                                $this->a === "\n"
+                        if ('/' === $this->b && (
+                            '(' === $this->a || ',' === $this->a || '=' === $this->a ||
+                                ':' === $this->a || '[' === $this->a || '!' === $this->a ||
+                                '&' === $this->a || '|' === $this->a || '?' === $this->a ||
+                                '{' === $this->a || '}' === $this->a || ';' === $this->a ||
+                                "\n" === $this->a
                         )) {
-                            $this->output .= $this->a . $this->b;
+                            $this->output .= $this->a.$this->b;
 
                             for (;;) {
                                 $this->a = $this->get();
 
-                                if ($this->a === '[') {
+                                if ('[' === $this->a) {
                                     /*
         inside a regex [...] set, which MAY contain a '/' itself. Example: mootools Form.Validator near line 460:
         return Form.Validator.getValidator('IsEmpty').test(element) || (/^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]\.?){0,63}[a-z0-9!#$%&'*+/=?^_`{|}~-]@(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\])$/i).test(element.get('value'));
@@ -4641,18 +4646,18 @@ use \php_error\FileLinesSet;
                                         $this->output .= $this->a;
                                         $this->a = $this->get();
 
-                                        if ($this->a === ']') {
+                                        if (']' === $this->a) {
                                             break;
-                                        } elseif ($this->a === '\\') {
+                                        } elseif ('\\' === $this->a) {
                                             $this->output .= $this->a;
                                             $this->a = $this->get();
                                         } elseif (ord($this->a) <= self::ORD_LF) {
                                             throw new JSMinException('Unterminated regular expression set in regex literal.');
                                         }
                                     }
-                                } elseif ($this->a === '/') {
+                                } elseif ('/' === $this->a) {
                                     break;
-                                } elseif ($this->a === '\\') {
+                                } elseif ('\\' === $this->a) {
                                     $this->output .= $this->a;
                                     $this->a = $this->get();
                                 } elseif (ord($this->a) <= self::ORD_LF) {
@@ -4677,20 +4682,20 @@ use \php_error\FileLinesSet;
                 $c = $this->lookAhead;
                 $this->lookAhead = null;
 
-                if ($c === null) {
+                if (null === $c) {
                     if ($this->inputIndex < $this->inputLength) {
                         $c = substr($this->input, $this->inputIndex, 1);
-                        $this->inputIndex += 1;
+                        ++$this->inputIndex;
                     } else {
                         $c = null;
                     }
                 }
 
-                if ($c === "\r") {
+                if ("\r" === $c) {
                     return "\n";
                 }
 
-                if ($c === null || $c === "\n" || ord($c) >= self::ORD_SPACE) {
+                if (null === $c || "\n" === $c || ord($c) >= self::ORD_SPACE) {
                     return $c;
                 }
 
@@ -4704,16 +4709,17 @@ use \php_error\FileLinesSet;
              */
             protected function isAlphaNum($c)
             {
-                return ord($c) > 126 || $c === '\\' || preg_match('/^[\w\$]$/', $c) === 1;
+                return ord($c) > 126 || '\\' === $c || 1 === preg_match('/^[\w\$]$/', $c);
             }
 
             /**
-             * Perform minification, return result
+             * Perform minification, return result.
              *
              * @uses action()
              * @uses isAlphaNum()
              * @uses get()
              * @uses peek()
+             *
              * @return string
              */
             protected function min()
@@ -4727,7 +4733,7 @@ use \php_error\FileLinesSet;
                 $this->a = "\n";
                 $this->action(self::ACTION_DELETE_A_B);
 
-                while ($this->a !== null) {
+                while (null !== $this->a) {
                     switch ($this->a) {
                         case ' ':
                             if ($this->isAlphaNum($this->b)) {
@@ -4810,14 +4816,16 @@ use \php_error\FileLinesSet;
              *
              * @uses get()
              * @uses peek()
-             * @throws JSMinException On unterminated comment.
+             *
+             * @throws JSMinException on unterminated comment
+             *
              * @return string
              */
             protected function next()
             {
                 $c = $this->get();
 
-                if ($c === '/') {
+                if ('/' === $c) {
                     switch ($this->peek()) {
                         case '/':
                             for (;;) {
@@ -4835,7 +4843,7 @@ use \php_error\FileLinesSet;
                             for (;;) {
                                 switch ($this->get()) {
                                     case '*':
-                                        if ($this->peek() === '/') {
+                                        if ('/' === $this->peek()) {
                                             $this->get();
                                             return ' ';
                                         }
@@ -4859,6 +4867,7 @@ use \php_error\FileLinesSet;
              * Get next char. If is ctrl character, translate to a space or newline.
              *
              * @uses get()
+             *
              * @return string|null
              */
             protected function peek()
@@ -4875,7 +4884,7 @@ use \php_error\FileLinesSet;
 
         if (
                 $_php_error_is_ini_enabled &&
-                $_php_error_global_handler === null &&
+                null === $_php_error_global_handler &&
                 @get_cfg_var('php_error.autorun')
         ) {
             reportErrors();

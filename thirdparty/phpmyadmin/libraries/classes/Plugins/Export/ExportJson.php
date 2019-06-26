@@ -1,11 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Set of methods used to build dumps of tables as JSON
- *
- * @package    PhpMyAdmin-Export
- * @subpackage JSON
+ * Set of methods used to build dumps of tables as JSON.
  */
+
 namespace PhpMyAdmin\Plugins\Export;
 
 use PhpMyAdmin\DatabaseInterface;
@@ -18,17 +17,14 @@ use PhpMyAdmin\Properties\Options\Items\BoolPropertyItem;
 use PhpMyAdmin\Properties\Options\Items\HiddenPropertyItem;
 
 /**
- * Handles the export for the JSON format
- *
- * @package    PhpMyAdmin-Export
- * @subpackage JSON
+ * Handles the export for the JSON format.
  */
 class ExportJson extends ExportPlugin
 {
     private $first = true;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -36,7 +32,7 @@ class ExportJson extends ExportPlugin
     }
 
     /**
-     * Encodes the data into JSON
+     * Encodes the data into JSON.
      *
      * @param mixed $data Data to encode
      *
@@ -59,9 +55,7 @@ class ExportJson extends ExportPlugin
     }
 
     /**
-     * Sets the export JSON properties
-     *
-     * @return void
+     * Sets the export JSON properties.
      */
     protected function setProperties()
     {
@@ -75,13 +69,13 @@ class ExportJson extends ExportPlugin
         // $exportPluginProperties
         // this will be shown as "Format specific options"
         $exportSpecificOptions = new OptionsPropertyRootGroup(
-            "Format Specific Options"
+            'Format Specific Options'
         );
 
         // general options main group
-        $generalOptions = new OptionsPropertyMainGroup("general_opts");
+        $generalOptions = new OptionsPropertyMainGroup('general_opts');
         // create primary items and add them to the group
-        $leaf = new HiddenPropertyItem("structure_or_data");
+        $leaf = new HiddenPropertyItem('structure_or_data');
         $generalOptions->addProperty($leaf);
 
         $leaf = new BoolPropertyItem(
@@ -105,7 +99,7 @@ class ExportJson extends ExportPlugin
     }
 
     /**
-     * Outputs export header
+     * Outputs export header.
      *
      * @return bool Whether it succeeded
      */
@@ -120,12 +114,12 @@ class ExportJson extends ExportPlugin
         );
 
         return Export::outputHandler(
-            '[' . $crlf . $this->encode($meta) . ',' . $crlf
+            '['.$crlf.$this->encode($meta).','.$crlf
         );
     }
 
     /**
-     * Outputs export footer
+     * Outputs export footer.
      *
      * @return bool Whether it succeeded
      */
@@ -133,11 +127,11 @@ class ExportJson extends ExportPlugin
     {
         global $crlf;
 
-        return Export::outputHandler(']' . $crlf);
+        return Export::outputHandler(']'.$crlf);
     }
 
     /**
-     * Outputs database header
+     * Outputs database header.
      *
      * @param string $db       Database name
      * @param string $db_alias Aliases of db
@@ -154,16 +148,16 @@ class ExportJson extends ExportPlugin
 
         $meta = array(
             'type' => 'database',
-            'name' => $db_alias
+            'name' => $db_alias,
         );
 
         return Export::outputHandler(
-            $this->encode($meta) . ',' . $crlf
+            $this->encode($meta).','.$crlf
         );
     }
 
     /**
-     * Outputs database footer
+     * Outputs database footer.
      *
      * @param string $db Database name
      *
@@ -175,7 +169,7 @@ class ExportJson extends ExportPlugin
     }
 
     /**
-     * Outputs CREATE DATABASE statement
+     * Outputs CREATE DATABASE statement.
      *
      * @param string $db          Database name
      * @param string $export_type 'server', 'database', 'table'
@@ -189,7 +183,7 @@ class ExportJson extends ExportPlugin
     }
 
     /**
-     * Outputs the content of a table in JSON format
+     * Outputs the content of a table in JSON format.
      *
      * @param string $db        database name
      * @param string $table     table name
@@ -212,7 +206,7 @@ class ExportJson extends ExportPlugin
         $table_alias = $table;
         $this->initAlias($aliases, $db_alias, $table_alias);
 
-        if (! $this->first) {
+        if (!$this->first) {
             if (!Export::outputHandler(',')) {
                 return false;
             }
@@ -225,12 +219,12 @@ class ExportJson extends ExportPlugin
                 'type' => 'table',
                 'name' => $table_alias,
                 'database' => $db_alias,
-                'data' => "@@DATA@@"
+                'data' => '@@DATA@@',
             )
         );
         list($header, $footer) = explode('"@@DATA@@"', $buffer);
 
-        if (!Export::outputHandler($header . $crlf . '[' . $crlf)) {
+        if (!Export::outputHandler($header.$crlf.'['.$crlf)) {
             return false;
         }
 
@@ -242,7 +236,7 @@ class ExportJson extends ExportPlugin
         $columns_cnt = $GLOBALS['dbi']->numFields($result);
 
         $columns = array();
-        for ($i = 0; $i < $columns_cnt; $i++) {
+        for ($i = 0; $i < $columns_cnt; ++$i) {
             $col_as = $GLOBALS['dbi']->fieldName($result, $i);
             if (!empty($aliases[$db]['tables'][$table]['columns'][$col_as])) {
                 $col_as = $aliases[$db]['tables'][$table]['columns'][$col_as];
@@ -252,18 +246,18 @@ class ExportJson extends ExportPlugin
 
         $record_cnt = 0;
         while ($record = $GLOBALS['dbi']->fetchRow($result)) {
-            $record_cnt++;
+            ++$record_cnt;
 
             // Output table name as comment if this is the first record of the table
             if ($record_cnt > 1) {
-                if (!Export::outputHandler(',' . $crlf)) {
+                if (!Export::outputHandler(','.$crlf)) {
                     return false;
                 }
             }
 
             $data = array();
 
-            for ($i = 0; $i < $columns_cnt; $i++) {
+            for ($i = 0; $i < $columns_cnt; ++$i) {
                 $data[$columns[$i]] = $record[$i];
             }
 
@@ -272,7 +266,7 @@ class ExportJson extends ExportPlugin
             }
         }
 
-        if (!Export::outputHandler($crlf . ']' . $crlf . $footer . $crlf)) {
+        if (!Export::outputHandler($crlf.']'.$crlf.$footer.$crlf)) {
             return false;
         }
 

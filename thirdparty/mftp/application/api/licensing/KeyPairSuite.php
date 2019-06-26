@@ -1,6 +1,6 @@
 <?php
-    require_once(dirname(__FILE__) . '/../lib/file_operations.php');
-    require_once(dirname(__FILE__) . '/Exceptions.php');
+    require_once dirname(__FILE__).'/../lib/file_operations.php';
+    require_once dirname(__FILE__).'/Exceptions.php';
 
     class KeyPairSuite
     {
@@ -17,14 +17,14 @@
 
         public function rawEncrypt($message)
         {
-            $keyData = "";
+            $keyData = '';
 
             try {
                 $keyData = mftpFileGetContents($this->privateKeyPath);
             } catch (Exception $e) {
                 $this->throwKeyLoadException(
                     $this->privateKeyPath,
-                    "private",
+                    'private',
                     LocalizableExceptionDefinition::$PRIVATE_KEY_LOAD_ERROR,
                     $e->getMessage()
                 );
@@ -32,10 +32,10 @@
 
             $privateKey = openssl_get_privatekey($keyData, $this->privateKeyPassword);
 
-            if ($privateKey === false) {
+            if (false === $privateKey) {
                 $this->throwKeyLoadException(
                     $this->privateKeyPath,
-                    "private",
+                    'private',
                     LocalizableExceptionDefinition::$PRIVATE_KEY_LOAD_ERROR
                 );
             }
@@ -47,14 +47,14 @@
 
         public function rawDecrypt($encrypted)
         {
-            $keyData = "";
+            $keyData = '';
 
             try {
                 $keyData = mftpFileGetContents($this->publicKeyPath);
             } catch (Exception $e) {
                 $this->throwKeyLoadException(
                     $this->publicKeyPath,
-                    "public",
+                    'public',
                     LocalizableExceptionDefinition::$PUBLIC_KEY_LOAD_ERROR,
                     $e->getMessage()
                 );
@@ -62,10 +62,10 @@
 
             $publicKey = openssl_get_publickey($keyData);
 
-            if ($publicKey === false) {
+            if (false === $publicKey) {
                 $this->throwKeyLoadException(
                     $this->publicKeyPath,
-                    "public",
+                    'public',
                     LocalizableExceptionDefinition::$PUBLIC_KEY_LOAD_ERROR,
                     null
                 );
@@ -73,7 +73,7 @@
 
             $decrypted = '';
             if (!openssl_public_decrypt($encrypted, $decrypted, $publicKey)) {
-                throw new KeyPairException("Unable to decrypt message", LocalizableExceptionDefinition::$DECRYPT_ERROR);
+                throw new KeyPairException('Unable to decrypt message', LocalizableExceptionDefinition::$DECRYPT_ERROR);
             }
 
             return $decrypted;
@@ -97,6 +97,6 @@
                 $exceptionMessage .= "  Original exception was: '$originalExceptionMessage'";
             }
 
-            throw new KeyPairException($exceptionMessage, $errorCode, array("path" => $this->$path));
+            throw new KeyPairException($exceptionMessage, $errorCode, array('path' => $this->$path));
         }
     }

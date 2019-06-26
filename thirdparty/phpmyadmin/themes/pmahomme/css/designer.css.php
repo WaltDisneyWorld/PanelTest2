@@ -1,15 +1,12 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Designer styles for the pmahomme theme
- *
- * @package    PhpMyAdmin-theme
- * @subpackage PMAHomme
+ * Designer styles for the pmahomme theme.
  */
 use PhpMyAdmin\Theme;
 
 // unplanned execution path
-if (! defined('PHPMYADMIN') && ! defined('TESTSUITE')) {
+if (!defined('PHPMYADMIN') && !defined('TESTSUITE')) {
     exit();
 }
 

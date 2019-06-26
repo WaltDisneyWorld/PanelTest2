@@ -1,19 +1,18 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Form validation for configuration editor
- *
- * @package PhpMyAdmin
+ * Form validation for configuration editor.
  */
+
 namespace PhpMyAdmin\Config;
 
-use PhpMyAdmin\Config\ConfigFile;
 use PhpMyAdmin\Core;
 use PhpMyAdmin\DatabaseInterface;
 use PhpMyAdmin\Util;
 
 /**
- * Validation class for various validation functions
+ * Validation class for various validation functions.
  *
  * Validation function takes two argument: id for which it is called
  * and array of fields' values (usually values for entire formset, as defined
@@ -23,13 +22,11 @@ use PhpMyAdmin\Util;
  * no errors, key must be set with an empty value.
  *
  * Validation functions are assigned in $cfg_db['_validators'] (config.values.php).
- *
- * @package PhpMyAdmin
  */
 class Validator
 {
     /**
-     * Returns validator list
+     * Returns validator list.
      *
      * @param ConfigFile $cf Config file instance
      *
@@ -39,7 +36,7 @@ class Validator
     {
         static $validators = null;
 
-        if ($validators !== null) {
+        if (null !== $validators) {
             return $validators;
         }
 
@@ -54,13 +51,13 @@ class Validator
         // better idea than hacking into its code
         $uvs = $cf->getDbEntry('_userValidators', array());
         foreach ($uvs as $field => $uv_list) {
-            $uv_list = (array)$uv_list;
+            $uv_list = (array) $uv_list;
             foreach ($uv_list as &$uv) {
                 if (!is_array($uv)) {
                     continue;
                 }
-                for ($i = 1, $nb = count($uv); $i < $nb; $i++) {
-                    if (mb_substr($uv[$i], 0, 6) == 'value:') {
+                for ($i = 1, $nb = count($uv); $i < $nb; ++$i) {
+                    if ('value:' == mb_substr($uv[$i], 0, 6)) {
                         $uv[$i] = Core::arrayRead(
                             mb_substr($uv[$i], 6),
                             $GLOBALS['PMA_Config']->base_settings
@@ -69,7 +66,7 @@ class Validator
                 }
             }
             $validators[$field] = isset($validators[$field])
-                ? array_merge((array)$validators[$field], $uv_list)
+                ? array_merge((array) $validators[$field], $uv_list)
                 : $uv_list;
         }
         return $validators;
@@ -128,10 +125,10 @@ class Validator
         $result = array();
         foreach ($vids as $vid) {
             // call appropriate validation functions
-            foreach ((array)$validators[$vid] as $validator) {
+            foreach ((array) $validators[$vid] as $validator) {
                 $vdef = (array) $validator;
                 $vname = array_shift($vdef);
-                $vname = 'PhpMyAdmin\Config\Validator::' . $vname;
+                $vname = 'PhpMyAdmin\Config\Validator::'.$vname;
                 $args = array_merge(array($vid, &$arguments), $vdef);
                 $r = call_user_func_array($vname, $args);
 
@@ -142,15 +139,15 @@ class Validator
 
                 foreach ($r as $key => $error_list) {
                     // skip empty values if $isPostSource is false
-                    if (! $isPostSource && empty($error_list)) {
+                    if (!$isPostSource && empty($error_list)) {
                         continue;
                     }
-                    if (! isset($result[$key])) {
+                    if (!isset($result[$key])) {
                         $result[$key] = array();
                     }
                     $result[$key] = array_merge(
                         $result[$key],
-                        (array)$error_list
+                        (array) $error_list
                     );
                 }
             }
@@ -166,7 +163,7 @@ class Validator
     }
 
     /**
-     * Test database connection
+     * Test database connection.
      *
      * @param string $host      host name
      * @param string $port      tcp port to use
@@ -203,34 +200,34 @@ class Validator
             $port = empty($port) ? null : $port;
             $extension = 'mysqli';
         } else {
-            $socket = empty($socket) ? null : ':' . ($socket[0] == '/' ? '' : '/') . $socket;
-            $port = empty($port) ? null : ':' . $port;
+            $socket = empty($socket) ? null : ':'.('/' == $socket[0] ? '' : '/').$socket;
+            $port = empty($port) ? null : ':'.$port;
             $extension = 'mysql';
         }
 
-        if ($extension == 'mysql') {
-            $conn = @mysql_connect($host . $port . $socket, $user, $pass);
-            if (! $conn) {
+        if ('mysql' == $extension) {
+            $conn = @mysql_connect($host.$port.$socket, $user, $pass);
+            if (!$conn) {
                 $error = __('Could not connect to the database server!');
             } else {
                 mysql_close($conn);
             }
         } else {
             $conn = @mysqli_connect($host, $user, $pass, null, $port, $socket);
-            if (! $conn) {
+            if (!$conn) {
                 $error = __('Could not connect to the database server!');
             } else {
                 mysqli_close($conn);
             }
         }
-        if (! is_null($error)) {
-            $error .= ' - ' . error_get_last();
+        if (!is_null($error)) {
+            $error .= ' - '.error_get_last();
         }
         return is_null($error) ? true : array($error_key => $error);
     }
 
     /**
-     * Validate server config
+     * Validate server config.
      *
      * @param string $path   path to config, not used
      *                       keep this parameter since the method is invoked using
@@ -245,7 +242,7 @@ class Validator
             'Server' => '',
             'Servers/1/user' => '',
             'Servers/1/SignonSession' => '',
-            'Servers/1/SignonURL' => ''
+            'Servers/1/SignonURL' => '',
         );
         $error = false;
         if (empty($values['Servers/1/auth_type'])) {
@@ -253,7 +250,7 @@ class Validator
             $result['Servers/1/auth_type'] = __('Invalid authentication type!');
             $error = true;
         }
-        if ($values['Servers/1/auth_type'] == 'config'
+        if ('config' == $values['Servers/1/auth_type']
             && empty($values['Servers/1/user'])
         ) {
             $result['Servers/1/user'] = __(
@@ -261,28 +258,28 @@ class Validator
             );
             $error = true;
         }
-        if ($values['Servers/1/auth_type'] == 'signon'
+        if ('signon' == $values['Servers/1/auth_type']
             && empty($values['Servers/1/SignonSession'])
         ) {
             $result['Servers/1/SignonSession'] = __(
                 'Empty signon session name '
-                . 'while using [kbd]signon[/kbd] authentication method!'
+                .'while using [kbd]signon[/kbd] authentication method!'
             );
             $error = true;
         }
-        if ($values['Servers/1/auth_type'] == 'signon'
+        if ('signon' == $values['Servers/1/auth_type']
             && empty($values['Servers/1/SignonURL'])
         ) {
             $result['Servers/1/SignonURL'] = __(
                 'Empty signon URL while using [kbd]signon[/kbd] authentication '
-                . 'method!'
+                .'method!'
             );
             $error = true;
         }
 
-        if (! $error && $values['Servers/1/auth_type'] == 'config') {
+        if (!$error && 'config' == $values['Servers/1/auth_type']) {
             $password = '';
-            if (! empty($values['Servers/1/password'])) {
+            if (!empty($values['Servers/1/password'])) {
                 $password = $values['Servers/1/password'];
             }
             $test = static::testDBConnection(
@@ -294,7 +291,7 @@ class Validator
                 'Server'
             );
 
-            if ($test !== true) {
+            if (true !== $test) {
                 $result = array_merge($result, $test);
             }
         }
@@ -302,7 +299,7 @@ class Validator
     }
 
     /**
-     * Validate pmadb config
+     * Validate pmadb config.
      *
      * @param string $path   path to config, not used
      *                       keep this parameter since the method is invoked using
@@ -316,7 +313,7 @@ class Validator
         $result = array(
             'Server_pmadb' => '',
             'Servers/1/controluser' => '',
-            'Servers/1/controlpass' => ''
+            'Servers/1/controlpass' => '',
         );
         $error = false;
 
@@ -328,18 +325,18 @@ class Validator
         if (empty($values['Servers/1/controluser'])) {
             $result['Servers/1/controluser'] = __(
                 'Empty phpMyAdmin control user while using phpMyAdmin configuration '
-                . 'storage!'
+                .'storage!'
             );
             $error = true;
         }
         if (empty($values['Servers/1/controlpass'])) {
             $result['Servers/1/controlpass'] = __(
                 'Empty phpMyAdmin control user password while using phpMyAdmin '
-                . 'configuration storage!'
+                .'configuration storage!'
             );
             $error = true;
         }
-        if (! $error) {
+        if (!$error) {
             $test = static::testDBConnection(
                 empty($values['Servers/1/host']) ? '' : $values['Servers/1/host'],
                 empty($values['Servers/1/port']) ? '' : $values['Servers/1/port'],
@@ -348,16 +345,15 @@ class Validator
                 empty($values['Servers/1/controlpass']) ? '' : $values['Servers/1/controlpass'],
                 'Server_pmadb'
             );
-            if ($test !== true) {
+            if (true !== $test) {
                 $result = array_merge($result, $test);
             }
         }
         return $result;
     }
 
-
     /**
-     * Validates regular expression
+     * Validates regular expression.
      *
      * @param string $path   path to config
      * @param array  $values config values
@@ -386,7 +382,7 @@ class Validator
         $matches = array();
         // in libraries/ListDatabase.php _checkHideDatabase(),
         // a '/' is used as the delimiter for hide_db
-        @preg_match('/' . Util::requestString($values[$path]) . '/', '', $matches);
+        @preg_match('/'.Util::requestString($values[$path]).'/', '', $matches);
 
         $current_error = error_get_last();
 
@@ -399,7 +395,7 @@ class Validator
     }
 
     /**
-     * Validates TrustedProxies field
+     * Validates TrustedProxies field.
      *
      * @param string $path   path to config
      * @param array  $values config values
@@ -421,7 +417,7 @@ class Validator
                 $v = Util::requestString($v);
                 $lines[] = preg_match('/^-\d+$/', $ip)
                     ? $v
-                    : $ip . ': ' . $v;
+                    : $ip.': '.$v;
             }
         } else {
             // AJAX validation
@@ -431,14 +427,14 @@ class Validator
             $line = trim($line);
             $matches = array();
             // we catch anything that may (or may not) be an IP
-            if (!preg_match("/^(.+):(?:[ ]?)\\w+$/", $line, $matches)) {
-                $result[$path][] = __('Incorrect value:') . ' '
-                    . htmlspecialchars($line);
+            if (!preg_match('/^(.+):(?:[ ]?)\\w+$/', $line, $matches)) {
+                $result[$path][] = __('Incorrect value:').' '
+                    .htmlspecialchars($line);
                 continue;
             }
             // now let's check whether we really have an IP address
-            if (filter_var($matches[1], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false
-                && filter_var($matches[1], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false
+            if (false === filter_var($matches[1], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)
+                && false === filter_var($matches[1], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)
             ) {
                 $ip = htmlspecialchars(trim($matches[1]));
                 $result[$path][] = sprintf(__('Incorrect IP address: %s'), $ip);
@@ -450,7 +446,7 @@ class Validator
     }
 
     /**
-     * Tests integer value
+     * Tests integer value.
      *
      * @param string $path         path to config
      * @param array  $values       config values
@@ -459,7 +455,7 @@ class Validator
      * @param int    $max_value    max allowed value
      * @param string $error_string error message string
      *
-     * @return string  empty string if test is successful
+     * @return string empty string if test is successful
      */
     public static function validateNumber(
         $path,
@@ -476,8 +472,8 @@ class Validator
         $value = Util::requestString($values[$path]);
 
         if (intval($value) != $value
-            || (! $allow_neg && $value < 0)
-            || (! $allow_zero && $value == 0)
+            || (!$allow_neg && $value < 0)
+            || (!$allow_zero && 0 == $value)
             || $value > $max_value
         ) {
             return $error_string;
@@ -487,7 +483,7 @@ class Validator
     }
 
     /**
-     * Validates port number
+     * Validates port number.
      *
      * @param string $path   path to config
      * @param array  $values config values
@@ -504,12 +500,12 @@ class Validator
                 false,
                 65535,
                 __('Not a valid port number!')
-            )
+            ),
         );
     }
 
     /**
-     * Validates positive number
+     * Validates positive number.
      *
      * @param string $path   path to config
      * @param array  $values config values
@@ -526,12 +522,12 @@ class Validator
                 false,
                 PHP_INT_MAX,
                 __('Not a positive number!')
-            )
+            ),
         );
     }
 
     /**
-     * Validates non-negative number
+     * Validates non-negative number.
      *
      * @param string $path   path to config
      * @param array  $values config values
@@ -548,13 +544,13 @@ class Validator
                 true,
                 PHP_INT_MAX,
                 __('Not a non-negative number!')
-            )
+            ),
         );
     }
 
     /**
      * Validates value according to given regular expression
-     * Pattern and modifiers must be a valid for PCRE <b>and</b> JavaScript RegExp
+     * Pattern and modifiers must be a valid for PCRE <b>and</b> JavaScript RegExp.
      *
      * @param string $path   path to config
      * @param array  $values config values
@@ -572,7 +568,7 @@ class Validator
     }
 
     /**
-     * Validates upper bound for numeric inputs
+     * Validates upper bound for numeric inputs.
      *
      * @param string $path      path to config
      * @param array  $values    config values

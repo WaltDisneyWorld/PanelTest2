@@ -2,17 +2,17 @@
     abstract class PermissionSet
     {
         /**
-         * @var boolean
+         * @var bool
          */
         protected $readable;
 
         /**
-         * @var boolean
+         * @var bool
          */
         protected $writable;
 
         /**
-         * @var boolean
+         * @var bool
          */
         protected $executable;
 

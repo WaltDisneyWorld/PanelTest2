@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Handles DB Multi-table query
- *
- * @package PhpMyAdmin
+ * Handles DB Multi-table query.
  */
+
 namespace PhpMyAdmin\Database;
 
 use PhpMyAdmin\DatabaseInterface;
@@ -13,50 +13,44 @@ use PhpMyAdmin\Sql;
 use PhpMyAdmin\Template;
 
 /**
- * Class to handle database Multi-table querying
- *
- * @package PhpMyAdmin
+ * Class to handle database Multi-table querying.
  */
 class MultiTableQuery
 {
     /**
-     * DatabaseInterface instance
+     * DatabaseInterface instance.
      *
-     * @access private
      * @var DatabaseInterface
      */
     private $dbi;
 
     /**
-     * Database name
+     * Database name.
      *
-     * @access private
      * @var string
      */
     private $db;
 
     /**
-     * Default number of columns
+     * Default number of columns.
      *
-     * @access private
-     * @var integer
+     * @var int
      */
     private $defaultNoOfColumns;
 
     /**
-     * Table names
+     * Table names.
      *
-     * @access private
      * @var array
      */
     private $tables;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param DatabaseInterface $dbi                DatabaseInterface instance
      * @param string            $dbName             Database name
-     * @param integer           $defaultNoOfColumns Default number of columns
+     * @param int               $defaultNoOfColumns Default number of columns
      */
     public function __construct(
         DatabaseInterface $dbi,
@@ -71,7 +65,7 @@ class MultiTableQuery
     }
 
     /**
-     * Get Multi-Table query page HTML
+     * Get Multi-Table query page HTML.
      *
      * @return string Multi-Table query page HTML
      */
@@ -92,13 +86,11 @@ class MultiTableQuery
     }
 
     /**
-     * Displays multi-table query results
+     * Displays multi-table query results.
      *
      * @param string $sqlQuery      The query to parse
      * @param string $db            The current database
      * @param string $pmaThemeImage Uri of the PMA theme image
-     *
-     * @return void
      */
     public static function displayResults($sqlQuery, $db, $pmaThemeImage)
     {

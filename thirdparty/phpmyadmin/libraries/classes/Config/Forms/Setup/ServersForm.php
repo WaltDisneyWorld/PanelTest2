@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * User preferences form
- *
- * @package PhpMyAdmin
+ * User preferences form.
  */
+
 namespace PhpMyAdmin\Config\Forms\Setup;
 
 use PhpMyAdmin\Config\Forms\BaseForm;
@@ -20,20 +20,20 @@ class ServersForm extends BaseForm
                 'port',
                 'socket',
                 'ssl',
-                'compress'))),
+                'compress', ))),
             'Server_auth' => array('Servers' => array(1 => array(
                 'auth_type',
-                ':group:' . __('Config authentication'),
+                ':group:'.__('Config authentication'),
                     'user',
                     'password',
                     ':group:end',
-                ':group:' . __('HTTP authentication'),
+                ':group:'.__('HTTP authentication'),
                     'auth_http_realm',
                     ':group:end',
-                ':group:' . __('Signon authentication'),
+                ':group:'.__('Signon authentication'),
                     'SignonSession',
                     'SignonURL',
-                    'LogoutURL'))),
+                    'LogoutURL', ))),
             'Server_config' => array('Servers' => array(1 => array(
                 'only_db',
                 'hide_db',
@@ -42,7 +42,7 @@ class ServersForm extends BaseForm
                 'DisableIS',
                 'AllowDeny/order',
                 'AllowDeny/rules',
-                'SessionTimeZone'))),
+                'SessionTimeZone', ))),
             'Server_pmadb' => array('Servers' => array(1 => array(
                 'pmadb' => 'phpmyadmin',
                 'controlhost',
@@ -68,7 +68,7 @@ class ServersForm extends BaseForm
                 'central_columns' => 'pma__central_columns',
                 'designer_settings' => 'pma__designer_settings',
                 'export_templates' => 'pma__export_templates',
-                'MaxTableUiprefs' => 100))),
+                'MaxTableUiprefs' => 100, ))),
             'Server_tracking' => array('Servers' => array(1 => array(
                 'tracking_version_auto_create',
                 'tracking_default_statements',

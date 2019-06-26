@@ -1,8 +1,8 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/../../constants.php');
-    require_once(dirname(__FILE__) . '/ConfigurationBase.php');
-    require_once(dirname(__FILE__) . '/../Validation.php');
+    require_once dirname(__FILE__).'/../../constants.php';
+    require_once dirname(__FILE__).'/ConfigurationBase.php';
+    require_once dirname(__FILE__).'/../Validation.php';
 
     class FTPConfiguration implements ConfigurationBase
     {
@@ -37,13 +37,14 @@
 
         /**
          * FTPConfiguration constructor.
+         *
          * @param $host string
          * @param $username string
          * @param $password string
          * @param $initialDirectory string
          * @param null bool $passiveMode
          * @param null bool $sslMode
-         * @param null int $port
+         * @param null int  $port
          */
         public function __construct(
             $host,
@@ -117,7 +118,7 @@
         }
 
         /**
-         * @return boolean
+         * @return bool
          */
         public function isSSLMode()
         {

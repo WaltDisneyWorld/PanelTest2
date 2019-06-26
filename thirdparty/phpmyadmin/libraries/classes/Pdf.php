@@ -1,23 +1,17 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * TCPDF wrapper class.
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\Core;
-use PhpMyAdmin\Message;
-use PhpMyAdmin\Response;
-use PhpMyAdmin\Util;
 use TCPDF;
 use TCPDF_FONTS;
 
 /**
  * PDF export base class providing basic configuration.
- *
- * @package PhpMyAdmin
  */
 class Pdf extends TCPDF
 {
@@ -32,16 +26,14 @@ class Pdf extends TCPDF
     /**
      * Constructs PDF and configures standard parameters.
      *
-     * @param string  $orientation page orientation
-     * @param string  $unit        unit
-     * @param string  $format      the format used for pages
-     * @param boolean $unicode     true means that the input text is unicode
-     * @param string  $encoding    charset encoding; default is UTF-8.
-     * @param boolean $diskcache   if true reduce the RAM memory usage by caching
-     *                             temporary data on filesystem (slower).
-     * @param boolean $pdfa        If TRUE set the document to PDF/A mode.
-     *
-     * @access public
+     * @param string $orientation page orientation
+     * @param string $unit        unit
+     * @param string $format      the format used for pages
+     * @param bool   $unicode     true means that the input text is unicode
+     * @param string $encoding    charset encoding; default is UTF-8
+     * @param bool   $diskcache   if true reduce the RAM memory usage by caching
+     *                            temporary data on filesystem (slower)
+     * @param bool   $pdfa        if TRUE set the document to PDF/A mode
      */
     public function __construct(
         $orientation = 'P',
@@ -50,7 +42,7 @@ class Pdf extends TCPDF
         $unicode = true,
         $encoding = 'UTF-8',
         $diskcache = false,
-        $pdfa=false
+        $pdfa = false
     ) {
         parent::__construct(
             $orientation,
@@ -61,7 +53,7 @@ class Pdf extends TCPDF
             $diskcache,
             $pdfa
         );
-        $this->SetAuthor('phpMyAdmin ' . PMA_VERSION);
+        $this->SetAuthor('phpMyAdmin '.PMA_VERSION);
         $this->AddFont('DejaVuSans', '', 'dejavusans.php');
         $this->AddFont('DejaVuSans', 'B', 'dejavusansb.php');
         $this->SetFont(Pdf::PMA_PDF_FONT, '', 14);
@@ -69,9 +61,7 @@ class Pdf extends TCPDF
     }
 
     /**
-     * This function must be named "Footer" to work with the TCPDF library
-     *
-     * @return void
+     * This function must be named "Footer" to work with the TCPDF library.
      */
     // @codingStandardsIgnoreLine
     public function Footer()
@@ -83,8 +73,8 @@ class Pdf extends TCPDF
             $this->Cell(
                 0,
                 6,
-                __('Page number:') . ' '
-                . $this->getAliasNumPage() . '/' .  $this->getAliasNbPages(),
+                __('Page number:').' '
+                .$this->getAliasNumPage().'/'.$this->getAliasNbPages(),
                 'T',
                 0,
                 'C'
@@ -102,8 +92,6 @@ class Pdf extends TCPDF
      *
      * @param string $name  name of the alias
      * @param string $value value of the alias
-     *
-     * @return void
      */
     public function setAlias($name, $value)
     {
@@ -123,14 +111,12 @@ class Pdf extends TCPDF
 
     /**
      * Improved with alias expanding.
-     *
-     * @return void
      */
     public function _putpages()
     {
         if (count($this->Alias) > 0) {
             $nbPages = count($this->pages);
-            for ($n = 1; $n <= $nbPages; $n++) {
+            for ($n = 1; $n <= $nbPages; ++$n) {
                 $this->pages[$n] = strtr($this->pages[$n], $this->Alias);
             }
         }
@@ -138,17 +124,15 @@ class Pdf extends TCPDF
     }
 
     /**
-     * Displays an error message
+     * Displays an error message.
      *
      * @param string $error_message the error message
-     *
-     * @return void
      */
     // @codingStandardsIgnoreLine
     public function Error($error_message = '')
     {
         Message::error(
-            __('Error while creating PDF:') . ' ' . $error_message
+            __('Error while creating PDF:').' '.$error_message
         )->display();
         exit;
     }
@@ -157,8 +141,6 @@ class Pdf extends TCPDF
      * Sends file as a download to user.
      *
      * @param string $filename file name
-     *
-     * @return void
      */
     public function download($filename)
     {

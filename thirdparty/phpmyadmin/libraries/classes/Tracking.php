@@ -1,32 +1,19 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Functions used for database and table tracking
- *
- * @package PhpMyAdmin
+ * Functions used for database and table tracking.
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\Core;
-use PhpMyAdmin\Message;
-use PhpMyAdmin\Relation;
-use PhpMyAdmin\Response;
-use PhpMyAdmin\Sanitize;
-use PhpMyAdmin\SqlQueryForm;
-use PhpMyAdmin\Template;
-use PhpMyAdmin\Tracker;
-use PhpMyAdmin\Url;
-use PhpMyAdmin\Util;
-
 /**
- * PhpMyAdmin\Tracking class
- *
- * @package PhpMyAdmin
+ * PhpMyAdmin\Tracking class.
  */
 class Tracking
 {
     /**
-     * Filters tracking entries
+     * Filters tracking entries.
      *
      * @param array  $data           the entries to filter
      * @param string $filter_ts_from "from" date
@@ -51,19 +38,19 @@ class Tracking
                 && (in_array('*', $filter_users) || $filtered_user)
             ) {
                 $tmp_entries[] = array(
-                    'id'        => $id,
+                    'id' => $id,
                     'timestamp' => $timestamp,
-                    'username'  => $entry['username'],
-                    'statement' => $entry['statement']
+                    'username' => $entry['username'],
+                    'statement' => $entry['statement'],
                 );
             }
-            $id++;
+            ++$id;
         }
-        return($tmp_entries);
+        return $tmp_entries;
     }
 
     /**
-     * Function to get html for data definition and data manipulation statements
+     * Function to get html for data definition and data manipulation statements.
      *
      * @param string $urlQuery    url query
      * @param int    $lastVersion last version
@@ -91,7 +78,7 @@ class Tracking
     }
 
     /**
-     * Function to get html for activate/deactivate tracking
+     * Function to get html for activate/deactivate tracking.
      *
      * @param string $action      activate|deactivate
      * @param string $urlQuery    url query
@@ -114,7 +101,7 @@ class Tracking
     }
 
     /**
-     * Function to get the list versions of the table
+     * Function to get the list versions of the table.
      *
      * @return array
      */
@@ -122,20 +109,20 @@ class Tracking
     {
         $relation = new Relation();
         $cfgRelation = $relation->getRelationsParam();
-        $sql_query = " SELECT * FROM " .
-            Util::backquote($cfgRelation['db']) . "." .
-            Util::backquote($cfgRelation['tracking']) .
-            " WHERE db_name = '" . $GLOBALS['dbi']->escapeString($GLOBALS['db']) .
-            "' " .
-            " AND table_name = '" .
-            $GLOBALS['dbi']->escapeString($GLOBALS['table']) . "' " .
-            " ORDER BY version DESC ";
+        $sql_query = ' SELECT * FROM '.
+            Util::backquote($cfgRelation['db']).'.'.
+            Util::backquote($cfgRelation['tracking']).
+            " WHERE db_name = '".$GLOBALS['dbi']->escapeString($GLOBALS['db']).
+            "' ".
+            " AND table_name = '".
+            $GLOBALS['dbi']->escapeString($GLOBALS['table'])."' ".
+            ' ORDER BY version DESC ';
 
         return $relation->queryAsControlUser($sql_query);
     }
 
     /**
-     * Function to get html for displaying last version number
+     * Function to get html for displaying last version number.
      *
      * @param array  $sql_result    sql result
      * @param int    $last_version  last version
@@ -156,19 +143,19 @@ class Tracking
     ) {
         $tracking_active = false;
 
-        $html  = '<form method="post" action="tbl_tracking.php" name="versionsForm"'
-            . ' id="versionsForm" class="ajax">';
+        $html = '<form method="post" action="tbl_tracking.php" name="versionsForm"'
+            .' id="versionsForm" class="ajax">';
         $html .= Url::getHiddenInputs($GLOBALS['db'], $GLOBALS['table']);
         $html .= '<table id="versions" class="data">';
         $html .= '<thead>';
         $html .= '<tr>';
         $html .= '<th></th>';
-        $html .= '<th>' . __('Version') . '</th>';
-        $html .= '<th>' . __('Created') . '</th>';
-        $html .= '<th>' . __('Updated') . '</th>';
-        $html .= '<th>' . __('Status') . '</th>';
-        $html .= '<th>' . __('Action') . '</th>';
-        $html .= '<th>' . __('Show') . '</th>';
+        $html .= '<th>'.__('Version').'</th>';
+        $html .= '<th>'.__('Created').'</th>';
+        $html .= '<th>'.__('Updated').'</th>';
+        $html .= '<th>'.__('Status').'</th>';
+        $html .= '<th>'.__('Action').'</th>';
+        $html .= '<th>'.__('Show').'</th>';
         $html .= '</tr>';
         $html .= '</thead>';
         $html .= '<tbody>';
@@ -180,47 +167,47 @@ class Tracking
 
         while ($version = $GLOBALS['dbi']->fetchArray($sql_result)) {
             if ($version['version'] == $last_version) {
-                if ($version['tracking_active'] == 1) {
+                if (1 == $version['tracking_active']) {
                     $tracking_active = true;
                 } else {
                     $tracking_active = false;
                 }
             }
-            $checkbox_id = 'selected_versions_' . htmlspecialchars($version['version']);
+            $checkbox_id = 'selected_versions_'.htmlspecialchars($version['version']);
 
             $html .= '<tr>';
             $html .= '<td class="center">';
             $html .= '<input type="checkbox" name="selected_versions[]"'
-                . ' class="checkall" id="' . $checkbox_id . '"'
-                . ' value="' . htmlspecialchars($version['version']) . '"/>';
+                .' class="checkall" id="'.$checkbox_id.'"'
+                .' value="'.htmlspecialchars($version['version']).'"/>';
             $html .= '</td>';
             $html .= '<th class="floatright">';
-            $html .= '<label for="' . $checkbox_id . '">'
-                . htmlspecialchars($version['version']) . '</label>';
+            $html .= '<label for="'.$checkbox_id.'">'
+                .htmlspecialchars($version['version']).'</label>';
             $html .= '</th>';
-            $html .= '<td>' . htmlspecialchars($version['date_created']) . '</td>';
-            $html .= '<td>' . htmlspecialchars($version['date_updated']) . '</td>';
-            $html .= '<td>' . self::getVersionStatus($version) . '</td>';
+            $html .= '<td>'.htmlspecialchars($version['date_created']).'</td>';
+            $html .= '<td>'.htmlspecialchars($version['date_updated']).'</td>';
+            $html .= '<td>'.self::getVersionStatus($version).'</td>';
             $html .= '<td><a class="delete_version_anchor ajax"'
-                . ' href="tbl_tracking.php" data-post="';
+                .' href="tbl_tracking.php" data-post="';
             $html .= Url::getCommon($url_params + [
                 'version' => $version['version'],
                 'submit_delete_version' => true,
             ], '');
-            $html .= '">' . $delete . '</a></td>';
+            $html .= '">'.$delete.'</a></td>';
             $html .= '<td><a href="tbl_tracking.php" data-post="';
             $html .= Url::getCommon($url_params + [
                 'report' => 'true',
                 'version' => $version['version'],
             ], '');
-            $html .= '">' . $report . '</a>';
+            $html .= '">'.$report.'</a>';
             $html .= '&nbsp;&nbsp;';
             $html .= '<a href="tbl_tracking.php" data-post="';
             $html .= Url::getCommon($url_params + [
                 'snapshot' => 'true',
                 'version' => $version['version'],
             ], '');
-            $html .= '">' . $structure . '</a>';
+            $html .= '">'.$structure.'</a>';
             $html .= '</td>';
             $html .= '</tr>';
         }
@@ -232,8 +219,8 @@ class Tracking
             ->render(
                 array(
                     'pma_theme_image' => $pmaThemeImage,
-                    'text_dir'        => $text_dir,
-                    'form_name'       => 'versionsForm',
+                    'text_dir' => $text_dir,
+                    'form_name' => 'versionsForm',
                 )
             );
         $html .= Util::getButtonOrImage(
@@ -264,7 +251,7 @@ class Tracking
     }
 
     /**
-     * Function to get the last version number of a table
+     * Function to get the last version number of a table.
      *
      * @param array $sql_result sql result
      *
@@ -277,7 +264,7 @@ class Tracking
     }
 
     /**
-     * Function to get sql results for selectable tables
+     * Function to get sql results for selectable tables.
      *
      * @return array
      */
@@ -286,18 +273,18 @@ class Tracking
         $relation = new Relation();
         $cfgRelation = $relation->getRelationsParam();
 
-        $sql_query = " SELECT DISTINCT db_name, table_name FROM " .
-            Util::backquote($cfgRelation['db']) . "." .
-            Util::backquote($cfgRelation['tracking']) .
-            " WHERE db_name = '" . $GLOBALS['dbi']->escapeString($GLOBALS['db']) .
-            "' " .
-            " ORDER BY db_name, table_name";
+        $sql_query = ' SELECT DISTINCT db_name, table_name FROM '.
+            Util::backquote($cfgRelation['db']).'.'.
+            Util::backquote($cfgRelation['tracking']).
+            " WHERE db_name = '".$GLOBALS['dbi']->escapeString($GLOBALS['db']).
+            "' ".
+            ' ORDER BY db_name, table_name';
 
         return $relation->queryAsControlUser($sql_query);
     }
 
     /**
-     * Function to get html for selectable table rows
+     * Function to get html for selectable table rows.
      *
      * @param array  $selectableTablesSqlResult sql results for selectable rows
      * @param string $urlQuery                  url query
@@ -327,17 +314,17 @@ class Tracking
     }
 
     /**
-     * Function to get html for tracking report and tracking report export
+     * Function to get html for tracking report and tracking report export.
      *
-     * @param string  $url_query        url query
-     * @param array   $data             data
-     * @param array   $url_params       url params
-     * @param boolean $selection_schema selection schema
-     * @param boolean $selection_data   selection data
-     * @param boolean $selection_both   selection both
-     * @param int     $filter_ts_to     filter time stamp from
-     * @param int     $filter_ts_from   filter time stamp tp
-     * @param array   $filter_users     filter users
+     * @param string $url_query        url query
+     * @param array  $data             data
+     * @param array  $url_params       url params
+     * @param bool   $selection_schema selection schema
+     * @param bool   $selection_data   selection data
+     * @param bool   $selection_both   selection both
+     * @param int    $filter_ts_to     filter time stamp from
+     * @param int    $filter_ts_from   filter time stamp tp
+     * @param array  $filter_users     filter users
      *
      * @return string
      */
@@ -352,12 +339,12 @@ class Tracking
         $filter_ts_from,
         array $filter_users
     ) {
-        $html = '<h3>' . __('Tracking report')
-            . '  [<a href="tbl_tracking.php' . $url_query . '">' . __('Close')
-            . '</a>]</h3>';
+        $html = '<h3>'.__('Tracking report')
+            .'  [<a href="tbl_tracking.php'.$url_query.'">'.__('Close')
+            .'</a>]</h3>';
 
-        $html .= '<small>' . __('Tracking statements') . ' '
-            . htmlspecialchars($data['tracking']) . '</small><br/>';
+        $html .= '<small>'.__('Tracking statements').' '
+            .htmlspecialchars($data['tracking']).'</small><br/>';
         $html .= '<br/>';
 
         list($str1, $str2, $str3, $str4, $str5) = self::getHtmlForElementsOfTrackingReport(
@@ -381,7 +368,7 @@ class Tracking
         /*
          *  First, list tracked data definition statements
          */
-        if (count($data['ddlog']) == 0 && count($data['dmlog']) == 0) {
+        if (0 == count($data['ddlog']) && 0 == count($data['dmlog'])) {
             $msg = Message::notice(__('No data'));
             $msg->display();
         }
@@ -418,11 +405,11 @@ class Tracking
     }
 
     /**
-     * Generate HTML element for report form
+     * Generate HTML element for report form.
      *
-     * @param boolean $selection_schema selection schema
-     * @param boolean $selection_data   selection data
-     * @param boolean $selection_both   selection both
+     * @param bool $selection_schema selection schema
+     * @param bool $selection_data   selection data
+     * @param bool $selection_both   selection both
      *
      * @return array
      */
@@ -432,44 +419,44 @@ class Tracking
         $selection_both
     ) {
         $str1 = '<select name="logtype">'
-            . '<option value="schema"'
-            . ($selection_schema ? ' selected="selected"' : '') . '>'
-            . __('Structure only') . '</option>'
-            . '<option value="data"'
-            . ($selection_data ? ' selected="selected"' : '') . '>'
-            . __('Data only') . '</option>'
-            . '<option value="schema_and_data"'
-            . ($selection_both ? ' selected="selected"' : '') . '>'
-            . __('Structure and data') . '</option>'
-            . '</select>';
+            .'<option value="schema"'
+            .($selection_schema ? ' selected="selected"' : '').'>'
+            .__('Structure only').'</option>'
+            .'<option value="data"'
+            .($selection_data ? ' selected="selected"' : '').'>'
+            .__('Data only').'</option>'
+            .'<option value="schema_and_data"'
+            .($selection_both ? ' selected="selected"' : '').'>'
+            .__('Structure and data').'</option>'
+            .'</select>';
         $str2 = '<input type="text" name="date_from" value="'
-            . htmlspecialchars($_POST['date_from']) . '" size="19" />';
+            .htmlspecialchars($_POST['date_from']).'" size="19" />';
         $str3 = '<input type="text" name="date_to" value="'
-            . htmlspecialchars($_POST['date_to']) . '" size="19" />';
+            .htmlspecialchars($_POST['date_to']).'" size="19" />';
         $str4 = '<input type="text" name="users" value="'
-            . htmlspecialchars($_POST['users']) . '" />';
+            .htmlspecialchars($_POST['users']).'" />';
         $str5 = '<input type="hidden" name="list_report" value="1" />'
-            . '<input type="submit" value="' . __('Go') . '" />';
+            .'<input type="submit" value="'.__('Go').'" />';
         return array($str1, $str2, $str3, $str4, $str5);
     }
 
     /**
-     * Generate HTML for export form
+     * Generate HTML for export form.
      *
-     * @param array   $data               data
-     * @param array   $url_params         url params
-     * @param boolean $selection_schema   selection schema
-     * @param boolean $selection_data     selection data
-     * @param boolean $selection_both     selection both
-     * @param int     $filter_ts_to       filter time stamp from
-     * @param int     $filter_ts_from     filter time stamp tp
-     * @param array   $filter_users       filter users
-     * @param string  $str1               HTML for logtype select
-     * @param string  $str2               HTML for "from date"
-     * @param string  $str3               HTML for "to date"
-     * @param string  $str4               HTML for user
-     * @param string  $str5               HTML for "list report"
-     * @param string  $drop_image_or_text HTML for image or text
+     * @param array  $data               data
+     * @param array  $url_params         url params
+     * @param bool   $selection_schema   selection schema
+     * @param bool   $selection_data     selection data
+     * @param bool   $selection_both     selection both
+     * @param int    $filter_ts_to       filter time stamp from
+     * @param int    $filter_ts_from     filter time stamp tp
+     * @param array  $filter_users       filter users
+     * @param string $str1               HTML for logtype select
+     * @param string $str2               HTML for "from date"
+     * @param string $str3               HTML for "to date"
+     * @param string $str4               HTML for user
+     * @param string $str5               HTML for "list report"
+     * @param string $drop_image_or_text HTML for image or text
      *
      * @return string HTML for form
      */
@@ -538,7 +525,7 @@ class Tracking
     }
 
     /**
-     * Generate HTML for export form
+     * Generate HTML for export form.
      *
      * @param array  $url_params Parameters
      * @param string $str1       HTML for logtype select
@@ -585,25 +572,25 @@ class Tracking
         ]);
 
         $str_export1 = '<select name="export_type">'
-            . '<option value="sqldumpfile">' . __('SQL dump (file download)')
-            . '</option>'
-            . '<option value="sqldump">' . __('SQL dump') . '</option>'
-            . '<option value="execution" onclick="alert(\''
-            . Sanitize::escapeJsString(
+            .'<option value="sqldumpfile">'.__('SQL dump (file download)')
+            .'</option>'
+            .'<option value="sqldump">'.__('SQL dump').'</option>'
+            .'<option value="execution" onclick="alert(\''
+            .Sanitize::escapeJsString(
                 __('This option will replace your table and contained data.')
             )
-            . '\')">' . __('SQL execution') . '</option>' . '</select>';
+            .'\')">'.__('SQL execution').'</option>'.'</select>';
 
-        $str_export2 = '<input type="submit" value="' . __('Go') . '" />';
+        $str_export2 = '<input type="submit" value="'.__('Go').'" />';
 
-        $html .= "<br/>" . sprintf(__('Export as %s'), $str_export1)
-            . $str_export2 . "<br/>";
+        $html .= '<br/>'.sprintf(__('Export as %s'), $str_export1)
+            .$str_export2.'<br/>';
         $html .= '</form>';
         return $html;
     }
 
     /**
-     * Function to get html for data manipulation statements
+     * Function to get html for data manipulation statements.
      *
      * @param array  $data               data
      * @param array  $filter_users       filter users
@@ -625,7 +612,7 @@ class Tracking
         $drop_image_or_text
     ) {
         // no need for the secondth returned parameter
-        list($html, ) = self::getHtmlForDataStatements(
+        list($html) = self::getHtmlForDataStatements(
             $data,
             $filter_users,
             $filter_ts_from,
@@ -642,7 +629,7 @@ class Tracking
     }
 
     /**
-     * Function to get html for data definition statements in schema snapshot
+     * Function to get html for data definition statements in schema snapshot.
      *
      * @param array  $data               data
      * @param array  $filter_users       filter users
@@ -678,7 +665,7 @@ class Tracking
     }
 
     /**
-     * Function to get html for data statements in schema snapshot
+     * Function to get html for data statements in schema snapshot.
      *
      * @param array  $data            data
      * @param array  $filterUsers     filter users
@@ -715,7 +702,7 @@ class Tracking
                 || in_array($entry['username'], $filterUsers))
             ) {
                 $entry['formated_statement'] = Util::formatSql($entry['statement'], true);
-                $deleteParam = 'delete_' . $whichLog;
+                $deleteParam = 'delete_'.$whichLog;
                 $entry['url_params'] = Url::getCommon($urlParams + [
                     'report' => 'true',
                     'version' => $_POST['version'],
@@ -724,7 +711,7 @@ class Tracking
                 $entry['line_number'] = $lineNumber;
                 $entries[] = $entry;
             }
-            $lineNumber++;
+            ++$lineNumber;
         }
 
         $html = Template::get('table/tracking/report_table')->render([
@@ -738,7 +725,7 @@ class Tracking
     }
 
     /**
-     * Function to get html for schema snapshot
+     * Function to get html for schema snapshot.
      *
      * @param string $url_query url query
      *
@@ -746,9 +733,9 @@ class Tracking
      */
     public static function getHtmlForSchemaSnapshot($url_query)
     {
-        $html = '<h3>' . __('Structure snapshot')
-            . '  [<a href="tbl_tracking.php' . $url_query . '">' . __('Close')
-            . '</a>]</h3>';
+        $html = '<h3>'.__('Structure snapshot')
+            .'  [<a href="tbl_tracking.php'.$url_query.'">'.__('Close')
+            .'</a>]</h3>';
         $data = Tracker::getTrackedData(
             $_POST['db'],
             $_POST['table'],
@@ -774,7 +761,7 @@ class Tracking
 
         // Unserialize snapshot
         $temp = Core::safeUnserialize($data['schema_snapshot']);
-        if ($temp === null) {
+        if (null === $temp) {
             $temp = array('COLUMNS' => array(), 'INDEXES' => array());
         }
         $columns = $temp['COLUMNS'];
@@ -790,7 +777,7 @@ class Tracking
     }
 
     /**
-     * Function to get html for displaying columns in the schema snapshot
+     * Function to get html for displaying columns in the schema snapshot.
      *
      * @param array $columns columns
      *
@@ -804,7 +791,7 @@ class Tracking
     }
 
     /**
-     * Function to get html for the indexes in schema snapshot
+     * Function to get html for the indexes in schema snapshot.
      *
      * @param array $indexes indexes
      *
@@ -815,11 +802,10 @@ class Tracking
         return Template::get('table/tracking/structure_snapshot_indexes')->render([
             'indexes' => $indexes,
         ]);
-        ;
     }
 
     /**
-     * Function to handle the tracking report
+     * Function to handle the tracking report.
      *
      * @param array &$data tracked data
      *
@@ -851,7 +837,7 @@ class Tracking
     }
 
     /**
-     * Function to delete from a tracking report log
+     * Function to delete from a tracking report log.
      *
      * @param array  &$data     tracked data
      * @param string $which_log ddlog|dmlog
@@ -863,10 +849,10 @@ class Tracking
     public static function deleteFromTrackingReportLog(array &$data, $which_log, $type, $message)
     {
         $html = '';
-        $delete_id = $_POST['delete_' . $which_log];
+        $delete_id = $_POST['delete_'.$which_log];
 
         // Only in case of valid id
-        if ($delete_id == (int)$delete_id) {
+        if ($delete_id == (int) $delete_id) {
             unset($data[$which_log][$delete_id]);
 
             $successfullyDeleted = Tracker::changeTrackingData(
@@ -887,7 +873,7 @@ class Tracking
     }
 
     /**
-     * Function to export as sql dump
+     * Function to export as sql dump.
      *
      * @param array $entries entries
      *
@@ -896,17 +882,17 @@ class Tracking
     public static function exportAsSqlDump(array $entries)
     {
         $html = '';
-        $new_query = "# "
-            . __(
+        $new_query = '# '
+            .__(
                 'You can execute the dump by creating and using a temporary database. '
-                . 'Please ensure that you have the privileges to do so.'
+                .'Please ensure that you have the privileges to do so.'
             )
-            . "\n"
-            . "# " . __('Comment out these two lines if you do not need them.') . "\n"
-            . "\n"
-            . "CREATE database IF NOT EXISTS pma_temp_db; \n"
-            . "USE pma_temp_db; \n"
-            . "\n";
+            ."\n"
+            .'# '.__('Comment out these two lines if you do not need them.')."\n"
+            ."\n"
+            ."CREATE database IF NOT EXISTS pma_temp_db; \n"
+            ."USE pma_temp_db; \n"
+            ."\n";
 
         foreach ($entries as $entry) {
             $new_query .= $entry['statement'];
@@ -930,7 +916,7 @@ class Tracking
     }
 
     /**
-     * Function to export as sql execution
+     * Function to export as sql execution.
      *
      * @param array $entries entries
      *
@@ -940,14 +926,14 @@ class Tracking
     {
         $sql_result = array();
         foreach ($entries as $entry) {
-            $sql_result = $GLOBALS['dbi']->query("/*NOTRACK*/\n" . $entry['statement']);
+            $sql_result = $GLOBALS['dbi']->query("/*NOTRACK*/\n".$entry['statement']);
         }
 
         return $sql_result;
     }
 
     /**
-     * Function to export as entries
+     * Function to export as entries.
      *
      * @param array $entries entries
      *
@@ -959,15 +945,15 @@ class Tracking
 
         // Replace all multiple whitespaces by a single space
         $table = htmlspecialchars(preg_replace('/\s+/', ' ', $_POST['table']));
-        $dump = "# " . sprintf(
+        $dump = '# '.sprintf(
             __('Tracking report for table `%s`'),
             $table
         )
-        . "\n" . "# " . date('Y-m-d H:i:s') . "\n";
+        ."\n".'# '.date('Y-m-d H:i:s')."\n";
         foreach ($entries as $entry) {
             $dump .= $entry['statement'];
         }
-        $filename = 'log_' . $table . '.sql';
+        $filename = 'log_'.$table.'.sql';
         Response::getInstance()->disable();
         Core::downloadHeader(
             $filename,
@@ -980,7 +966,7 @@ class Tracking
     }
 
     /**
-     * Function to activate or deactivate tracking
+     * Function to activate or deactivate tracking.
      *
      * @param string $action activate|deactivate
      *
@@ -989,7 +975,7 @@ class Tracking
     public static function changeTracking($action)
     {
         $html = '';
-        if ($action == 'activate') {
+        if ('activate' == $action) {
             $method = 'activateTracking';
             $message = __('Tracking for %1$s was activated at version %2$s.');
         } else {
@@ -1005,7 +991,7 @@ class Tracking
             $msg = Message::success(
                 sprintf(
                     $message,
-                    htmlspecialchars($GLOBALS['db'] . '.' . $GLOBALS['table']),
+                    htmlspecialchars($GLOBALS['db'].'.'.$GLOBALS['table']),
                     htmlspecialchars($_POST['version'])
                 )
             );
@@ -1016,7 +1002,7 @@ class Tracking
     }
 
     /**
-     * Function to get tracking set
+     * Function to get tracking set.
      *
      * @return string
      */
@@ -1026,43 +1012,43 @@ class Tracking
 
         // a key is absent from the request if it has been removed from
         // tracking_default_statements in the config
-        if (isset($_POST['alter_table']) && $_POST['alter_table'] == true) {
+        if (isset($_POST['alter_table']) && true == $_POST['alter_table']) {
             $tracking_set .= 'ALTER TABLE,';
         }
-        if (isset($_POST['rename_table']) && $_POST['rename_table'] == true) {
+        if (isset($_POST['rename_table']) && true == $_POST['rename_table']) {
             $tracking_set .= 'RENAME TABLE,';
         }
-        if (isset($_POST['create_table']) && $_POST['create_table'] == true) {
+        if (isset($_POST['create_table']) && true == $_POST['create_table']) {
             $tracking_set .= 'CREATE TABLE,';
         }
-        if (isset($_POST['drop_table']) && $_POST['drop_table'] == true) {
+        if (isset($_POST['drop_table']) && true == $_POST['drop_table']) {
             $tracking_set .= 'DROP TABLE,';
         }
-        if (isset($_POST['alter_view']) && $_POST['alter_view'] == true) {
+        if (isset($_POST['alter_view']) && true == $_POST['alter_view']) {
             $tracking_set .= 'ALTER VIEW,';
         }
-        if (isset($_POST['create_view']) && $_POST['create_view'] == true) {
+        if (isset($_POST['create_view']) && true == $_POST['create_view']) {
             $tracking_set .= 'CREATE VIEW,';
         }
-        if (isset($_POST['drop_view']) && $_POST['drop_view'] == true) {
+        if (isset($_POST['drop_view']) && true == $_POST['drop_view']) {
             $tracking_set .= 'DROP VIEW,';
         }
-        if (isset($_POST['create_index']) && $_POST['create_index'] == true) {
+        if (isset($_POST['create_index']) && true == $_POST['create_index']) {
             $tracking_set .= 'CREATE INDEX,';
         }
-        if (isset($_POST['drop_index']) && $_POST['drop_index'] == true) {
+        if (isset($_POST['drop_index']) && true == $_POST['drop_index']) {
             $tracking_set .= 'DROP INDEX,';
         }
-        if (isset($_POST['insert']) && $_POST['insert'] == true) {
+        if (isset($_POST['insert']) && true == $_POST['insert']) {
             $tracking_set .= 'INSERT,';
         }
-        if (isset($_POST['update']) && $_POST['update'] == true) {
+        if (isset($_POST['update']) && true == $_POST['update']) {
             $tracking_set .= 'UPDATE,';
         }
-        if (isset($_POST['delete']) && $_POST['delete'] == true) {
+        if (isset($_POST['delete']) && true == $_POST['delete']) {
             $tracking_set .= 'DELETE,';
         }
-        if (isset($_POST['truncate']) && $_POST['truncate'] == true) {
+        if (isset($_POST['truncate']) && true == $_POST['truncate']) {
             $tracking_set .= 'TRUNCATE,';
         }
         $tracking_set = rtrim($tracking_set, ',');
@@ -1071,7 +1057,7 @@ class Tracking
     }
 
     /**
-     * Deletes a tracking version
+     * Deletes a tracking version.
      *
      * @param string $version tracking version
      *
@@ -1090,7 +1076,7 @@ class Tracking
                 sprintf(
                     __('Version %1$s of %2$s was deleted.'),
                     htmlspecialchars($version),
-                    htmlspecialchars($GLOBALS['db'] . '.' . $GLOBALS['table'])
+                    htmlspecialchars($GLOBALS['db'].'.'.$GLOBALS['table'])
                 )
             );
             $html .= $msg->getDisplay();
@@ -1100,7 +1086,7 @@ class Tracking
     }
 
     /**
-     * Function to create the tracking version
+     * Function to create the tracking version.
      *
      * @return string HTML of the success message
      */
@@ -1121,7 +1107,7 @@ class Tracking
                 sprintf(
                     __('Version %1$s was created, tracking for %2$s is active.'),
                     htmlspecialchars($_POST['version']),
-                    htmlspecialchars($GLOBALS['db'] . '.' . $GLOBALS['table'])
+                    htmlspecialchars($GLOBALS['db'].'.'.$GLOBALS['table'])
                 )
             );
             $html .= $msg->getDisplay();
@@ -1131,7 +1117,7 @@ class Tracking
     }
 
     /**
-     * Create tracking version for multiple tables
+     * Create tracking version for multiple tables.
      *
      * @param array $selected list of selected tables
      *
@@ -1153,7 +1139,7 @@ class Tracking
     }
 
     /**
-     * Function to get the entries
+     * Function to get the entries.
      *
      * @param array $data           data
      * @param int   $filter_ts_from filter time stamp from
@@ -1166,8 +1152,8 @@ class Tracking
     {
         $entries = array();
         // Filtering data definition statements
-        if ($_POST['logtype'] == 'schema'
-            || $_POST['logtype'] == 'schema_and_data'
+        if ('schema' == $_POST['logtype']
+            || 'schema_and_data' == $_POST['logtype']
         ) {
             $entries = array_merge(
                 $entries,
@@ -1181,8 +1167,8 @@ class Tracking
         }
 
         // Filtering data manipulation statements
-        if ($_POST['logtype'] == 'data'
-            || $_POST['logtype'] == 'schema_and_data'
+        if ('data' == $_POST['logtype']
+            || 'schema_and_data' == $_POST['logtype']
         ) {
             $entries = array_merge(
                 $entries,
@@ -1198,9 +1184,9 @@ class Tracking
         // Sort it
         $ids = $timestamps = $usernames = $statements = array();
         foreach ($entries as $key => $row) {
-            $ids[$key]        = $row['id'];
+            $ids[$key] = $row['id'];
             $timestamps[$key] = $row['timestamp'];
-            $usernames[$key]  = $row['username'];
+            $usernames[$key] = $row['username'];
             $statements[$key] = $row['statement'];
         }
 
@@ -1220,7 +1206,7 @@ class Tracking
     }
 
     /**
-     * Function to get version status
+     * Function to get version status.
      *
      * @param array $version version info
      *
@@ -1228,7 +1214,7 @@ class Tracking
      */
     public static function getVersionStatus(array $version)
     {
-        if ($version['tracking_active'] == 1) {
+        if (1 == $version['tracking_active']) {
             return __('active');
         }
 
@@ -1236,7 +1222,7 @@ class Tracking
     }
 
     /**
-     * Get HTML for untracked tables
+     * Get HTML for untracked tables.
      *
      * @param string $db              current database
      * @param array  $untrackedTables untracked tables
@@ -1263,11 +1249,11 @@ class Tracking
     }
 
     /**
-     * Helper function: Recursive function for getting table names from $table_list
+     * Helper function: Recursive function for getting table names from $table_list.
      *
-     * @param array   $table_list Table list
-     * @param string  $db         Current database
-     * @param boolean $testing    Testing
+     * @param array  $table_list Table list
+     * @param string $db         Current database
+     * @param bool   $testing    Testing
      *
      * @return array $untracked_tables
      */
@@ -1277,12 +1263,12 @@ class Tracking
         $sep = $GLOBALS['cfg']['NavigationTreeTableSeparator'];
 
         foreach ($table_list as $key => $value) {
-            if (is_array($value) && array_key_exists(('is' . $sep . 'group'), $value)
-                && $value['is' . $sep . 'group']
+            if (is_array($value) && array_key_exists(('is'.$sep.'group'), $value)
+                && $value['is'.$sep.'group']
             ) {
                 $untracked_tables = array_merge(self::extractTableNames($value, $db), $untracked_tables); //Recursion step
             } else {
-                if (is_array($value) && ($testing || Tracker::getVersion($db, $value['Name']) == -1)) {
+                if (is_array($value) && ($testing || -1 == Tracker::getVersion($db, $value['Name']))) {
                     $untracked_tables[] = $value['Name'];
                 }
             }
@@ -1290,9 +1276,8 @@ class Tracking
         return $untracked_tables;
     }
 
-
     /**
-     * Get untracked tables
+     * Get untracked tables.
      *
      * @param string $db current database
      *
@@ -1306,7 +1291,7 @@ class Tracking
     }
 
     /**
-     * Get tracked tables
+     * Get tracked tables.
      *
      * @param string $db              current database
      * @param object $allTablesResult result set of tracked tables
@@ -1329,14 +1314,14 @@ class Tracking
         $versions = [];
         while ($oneResult = $GLOBALS['dbi']->fetchArray($allTablesResult)) {
             list($tableName, $versionNumber) = $oneResult;
-            $tableQuery = ' SELECT * FROM ' .
-                 Util::backquote($cfgRelation['db']) . '.' .
-                 Util::backquote($cfgRelation['tracking']) .
+            $tableQuery = ' SELECT * FROM '.
+                 Util::backquote($cfgRelation['db']).'.'.
+                 Util::backquote($cfgRelation['tracking']).
                  ' WHERE `db_name` = \''
-                 . $GLOBALS['dbi']->escapeString($GLOBALS['db'])
-                 . '\' AND `table_name`  = \''
-                 . $GLOBALS['dbi']->escapeString($tableName)
-                 . '\' AND `version` = \'' . $versionNumber . '\'';
+                 .$GLOBALS['dbi']->escapeString($GLOBALS['db'])
+                 .'\' AND `table_name`  = \''
+                 .$GLOBALS['dbi']->escapeString($tableName)
+                 .'\' AND `version` = \''.$versionNumber.'\'';
 
             $tableResult = $relation->queryAsControlUser($tableQuery);
             $versionData = $GLOBALS['dbi']->fetchArray($tableResult);
@@ -1355,7 +1340,7 @@ class Tracking
     }
 
     /**
-     * Get tracking status button
+     * Get tracking status button.
      *
      * @param array  $versionData data about tracking versions
      * @param string $urlQuery    url query string
@@ -1369,17 +1354,17 @@ class Tracking
             0 => array(
                 'label' => __('not active'),
                 'value' => 'deactivate_now',
-                'selected' => ($state != 'active')
+                'selected' => ('active' != $state),
             ),
             1 => array(
                 'label' => __('active'),
                 'value' => 'activate_now',
-                'selected' => ($state == 'active')
-            )
+                'selected' => ('active' == $state),
+            ),
         );
-        $link = 'tbl_tracking.php' . $urlQuery . '&amp;table='
-            . htmlspecialchars($versionData['table_name'])
-            . '&amp;version=' . $versionData['version'];
+        $link = 'tbl_tracking.php'.$urlQuery.'&amp;table='
+            .htmlspecialchars($versionData['table_name'])
+            .'&amp;version='.$versionData['version'];
 
         return Util::toggleButton(
             $link,

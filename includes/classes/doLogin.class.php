@@ -1,4 +1,5 @@
 <?php
+
 if (!isset($HOME)) {
     die();
 }
@@ -13,33 +14,32 @@ if (!isset($HOME)) {
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
 
-require "vendor/autoload.php";
+require 'vendor/autoload.php';
 require 'config.php';
 
-if (isset($_GET["oauth"])) {
-    if ($_GET["oauth"] == "github") {
-        require("includes/oauth/github.php");
+if (isset($_GET['oauth'])) {
+    if ('github' == $_GET['oauth']) {
+        require 'includes/oauth/github.php';
     }
-    if ($_GET["oauth"] == "google") {
-        require("includes/oauth/google.php");
+    if ('google' == $_GET['oauth']) {
+        require 'includes/oauth/google.php';
     }
-    if ($_GET["oauth"] == "facebook") {
-        require("includes/oauth/facebook.php");
+    if ('facebook' == $_GET['oauth']) {
+        require 'includes/oauth/facebook.php';
     }
-    if ($_GET["oauth"] == "twitter") {
-        require("includes/oauth/twitter.php");
+    if ('twitter' == $_GET['oauth']) {
+        require 'includes/oauth/twitter.php';
     }
-    
-    
+
     $usez = auth();
     $con = mysqli_connect("$host", "$user", "$pass", "$data");
-    $sql        = "select * from oauth where link='$usez'";
-    $run_user   = mysqli_query($con, $sql);
+    $sql = "select * from oauth where link='$usez'";
+    $run_user = mysqli_query($con, $sql);
     $check_user = mysqli_num_rows($run_user);
     if ($check_user > 0) {
         // The user has been found
         $mysqli = new mysqli();
-        $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+        $con = mysqli_connect("$host", "$user", "$pass", "$data");
         // Check connection
         $sql = "SELECT name FROM oauth WHERE link =  '$usez' LIMIT 0 , 30";
         if ($result = mysqli_query($con, $sql)) {
@@ -51,8 +51,8 @@ if (isset($_GET["oauth"])) {
             mysqli_free_result($result);
         }
         mysqli_close($con);
-        $_SESSION["user"] = $theuser;
-        header('Location: ' . $webroot . '/cp');
+        $_SESSION['user'] = $theuser;
+        header('Location: '.$webroot.'/cp');
         die();
     } else {
         header("Location: ' . $webroot . '/?errorx");
@@ -60,19 +60,15 @@ if (isset($_GET["oauth"])) {
     die();
 }
 
-
 $con = mysqli_connect("$host", "$user", "$pass", "$data");
-if (!isset($_POST["user"])) {
-    $email = mysqli_real_escape_string($con, "");
+if (!isset($_POST['user'])) {
+    $email = mysqli_real_escape_string($con, '');
 } else {
     $email = mysqli_real_escape_string($con, $_POST['user']);
 }
 
-
-
-
-$sql        = "select * from users where username='$email'";
-$run_user   = mysqli_query($con, $sql);
+$sql = "select * from users where username='$email'";
+$run_user = mysqli_query($con, $sql);
 $check_user = mysqli_num_rows($run_user);
 if ($check_user > 0) {
     $sql = "SELECT password FROM users where username='$email'";
@@ -82,14 +78,13 @@ if ($check_user > 0) {
             $key = Key::loadFromAsciiSafeString($salt);
             $pass = Crypto::decrypt($row[0], $key);
 
-
-            if ($pass == $_POST["pass"]) {
-                $_SESSION["user"] = $_POST["user"];
-                if ($_POST['pass'] == 'admin') {
-                    header('Location: ' . $webroot . '/temppass');
+            if ($pass == $_POST['pass']) {
+                $_SESSION['user'] = $_POST['user'];
+                if ('admin' == $_POST['pass']) {
+                    header('Location: '.$webroot.'/temppass');
                     die();
                 }
-                header('Location: ' . $webroot . '/cp');
+                header('Location: '.$webroot.'/cp');
                 die();
             } else {
                 include 'config.php';
@@ -97,22 +92,22 @@ if ($check_user > 0) {
                 // Create connection
                 $conn = new mysqli('localhost', 'root', "$pass", "$data");
 
-                $t   = time();
+                $t = time();
                 $sql = "INSERT INTO failedlogin(id, ip, time)
 VALUES ('".rand(1, 99999)."', '".$_SERVER['REMOTE_ADDR']."', '".date('Y-m-d', $t)."')";
                 $conn->query($sql);
                 $conn->close();
-                if ($_POST["user"] == "admin") {
-                    require("includes/classes/mail.class.php");
-                    sendemailuser("Failed login attempt for admin", "
+                if ('admin' == $_POST['user']) {
+                    require 'includes/classes/mail.class.php';
+                    sendemailuser('Failed login attempt for admin', '
     <b>The administrator account has had a failed login attempt<b><br>
-    <p>The IP address was from " . $_SERVER['REMOTE_ADDR'] . " and the time was
-    " . date('Y-m-d', $t) . ".
+    <p>The IP address was from '.$_SERVER['REMOTE_ADDR'].' and the time was
+    '.date('Y-m-d', $t).".
     <b>If this wasn't you please change your password immediately or use the internal firewall.</b>
     
     ");
                 }
-                header('Location: ' . $webroot . '/?error');
+                header('Location: '.$webroot.'/?error');
                 die();
             }
         }
@@ -124,23 +119,22 @@ VALUES ('".rand(1, 99999)."', '".$_SERVER['REMOTE_ADDR']."', '".date('Y-m-d', $t
     // Create connection
     $conn = new mysqli('localhost', 'root', "$pass", "$data");
 
-    $t   = time();
+    $t = time();
     $sql = "INSERT INTO failedlogin(id, ip, time)
 VALUES ('".rand(1, 99999)."', '".$_SERVER['REMOTE_ADDR']."', '".date('Y-m-d', $t)."')";
     $conn->query($sql);
     $conn->close();
 
-if ($_POST["user"] == "admin") {
-    require("includes/classes/mail.class.php");
-    sendemailuser("Failed login attempt for admin", "
+if ('admin' == $_POST['user']) {
+    require 'includes/classes/mail.class.php';
+    sendemailuser('Failed login attempt for admin', '
     <b>The administrator account has had a failed login attempt<b><br>
-    <p>The IP address was from " . $_SERVER['REMOTE_ADDR'] . " and the time was
-    " . date('Y-m-d', $t) . ".
+    <p>The IP address was from '.$_SERVER['REMOTE_ADDR'].' and the time was
+    '.date('Y-m-d', $t).".
     <b>If this wasn't you please change your password immediately or use the internal firewall.</b>
     
     ");
 }
 
-
-  header('Location: ' . $webroot . '/?error');
+  header('Location: '.$webroot.'/?error');
     die();

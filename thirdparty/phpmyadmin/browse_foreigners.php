@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * display selection for relational field values
- *
- * @package PhpMyAdmin
+ * display selection for relational field values.
  */
-
 use PhpMyAdmin\BrowseForeigners;
 use PhpMyAdmin\Relation;
 use PhpMyAdmin\Response;
@@ -14,11 +12,11 @@ use PhpMyAdmin\Util;
 require_once 'libraries/common.inc.php';
 
 /**
- * Sets globals from $_POST
+ * Sets globals from $_POST.
  */
 $request_params = array(
     'data',
-    'field'
+    'field',
 );
 
 foreach ($request_params as $one_request_param) {
@@ -38,7 +36,7 @@ $header->setBodyId('body_browse_foreigners');
 $relation = new Relation();
 
 /**
- * Displays the frame
+ * Displays the frame.
  */
 $foreigners = $relation->getForeigners($db, $table);
 $browseForeigners = new BrowseForeigners(

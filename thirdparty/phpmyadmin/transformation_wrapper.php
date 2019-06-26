@@ -1,23 +1,21 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Wrapper script for rendering transformations
- *
- * @package PhpMyAdmin
+ * Wrapper script for rendering transformations.
  */
-
 use PhpMyAdmin\Core;
 use PhpMyAdmin\Relation;
 use PhpMyAdmin\Response;
 use PhpMyAdmin\Transformations;
 
-/**
+/*
  *
  */
 define('IS_TRANSFORMATION_WRAPPER', true);
 
 /**
- * Gets a core script and starts output buffering work
+ * Gets a core script and starts output buffering work.
  */
 require_once './libraries/common.inc.php';
 
@@ -25,20 +23,19 @@ $relation = new Relation();
 $cfgRelation = $relation->getRelationsParam();
 
 /**
- * Ensures db and table are valid, else moves to the "parent" script
+ * Ensures db and table are valid, else moves to the "parent" script.
  */
 require_once './libraries/db_table_exists.inc.php';
 
-
 /**
- * Sets globals from $_REQUEST
+ * Sets globals from $_REQUEST.
  */
 $request_params = array(
     'cn',
     'ct',
     'sql_query',
     'transform_key',
-    'where_clause'
+    'where_clause',
 );
 $size_params = array(
     'newHeight',
@@ -57,22 +54,21 @@ foreach ($request_params as $one_request_param) {
     }
 }
 
-
-/**
+/*
  * Get the list of the fields of the current table
  */
 $GLOBALS['dbi']->selectDb($db);
 if (isset($where_clause)) {
     $result = $GLOBALS['dbi']->query(
-        'SELECT * FROM ' . PhpMyAdmin\Util::backquote($table)
-        . ' WHERE ' . $where_clause . ';',
+        'SELECT * FROM '.PhpMyAdmin\Util::backquote($table)
+        .' WHERE '.$where_clause.';',
         PhpMyAdmin\DatabaseInterface::CONNECT_USER,
         PhpMyAdmin\DatabaseInterface::QUERY_STORE
     );
     $row = $GLOBALS['dbi']->fetchAssoc($result);
 } else {
     $result = $GLOBALS['dbi']->query(
-        'SELECT * FROM ' . PhpMyAdmin\Util::backquote($table) . ' LIMIT 1;',
+        'SELECT * FROM '.PhpMyAdmin\Util::backquote($table).' LIMIT 1;',
         PhpMyAdmin\DatabaseInterface::CONNECT_USER,
         PhpMyAdmin\DatabaseInterface::QUERY_STORE
     );
@@ -80,7 +76,7 @@ if (isset($where_clause)) {
 }
 
 // No row returned
-if (! $row) {
+if (!$row) {
     exit;
 } // end if (no record returned)
 
@@ -94,7 +90,7 @@ if ($cfgRelation['commwork'] && $cfgRelation['mimework']) {
     );
 
     foreach ($mime_options as $key => $option) {
-        if (substr($option, 0, 10) == '; charset=') {
+        if ('; charset=' == substr($option, 0, 10)) {
             $mime_options['charset'] = $option;
         }
     }
@@ -105,19 +101,19 @@ $response = Response::getInstance();
 $response->getHeader()->sendHttpHeaders();
 
 // [MIME]
-if (isset($ct) && ! empty($ct)) {
+if (isset($ct) && !empty($ct)) {
     $mime_type = $ct;
 } else {
     $mime_type = (!empty($mime_map[$transform_key]['mimetype'])
         ? str_replace('_', '/', $mime_map[$transform_key]['mimetype'])
         : $default_ct)
-    . (isset($mime_options['charset']) ? $mime_options['charset'] : '');
+    .(isset($mime_options['charset']) ? $mime_options['charset'] : '');
 }
 
 Core::downloadHeader($cn, $mime_type);
 
-if (! isset($_REQUEST['resize'])) {
-    if (stripos($mime_type, 'html') === false) {
+if (!isset($_REQUEST['resize'])) {
+    if (false === stripos($mime_type, 'html')) {
         echo $row[$transform_key];
     } else {
         echo htmlspecialchars($row[$transform_key]);
@@ -134,15 +130,15 @@ if (! isset($_REQUEST['resize'])) {
     // if so adjust accordingly to make sure the image
     // stays smaller than the new width and new height
 
-    $ratioWidth = $srcWidth/$_REQUEST['newWidth'];
-    $ratioHeight = $srcHeight/$_REQUEST['newHeight'];
+    $ratioWidth = $srcWidth / $_REQUEST['newWidth'];
+    $ratioHeight = $srcHeight / $_REQUEST['newHeight'];
 
     if ($ratioWidth < $ratioHeight) {
-        $destWidth = $srcWidth/$ratioHeight;
+        $destWidth = $srcWidth / $ratioHeight;
         $destHeight = $_REQUEST['newHeight'];
     } else {
         $destWidth = $_REQUEST['newWidth'];
-        $destHeight = $srcHeight/$ratioWidth;
+        $destHeight = $srcHeight / $ratioWidth;
     }
 
     if ($_REQUEST['resize']) {
@@ -165,10 +161,10 @@ if (! isset($_REQUEST['resize'])) {
         $srcHeight
     );
 
-    if ($_REQUEST['resize'] == 'jpeg') {
+    if ('jpeg' == $_REQUEST['resize']) {
         ImageJPEG($destImage, null, 75);
     }
-    if ($_REQUEST['resize'] == 'png') {
+    if ('png' == $_REQUEST['resize']) {
         ImagePNG($destImage);
     }
     ImageDestroy($srcImage);

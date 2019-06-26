@@ -1,18 +1,13 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * handle row specific actions like edit, delete, export
- *
- * @package PhpMyAdmin
+ * handle row specific actions like edit, delete, export.
  */
-
 use PhpMyAdmin\Response;
 use PhpMyAdmin\Sql;
 use PhpMyAdmin\Url;
 
-/**
- *
- */
 require_once 'libraries/common.inc.php';
 
 if (isset($_POST['submit_mult'])) {
@@ -32,7 +27,7 @@ if (isset($_POST['mult_btn'])) {
     $submit_mult = 'row_delete';
 }
 
-if (! isset($submit_mult)) {
+if (!isset($submit_mult)) {
     $submit_mult = 'row_edit';
 }
 
@@ -64,8 +59,8 @@ default:
 
 if (!empty($submit_mult)) {
     if (isset($_POST['goto'])
-        && (! isset($_POST['rows_to_delete'])
-        || ! is_array($_POST['rows_to_delete']))
+        && (!isset($_POST['rows_to_delete'])
+        || !is_array($_POST['rows_to_delete']))
     ) {
         $response = Response::getInstance();
         $response->setRequestStatus(false);
@@ -73,7 +68,7 @@ if (!empty($submit_mult)) {
     }
 
     switch ($submit_mult) {
-    /** @noinspection PhpMissingBreakStatementInspection */
+    /* @noinspection PhpMissingBreakStatementInspection */
     case 'row_copy':
         $_POST['default_action'] = 'insert';
         // no break to allow for fallthough
@@ -118,10 +113,10 @@ if (!empty($submit_mult)) {
     default:
         $action = 'tbl_row_action.php';
         $err_url = 'tbl_row_action.php'
-            . Url::getCommon($GLOBALS['url_params']);
-        if (! isset($_POST['mult_btn'])) {
+            .Url::getCommon($GLOBALS['url_params']);
+        if (!isset($_POST['mult_btn'])) {
             $original_sql_query = $sql_query;
-            if (! empty($url_query)) {
+            if (!empty($url_query)) {
                 $original_url_query = $url_query;
             }
         }
@@ -130,13 +125,12 @@ if (!empty($submit_mult)) {
         $_url_params['goto'] = 'tbl_sql.php';
         $url_query = Url::getCommon($_url_params);
 
-
-        /**
+        /*
          * Show result of multi submit operation
          */
         // sql_query is not set when user does not confirm multi-delete
-        if ((! empty($submit_mult) || isset($_POST['mult_btn']))
-            && ! empty($sql_query)
+        if ((!empty($submit_mult) || isset($_POST['mult_btn']))
+            && !empty($sql_query)
         ) {
             $disp_message = __('Your SQL query has been executed successfully.');
             $disp_query = $sql_query;

@@ -1,21 +1,18 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Lists available transformation plugins
- *
- * @package PhpMyAdmin
+ * Lists available transformation plugins.
  */
-
 use PhpMyAdmin\Response;
 use PhpMyAdmin\Transformations;
 
 /**
- * Gets some core libraries and displays a top message if required
+ * Gets some core libraries and displays a top message if required.
  */
 require_once './libraries/common.inc.php';
 
 $response = Response::getInstance();
-$header   = $response->getHeader();
+$header = $response->getHeader();
 $header->disableMenuAndConsole();
 
 $types = Transformations::getAvailableMIMEtypes();
@@ -31,33 +28,33 @@ foreach ($types['mimetype'] as $key => $mimetype) {
     }
 }
 $transformation_types = array(
-    'transformation', 'input_transformation'
+    'transformation', 'input_transformation',
 );
 $label = array(
     'transformation' => __('Available browser display transformations'),
-    'input_transformation' => __('Available input transformations')
+    'input_transformation' => __('Available input transformations'),
 );
 $th = array(
     'transformation' => __('Browser display transformation'),
-    'input_transformation' => __('Input transformation')
+    'input_transformation' => __('Input transformation'),
 );
 ?>
 <br />
 <?php foreach ($transformation_types as $ttype) {
     ?>
     <a name="<?php echo $ttype; ?>"></a>
-    <h2><?php echo $label[$ttype] ?></h2>
+    <h2><?php echo $label[$ttype]; ?></h2>
     <table width="90%">
     <thead>
     <tr>
-        <th><?php echo $th[$ttype] ?></th>
+        <th><?php echo $th[$ttype]; ?></th>
         <th><?php echo _pgettext('for MIME transformation', 'Description'); ?></th>
     </tr>
     </thead>
     <tbody>
     <?php
     foreach ($types[$ttype] as $key => $transform) {
-        $desc = Transformations::getDescription($types[$ttype . '_file'][$key]); ?>
+        $desc = Transformations::getDescription($types[$ttype.'_file'][$key]); ?>
         <tr>
             <td><?php echo htmlspecialchars($transform); ?></td>
             <td><?php echo htmlspecialchars($desc); ?></td>

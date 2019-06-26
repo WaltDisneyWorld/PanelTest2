@@ -1,21 +1,20 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Classes to create relation schema in Dia format.
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin\Plugins\Schema\Dia;
 
 use PhpMyAdmin\Plugins\Schema\Eps\TableStatsEps;
 use PhpMyAdmin\Plugins\Schema\ExportRelationSchema;
 use PhpMyAdmin\Plugins\Schema\Pdf\TableStatsPdf;
 use PhpMyAdmin\Plugins\Schema\Svg\TableStatsSvg;
-use PhpMyAdmin\Plugins\Schema\Dia\TableStatsDia;
 use PhpMyAdmin\Relation;
 
 /**
- * Dia Relation Schema Class
+ * Dia Relation Schema Class.
  *
  * Purpose of this class is to generate the Dia XML Document
  * which is used for representing the database diagrams in Dia IDE
@@ -26,7 +25,6 @@ use PhpMyAdmin\Relation;
  * inherits ExportRelationSchema class has common functionality added
  * to this class
  *
- * @package PhpMyAdmin
  * @name    Dia_Relation_Schema
  */
 class DiaRelationSchema extends ExportRelationSchema
@@ -44,7 +42,7 @@ class DiaRelationSchema extends ExportRelationSchema
     public static $objectId = 0;
 
     /**
-     * The "PhpMyAdmin\Plugins\Schema\Dia\DiaRelationSchema" constructor
+     * The "PhpMyAdmin\Plugins\Schema\Dia\DiaRelationSchema" constructor.
      *
      * Upon instantiation This outputs the Dia XML document
      * that user can download
@@ -100,7 +98,7 @@ class DiaRelationSchema extends ExportRelationSchema
                  * (do not use array_search() because we would have to
                  * to do a === false and this is not PHP3 compatible)
                  */
-                if ($master_field != 'foreign_keys_data') {
+                if ('foreign_keys_data' != $master_field) {
                     if (in_array($rel['foreign_table'], $alltables)) {
                         $this->_addRelation(
                             $one_table,
@@ -139,10 +137,7 @@ class DiaRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Output Dia Document for download
-     *
-     * @return void
-     * @access public
+     * Output Dia Document for download.
      */
     public function showOutput()
     {
@@ -150,7 +145,7 @@ class DiaRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Defines relation objects
+     * Defines relation objects.
      *
      * @param string $masterTable  The master table name
      * @param string $masterField  The relation field in the master table
@@ -158,9 +153,6 @@ class DiaRelationSchema extends ExportRelationSchema
      * @param string $foreignField The relation field in the foreign table
      * @param bool   $showKeys     Whether to display ONLY keys or not
      *
-     * @return void
-     *
-     * @access private
      * @see    TableStatsDia::__construct(),RelationStatsDia::__construct()
      */
     private function _addRelation(
@@ -198,15 +190,13 @@ class DiaRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Draws relation references
+     * Draws relation references.
      *
      * connects master table's master field to
      * foreign table's foreign field using Dia object
      * type Database - Reference
      *
-     * @return void
      *
-     * @access private
      * @see    RelationStatsDia::relationDraw()
      */
     private function _drawRelations()
@@ -217,14 +207,12 @@ class DiaRelationSchema extends ExportRelationSchema
     }
 
     /**
-     * Draws tables
+     * Draws tables.
      *
      * Tables are generated using Dia object type Database - Table
      * primary fields are underlined and bold in tables
      *
-     * @return void
      *
-     * @access private
      * @see    TableStatsDia::tableDraw()
      */
     private function _drawTables()

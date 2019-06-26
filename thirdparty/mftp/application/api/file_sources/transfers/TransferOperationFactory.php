@@ -1,8 +1,8 @@
 <?php
-    require_once(dirname(__FILE__) . '/../Validation.php');
-    require_once(dirname(__FILE__) . '/TransferOperation.php');
-    require_once(dirname(__FILE__) . '/FTPTransferOperation.php');
-    require_once(dirname(__FILE__) . '/SFTPTransferOperation.php');
+    require_once dirname(__FILE__).'/../Validation.php';
+    require_once dirname(__FILE__).'/TransferOperation.php';
+    require_once dirname(__FILE__).'/FTPTransferOperation.php';
+    require_once dirname(__FILE__).'/SFTPTransferOperation.php';
 
     class TransferOperationFactory
     {

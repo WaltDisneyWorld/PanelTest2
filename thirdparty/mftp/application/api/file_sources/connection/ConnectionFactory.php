@@ -1,23 +1,24 @@
 <?php
-    require_once(dirname(__FILE__) . '/../../constants.php');
-    require_once(dirname(__FILE__) . '/FTPConnection.php');
-    require_once(dirname(__FILE__) . '/MFTPConnection.php');
-    require_once(dirname(__FILE__) . '/MockConnection.php');
-    require_once(dirname(__FILE__) . '/SFTPConnection.php');
-    require_once(dirname(__FILE__) . '/PHPSeclibConnection.php');
+    require_once dirname(__FILE__).'/../../constants.php';
+    require_once dirname(__FILE__).'/FTPConnection.php';
+    require_once dirname(__FILE__).'/MFTPConnection.php';
+    require_once dirname(__FILE__).'/MockConnection.php';
+    require_once dirname(__FILE__).'/SFTPConnection.php';
+    require_once dirname(__FILE__).'/PHPSeclibConnection.php';
 
     class ConnectionFactory
     {
         /**
          * @param $connectionType string
          * @param $configuration FTPConfiguration|MockConnectionConfiguration|SFTPConfiguration
+         *
          * @return ConnectionBase
          */
         public function getConnection($connectionType, $configuration)
         {
             switch ($connectionType) {
                 case 'ftp':
-                    $useMFTPLibrary = function_exists("fsockopen") && defined("USE_MFTP_LIBRARY") && USE_MFTP_LIBRARY;
+                    $useMFTPLibrary = function_exists('fsockopen') && defined('USE_MFTP_LIBRARY') && USE_MFTP_LIBRARY;
 
                     if ($useMFTPLibrary) {
                         return new MFTPConnection($configuration);

@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Displays index edit/creation form and handles it
- *
- * @package PhpMyAdmin
+ * Displays index edit/creation form and handles it.
  */
-
 use PhpMyAdmin\Controllers\Table\TableIndexesController;
 use PhpMyAdmin\Di\Container;
 use PhpMyAdmin\Index;
@@ -38,11 +36,11 @@ if (isset($_POST['index'])) {
         $index = $dbi->getTable($db, $table)->getIndex($_POST['index']);
     }
 } else {
-    $index = new Index;
+    $index = new Index();
 }
 
 $dependency_definitions = array(
-    "index" => $index
+    'index' => $index,
 );
 
 /** @var TableIndexesController $controller */

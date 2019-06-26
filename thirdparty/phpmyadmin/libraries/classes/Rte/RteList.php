@@ -1,14 +1,13 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Common functions for generating lists of Routines, Triggers and Events.
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin\Rte;
 
 use PhpMyAdmin\Response;
-use PhpMyAdmin\Rte\Words;
 use PhpMyAdmin\SqlParser\Parser;
 use PhpMyAdmin\SqlParser\Statements\CreateStatement;
 use PhpMyAdmin\SqlParser\Utils\Routine;
@@ -17,9 +16,7 @@ use PhpMyAdmin\Url;
 use PhpMyAdmin\Util;
 
 /**
- * PhpMyAdmin\Rte\RteList class
- *
- * @package PhpMyAdmin
+ * PhpMyAdmin\Rte\RteList class.
  */
 class RteList
 {
@@ -37,25 +34,25 @@ class RteList
         global $table;
 
         /**
-         * Conditional classes switch the list on or off
+         * Conditional classes switch the list on or off.
          */
         $class1 = 'hide';
         $class2 = '';
-        if (! $items) {
+        if (!$items) {
             $class1 = '';
             $class2 = ' hide';
         }
         /**
-         * Generate output
+         * Generate output.
          */
-        $retval  = "<!-- LIST OF " . Words::get('docu') . " START -->\n";
+        $retval = '<!-- LIST OF '.Words::get('docu')." START -->\n";
         $retval .= '<form id="rteListForm" class="ajax" action="';
         switch ($type) {
         case 'routine':
             $retval .= 'db_routines.php';
             break;
         case 'trigger':
-            if (! empty($table)) {
+            if (!empty($table)) {
                 $retval .= 'tbl_triggers.php';
             } else {
                 $retval .= 'db_triggers.php';
@@ -71,12 +68,12 @@ class RteList
         $retval .= Url::getHiddenInputs($GLOBALS['db'], $GLOBALS['table']);
         $retval .= "<fieldset>\n";
         $retval .= "    <legend>\n";
-        $retval .= "        " . Words::get('title') . "\n";
-        $retval .= "        "
-            . Util::showMySQLDocu(Words::get('docu')) . "\n";
+        $retval .= '        '.Words::get('title')."\n";
+        $retval .= '        '
+            .Util::showMySQLDocu(Words::get('docu'))."\n";
         $retval .= "    </legend>\n";
         $retval .= "    <div class='$class1' id='nothing2display'>\n";
-        $retval .= "      " . Words::get('nothing') . "\n";
+        $retval .= '      '.Words::get('nothing')."\n";
         $retval .= "    </div>\n";
         $retval .= "    <table class='data$class2'>\n";
         $retval .= "        <!-- TABLE HEADERS -->\n";
@@ -85,40 +82,40 @@ class RteList
         switch ($type) {
         case 'routine':
             $retval .= "            <th></th>\n";
-            $retval .= "            <th>" . __('Name') . "</th>\n";
-            $retval .= "            <th colspan='4'>" . __('Action') . "</th>\n";
-            $retval .= "            <th>" . __('Type') . "</th>\n";
-            $retval .= "            <th>" . __('Returns') . "</th>\n";
+            $retval .= '            <th>'.__('Name')."</th>\n";
+            $retval .= "            <th colspan='4'>".__('Action')."</th>\n";
+            $retval .= '            <th>'.__('Type')."</th>\n";
+            $retval .= '            <th>'.__('Returns')."</th>\n";
             $retval .= "        </tr>\n";
             $retval .= "        <tr class='hide'>\n"; // see comment above
-            for ($i = 0; $i < 7; $i++) {
+            for ($i = 0; $i < 7; ++$i) {
                 $retval .= "            <td></td>\n";
             }
             break;
         case 'trigger':
             $retval .= "            <th></th>\n";
-            $retval .= "            <th>" . __('Name') . "</th>\n";
+            $retval .= '            <th>'.__('Name')."</th>\n";
             if (empty($table)) {
-                $retval .= "            <th>" . __('Table') . "</th>\n";
+                $retval .= '            <th>'.__('Table')."</th>\n";
             }
-            $retval .= "            <th colspan='3'>" . __('Action') . "</th>\n";
-            $retval .= "            <th>" . __('Time') . "</th>\n";
-            $retval .= "            <th>" . __('Event') . "</th>\n";
+            $retval .= "            <th colspan='3'>".__('Action')."</th>\n";
+            $retval .= '            <th>'.__('Time')."</th>\n";
+            $retval .= '            <th>'.__('Event')."</th>\n";
             $retval .= "        </tr>\n";
             $retval .= "        <tr class='hide'>\n"; // see comment above
-            for ($i = 0; $i < (empty($table) ? 7 : 6); $i++) {
+            for ($i = 0; $i < (empty($table) ? 7 : 6); ++$i) {
                 $retval .= "            <td></td>\n";
             }
             break;
         case 'event':
             $retval .= "            <th></th>\n";
-            $retval .= "            <th>" . __('Name') . "</th>\n";
-            $retval .= "            <th>" . __('Status') . "</th>\n";
-            $retval .= "            <th colspan='3'>" . __('Action') . "</th>\n";
-            $retval .= "            <th>" . __('Type') . "</th>\n";
+            $retval .= '            <th>'.__('Name')."</th>\n";
+            $retval .= '            <th>'.__('Status')."</th>\n";
+            $retval .= "            <th colspan='3'>".__('Action')."</th>\n";
+            $retval .= '            <th>'.__('Type')."</th>\n";
             $retval .= "        </tr>\n";
             $retval .= "        <tr class='hide'>\n"; // see comment above
-            for ($i = 0; $i < 6; $i++) {
+            for ($i = 0; $i < 6; ++$i) {
                 $retval .= "            <td></td>\n";
             }
             break;
@@ -149,7 +146,7 @@ class RteList
             default:
                 break;
             }
-            $count++;
+            ++$count;
         }
         $retval .= "    </table>\n";
 
@@ -159,8 +156,8 @@ class RteList
                 ->render(
                     array(
                         'pma_theme_image' => $GLOBALS['pmaThemeImage'],
-                        'text_dir'        => $GLOBALS['text_dir'],
-                        'form_name'       => 'rteListForm',
+                        'text_dir' => $GLOBALS['text_dir'],
+                        'form_name' => 'rteListForm',
                     )
                 );
             $retval .= Util::getButtonOrImage(
@@ -182,13 +179,15 @@ class RteList
 
         $retval .= "</fieldset>\n";
         $retval .= "</form>\n";
-        $retval .= "<!-- LIST OF " . Words::get('docu') . " END -->\n";
+        $retval .= '<!-- LIST OF '.Words::get('docu')." END -->\n";
 
         return $retval;
-    } // end self::get()
+    }
+
+ // end self::get()
 
     /**
-     * Creates the contents for a row in the list of routines
+     * Creates the contents for a row in the list of routines.
      *
      * @param array  $routine  An array of routine data
      * @param string $rowclass Additional class
@@ -206,28 +205,28 @@ class RteList
         );
         $type_link = "item_type={$routine['type']}";
 
-        $retval  = "        <tr class='$rowclass'>\n";
+        $retval = "        <tr class='$rowclass'>\n";
         $retval .= "            <td>\n";
         $retval .= '                <input type="checkbox"'
-            . ' class="checkall" name="item_name[]"'
-            . ' value="' . htmlspecialchars($routine['name']) . '" />';
+            .' class="checkall" name="item_name[]"'
+            .' value="'.htmlspecialchars($routine['name']).'" />';
         $retval .= "            </td>\n";
         $retval .= "            <td>\n";
         $retval .= "                <span class='drop_sql hide'>"
-            . htmlspecialchars($sql_drop) . "</span>\n";
+            .htmlspecialchars($sql_drop)."</span>\n";
         $retval .= "                <strong>\n";
-        $retval .= "                    "
-            . htmlspecialchars($routine['name']) . "\n";
+        $retval .= '                    '
+            .htmlspecialchars($routine['name'])."\n";
         $retval .= "                </strong>\n";
         $retval .= "            </td>\n";
         $retval .= "            <td>\n";
 
         // this is for our purpose to decide whether to
         // show the edit link or not, so we need the DEFINER for the routine
-        $where = "ROUTINE_SCHEMA " . Util::getCollateForIS() . "="
-            . "'" . $GLOBALS['dbi']->escapeString($db) . "' "
-            . "AND SPECIFIC_NAME='" . $GLOBALS['dbi']->escapeString($routine['name']) . "'"
-            . "AND ROUTINE_TYPE='" . $GLOBALS['dbi']->escapeString($routine['type']) . "'";
+        $where = 'ROUTINE_SCHEMA '.Util::getCollateForIS().'='
+            ."'".$GLOBALS['dbi']->escapeString($db)."' "
+            ."AND SPECIFIC_NAME='".$GLOBALS['dbi']->escapeString($routine['name'])."'"
+            ."AND ROUTINE_TYPE='".$GLOBALS['dbi']->escapeString($routine['type'])."'";
         $query = "SELECT `DEFINER` FROM INFORMATION_SCHEMA.ROUTINES WHERE $where;";
         $routine_definer = $GLOBALS['dbi']->fetchValue($query);
 
@@ -240,13 +239,13 @@ class RteList
             || $GLOBALS['dbi']->isSuperuser()
         ) {
             $retval .= '                <a class="ajax edit_anchor"'
-                                             . ' href="db_routines.php'
-                                             . $url_query
-                                             . '&amp;edit_item=1'
-                                             . '&amp;item_name='
-                                             . urlencode($routine['name'])
-                                             . '&amp;' . $type_link
-                                             . '">' . $titles['Edit'] . "</a>\n";
+                                             .' href="db_routines.php'
+                                             .$url_query
+                                             .'&amp;edit_item=1'
+                                             .'&amp;item_name='
+                                             .urlencode($routine['name'])
+                                             .'&amp;'.$type_link
+                                             .'">'.$titles['Edit']."</a>\n";
         } else {
             $retval .= "                {$titles['NoEdit']}\n";
         }
@@ -269,11 +268,11 @@ class RteList
             $routine['type'],
             $routine['name']
         );
-        if ($definition !== false) {
+        if (false !== $definition) {
             $parser = new Parser($definition);
 
             /**
-             * @var CreateStatement $stmt
+             * @var CreateStatement
              */
             $stmt = $parser->statements[0];
 
@@ -281,9 +280,9 @@ class RteList
 
             if (Util::currentUserHasPrivilege('EXECUTE', $db)) {
                 $execute_action = 'execute_routine';
-                for ($i = 0; $i < $params['num']; $i++) {
-                    if ($routine['type'] == 'PROCEDURE'
-                        && $params['dir'][$i] == 'OUT'
+                for ($i = 0; $i < $params['num']; ++$i) {
+                    if ('PROCEDURE' == $routine['type']
+                        && 'OUT' == $params['dir'][$i]
                     ) {
                         continue;
                     }
@@ -291,13 +290,13 @@ class RteList
                     break;
                 }
                 $retval .= '                <a class="ajax exec_anchor"'
-                                                 . ' href="db_routines.php'
-                                                 . $url_query
-                                                 . '&amp;' . $execute_action . '=1'
-                                                 . '&amp;item_name='
-                                                 . urlencode($routine['name'])
-                                                 . '&amp;' . $type_link
-                                                 . '">' . $titles['Execute'] . "</a>\n";
+                                                 .' href="db_routines.php'
+                                                 .$url_query
+                                                 .'&amp;'.$execute_action.'=1'
+                                                 .'&amp;item_name='
+                                                 .urlencode($routine['name'])
+                                                 .'&amp;'.$type_link
+                                                 .'">'.$titles['Execute']."</a>\n";
             } else {
                 $retval .= "                {$titles['NoExecute']}\n";
             }
@@ -310,20 +309,20 @@ class RteList
             || $GLOBALS['dbi']->isSuperuser()
         ) {
             $retval .= '                <a class="ajax export_anchor"'
-                                             . ' href="db_routines.php'
-                                             . $url_query
-                                             . '&amp;export_item=1'
-                                             . '&amp;item_name='
-                                             . urlencode($routine['name'])
-                                             . '&amp;' . $type_link
-                                             . '">' . $titles['Export'] . "</a>\n";
+                                             .' href="db_routines.php'
+                                             .$url_query
+                                             .'&amp;export_item=1'
+                                             .'&amp;item_name='
+                                             .urlencode($routine['name'])
+                                             .'&amp;'.$type_link
+                                             .'">'.$titles['Export']."</a>\n";
         } else {
             $retval .= "                {$titles['NoExport']}\n";
         }
         $retval .= "            </td>\n";
         $retval .= "            <td>\n";
         $retval .= Util::linkOrButton(
-            'sql.php' . $url_query . '&amp;sql_query=' . urlencode($sql_drop) . '&amp;goto=db_routines.php' . urlencode("?db={$db}"),
+            'sql.php'.$url_query.'&amp;sql_query='.urlencode($sql_drop).'&amp;goto=db_routines.php'.urlencode("?db={$db}"),
             $titles['Drop'],
             ['class' => 'ajax drop_anchor']
         );
@@ -332,16 +331,18 @@ class RteList
         $retval .= "                 {$routine['type']}\n";
         $retval .= "            </td>\n";
         $retval .= "            <td dir=\"ltr\">\n";
-        $retval .= "                "
-            . htmlspecialchars($routine['returns']) . "\n";
+        $retval .= '                '
+            .htmlspecialchars($routine['returns'])."\n";
         $retval .= "            </td>\n";
         $retval .= "        </tr>\n";
 
         return $retval;
-    } // end self::getRoutineRow()
+    }
+
+ // end self::getRoutineRow()
 
     /**
-     * Creates the contents for a row in the list of triggers
+     * Creates the contents for a row in the list of triggers.
      *
      * @param array  $trigger  An array of routine data
      * @param string $rowclass Additional class
@@ -352,52 +353,52 @@ class RteList
     {
         global $url_query, $db, $table, $titles;
 
-        $retval  = "        <tr class='$rowclass'>\n";
+        $retval = "        <tr class='$rowclass'>\n";
         $retval .= "            <td>\n";
         $retval .= '                <input type="checkbox"'
-            . ' class="checkall" name="item_name[]"'
-            . ' value="' . htmlspecialchars($trigger['name']) . '" />';
+            .' class="checkall" name="item_name[]"'
+            .' value="'.htmlspecialchars($trigger['name']).'" />';
         $retval .= "            </td>\n";
         $retval .= "            <td>\n";
         $retval .= "                <span class='drop_sql hide'>"
-            . htmlspecialchars($trigger['drop']) . "</span>\n";
+            .htmlspecialchars($trigger['drop'])."</span>\n";
         $retval .= "                <strong>\n";
-        $retval .= "                    " . htmlspecialchars($trigger['name']) . "\n";
+        $retval .= '                    '.htmlspecialchars($trigger['name'])."\n";
         $retval .= "                </strong>\n";
         $retval .= "            </td>\n";
         if (empty($table)) {
             $retval .= "            <td>\n";
             $retval .= "<a href='db_triggers.php{$url_query}"
-                . "&amp;table=" . urlencode($trigger['table']) . "'>"
-                . htmlspecialchars($trigger['table']) . "</a>";
+                .'&amp;table='.urlencode($trigger['table'])."'>"
+                .htmlspecialchars($trigger['table']).'</a>';
             $retval .= "            </td>\n";
         }
         $retval .= "            <td>\n";
         if (Util::currentUserHasPrivilege('TRIGGER', $db, $table)) {
             $retval .= '                <a class="ajax edit_anchor"'
-                                             . ' href="db_triggers.php'
-                                             . $url_query
-                                             . '&amp;edit_item=1'
-                                             . '&amp;item_name='
-                                             . urlencode($trigger['name'])
-                                             . '">' . $titles['Edit'] . "</a>\n";
+                                             .' href="db_triggers.php'
+                                             .$url_query
+                                             .'&amp;edit_item=1'
+                                             .'&amp;item_name='
+                                             .urlencode($trigger['name'])
+                                             .'">'.$titles['Edit']."</a>\n";
         } else {
             $retval .= "                {$titles['NoEdit']}\n";
         }
         $retval .= "            </td>\n";
         $retval .= "            <td>\n";
         $retval .= '                    <a class="ajax export_anchor"'
-                                             . ' href="db_triggers.php'
-                                             . $url_query
-                                             . '&amp;export_item=1'
-                                             . '&amp;item_name='
-                                             . urlencode($trigger['name'])
-                                             . '">' . $titles['Export'] . "</a>\n";
+                                             .' href="db_triggers.php'
+                                             .$url_query
+                                             .'&amp;export_item=1'
+                                             .'&amp;item_name='
+                                             .urlencode($trigger['name'])
+                                             .'">'.$titles['Export']."</a>\n";
         $retval .= "            </td>\n";
         $retval .= "            <td>\n";
         if (Util::currentUserHasPrivilege('TRIGGER', $db)) {
             $retval .= Util::linkOrButton(
-                'sql.php' . $url_query . '&amp;sql_query=' . urlencode($trigger['drop']) . '&amp;goto=db_triggers.php' . urlencode("?db={$db}"),
+                'sql.php'.$url_query.'&amp;sql_query='.urlencode($trigger['drop']).'&amp;goto=db_triggers.php'.urlencode("?db={$db}"),
                 $titles['Drop'],
                 ['class' => 'ajax drop_anchor']
             );
@@ -414,10 +415,12 @@ class RteList
         $retval .= "        </tr>\n";
 
         return $retval;
-    } // end self::getTriggerRow()
+    }
+
+ // end self::getTriggerRow()
 
     /**
-     * Creates the contents for a row in the list of events
+     * Creates the contents for a row in the list of events.
      *
      * @param array  $event    An array of routine data
      * @param string $rowclass Additional class
@@ -433,18 +436,18 @@ class RteList
             Util::backquote($event['name'])
         );
 
-        $retval  = "        <tr class='$rowclass'>\n";
+        $retval = "        <tr class='$rowclass'>\n";
         $retval .= "            <td>\n";
         $retval .= '                <input type="checkbox"'
-            . ' class="checkall" name="item_name[]"'
-            . ' value="' . htmlspecialchars($event['name']) . '" />';
+            .' class="checkall" name="item_name[]"'
+            .' value="'.htmlspecialchars($event['name']).'" />';
         $retval .= "            </td>\n";
         $retval .= "            <td>\n";
         $retval .= "                <span class='drop_sql hide'>"
-            . htmlspecialchars($sql_drop) . "</span>\n";
+            .htmlspecialchars($sql_drop)."</span>\n";
         $retval .= "                <strong>\n";
-        $retval .= "                    "
-            . htmlspecialchars($event['name']) . "\n";
+        $retval .= '                    '
+            .htmlspecialchars($event['name'])."\n";
         $retval .= "                </strong>\n";
         $retval .= "            </td>\n";
         $retval .= "            <td>\n";
@@ -453,29 +456,29 @@ class RteList
         $retval .= "            <td>\n";
         if (Util::currentUserHasPrivilege('EVENT', $db)) {
             $retval .= '                <a class="ajax edit_anchor"'
-                                             . ' href="db_events.php'
-                                             . $url_query
-                                             . '&amp;edit_item=1'
-                                             . '&amp;item_name='
-                                             . urlencode($event['name'])
-                                             . '">' . $titles['Edit'] . "</a>\n";
+                                             .' href="db_events.php'
+                                             .$url_query
+                                             .'&amp;edit_item=1'
+                                             .'&amp;item_name='
+                                             .urlencode($event['name'])
+                                             .'">'.$titles['Edit']."</a>\n";
         } else {
             $retval .= "                {$titles['NoEdit']}\n";
         }
         $retval .= "            </td>\n";
         $retval .= "            <td>\n";
         $retval .= '                <a class="ajax export_anchor"'
-                                         . ' href="db_events.php'
-                                         . $url_query
-                                         . '&amp;export_item=1'
-                                         . '&amp;item_name='
-                                         . urlencode($event['name'])
-                                         . '">' . $titles['Export'] . "</a>\n";
+                                         .' href="db_events.php'
+                                         .$url_query
+                                         .'&amp;export_item=1'
+                                         .'&amp;item_name='
+                                         .urlencode($event['name'])
+                                         .'">'.$titles['Export']."</a>\n";
         $retval .= "            </td>\n";
         $retval .= "            <td>\n";
         if (Util::currentUserHasPrivilege('EVENT', $db)) {
             $retval .= Util::linkOrButton(
-                'sql.php' . $url_query . '&amp;sql_query=' . urlencode($sql_drop) . '&amp;goto=db_events.php' . urlencode("?db={$db}"),
+                'sql.php'.$url_query.'&amp;sql_query='.urlencode($sql_drop).'&amp;goto=db_events.php'.urlencode("?db={$db}"),
                 $titles['Drop'],
                 ['class' => 'ajax drop_anchor']
             );
@@ -489,5 +492,7 @@ class RteList
         $retval .= "        </tr>\n";
 
         return $retval;
-    } // end self::getEventRow()
+    }
+
+ // end self::getEventRow()
 }

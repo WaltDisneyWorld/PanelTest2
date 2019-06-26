@@ -1,19 +1,19 @@
 <?php
 if (!defined('HOMEBASE')) {
-    die("Direct Access is Not Allowed");
+    die('Direct Access is Not Allowed');
 }
 ?>
 <h1 class="title">Our End User License Agreement</h1>
 <?php
-if (isset($_GET["c"])) {
-    if ($_POST["agree"] == "no") {
+if (isset($_GET['c'])) {
+    if ('no' == $_POST['agree']) {
         ?>
     <div class="notification is-danger">
  You cannot use this program if you do not accept the EULA.
 </div>
     <?php
     } else {
-        $_SESSION["install_db"] = true; ?>
+        $_SESSION['install_db'] = true; ?>
         <script>window.location.href = "index.php?pg=db";</script>
         <a href="index.php?pg=db">Click here</a> if you are not redirected.
         <?php

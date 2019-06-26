@@ -1,17 +1,14 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * ESRI Shape file import plugin for phpMyAdmin
- *
- * @package    PhpMyAdmin-Import
- * @subpackage ESRI_Shape
+ * ESRI Shape file import plugin for phpMyAdmin.
  */
+
 namespace PhpMyAdmin\Plugins\Import;
 
 use PhpMyAdmin\Gis\GisFactory;
 use PhpMyAdmin\Gis\GisMultiLineString;
-use PhpMyAdmin\Gis\GisMultiPoint;
-use PhpMyAdmin\Gis\GisPoint;
 use PhpMyAdmin\Gis\GisPolygon;
 use PhpMyAdmin\Import;
 use PhpMyAdmin\Message;
@@ -21,10 +18,7 @@ use PhpMyAdmin\Sanitize;
 use PhpMyAdmin\ZipExtension;
 
 /**
- * Handles the import for ESRI Shape files
- *
- * @package    PhpMyAdmin-Import
- * @subpackage ESRI_Shape
+ * Handles the import for ESRI Shape files.
  */
 class ImportShp extends ImportPlugin
 {
@@ -34,7 +28,7 @@ class ImportShp extends ImportPlugin
     private $zipExtension;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -47,8 +41,6 @@ class ImportShp extends ImportPlugin
     /**
      * Sets the import plugin properties.
      * Called in the constructor.
-     *
-     * @return void
      */
     protected function setProperties()
     {
@@ -62,11 +54,9 @@ class ImportShp extends ImportPlugin
     }
 
     /**
-     * Handles the whole import logic
+     * Handles the whole import logic.
      *
      * @param array &$sql_data 2-element array with sql data
-     *
-     * @return void
      */
     public function doImport(array &$sql_data = array())
     {
@@ -80,10 +70,10 @@ class ImportShp extends ImportPlugin
         $shp = new ShapeFileImport(1);
         // If the zip archive has more than one file,
         // get the correct content to the buffer from .shp file.
-        if ($compression == 'application/zip'
+        if ('application/zip' == $compression
             && $this->zipExtension->getNumberOfFiles($import_file) > 1
         ) {
-            if ($GLOBALS['import_handle']->openZip('/^.*\.shp$/i') === false) {
+            if (false === $GLOBALS['import_handle']->openZip('/^.*\.shp$/i')) {
                 $message = Message::error(
                     __('There was an error importing the ESRI shape file: "%s".')
                 );
@@ -99,7 +89,7 @@ class ImportShp extends ImportPlugin
             $temp = $GLOBALS['PMA_Config']->getTempDir('shp');
             // If we can extract the zip archive to 'TempDir'
             // and use the files in it for import
-            if ($compression == 'application/zip' && ! is_null($temp)) {
+            if ('application/zip' == $compression && !is_null($temp)) {
                 $dbf_file_name = $this->zipExtension->findFile(
                     $import_file,
                     '/^.*\.dbf$/i'
@@ -111,11 +101,11 @@ class ImportShp extends ImportPlugin
                         $import_file,
                         $dbf_file_name
                     );
-                    if ($extracted !== false) {
-                        $dbf_file_path = $temp . (PMA_IS_WINDOWS ? '\\' : '/')
-                            . Sanitize::sanitizeFilename($dbf_file_name, true);
+                    if (false !== $extracted) {
+                        $dbf_file_path = $temp.(PMA_IS_WINDOWS ? '\\' : '/')
+                            .Sanitize::sanitizeFilename($dbf_file_name, true);
                         $handle = fopen($dbf_file_path, 'wb');
-                        if ($handle !== false) {
+                        if (false !== $handle) {
                             fwrite($handle, $extracted);
                             fclose($handle);
                             $temp_dbf_file = true;
@@ -125,14 +115,14 @@ class ImportShp extends ImportPlugin
                                 $dbf_file_path,
                                 0,
                                 strlen($dbf_file_path) - 4
-                            ) . '.*';
+                            ).'.*';
                             $shp->FileName = $file_name;
                         }
                     }
                 }
             } elseif (!empty($local_import_file)
                 && !empty($GLOBALS['cfg']['UploadDir'])
-                && $compression == 'none'
+                && 'none' == $compression
             ) {
                 // If file is in UploadDir, use .dbf file in the same UploadDir
                 // to load extra data.
@@ -142,7 +132,7 @@ class ImportShp extends ImportPlugin
                     $import_file,
                     0,
                     mb_strlen($import_file) - 4
-                ) . '.*';
+                ).'.*';
                 $shp->FileName = $file_name;
             }
         }
@@ -157,7 +147,7 @@ class ImportShp extends ImportPlugin
 
         // Load data
         $shp->loadFromFile('');
-        if ($shp->lastError != "") {
+        if ('' != $shp->lastError) {
             $error = true;
             $message = Message::error(
                 __('There was an error importing the ESRI shape file: "%s".')
@@ -209,14 +199,14 @@ class ImportShp extends ImportPlugin
 
         $rows = array();
         $col_names = array();
-        if ($num_rows != 0) {
+        if (0 != $num_rows) {
             foreach ($shp->records as $record) {
                 $tempRow = array();
-                if ($gis_obj == null) {
+                if (null == $gis_obj) {
                     $tempRow[] = null;
                 } else {
                     $tempRow[] = "GeomFromText('"
-                        . $gis_obj->getShape($record->SHPData) . "')";
+                        .$gis_obj->getShape($record->SHPData)."')";
                 }
 
                 if (isset($shp->DBFHeader)) {
@@ -234,7 +224,7 @@ class ImportShp extends ImportPlugin
             }
         }
 
-        if (count($rows) == 0) {
+        if (0 == count($rows)) {
             $error = true;
             $message = Message::error(
                 __('The imported file does not contain any data!')
@@ -246,14 +236,14 @@ class ImportShp extends ImportPlugin
         // Column names for spatial column and the rest of the columns,
         // if they are available
         $col_names[] = 'SPATIAL';
-        for ($n = 0; $n < $num_data_cols; $n++) {
+        for ($n = 0; $n < $num_data_cols; ++$n) {
             $col_names[] = $shp->DBFHeader[$n][0];
         }
 
         // Set table name based on the number of tables
         if (strlen($db) > 0) {
             $result = $GLOBALS['dbi']->fetchResult('SHOW TABLES');
-            $table_name = 'TABLE ' . (count($result) + 1);
+            $table_name = 'TABLE '.(count($result) + 1);
         } else {
             $table_name = 'TBL_NAME';
         }

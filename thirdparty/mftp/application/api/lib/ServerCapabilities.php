@@ -1,8 +1,8 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/../constants.php");
+    require_once dirname(__FILE__).'/../constants.php';
 
-    define("MFTP_SERVER_CAPABILITIES_CREATION_TIME_KEY", "CREATION_TIME");
+    define('MFTP_SERVER_CAPABILITIES_CREATION_TIME_KEY', 'CREATION_TIME');
 
     class ServerCapabilities
     {
@@ -61,13 +61,13 @@
 
             $cacheContents = @file_get_contents($path);
 
-            if ($cacheContents === false) {
+            if (false === $cacheContents) {
                 return array();
             }
 
             $data = @json_decode($cacheContents, true);
 
-            return ($data === false || is_null($data)) ? array() : $data;
+            return (false === $data || is_null($data)) ? array() : $data;
         }
 
         private function writeCapabilityCache($capabilityCache)
@@ -83,15 +83,15 @@
 
         private function storeCapabilities()
         {
-            if (is_null($this->capabilityCache) || (is_array($this->capabilityCache) && count($this->capabilityCache) == 0)) {
+            if (is_null($this->capabilityCache) || (is_array($this->capabilityCache) && 0 == count($this->capabilityCache))) {
                 return; // nothing to write
             }
 
             $lockPath = $this->getLockFilePath();
 
-            $lockHandle = @fopen($lockPath, "w+");
+            $lockHandle = @fopen($lockPath, 'w+');
 
-            if ($lockHandle !== false) {
+            if (false !== $lockHandle) {
                 if (@flock($lockHandle, LOCK_EX)) {
                     $storedCache = $this->readCapabilityCache();
 
@@ -110,7 +110,7 @@
                         }
                     }
 
-                    if (count($newToStore) != 0) {
+                    if (0 != count($newToStore)) {
                         $this->writeCapabilityCache($newToStore);
                     }
 
@@ -130,7 +130,7 @@
 
         private function getLockFilePath()
         {
-            return $this->getPath() . ".lck";
+            return $this->getPath().'.lck';
         }
 
         private function generateServerCacheKey($protocol, $host, $port)

@@ -1,14 +1,11 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * ENUM editor styles for the pmahomme theme
- *
- * @package    PhpMyAdmin-theme
- * @subpackage PMAHomme
+ * ENUM editor styles for the pmahomme theme.
  */
 
 // unplanned execution path
-if (! defined('PHPMYADMIN') && ! defined('TESTSUITE')) {
+if (!defined('PHPMYADMIN') && !defined('TESTSUITE')) {
     exit();
 }
 ?>

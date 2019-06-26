@@ -1,11 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Config Authentication plugin for phpMyAdmin
- *
- * @package    PhpMyAdmin-Authentication
- * @subpackage Config
+ * Config Authentication plugin for phpMyAdmin.
  */
+
 namespace PhpMyAdmin\Plugins\Auth;
 
 use PhpMyAdmin\Plugins\AuthenticationPlugin;
@@ -15,16 +14,14 @@ use PhpMyAdmin\Url;
 use PhpMyAdmin\Util;
 
 /**
- * Handles the config authentication method
- *
- * @package PhpMyAdmin-Authentication
+ * Handles the config authentication method.
  */
 class AuthenticationConfig extends AuthenticationPlugin
 {
     /**
-     * Displays authentication form
+     * Displays authentication form.
      *
-     * @return boolean always true
+     * @return bool always true
      */
     public function showLoginForm()
     {
@@ -44,9 +41,9 @@ class AuthenticationConfig extends AuthenticationPlugin
     }
 
     /**
-     * Gets authentication credentials
+     * Gets authentication credentials.
      *
-     * @return boolean always true
+     * @return bool always true
      */
     public function readCredentials()
     {
@@ -61,11 +58,9 @@ class AuthenticationConfig extends AuthenticationPlugin
     }
 
     /**
-     * User is not allowed to login to MySQL -> authentication failed
+     * User is not allowed to login to MySQL -> authentication failed.
      *
      * @param string $failure String describing why authentication has failed
-     *
-     * @return void
      */
     public function showFailure($failure)
     {
@@ -99,19 +94,19 @@ class AuthenticationConfig extends AuthenticationPlugin
             trigger_error(__('Access denied!'), E_USER_NOTICE);
         } else {
             // Check whether user has configured something
-            if ($GLOBALS['PMA_Config']->source_mtime == 0) {
+            if (0 == $GLOBALS['PMA_Config']->source_mtime) {
                 echo '<p>' , sprintf(
                     __(
                         'You probably did not create a configuration file.'
-                        . ' You might want to use the %1$ssetup script%2$s to'
-                        . ' create one.'
+                        .' You might want to use the %1$ssetup script%2$s to'
+                        .' create one.'
                     ),
                     '<a href="setup/">',
                     '</a>'
                 ) , '</p>' , "\n";
             } elseif (!isset($GLOBALS['errno'])
-                || (isset($GLOBALS['errno']) && $GLOBALS['errno'] != 2002)
-                && $GLOBALS['errno'] != 2003
+                || (isset($GLOBALS['errno']) && 2002 != $GLOBALS['errno'])
+                && 2003 != $GLOBALS['errno']
             ) {
                 // if we display the "Server not responding" error, do not confuse
                 // users by telling them they have a settings problem
@@ -123,10 +118,10 @@ class AuthenticationConfig extends AuthenticationPlugin
                 trigger_error(
                     __(
                         'phpMyAdmin tried to connect to the MySQL server, and the'
-                        . ' server rejected the connection. You should check the'
-                        . ' host, username and password in your configuration and'
-                        . ' make sure that they correspond to the information given'
-                        . ' by the administrator of the MySQL server.'
+                        .' server rejected the connection. You should check the'
+                        .' host, username and password in your configuration and'
+                        .' make sure that they correspond to the information given'
+                        .' by the administrator of the MySQL server.'
                     ),
                     E_USER_WARNING
                 );

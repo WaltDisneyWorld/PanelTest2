@@ -1,26 +1,21 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Hold PhpMyAdmin\SysInfoLinux class
- *
- * @package PhpMyAdmin
+ * Hold PhpMyAdmin\SysInfoLinux class.
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\SysInfo;
-use PhpMyAdmin\SysInfoBase;
-
 /**
- * Linux based SysInfo class
- *
- * @package PhpMyAdmin
+ * Linux based SysInfo class.
  */
 class SysInfoLinux extends SysInfoBase
 {
     public $os = 'Linux';
 
     /**
-     * Gets load information
+     * Gets load information.
      *
      * @return array with load data
      */
@@ -43,7 +38,7 @@ class SysInfoLinux extends SysInfoBase
     }
 
     /**
-     * Checks whether class is supported in this environment
+     * Checks whether class is supported in this environment.
      *
      * @return true on success
      */
@@ -53,7 +48,7 @@ class SysInfoLinux extends SysInfoBase
     }
 
     /**
-     * Gets information about memory usage
+     * Gets information about memory usage.
      *
      * @return array with memory usage data
      */
@@ -68,12 +63,12 @@ class SysInfoLinux extends SysInfoBase
         $mem = array_combine($matches[1], $matches[2]);
 
         $defaults = array(
-            'MemTotal'   => 0,
-            'MemFree'    => 0,
-            'Cached'     => 0,
-            'Buffers'    => 0,
-            'SwapTotal'  => 0,
-            'SwapFree'   => 0,
+            'MemTotal' => 0,
+            'MemFree' => 0,
+            'Cached' => 0,
+            'Buffers' => 0,
+            'SwapTotal' => 0,
+            'SwapFree' => 0,
             'SwapCached' => 0,
         );
 

@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Analyzes a query and gives user feedback.
- *
- * @package PhpMyAdmin
  */
+
 namespace PhpMyAdmin;
 
 use PhpMyAdmin\SqlParser\Lexer;
@@ -14,15 +14,13 @@ use PhpMyAdmin\SqlParser\Utils\Error as ParserError;
 
 /**
  * The linter itself.
- *
- * @package PhpMyAdmin
  */
 class Linter
 {
     /**
      * Gets the starting position of each line.
      *
-     * @param string $str String to be analyzed.
+     * @param string $str string to be analyzed
      *
      * @return array
      */
@@ -54,7 +52,7 @@ class Linter
 
         $lines = array(0);
         for ($i = 0; $i < $len; ++$i) {
-            if ($str[$i] === "\n") {
+            if ("\n" === $str[$i]) {
                 $lines[] = $i + 1;
             }
         }
@@ -64,7 +62,7 @@ class Linter
     /**
      * Computes the number of the line and column given an absolute position.
      *
-     * @param array $lines The starting position of each line.
+     * @param array $lines the starting position of each line
      * @param int   $pos   The absolute position
      *
      * @return array
@@ -84,7 +82,7 @@ class Linter
     /**
      * Runs the linting process.
      *
-     * @param string $query The query to be checked.
+     * @param string $query the query to be checked
      *
      * @return array
      */
@@ -96,14 +94,14 @@ class Linter
                 array(
                     'message' => __(
                         'Linting is disabled for this query because it exceeds the '
-                        . 'maximum length.'
+                        .'maximum length.'
                     ),
                     'fromLine' => 0,
                     'fromColumn' => 0,
                     'toLine' => 0,
                     'toColumn' => 0,
                     'severity' => 'warning',
-                )
+                ),
             );
         }
 
@@ -147,7 +145,6 @@ class Linter
 
         // Building the response.
         foreach ($errors as $idx => $error) {
-
             // Starting position of the string that caused the error.
             list($fromLine, $fromColumn) = static::findLineNumberAndColumn(
                 $lines,

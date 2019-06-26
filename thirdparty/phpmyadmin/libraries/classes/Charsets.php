@@ -1,46 +1,41 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * MySQL charset metadata and manipulations
- *
- * @package PhpMyAdmin
+ * MySQL charset metadata and manipulations.
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\DatabaseInterface;
-use PhpMyAdmin\Util;
-
 /**
- * Class used to manage MySQL charsets
- *
- * @package PhpMyAdmin
+ * Class used to manage MySQL charsets.
  */
 class Charsets
 {
     /**
-     * MySQL charsets map
+     * MySQL charsets map.
      *
      * @var array
      */
     public static $mysql_charset_map = array(
-        'big5'         => 'big5',
-        'cp-866'       => 'cp866',
-        'euc-jp'       => 'ujis',
-        'euc-kr'       => 'euckr',
-        'gb2312'       => 'gb2312',
-        'gbk'          => 'gbk',
-        'iso-8859-1'   => 'latin1',
-        'iso-8859-2'   => 'latin2',
-        'iso-8859-7'   => 'greek',
-        'iso-8859-8'   => 'hebrew',
+        'big5' => 'big5',
+        'cp-866' => 'cp866',
+        'euc-jp' => 'ujis',
+        'euc-kr' => 'euckr',
+        'gb2312' => 'gb2312',
+        'gbk' => 'gbk',
+        'iso-8859-1' => 'latin1',
+        'iso-8859-2' => 'latin2',
+        'iso-8859-7' => 'greek',
+        'iso-8859-8' => 'hebrew',
         'iso-8859-8-i' => 'hebrew',
-        'iso-8859-9'   => 'latin5',
-        'iso-8859-13'  => 'latin7',
-        'iso-8859-15'  => 'latin1',
-        'koi8-r'       => 'koi8r',
-        'shift_jis'    => 'sjis',
-        'tis-620'      => 'tis620',
-        'utf-8'        => 'utf8',
+        'iso-8859-9' => 'latin5',
+        'iso-8859-13' => 'latin7',
+        'iso-8859-15' => 'latin1',
+        'koi8-r' => 'koi8r',
+        'shift_jis' => 'sjis',
+        'tis-620' => 'tis620',
+        'utf-8' => 'utf8',
         'windows-1250' => 'cp1250',
         'windows-1251' => 'cp1251',
         'windows-1252' => 'latin1',
@@ -57,9 +52,7 @@ class Charsets
      * Loads charset data from the MySQL server.
      *
      * @param DatabaseInterface $dbi       DatabaseInterface instance
-     * @param boolean           $disableIs Disable use of INFORMATION_SCHEMA
-     *
-     * @return void
+     * @param bool              $disableIs Disable use of INFORMATION_SCHEMA
      */
     private static function loadCharsets(DatabaseInterface $dbi, $disableIs)
     {
@@ -72,8 +65,8 @@ class Charsets
             $sql = 'SHOW CHARACTER SET';
         } else {
             $sql = 'SELECT `CHARACTER_SET_NAME` AS `Charset`,'
-                . ' `DESCRIPTION` AS `Description`'
-                . ' FROM `information_schema`.`CHARACTER_SETS`';
+                .' `DESCRIPTION` AS `Description`'
+                .' FROM `information_schema`.`CHARACTER_SETS`';
         }
         $res = $dbi->query($sql);
 
@@ -92,9 +85,7 @@ class Charsets
      * Loads collation data from the MySQL server.
      *
      * @param DatabaseInterface $dbi       DatabaseInterface instance
-     * @param boolean           $disableIs Disable use of INFORMATION_SCHEMA
-     *
-     * @return void
+     * @param bool              $disableIs Disable use of INFORMATION_SCHEMA
      */
     private static function loadCollations(DatabaseInterface $dbi, $disableIs)
     {
@@ -107,8 +98,8 @@ class Charsets
             $sql = 'SHOW COLLATION';
         } else {
             $sql = 'SELECT `CHARACTER_SET_NAME` AS `Charset`,'
-                . ' `COLLATION_NAME` AS `Collation`, `IS_DEFAULT` AS `Default`'
-                . ' FROM `information_schema`.`COLLATIONS`';
+                .' `COLLATION_NAME` AS `Collation`, `IS_DEFAULT` AS `Default`'
+                .' FROM `information_schema`.`COLLATIONS`';
         }
 
         $res = $dbi->query($sql);
@@ -116,7 +107,7 @@ class Charsets
             $char_set_name = $row['Charset'];
             $name = $row['Collation'];
             self::$_collations[$char_set_name][] = $name;
-            if ($row['Default'] == 'Yes' || $row['Default'] == '1') {
+            if ('Yes' == $row['Default'] || '1' == $row['Default']) {
                 self::$_default_collations[$char_set_name] = $name;
             }
         }
@@ -128,10 +119,10 @@ class Charsets
     }
 
     /**
-     * Get MySQL charsets
+     * Get MySQL charsets.
      *
      * @param DatabaseInterface $dbi       DatabaseInterface instance
-     * @param boolean           $disableIs Disable use of INFORMATION_SCHEMA
+     * @param bool              $disableIs Disable use of INFORMATION_SCHEMA
      *
      * @return array
      */
@@ -142,10 +133,10 @@ class Charsets
     }
 
     /**
-     * Get MySQL charsets descriptions
+     * Get MySQL charsets descriptions.
      *
      * @param DatabaseInterface $dbi       DatabaseInterface instance
-     * @param boolean           $disableIs Disable use of INFORMATION_SCHEMA
+     * @param bool              $disableIs Disable use of INFORMATION_SCHEMA
      *
      * @return array
      */
@@ -156,10 +147,10 @@ class Charsets
     }
 
     /**
-     * Get MySQL collations
+     * Get MySQL collations.
      *
      * @param DatabaseInterface $dbi       DatabaseInterface instance
-     * @param boolean           $disableIs Disable use of INFORMATION_SCHEMA
+     * @param bool              $disableIs Disable use of INFORMATION_SCHEMA
      *
      * @return array
      */
@@ -170,10 +161,10 @@ class Charsets
     }
 
     /**
-     * Get MySQL default collations
+     * Get MySQL default collations.
      *
      * @param DatabaseInterface $dbi       DatabaseInterface instance
-     * @param boolean           $disableIs Disable use of INFORMATION_SCHEMA
+     * @param bool              $disableIs Disable use of INFORMATION_SCHEMA
      *
      * @return array
      */
@@ -184,13 +175,13 @@ class Charsets
     }
 
     /**
-     * Generate charset dropdown box
+     * Generate charset dropdown box.
      *
      * @param DatabaseInterface $dbi            DatabaseInterface instance
-     * @param boolean           $disableIs      Disable use of INFORMATION_SCHEMA
+     * @param bool              $disableIs      Disable use of INFORMATION_SCHEMA
      * @param string            $name           Element name
      * @param string            $id             Element id
-     * @param null|string       $default        Default value
+     * @param string|null       $default        Default value
      * @param bool              $label          Label
      * @param bool              $submitOnChange Submit on change
      *
@@ -210,40 +201,40 @@ class Charsets
             $name = 'character_set';
         }
 
-        $return_str  = '<select lang="en" dir="ltr" name="'
-            . htmlspecialchars($name) . '"'
-            . (empty($id) ? '' : ' id="' . htmlspecialchars($id) . '"')
-            . ($submitOnChange ? ' class="autosubmit"' : '') . '>' . "\n";
+        $return_str = '<select lang="en" dir="ltr" name="'
+            .htmlspecialchars($name).'"'
+            .(empty($id) ? '' : ' id="'.htmlspecialchars($id).'"')
+            .($submitOnChange ? ' class="autosubmit"' : '').'>'."\n";
         if ($label) {
             $return_str .= '<option value="">'
-                . __('Charset')
-                . '</option>' . "\n";
+                .__('Charset')
+                .'</option>'."\n";
         }
-        $return_str .= '<option value=""></option>' . "\n";
+        $return_str .= '<option value=""></option>'."\n";
         foreach (self::$_charsets as $current_charset) {
             $current_cs_descr
                 = empty(self::$_charsets_descriptions[$current_charset])
                 ? $current_charset
                 : self::$_charsets_descriptions[$current_charset];
 
-            $return_str .= '<option value="' . $current_charset
-                . '" title="' . $current_cs_descr . '"'
-                . ($default == $current_charset ? ' selected="selected"' : '') . '>'
-                . $current_charset . '</option>' . "\n";
+            $return_str .= '<option value="'.$current_charset
+                .'" title="'.$current_cs_descr.'"'
+                .($default == $current_charset ? ' selected="selected"' : '').'>'
+                .$current_charset.'</option>'."\n";
         }
-        $return_str .= '</select>' . "\n";
+        $return_str .= '</select>'."\n";
 
         return $return_str;
     }
 
     /**
-     * Generate collation dropdown box
+     * Generate collation dropdown box.
      *
      * @param DatabaseInterface $dbi            DatabaseInterface instance
-     * @param boolean           $disableIs      Disable use of INFORMATION_SCHEMA
+     * @param bool              $disableIs      Disable use of INFORMATION_SCHEMA
      * @param string            $name           Element name
      * @param string            $id             Element id
-     * @param null|string       $default        Default value
+     * @param string|null       $default        Default value
      * @param bool              $label          Label
      * @param bool              $submitOnChange Submit on change
      *
@@ -264,40 +255,40 @@ class Charsets
             $name = 'collation';
         }
 
-        $return_str  = '<select lang="en" dir="ltr" name="'
-            . htmlspecialchars($name) . '"'
-            . (empty($id) ? '' : ' id="' . htmlspecialchars($id) . '"')
-            . ($submitOnChange ? ' class="autosubmit"' : '') . '>' . "\n";
+        $return_str = '<select lang="en" dir="ltr" name="'
+            .htmlspecialchars($name).'"'
+            .(empty($id) ? '' : ' id="'.htmlspecialchars($id).'"')
+            .($submitOnChange ? ' class="autosubmit"' : '').'>'."\n";
         if ($label) {
             $return_str .= '<option value="">'
-                . __('Collation')
-                . '</option>' . "\n";
+                .__('Collation')
+                .'</option>'."\n";
         }
-        $return_str .= '<option value=""></option>' . "\n";
+        $return_str .= '<option value=""></option>'."\n";
         foreach (self::$_charsets as $current_charset) {
             $current_cs_descr
                 = empty(self::$_charsets_descriptions[$current_charset])
                 ? $current_charset
                 : self::$_charsets_descriptions[$current_charset];
 
-            $return_str .= '<optgroup label="' . $current_charset
-                . '" title="' . $current_cs_descr . '">' . "\n";
+            $return_str .= '<optgroup label="'.$current_charset
+                .'" title="'.$current_cs_descr.'">'."\n";
             foreach (self::$_collations[$current_charset] as $current_collation) {
-                $return_str .= '<option value="' . $current_collation
-                    . '" title="' . self::getCollationDescr($current_collation) . '"'
-                    . ($default == $current_collation ? ' selected="selected"' : '')
-                    . '>'
-                    . $current_collation . '</option>' . "\n";
+                $return_str .= '<option value="'.$current_collation
+                    .'" title="'.self::getCollationDescr($current_collation).'"'
+                    .($default == $current_collation ? ' selected="selected"' : '')
+                    .'>'
+                    .$current_collation.'</option>'."\n";
             }
-            $return_str .= '</optgroup>' . "\n";
+            $return_str .= '</optgroup>'."\n";
         }
-        $return_str .= '</select>' . "\n";
+        $return_str .= '</select>'."\n";
 
         return $return_str;
     }
 
     /**
-     * Returns description for given collation
+     * Returns description for given collation.
      *
      * @param string $collation MySQL collation string
      *
@@ -315,7 +306,7 @@ class Charsets
 
         $level = 0;
         foreach ($parts as $part) {
-            if ($level == 0) {
+            if (0 == $level) {
                 /* Next will be language */
                 $level = 1;
                 /* First should be charset */
@@ -423,7 +414,7 @@ class Charsets
                 }
                 continue;
             }
-            if ($level == 1) {
+            if (1 == $level) {
                 /* Next will be variant unless changed later */
                 $level = 4;
                 /* Locale name or code */
@@ -575,29 +566,29 @@ class Charsets
                 }
                 // Not parsed token, fall to next level
             }
-            if ($level == 2) {
+            if (2 == $level) {
                 /* Next will be variant */
                 $level = 4;
                 /* Germal variant */
-                if ($part == 'pb') {
+                if ('pb' == $part) {
                     $name = _pgettext('Collation', 'German (phone book order)');
                     continue;
                 }
                 $name = _pgettext('Collation', 'German (dictionary order)');
                 // Not parsed token, fall to next level
             }
-            if ($level == 3) {
+            if (3 == $level) {
                 /* Next will be variant */
                 $level = 4;
                 /* Spanish variant */
-                if ($part == 'trad') {
+                if ('trad' == $part) {
                     $name = _pgettext('Collation', 'Spanish (traditional)');
                     continue;
                 }
                 $name = _pgettext('Collation', 'Spanish (modern)');
                 // Not parsed token, fall to next level
             }
-            if ($level == 4) {
+            if (4 == $level) {
                 /* Next will be suffix */
                 $level = 5;
                 /* Variant */
@@ -623,7 +614,7 @@ class Charsets
                 }
                 // Not parsed token, fall to next level
             }
-            if ($level == 5) {
+            if (5 == $level) {
                 /* Suffixes */
                 switch ($part) {
                     case 'ci':
@@ -650,11 +641,11 @@ class Charsets
         }
 
         $result = $name;
-        if (! is_null($variant)) {
-            $result .= ' (' . $variant . ')';
+        if (!is_null($variant)) {
+            $result .= ' ('.$variant.')';
         }
         if (count($suffixes) > 0) {
-            $result .= ', ' . implode(', ', $suffixes);
+            $result .= ', '.implode(', ', $suffixes);
         }
         return $result;
     }

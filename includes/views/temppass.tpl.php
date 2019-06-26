@@ -4,13 +4,12 @@ if (!isset($HOME)) {
 }
  require 'config.php';
 if (!isset($_SESSION['user'])) {
-    header('Location: ' . $webroot . '/');
+    header('Location: '.$webroot.'/');
     die();
 }
 
-   
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
     $sql = "SELECT value FROM settings WHERE code =  'loginhead' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {
@@ -59,7 +58,7 @@ if (!isset($_SESSION['user'])) {
       <h4 class="panel-title"><?php
     require 'config.php';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
     $sql = "SELECT value FROM settings WHERE code =  'title' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {
@@ -97,7 +96,7 @@ if (!isset($_SESSION['user'])) {
 <?php
     require 'config.php';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
     $sql = "SELECT value FROM settings WHERE code =  'loginfoot' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {

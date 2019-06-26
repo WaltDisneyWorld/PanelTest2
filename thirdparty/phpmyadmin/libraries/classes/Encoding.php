@@ -1,60 +1,53 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Hold the PhpMyAdmin\Encoding class
- *
- * @package PhpMyAdmin
+ * Hold the PhpMyAdmin\Encoding class.
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\Config\ConfigFile;
-use PhpMyAdmin\Core;
-use PhpMyAdmin\Template;
-
 /**
- * Encoding conversion helper class
- *
- * @package PhpMyAdmin
+ * Encoding conversion helper class.
  */
 class Encoding
 {
     /**
-     * None encoding conversion engine
+     * None encoding conversion engine.
      *
      * @var int
      */
-
     const ENGINE_NONE = 0;
     /**
-     * iconv encoding conversion engine
+     * iconv encoding conversion engine.
      *
      * @var int
      */
     const ENGINE_ICONV = 1;
 
     /**
-     * recode encoding conversion engine
+     * recode encoding conversion engine.
      *
      * @var int
      */
     const ENGINE_RECODE = 2;
 
     /**
-     * mbstring encoding conversion engine
+     * mbstring encoding conversion engine.
      *
      * @var int
      */
     const ENGINE_MB = 3;
 
     /**
-     * Chosen encoding engine
+     * Chosen encoding engine.
      *
      * @var int
      */
     private static $_engine = null;
 
     /**
-     * Map of conversion engine configurations
+     * Map of conversion engine configurations.
      *
      * Each entry contains:
      *
@@ -72,7 +65,7 @@ class Encoding
     );
 
     /**
-     * Order of automatic detection of engines
+     * Order of automatic detection of engines.
      *
      * @var array
      */
@@ -81,7 +74,7 @@ class Encoding
     );
 
     /**
-     * Kanji encodings list
+     * Kanji encodings list.
      *
      * @var string
      */
@@ -89,8 +82,6 @@ class Encoding
 
     /**
      * Initializes encoding engine detecting available backends.
-     *
-     * @return void
      */
     public static function initEngine()
     {
@@ -125,8 +116,6 @@ class Encoding
      * Setter for engine. Use with caution, mostly useful for testing.
      *
      * @param int $engine Engine enconding
-     *
-     * @return void
      */
     public static function setEngine($engine)
     {
@@ -134,7 +123,7 @@ class Encoding
     }
 
     /**
-     * Checks whether there is any charset conversion supported
+     * Checks whether there is any charset conversion supported.
      *
      * @return bool
      */
@@ -143,7 +132,7 @@ class Encoding
         if (is_null(self::$_engine)) {
             self::initEngine();
         }
-        return self::$_engine != self::ENGINE_NONE;
+        return self::ENGINE_NONE != self::$_engine;
     }
 
     /**
@@ -154,9 +143,7 @@ class Encoding
      * @param string $dest_charset target charset
      * @param string $what         what to convert
      *
-     * @return string   converted text
-     *
-     * @access  public
+     * @return string converted text
      */
     public static function convertString($src_charset, $dest_charset, $what)
     {
@@ -169,13 +156,13 @@ class Encoding
         switch (self::$_engine) {
             case self::ENGINE_RECODE:
                 return recode_string(
-                    $src_charset . '..'  . $dest_charset,
+                    $src_charset.'..'.$dest_charset,
                     $what
                 );
             case self::ENGINE_ICONV:
                 return iconv(
                     $src_charset,
-                    $dest_charset .
+                    $dest_charset.
                     (isset($GLOBALS['cfg']['IconvExtraParams']) ? $GLOBALS['cfg']['IconvExtraParams'] : ''),
                     $what
                 );
@@ -191,13 +178,13 @@ class Encoding
     }
 
     /**
-     * Detects whether Kanji encoding is available
+     * Detects whether Kanji encoding is available.
      *
      * @return bool
      */
     public static function canConvertKanji()
     {
-        return $GLOBALS['lang'] == 'ja';
+        return 'ja' == $GLOBALS['lang'];
     }
 
     /**
@@ -214,8 +201,6 @@ class Encoding
      * Setter for Kanji encodings. Use with caution, mostly useful for testing.
      *
      * @param string $value Kanji encodings list
-     *
-     * @return void
      */
     public static function setKanjiEncodings($value)
     {
@@ -223,14 +208,12 @@ class Encoding
     }
 
     /**
-     * Reverses SJIS & EUC-JP position in the encoding codes list
-     *
-     * @return void
+     * Reverses SJIS & EUC-JP position in the encoding codes list.
      */
     public static function kanjiChangeOrder()
     {
         $parts = explode(',', self::$_kanji_encodings);
-        if ($parts[1] == 'EUC-JP') {
+        if ('EUC-JP' == $parts[1]) {
             self::$_kanji_encodings = 'ASCII,SJIS,EUC-JP,JIS';
         } else {
             self::$_kanji_encodings = 'ASCII,EUC-JP,SJIS,JIS';
@@ -238,30 +221,30 @@ class Encoding
     }
 
     /**
-     * Kanji string encoding convert
+     * Kanji string encoding convert.
      *
      * @param string $str  the string to convert
      * @param string $enc  the destination encoding code
      * @param string $kana set 'kana' convert to JIS-X208-kana
      *
-     * @return string   the converted string
+     * @return string the converted string
      */
     public static function kanjiStrConv($str, $enc, $kana)
     {
-        if ($enc == '' && $kana == '') {
+        if ('' == $enc && '' == $kana) {
             return $str;
         }
 
         $string_encoding = mb_detect_encoding($str, self::$_kanji_encodings);
-        if ($string_encoding === false) {
+        if (false === $string_encoding) {
             $string_encoding = 'utf-8';
         }
 
-        if ($kana == 'kana') {
+        if ('kana' == $kana) {
             $dist = mb_convert_kana($str, 'KV', $string_encoding);
-            $str  = $dist;
+            $str = $dist;
         }
-        if ($string_encoding != $enc && $enc != '') {
+        if ($string_encoding != $enc && '' != $enc) {
             $dist = mb_convert_encoding($str, $enc, $string_encoding);
         } else {
             $dist = $str;
@@ -269,24 +252,23 @@ class Encoding
         return $dist;
     }
 
-
     /**
-     * Kanji file encoding convert
+     * Kanji file encoding convert.
      *
      * @param string $file the name of the file to convert
      * @param string $enc  the destination encoding code
      * @param string $kana set 'kana' convert to JIS-X208-kana
      *
-     * @return string   the name of the converted file
+     * @return string the name of the converted file
      */
     public static function kanjiFileConv($file, $enc, $kana)
     {
-        if ($enc == '' && $kana == '') {
+        if ('' == $enc && '' == $kana) {
             return $file;
         }
         $tmpfname = tempnam($GLOBALS['PMA_Config']->getUploadTempDir(), $enc);
-        $fpd      = fopen($tmpfname, 'wb');
-        $fps      = fopen($file, 'r');
+        $fpd = fopen($tmpfname, 'wb');
+        $fps = fopen($file, 'r');
         self::kanjiChangeOrder();
         while (!feof($fps)) {
             $line = fgets($fps, 4096);
@@ -302,9 +284,9 @@ class Encoding
     }
 
     /**
-     * Defines radio form fields to switch between encoding modes
+     * Defines radio form fields to switch between encoding modes.
      *
-     * @return string   xhtml code for the radio controls
+     * @return string xhtml code for the radio controls
      */
     public static function kanjiEncodingForm()
     {
@@ -322,7 +304,7 @@ class Encoding
             self::initEngine();
         }
         /* Most engines do not support listing */
-        if (self::$_engine != self::ENGINE_MB) {
+        if (self::ENGINE_MB != self::$_engine) {
             return $GLOBALS['cfg']['AvailableCharsets'];
         }
 

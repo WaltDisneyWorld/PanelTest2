@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * hold PhpMyAdmin\Twig\MessageExtension class
- *
- * @package PhpMyAdmin\Twig
+ * hold PhpMyAdmin\Twig\MessageExtension class.
  */
+
 namespace PhpMyAdmin\Twig;
 
 use PhpMyAdmin\Message;
@@ -12,9 +12,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * Class MessageExtension
- *
- * @package PhpMyAdmin\Twig
+ * Class MessageExtension.
  */
 class MessageExtension extends AbstractExtension
 {

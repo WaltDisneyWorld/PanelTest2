@@ -1,9 +1,8 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Handles database multi-table querying
- *
- * @package PhpMyAdmin
+ * Handles database multi-table querying.
  */
 use PhpMyAdmin\Database\MultiTableQuery;
 use PhpMyAdmin\Response;

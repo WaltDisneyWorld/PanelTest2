@@ -1,6 +1,6 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/PermissionSet.php");
+    require_once dirname(__FILE__).'/PermissionSet.php';
 
     class FullAccessPermissionSet extends PermissionSet
     {

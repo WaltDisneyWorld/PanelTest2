@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * displays the server status > processes list
- *
- * @package PhpMyAdmin
+ * displays the server status > processes list.
  */
-
 use PhpMyAdmin\Response;
 use PhpMyAdmin\Server\Status\Data;
 use PhpMyAdmin\Server\Status\Processes;
@@ -14,14 +12,14 @@ require_once 'libraries/common.inc.php';
 require_once 'libraries/server_common.inc.php';
 
 /**
- * Replication library
+ * Replication library.
  */
 require_once 'libraries/replication.inc.php';
 
 $serverStatusData = new Data();
 $response = Response::getInstance();
 
-/**
+/*
  * Kills a selected process
  * on ajax request
  */
@@ -37,7 +35,7 @@ if ($response->isAjax() && !empty($_POST['kill'])) {
         $message = PhpMyAdmin\Message::error(
             __(
                 'phpMyAdmin was unable to kill thread %s.'
-                . ' It probably has already been closed.'
+                .' It probably has already been closed.'
             )
         );
         $response->setRequestStatus(false);
@@ -49,8 +47,8 @@ if ($response->isAjax() && !empty($_POST['kill'])) {
     $response->addHTML(Processes::getHtmlForServerProcesslist());
 } else {
     // Load the full page
-    $header   = $response->getHeader();
-    $scripts  = $header->getScripts();
+    $header = $response->getHeader();
+    $scripts = $header->getScripts();
     $scripts->addFile('server_status_processes.js');
     $response->addHTML('<div>');
     $response->addHTML($serverStatusData->getMenuHtml());

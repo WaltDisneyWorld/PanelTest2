@@ -1,24 +1,22 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Provides upload functionalities for the import plugins
- *
- * @package PhpMyAdmin
+ * Provides upload functionalities for the import plugins.
  */
+
 namespace PhpMyAdmin\Plugins\Import\Upload;
 
 use PhpMyAdmin\Display\ImportAjax;
 use PhpMyAdmin\Plugins\UploadInterface;
 
 /**
- * Implementation for upload progress
- *
- * @package PhpMyAdmin
+ * Implementation for upload progress.
  */
 class UploadProgress implements UploadInterface
 {
     /**
-     * Gets the specific upload ID Key
+     * Gets the specific upload ID Key.
      *
      * @return string ID Key
      */
@@ -40,18 +38,18 @@ class UploadProgress implements UploadInterface
     {
         global $SESSION_KEY;
 
-        if (trim($id) == "") {
+        if ('' == trim($id)) {
             return null;
         }
 
         if (!array_key_exists($id, $_SESSION[$SESSION_KEY])) {
             $_SESSION[$SESSION_KEY][$id] = array(
-                'id'       => $id,
+                'id' => $id,
                 'finished' => false,
-                'percent'  => 0,
-                'total'    => 0,
+                'percent' => 0,
+                'total' => 0,
                 'complete' => 0,
-                'plugin'   => UploadProgress::getIdKey(),
+                'plugin' => UploadProgress::getIdKey(),
             );
         }
         $ret = $_SESSION[$SESSION_KEY][$id];
@@ -76,12 +74,12 @@ class UploadProgress implements UploadInterface
             }
         } else {
             $ret = array(
-                'id'       => $id,
+                'id' => $id,
                 'finished' => true,
-                'percent'  => 100,
-                'total'    => $ret['total'],
+                'percent' => 100,
+                'total' => $ret['total'],
                 'complete' => $ret['total'],
-                'plugin'   => UploadProgress::getIdKey(),
+                'plugin' => UploadProgress::getIdKey(),
             );
         }
 

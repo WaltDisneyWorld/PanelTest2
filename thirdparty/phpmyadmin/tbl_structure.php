@@ -1,12 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Displays table structure infos like columns, indexes, size, rows
- * and allows manipulation of indexes and columns
- *
- * @package PhpMyAdmin
+ * and allows manipulation of indexes and columns.
  */
-
 use PhpMyAdmin\Controllers\Table\TableStructureController;
 use PhpMyAdmin\Di\Container;
 use PhpMyAdmin\Response;
@@ -49,7 +47,7 @@ $dependency_definitions = array(
     'tbl_storage_engine' => $tbl_storage_engine,
     'table_info_num_rows' => $table_info_num_rows,
     'tbl_collation' => $tbl_collation,
-    'showtable' => $GLOBALS['showtable']
+    'showtable' => $GLOBALS['showtable'],
 );
 
 /** @var TableStructureController $controller */

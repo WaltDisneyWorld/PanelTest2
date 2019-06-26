@@ -1,8 +1,8 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/MonstaLicenseV1.php');
-    require_once(dirname(__FILE__) . '/MonstaLicenseV2.php');
-    require_once(dirname(__FILE__) . '/MonstaLicenseV3.php');
+    require_once dirname(__FILE__).'/MonstaLicenseV1.php';
+    require_once dirname(__FILE__).'/MonstaLicenseV2.php';
+    require_once dirname(__FILE__).'/MonstaLicenseV3.php';
 
     class LicenseFactory
     {
@@ -38,15 +38,15 @@
             $expiryDate = $licenseArr['expiryDate'];
             $version = $licenseArr['version'];
 
-            if (!array_key_exists("isTrial", $licenseArr)) {
+            if (!array_key_exists('isTrial', $licenseArr)) {
                 return self::getMonstaLicenseV1($email, $purchaseDate, $expiryDate, $version);
             }
 
             $isTrial = $licenseArr['isTrial'];
 
-            if (array_key_exists("licenseVersion", $licenseArr)) {
+            if (array_key_exists('licenseVersion', $licenseArr)) {
                 $licenseVersion = $licenseArr['licenseVersion'];
-                if ($licenseVersion == 3) {
+                if (3 == $licenseVersion) {
                     return self::getMonstaLicenseV3(
                         $email,
                         $purchaseDate,
@@ -57,7 +57,7 @@
                     );
                 }
 
-                throw new Exception("Unknown license version " . $licenseVersion);
+                throw new Exception('Unknown license version '.$licenseVersion);
             }
 
             return self::getMonstaLicenseV2($email, $purchaseDate, $expiryDate, $version, $isTrial);

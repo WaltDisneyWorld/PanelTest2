@@ -1,6 +1,6 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/../constants.php");
+    require_once dirname(__FILE__).'/../constants.php';
 
     includeMonstaConfig();
 
@@ -8,43 +8,43 @@
     {
         switch ($priority) {
             case LOG_EMERG:
-                return "EMERG";
+                return 'EMERG';
             case LOG_ALERT:
-                return "ALERT";
+                return 'ALERT';
             case LOG_CRIT:
-                return "CRIT";
+                return 'CRIT';
             case LOG_ERR:
-                return "ERR";
+                return 'ERR';
             case LOG_WARNING:
-                return "WARNING";
+                return 'WARNING';
             case LOG_NOTICE:
-                return "NOTICE";
+                return 'NOTICE';
             case LOG_INFO:
-                return "INFO";
+                return 'INFO';
             case LOG_DEBUG:
-                return "DEBUG";
+                return 'DEBUG';
             default:
-                return "";
+                return '';
         }
     }
 
     function _mftpLogToFile($path, $priority, $message)
     {
-        $handle = @fopen($path, "a");
-        if ($handle === false) {
+        $handle = @fopen($path, 'a');
+        if (false === $handle) {
             return;
         }
 
-        fprintf($handle, "[%s] (%s) %s\n", _mftpLogPriorityToText($priority), date("c"), $message);
+        fprintf($handle, "[%s] (%s) %s\n", _mftpLogPriorityToText($priority), date('c'), $message);
 
         fclose($handle);
     }
 
     function _mftpLogToSyslog($priority, $message)
     {
-        $facility = defined("MFTP_LOG_SYSLOG_FACILITY") ? MFTP_LOG_SYSLOG_FACILITY : LOG_USER;
+        $facility = defined('MFTP_LOG_SYSLOG_FACILITY') ? MFTP_LOG_SYSLOG_FACILITY : LOG_USER;
 
-        if (!@openlog("MONSTAFTP", LOG_ODELAY, $facility)) {
+        if (!@openlog('MONSTAFTP', LOG_ODELAY, $facility)) {
             return;
         }
 
@@ -55,14 +55,14 @@
 
     function _mftpShouldLogToFile()
     {
-        return defined("MFTP_LOG_TO_FILE") && MFTP_LOG_TO_FILE
-        && defined("MFTP_LOG_FILE_PATH") && !is_null(MFTP_LOG_FILE_PATH)
-        && defined("MFTP_LOG_LEVEL_THRESHOLD");
+        return defined('MFTP_LOG_TO_FILE') && MFTP_LOG_TO_FILE
+        && defined('MFTP_LOG_FILE_PATH') && !is_null(MFTP_LOG_FILE_PATH)
+        && defined('MFTP_LOG_LEVEL_THRESHOLD');
     }
 
     function _mftpShouldLogToSyslog()
     {
-        return defined("MFTP_LOG_TO_SYSLOG") && MFTP_LOG_TO_SYSLOG;
+        return defined('MFTP_LOG_TO_SYSLOG') && MFTP_LOG_TO_SYSLOG;
     }
 
     function mftpLog($priority, $message)

@@ -1,12 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Display form for changing/adding table fields/columns.
- * Included by tbl_addfield.php and tbl_create.php
- *
- * @package PhpMyAdmin
+ * Included by tbl_addfield.php and tbl_create.php.
  */
-
 use PhpMyAdmin\Di\Container;
 use PhpMyAdmin\Partition;
 use PhpMyAdmin\Relation;
@@ -20,7 +18,7 @@ if (!defined('PHPMYADMIN')) {
     exit;
 }
 
-/**
+/*
  * Check parameters
  */
 Util::checkParameters(
@@ -31,7 +29,7 @@ global $db, $table;
 
 $relation = new Relation();
 
-/**
+/*
  * Initialize to avoid code execution path warnings
  */
 
@@ -51,17 +49,17 @@ $content_cells = array();
 
 /** @var string $db */
 $form_params = array(
-    'db' => $db
+    'db' => $db,
 );
 
-if ($action == 'tbl_create.php') {
+if ('tbl_create.php' == $action) {
     $form_params['reload'] = 1;
 } else {
-    if ($action == 'tbl_addfield.php') {
+    if ('tbl_addfield.php' == $action) {
         $form_params = array_merge(
             $form_params,
             array(
-            'field_where' => Util::getValueByKey($_POST, 'field_where'))
+            'field_where' => Util::getValueByKey($_POST, 'field_where'), )
         );
         if (isset($_POST['field_where'])) {
             $form_params['after_field'] = $_POST['after_field'];
@@ -84,11 +82,11 @@ $form_params = array_merge(
 
 if (isset($selected) && is_array($selected)) {
     foreach ($selected as $o_fld_nr => $o_fld_val) {
-        $form_params['selected[' . $o_fld_nr . ']'] = $o_fld_val;
+        $form_params['selected['.$o_fld_nr.']'] = $o_fld_val;
     }
 }
 
-$is_backup = ($action != 'tbl_create.php' && $action != 'tbl_addfield.php');
+$is_backup = ('tbl_create.php' != $action && 'tbl_addfield.php' != $action);
 
 $cfgRelation = $relation->getRelationsParam();
 
@@ -130,7 +128,7 @@ if ($GLOBALS['dbi']->getVersion() < 50606) {
     $child_references = $relation->getChildReferences($db, $table);
 }
 
-for ($columnNumber = 0; $columnNumber < $num_fields; $columnNumber++) {
+for ($columnNumber = 0; $columnNumber < $num_fields; ++$columnNumber) {
     $type = '';
     $length = '';
     $columnMeta = array();
@@ -141,27 +139,27 @@ for ($columnNumber = 0; $columnNumber < $num_fields; $columnNumber++) {
         $columnMeta = array_merge(
             $columnMeta,
             array(
-                'Field'        => Util::getValueByKey(
+                'Field' => Util::getValueByKey(
                     $_POST,
                     "field_name.${columnNumber}",
                     false
                 ),
-                'Type'         => Util::getValueByKey(
+                'Type' => Util::getValueByKey(
                     $_POST,
                     "field_type.${columnNumber}",
                     false
                 ),
-                'Collation'    => Util::getValueByKey(
+                'Collation' => Util::getValueByKey(
                     $_POST,
                     "field_collation.${columnNumber}",
                     ''
                 ),
-                'Null'         => Util::getValueByKey(
+                'Null' => Util::getValueByKey(
                     $_POST,
                     "field_null.${columnNumber}",
                     ''
                 ),
-                'DefaultType'  => Util::getValueByKey(
+                'DefaultType' => Util::getValueByKey(
                     $_POST,
                     "field_default_type.${columnNumber}",
                     'NONE'
@@ -171,17 +169,17 @@ for ($columnNumber = 0; $columnNumber < $num_fields; $columnNumber++) {
                     "field_default_value.${columnNumber}",
                     ''
                 ),
-                'Extra'        => Util::getValueByKey(
+                'Extra' => Util::getValueByKey(
                     $_POST,
                     "field_extra.${columnNumber}",
                     false
                 ),
-                'Virtuality'   => Util::getValueByKey(
+                'Virtuality' => Util::getValueByKey(
                     $_POST,
                     "field_virtuality.${columnNumber}",
                     ''
                 ),
-                'Expression'   => Util::getValueByKey(
+                'Expression' => Util::getValueByKey(
                     $_POST,
                     "field_expression.${columnNumber}",
                     ''
@@ -195,14 +193,14 @@ for ($columnNumber = 0; $columnNumber < $num_fields; $columnNumber++) {
             Util::getValueByKey($_POST, "field_key.${columnNumber}", ''),
             2
         );
-        if (count($parts) == 2 && $parts[1] == $columnNumber) {
+        if (2 == count($parts) && $parts[1] == $columnNumber) {
             $columnMeta['Key'] = Util::getValueByKey(
                 array(
                     'primary' => 'PRI',
                     'index' => 'MUL',
                     'unique' => 'UNI',
                     'fulltext' => 'FULLTEXT',
-                    'spatial' => 'SPATIAL'
+                    'spatial' => 'SPATIAL',
                 ),
                 $parts[0],
                 ''
@@ -256,7 +254,7 @@ for ($columnNumber = 0; $columnNumber < $num_fields; $columnNumber++) {
     } elseif (isset($fields_meta[$columnNumber])) {
         $columnMeta = $fields_meta[$columnNumber];
         $virtual = array(
-            'VIRTUAL', 'PERSISTENT', 'VIRTUAL GENERATED', 'STORED GENERATED'
+            'VIRTUAL', 'PERSISTENT', 'VIRTUAL GENERATED', 'STORED GENERATED',
         );
         if (in_array($columnMeta['Extra'], $virtual)) {
             $tableObj = new Table($GLOBALS['table'], $GLOBALS['db']);
@@ -268,7 +266,7 @@ for ($columnNumber = 0; $columnNumber < $num_fields; $columnNumber++) {
         switch ($columnMeta['Default']) {
         case null:
             if (is_null($columnMeta['Default'])) { // null
-                if ($columnMeta['Null'] == 'YES') {
+                if ('YES' == $columnMeta['Null']) {
                     $columnMeta['DefaultType'] = 'NULL';
                     $columnMeta['DefaultValue'] = '';
                 } else {
@@ -296,12 +294,12 @@ for ($columnNumber = 0; $columnNumber < $num_fields; $columnNumber++) {
         $extracted_columnspec = Util::extractColumnSpec(
             $columnMeta['Type']
         );
-        if ($extracted_columnspec['type'] == 'bit') {
+        if ('bit' == $extracted_columnspec['type']) {
             $columnMeta['Default']
                 = Util::convertBitDefaultValue($columnMeta['Default']);
         }
         $type = $extracted_columnspec['type'];
-        if ($length == '') {
+        if ('' == $length) {
             $length = $extracted_columnspec['spec_in_brackets'];
         }
     } else {
@@ -332,40 +330,39 @@ for ($columnNumber = 0; $columnNumber < $num_fields; $columnNumber++) {
         preg_replace('/[\s]character set[\s][\S]+/', '', $type)
     );
 
-    /**
+    /*
      * old column attributes
      */
     if ($is_backup) {
-
         // old column name
         if (isset($columnMeta['Field'])) {
-            $form_params['field_orig[' . $columnNumber . ']']
+            $form_params['field_orig['.$columnNumber.']']
                 = $columnMeta['Field'];
             if (isset($columnMeta['column_status'])
                 && !$columnMeta['column_status']['isEditable']
             ) {
-                $form_params['field_name[' . $columnNumber . ']']
+                $form_params['field_name['.$columnNumber.']']
                     = $columnMeta['Field'];
             }
         } else {
-            $form_params['field_orig[' . $columnNumber . ']'] = '';
+            $form_params['field_orig['.$columnNumber.']'] = '';
         }
 
         // old column type
         if (isset($columnMeta['Type'])) {
             // keep in uppercase because the new type will be in uppercase
-            $form_params['field_type_orig[' . $columnNumber . ']'] = mb_strtoupper($type);
+            $form_params['field_type_orig['.$columnNumber.']'] = mb_strtoupper($type);
             if (isset($columnMeta['column_status'])
                 && !$columnMeta['column_status']['isEditable']
             ) {
-                $form_params['field_type[' . $columnNumber . ']'] = mb_strtoupper($type);
+                $form_params['field_type['.$columnNumber.']'] = mb_strtoupper($type);
             }
         } else {
-            $form_params['field_type_orig[' . $columnNumber . ']'] = '';
+            $form_params['field_type_orig['.$columnNumber.']'] = '';
         }
 
         // old column length
-        $form_params['field_length_orig[' . $columnNumber . ']'] = $length;
+        $form_params['field_length_orig['.$columnNumber.']'] = $length;
 
         // old column default
         $form_params = array_merge(
@@ -376,40 +373,40 @@ for ($columnNumber = 0; $columnNumber < $num_fields; $columnNumber++) {
                     'Default',
                     ''
                 ),
-                "field_default_type_orig[${columnNumber}]"  => Util::getValueByKey(
+                "field_default_type_orig[${columnNumber}]" => Util::getValueByKey(
                     $columnMeta,
                     'DefaultType',
                     ''
                 ),
-                "field_collation_orig[${columnNumber}]"     => Util::getValueByKey(
+                "field_collation_orig[${columnNumber}]" => Util::getValueByKey(
                     $columnMeta,
                     'Collation',
                     ''
                 ),
-                "field_attribute_orig[${columnNumber}]"     => trim(
+                "field_attribute_orig[${columnNumber}]" => trim(
                     Util::getValueByKey($extracted_columnspec, 'attribute', '')
                 ),
-                "field_null_orig[${columnNumber}]"          => Util::getValueByKey(
+                "field_null_orig[${columnNumber}]" => Util::getValueByKey(
                     $columnMeta,
                     'Null',
                     ''
                 ),
-                "field_extra_orig[${columnNumber}]"         => Util::getValueByKey(
+                "field_extra_orig[${columnNumber}]" => Util::getValueByKey(
                     $columnMeta,
                     'Extra',
                     ''
                 ),
-                "field_comments_orig[${columnNumber}]"      => Util::getValueByKey(
+                "field_comments_orig[${columnNumber}]" => Util::getValueByKey(
                     $columnMeta,
                     'Comment',
                     ''
                 ),
-                "field_virtuality_orig[${columnNumber}]"    => Util::getValueByKey(
+                "field_virtuality_orig[${columnNumber}]" => Util::getValueByKey(
                     $columnMeta,
                     'Virtuality',
                     ''
                 ),
-                "field_expression_orig[${columnNumber}]"    => Util::getValueByKey(
+                "field_expression_orig[${columnNumber}]" => Util::getValueByKey(
                     $columnMeta,
                     'Expression',
                     ''
@@ -432,7 +429,7 @@ for ($columnNumber = 0; $columnNumber < $num_fields; $columnNumber++) {
         'move_columns' => $move_columns,
         'cfg_relation' => $cfgRelation,
         'available_mime' => $available_mime,
-        'mime_map' => isset($mime_map) ? $mime_map : array()
+        'mime_map' => isset($mime_map) ? $mime_map : array(),
     );
 } // end for
 
@@ -478,7 +475,7 @@ $response = Response::getInstance();
 $response->getHeader()->getScripts()->addFiles(
     array(
         'vendor/jquery/jquery.uitablefilter.js',
-        'indexes.js'
+        'indexes.js',
     )
 );
 $response->addHTML($html);

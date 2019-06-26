@@ -1,4 +1,5 @@
 <?php
+
 use OAuth\OAuth1\Service\Twitter;
 use OAuth\Common\Storage\Session;
 use OAuth\Common\Consumer\Credentials;
@@ -8,7 +9,7 @@ function auth()
 {
     require 'config.php';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     $sql = "SELECT value FROM settings WHERE code =  'twitter_public' LIMIT 0 , 30";
 
     if ($result = mysqli_query($con, $sql)) {
@@ -31,8 +32,8 @@ function auth()
     }
     $serviceFactory = new \OAuth\ServiceFactory();
     // Session storage
-    $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-  
+    $actual_link = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http')."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
     $storage = new Session();
     $credentials = new Credentials(
     $gpub,
@@ -50,10 +51,10 @@ function auth()
     );
         // Send a request now that we have access token
         $result = json_decode($twitterService->request('account/verify_credentials.json'));
-        return $result["email"];
+        return $result['email'];
     } else {
         $token = $twitterService->requestRequestToken();
         $url = $twitterService->getAuthorizationUri(array('oauth_token' => $token->getRequestToken()));
-        header('Location: ' . $url);
+        header('Location: '.$url);
     }
 }

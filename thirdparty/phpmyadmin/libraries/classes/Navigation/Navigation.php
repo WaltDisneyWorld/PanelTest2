@@ -1,11 +1,11 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * This class is responsible for instantiating
- * the various components of the navigation panel
- *
- * @package PhpMyAdmin-navigation
+ * the various components of the navigation panel.
  */
+
 namespace PhpMyAdmin\Navigation;
 
 use PhpMyAdmin\Config\PageSettings;
@@ -16,19 +16,17 @@ use PhpMyAdmin\Url;
 use PhpMyAdmin\Util;
 
 /**
- * The navigation panel - displays server, db and table selection tree
- *
- * @package PhpMyAdmin-Navigation
+ * The navigation panel - displays server, db and table selection tree.
  */
 class Navigation
 {
     /**
-     * @var Relation $relation
+     * @var Relation
      */
     private $relation;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -36,7 +34,7 @@ class Navigation
     }
 
     /**
-     * Renders the navigation tree, or part of it
+     * Renders the navigation tree, or part of it.
      *
      * @return string The navigation tree
      */
@@ -45,14 +43,14 @@ class Navigation
         /* Init */
         $retval = '';
         $response = Response::getInstance();
-        if (! $response->isAjax()) {
+        if (!$response->isAjax()) {
             $header = new NavigationHeader();
             $retval = $header->getDisplay();
         }
         $tree = new NavigationTree();
-        if (! $response->isAjax()
-            || ! empty($_POST['full'])
-            || ! empty($_POST['reload'])
+        if (!$response->isAjax()
+            || !empty($_POST['full'])
+            || !empty($_POST['reload'])
         ) {
             if ($GLOBALS['cfg']['ShowDatabasesNavigationAsTree']) {
                 // provide database tree in navigation
@@ -64,7 +62,7 @@ class Navigation
         } else {
             $navRender = $tree->renderPath();
         }
-        if (! $navRender) {
+        if (!$navRender) {
             $retval .= Message::error(
                 __('An error has occurred while loading the navigation display')
             )->getDisplay();
@@ -72,7 +70,7 @@ class Navigation
             $retval .= $navRender;
         }
 
-        if (! $response->isAjax()) {
+        if (!$response->isAjax()) {
             // closes the tags that were opened by the navigation header
             $retval .= '</div>'; // pma_navigation_tree
             $retval .= '<div id="pma_navi_settings_container">';
@@ -95,8 +93,6 @@ class Navigation
      * @param string $itemType  type of the navigation tree item
      * @param string $dbName    database name
      * @param string $tableName table name if applicable
-     *
-     * @return void
      */
     public function hideNavigationItem(
         $itemName,
@@ -105,21 +101,21 @@ class Navigation
         $tableName = null
     ) {
         $navTable = Util::backquote($GLOBALS['cfgRelation']['db'])
-            . "." . Util::backquote($GLOBALS['cfgRelation']['navigationhiding']);
-        $sqlQuery = "INSERT INTO " . $navTable
-            . "(`username`, `item_name`, `item_type`, `db_name`, `table_name`)"
-            . " VALUES ("
-            . "'" . $GLOBALS['dbi']->escapeString($GLOBALS['cfg']['Server']['user']) . "',"
-            . "'" . $GLOBALS['dbi']->escapeString($itemName) . "',"
-            . "'" . $GLOBALS['dbi']->escapeString($itemType) . "',"
-            . "'" . $GLOBALS['dbi']->escapeString($dbName) . "',"
-            . "'" . (! empty($tableName)? $GLOBALS['dbi']->escapeString($tableName) : "")
-            . "')";
+            .'.'.Util::backquote($GLOBALS['cfgRelation']['navigationhiding']);
+        $sqlQuery = 'INSERT INTO '.$navTable
+            .'(`username`, `item_name`, `item_type`, `db_name`, `table_name`)'
+            .' VALUES ('
+            ."'".$GLOBALS['dbi']->escapeString($GLOBALS['cfg']['Server']['user'])."',"
+            ."'".$GLOBALS['dbi']->escapeString($itemName)."',"
+            ."'".$GLOBALS['dbi']->escapeString($itemType)."',"
+            ."'".$GLOBALS['dbi']->escapeString($dbName)."',"
+            ."'".(!empty($tableName) ? $GLOBALS['dbi']->escapeString($tableName) : '')
+            ."')";
         $this->relation->queryAsControlUser($sqlQuery, false);
     }
 
     /**
-     * Inserts Drag and Drop Import handler
+     * Inserts Drag and Drop Import handler.
      *
      * @return string html code for drop handler
      */
@@ -127,8 +123,8 @@ class Navigation
     {
         $retval = '';
         $retval .= '<div class="pma_drop_handler">'
-            . __('Drop files here')
-            . '</div>';
+            .__('Drop files here')
+            .'</div>';
         $retval .= '<div class="pma_sql_import_status">';
         $retval .= '<h2>SQL upload ( ';
         $retval .= '<span class="pma_import_count">0</span> ';
@@ -147,8 +143,6 @@ class Navigation
      * @param string $itemType  type of the navigation tree item
      * @param string $dbName    database name
      * @param string $tableName table name if applicable
-     *
-     * @return void
      */
     public function unhideNavigationItem(
         $itemName,
@@ -157,18 +151,18 @@ class Navigation
         $tableName = null
     ) {
         $navTable = Util::backquote($GLOBALS['cfgRelation']['db'])
-            . "." . Util::backquote($GLOBALS['cfgRelation']['navigationhiding']);
-        $sqlQuery = "DELETE FROM " . $navTable
-            . " WHERE"
-            . " `username`='"
-            . $GLOBALS['dbi']->escapeString($GLOBALS['cfg']['Server']['user']) . "'"
-            . " AND `item_name`='" . $GLOBALS['dbi']->escapeString($itemName) . "'"
-            . " AND `item_type`='" . $GLOBALS['dbi']->escapeString($itemType) . "'"
-            . " AND `db_name`='" . $GLOBALS['dbi']->escapeString($dbName) . "'"
-            . (
-                ! empty($tableName)
-                ? " AND `table_name`='" . $GLOBALS['dbi']->escapeString($tableName) . "'"
-                : ""
+            .'.'.Util::backquote($GLOBALS['cfgRelation']['navigationhiding']);
+        $sqlQuery = 'DELETE FROM '.$navTable
+            .' WHERE'
+            ." `username`='"
+            .$GLOBALS['dbi']->escapeString($GLOBALS['cfg']['Server']['user'])."'"
+            ." AND `item_name`='".$GLOBALS['dbi']->escapeString($itemName)."'"
+            ." AND `item_type`='".$GLOBALS['dbi']->escapeString($itemType)."'"
+            ." AND `db_name`='".$GLOBALS['dbi']->escapeString($dbName)."'"
+            .(
+                !empty($tableName)
+                ? " AND `table_name`='".$GLOBALS['dbi']->escapeString($tableName)."'"
+                : ''
             );
         $this->relation->queryAsControlUser($sqlQuery, false);
     }
@@ -184,25 +178,25 @@ class Navigation
      */
     public function getItemUnhideDialog($dbName, $itemType = null, $tableName = null)
     {
-        $html  = '<form method="post" action="navigation.php" class="ajax">';
+        $html = '<form method="post" action="navigation.php" class="ajax">';
         $html .= '<fieldset>';
         $html .= Url::getHiddenInputs($dbName, $tableName);
 
         $navTable = Util::backquote($GLOBALS['cfgRelation']['db'])
-            . "." . Util::backquote($GLOBALS['cfgRelation']['navigationhiding']);
-        $sqlQuery = "SELECT `item_name`, `item_type` FROM " . $navTable
-            . " WHERE `username`='"
-            . $GLOBALS['dbi']->escapeString($GLOBALS['cfg']['Server']['user']) . "'"
-            . " AND `db_name`='" . $GLOBALS['dbi']->escapeString($dbName) . "'"
-            . " AND `table_name`='"
-            . (! empty($tableName) ? $GLOBALS['dbi']->escapeString($tableName) : '') . "'";
+            .'.'.Util::backquote($GLOBALS['cfgRelation']['navigationhiding']);
+        $sqlQuery = 'SELECT `item_name`, `item_type` FROM '.$navTable
+            ." WHERE `username`='"
+            .$GLOBALS['dbi']->escapeString($GLOBALS['cfg']['Server']['user'])."'"
+            ." AND `db_name`='".$GLOBALS['dbi']->escapeString($dbName)."'"
+            ." AND `table_name`='"
+            .(!empty($tableName) ? $GLOBALS['dbi']->escapeString($tableName) : '')."'";
         $result = $this->relation->queryAsControlUser($sqlQuery, false);
 
         $hidden = array();
         if ($result) {
             while ($row = $GLOBALS['dbi']->fetchArray($result)) {
                 $type = $row['item_type'];
-                if (! isset($hidden[$type])) {
+                if (!isset($hidden[$type])) {
                     $hidden[$type] = array();
                 }
                 $hidden[$type][] = $row['item_name'];
@@ -224,24 +218,24 @@ class Navigation
                 if ((empty($itemType) || $itemType == $t)
                     && isset($hidden[$t])
                 ) {
-                    $html .= (! $first ? '<br/>' : '')
-                        . '<strong>' . $lable . '</strong>';
+                    $html .= (!$first ? '<br/>' : '')
+                        .'<strong>'.$lable.'</strong>';
                     $html .= '<table width="100%"><tbody>';
                     foreach ($hidden[$t] as $hiddenItem) {
                         $params = array(
                             'unhideNavItem' => true,
                             'itemType' => $t,
                             'itemName' => $hiddenItem,
-                            'dbName' => $dbName
+                            'dbName' => $dbName,
                         );
 
                         $html .= '<tr>';
-                        $html .= '<td>' . htmlspecialchars($hiddenItem) . '</td>';
+                        $html .= '<td>'.htmlspecialchars($hiddenItem).'</td>';
                         $html .= '<td style="width:80px"><a href="navigation.php" data-post="'
-                            . Url::getCommon($params, '') . '"'
-                            . ' class="unhideNavItem ajax">'
-                            . Util::getIcon('show', __('Show'))
-                            . '</a></td>';
+                            .Url::getCommon($params, '').'"'
+                            .' class="unhideNavItem ajax">'
+                            .Util::getIcon('show', __('Show'))
+                            .'</a></td>';
                     }
                     $html .= '</tbody></table>';
                     $first = false;

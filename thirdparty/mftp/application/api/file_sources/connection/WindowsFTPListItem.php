@@ -1,8 +1,7 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/ListItem.php');
-    require_once(dirname(__FILE__) . '/FullAccessPermissionSet.php');
-
+    require_once dirname(__FILE__).'/ListItem.php';
+    require_once dirname(__FILE__).'/FullAccessPermissionSet.php';
 
     abstract class WindowsFTPListColumnIndex
     {
@@ -21,7 +20,7 @@
         public function __construct($itemLine)
         {
             if (!preg_match(MFTP_WIN_LIST_FORMAT, $itemLine, $matches)) {
-                throw new UnexpectedValueException("FTP list item was not in the correct format.");
+                throw new UnexpectedValueException('FTP list item was not in the correct format.');
             }
 
             $this->parseModificationDate(
@@ -56,7 +55,7 @@
 
         private function parseModificationDate($minute, $hour, $amPm, $day, $month, $year)
         {
-            if ($amPm == "P") {
+            if ('P' == $amPm) {
                 $hour += 12;
             }
 
@@ -67,7 +66,7 @@
         {
             $directoryOrSize = trim($directoryOrSize);
 
-            if ($directoryOrSize == "<DIR>") {
+            if ('<DIR>' == $directoryOrSize) {
                 $this->size = 0;
                 $this->directory = true;
             } else {

@@ -5,7 +5,7 @@ if (!isset($HOME)) {
 require 'includes/classes/head.class.php';
 ?>
 
-        <?php if ($_SESSION['user'] == 'admin') {
+        <?php if ('admin' == $_SESSION['user']) {
     ?>
 <style>
   .btn {
@@ -34,9 +34,9 @@ $(document).ready(function(){
   <li class="list-group-item notification is-dark"><a id="baahide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="baashow" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> <?php echo $lang_42; ?></li>
   <li class="list-group-item">  
                                           <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
-                                            $count  = 0;
-    $con    = mysqli_connect($host, $user, $pass, $data);
-    $sql    = 'SELECT * FROM users';
+                                            $count = 0;
+    $con = mysqli_connect($host, $user, $pass, $data);
+    $sql = 'SELECT * FROM users';
     $result = mysqli_query($con, $sql);
     while ($row = mysqli_fetch_row($result)) {
         $count = $count + 1;
@@ -45,9 +45,9 @@ $(document).ready(function(){
     mysqli_close($con);
     echo $count; ?></h1><hr> <?php echo $lang_18; ?></a>
                                           <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
-                                            $count  = 0;
-    $con    = mysqli_connect($host, $user, $pass, $data);
-    $sql    = 'SELECT * FROM failedlogin';
+                                            $count = 0;
+    $con = mysqli_connect($host, $user, $pass, $data);
+    $sql = 'SELECT * FROM failedlogin';
     $result = mysqli_query($con, $sql);
     while ($row = mysqli_fetch_row($result)) {
         $count = $count + 1;
@@ -56,9 +56,9 @@ $(document).ready(function(){
     mysqli_close($con);
     echo $count; ?></h1><hr> <?php echo $lang_40; ?></a>
                                                                                 <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
-                                                                                $count  = 0;
-    $con    = mysqli_connect($host, $user, $pass, $data);
-    $sql    = 'SELECT * FROM users';
+                                                                                $count = 0;
+    $con = mysqli_connect($host, $user, $pass, $data);
+    $sql = 'SELECT * FROM users';
     $result = mysqli_query($con, $sql);
     while ($row = mysqli_fetch_row($result)) {
         $count = $count + 1;
@@ -69,9 +69,9 @@ $(document).ready(function(){
                                                                                                                         <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;">
                                                                                                                             <?php
                                                                                                                             $count = 0;
-    $scan  = scandir("plugins");
+    $scan = scandir('plugins');
     foreach ($scan as $file) {
-        $count = $count +1;
+        $count = $count + 1;
     }
     $count = $count - 2;
     echo $count; ?>
@@ -86,10 +86,10 @@ $(document).ready(function(){
   </ul> 
   
  <?php
- $whmurl = "";
+ $whmurl = '';
     require 'config.php';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
     $sql = "SELECT value FROM settings WHERE code =  'whmurl' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {
@@ -101,7 +101,7 @@ $(document).ready(function(){
         mysqli_free_result($result);
     }
     mysqli_close($con);
-    if ($whmurl != "") {
+    if ('' != $whmurl) {
         ?>
   <script>
 $(document).ready(function(){
@@ -189,7 +189,7 @@ $(document).ready(function(){
                                              <a type="button" href="<?php echo $webroot; ?>/newresell" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_16; ?></a>
                                             <?php
                                             } ?>
-                                        <?php if (file_get_contents("data/cloudflare") != "") {
+                                        <?php if ('' != file_get_contents('data/cloudflare')) {
                                                 ?>
                                         
                                           <a type="button" href="<?php echo $webroot; ?>/cloudflare" class="svr btn btn-default"><i class="fa fa-5x fa-cloud"></i><hr><?php echo $lang_17; ?></a>
@@ -246,12 +246,12 @@ if (ismasterreseller()) {
                                             <?php
                                             } ?>
                                         <?php
-                                        $scan = scandir("plugins/");
+                                        $scan = scandir('plugins/');
     foreach ($scan as $file) {
         $safe = true;
-        include "plugins/" . $file;
+        include 'plugins/'.$file;
         if ($menu) {
-            echo '<a type="button" class="sys btn btn-large btn-default" href="' . $webroot . '/plpage&pl=' . urlencode($file) . '" class="btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/p.svg"><hr>' . $menu_name . '</a>';
+            echo '<a type="button" class="sys btn btn-large btn-default" href="'.$webroot.'/plpage?pl='.urlencode($file).'" class="btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/p.svg"><hr>'.$menu_name.'</a>';
         }
     } ?>
                                        
@@ -263,7 +263,7 @@ if (ismasterreseller()) {
 
 <br>
 <?php
-     if ($_SESSION['user'] != 'admin') {
+     if ('admin' != $_SESSION['user']) {
          ?>
 <div>
 <?php
@@ -297,7 +297,7 @@ $(document).ready(function(){
                                                                                    <a id="serv"  type="button" href="<?php
     require 'config.php';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
     $sql = "SELECT value FROM settings WHERE code =  'forum' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {
@@ -311,7 +311,7 @@ $(document).ready(function(){
 
 ?>" class="serv btn btn-large btn-warning"><img style="width:50px;height:50px;"  src="includes/img/icons/forum.svg"><hr><?php echo $lang_30; ?></a>
                                         <a type="button" href="<?php
-   
+
     $sql = "SELECT value FROM settings WHERE code =  'support' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {
         // Fetch one and one row

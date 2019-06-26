@@ -1,25 +1,21 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Hold PhpMyAdmin\SysInfoSunOS class
- *
- * @package PhpMyAdmin
+ * Hold PhpMyAdmin\SysInfoSunOS class.
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\SysInfoBase;
-
 /**
- * SunOS based SysInfo class
- *
- * @package PhpMyAdmin
+ * SunOS based SysInfo class.
  */
 class SysInfoSunOS extends SysInfoBase
 {
     public $os = 'SunOS';
 
     /**
-     * Read value from kstat
+     * Read value from kstat.
      *
      * @param string $key Key to read
      *
@@ -27,7 +23,7 @@ class SysInfoSunOS extends SysInfoBase
      */
     private function _kstat($key)
     {
-        if ($m = shell_exec('kstat -p d ' . $key)) {
+        if ($m = shell_exec('kstat -p d '.$key)) {
             list(, $value) = preg_split("/\t/", trim($m), 2);
 
             return $value;
@@ -37,7 +33,7 @@ class SysInfoSunOS extends SysInfoBase
     }
 
     /**
-     * Gets load information
+     * Gets load information.
      *
      * @return array with load data
      */
@@ -49,7 +45,7 @@ class SysInfoSunOS extends SysInfoBase
     }
 
     /**
-     * Checks whether class is supported in this environment
+     * Checks whether class is supported in this environment.
      *
      * @return true on success
      */
@@ -59,7 +55,7 @@ class SysInfoSunOS extends SysInfoBase
     }
 
     /**
-     * Gets information about memory usage
+     * Gets information about memory usage.
      *
      * @return array with memory usage data
      */

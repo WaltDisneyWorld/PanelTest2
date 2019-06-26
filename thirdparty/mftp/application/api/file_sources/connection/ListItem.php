@@ -1,15 +1,15 @@
 <?php
-    require_once(dirname(__FILE__) . '/../../lib/JsonSerializable.php');
+    require_once dirname(__FILE__).'/../../lib/JsonSerializable.php';
 
     abstract class ListItem implements JsonSerializable
     {
         /**
-         * @var boolean
+         * @var bool
          */
         protected $directory;
 
         /**
-         * @var boolean
+         * @var bool
          */
         protected $link;
 
@@ -158,15 +158,15 @@
         public function jsonSerialize()
         {
             return array(
-                "name" => (string)$this->getName(),
-                "isDirectory" => $this->isDirectory(),
-                "isLink" => $this->isLink(),
-                "linkCount" => $this->getLinkCount(),
-                "ownerUserName" => $this->getOwnerUserName(),
-                "ownerGroupName" => $this->getOwnerGroupName(),
-                "size" => $this->getSize(),
-                "modificationDate" => $this->getModificationDate(),
-                "numericPermissions" => $this->getNumericPermissions()
+                'name' => (string) $this->getName(),
+                'isDirectory' => $this->isDirectory(),
+                'isLink' => $this->isLink(),
+                'linkCount' => $this->getLinkCount(),
+                'ownerUserName' => $this->getOwnerUserName(),
+                'ownerGroupName' => $this->getOwnerGroupName(),
+                'size' => $this->getSize(),
+                'modificationDate' => $this->getModificationDate(),
+                'numericPermissions' => $this->getNumericPermissions(),
             );
         }
 

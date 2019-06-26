@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Second authentication factor handling
- *
- * @package PhpMyAdmin
+ * Second authentication factor handling.
  */
+
 namespace PhpMyAdmin\Plugins\TwoFactor;
 
 use PhpMyAdmin\TwoFactor;
@@ -13,7 +13,7 @@ use PhpMyAdmin\Plugins\TwoFactorPlugin;
 use PragmaRX\Google2FA\Google2FA;
 
 /**
- * HOTP and TOTP based two-factor authentication
+ * HOTP and TOTP based two-factor authentication.
  *
  * Also known as Google, Authy, or OTP
  */
@@ -27,7 +27,7 @@ class Application extends TwoFactorPlugin
     protected $_google2fa;
 
     /**
-     * Creates object
+     * Creates object.
      *
      * @param TwoFactor $twofactor TwoFactor instance
      */
@@ -42,7 +42,7 @@ class Application extends TwoFactorPlugin
     }
 
     /**
-     * Get any property of this class
+     * Get any property of this class.
      *
      * @param string $property name of the property
      *
@@ -57,9 +57,9 @@ class Application extends TwoFactorPlugin
     }
 
     /**
-     * Checks authentication, returns true on success
+     * Checks authentication, returns true on success.
      *
-     * @return boolean
+     * @return bool
      */
     public function check()
     {
@@ -75,7 +75,7 @@ class Application extends TwoFactorPlugin
     }
 
     /**
-     * Renders user interface to enter two-factor authentication
+     * Renders user interface to enter two-factor authentication.
      *
      * @return string HTML code
      */
@@ -85,7 +85,7 @@ class Application extends TwoFactorPlugin
     }
 
     /**
-     * Renders user interface to configure two-factor authentication
+     * Renders user interface to configure two-factor authentication.
      *
      * @return string HTML code
      */
@@ -95,21 +95,21 @@ class Application extends TwoFactorPlugin
         $renderArray = ['secret' => $secret];
         if (extension_loaded('gd')) {
             $inlineUrl = $this->_google2fa->getQRCodeInline(
-                'phpMyAdmin (' . $this->getAppId(false) . ')',
+                'phpMyAdmin ('.$this->getAppId(false).')',
                 $this->_twofactor->user,
                 $secret
             );
             $renderArray['image'] = $inlineUrl;
         } else {
             $inlineUrl = $this->_google2fa->getQRCodeUrl(
-                'phpMyAdmin (' . $this->getAppId(false) . ')',
+                'phpMyAdmin ('.$this->getAppId(false).')',
                 $this->_twofactor->user,
                 $secret
             );
             trigger_error(
                 __(
                     'The gd PHP extension was not found.'
-                    . ' The QRcode can not be displayed without the gd PHP extension.'
+                    .' The QRcode can not be displayed without the gd PHP extension.'
                 ),
                 E_USER_WARNING
             );
@@ -119,13 +119,13 @@ class Application extends TwoFactorPlugin
     }
 
     /**
-     * Performs backend configuration
+     * Performs backend configuration.
      *
-     * @return boolean
+     * @return bool
      */
     public function configure()
     {
-        if (! isset($_SESSION['2fa_application_key'])) {
+        if (!isset($_SESSION['2fa_application_key'])) {
             $_SESSION['2fa_application_key'] = $this->_google2fa->generateSecretKey();
         }
         $this->_twofactor->config['settings']['secret'] = $_SESSION['2fa_application_key'];
@@ -138,7 +138,7 @@ class Application extends TwoFactorPlugin
     }
 
     /**
-     * Get user visible name
+     * Get user visible name.
      *
      * @return string
      */
@@ -148,7 +148,7 @@ class Application extends TwoFactorPlugin
     }
 
     /**
-     * Get user visible description
+     * Get user visible description.
      *
      * @return string
      */

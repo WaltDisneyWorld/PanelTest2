@@ -1,18 +1,16 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Abstract class for syntax highlighted editors using CodeMirror
- *
- * @package PhpMyAdmin-Transformations
+ * Abstract class for syntax highlighted editors using CodeMirror.
  */
+
 namespace PhpMyAdmin\Plugins\Transformations\Abs;
 
 use PhpMyAdmin\Plugins\IOTransformationsPlugin;
 
 /**
- * Provides common methods for all the CodeMirror syntax highlighted editors
- *
- * @package PhpMyAdmin-Transformations
+ * Provides common methods for all the CodeMirror syntax highlighted editors.
  */
 abstract class CodeMirrorEditorTransformationPlugin extends IOTransformationsPlugin
 {
@@ -59,13 +57,13 @@ abstract class CodeMirrorEditorTransformationPlugin extends IOTransformationsPlu
     ) {
         $html = '';
         if (!empty($value)) {
-            $html = '<input type="hidden" name="fields_prev' . $column_name_appendix
-                . '" value="' . htmlspecialchars($value) . '"/>';
+            $html = '<input type="hidden" name="fields_prev'.$column_name_appendix
+                .'" value="'.htmlspecialchars($value).'"/>';
         }
-        $class = 'transform_' . strtolower(static::getName()) . '_editor';
-        $html .= '<textarea name="fields' . $column_name_appendix . '"'
-            . ' dir="' . $text_dir . '" class="' . $class . '">'
-            . htmlspecialchars($value) . '</textarea>';
+        $class = 'transform_'.strtolower(static::getName()).'_editor';
+        $html .= '<textarea name="fields'.$column_name_appendix.'"'
+            .' dir="'.$text_dir.'" class="'.$class.'">'
+            .htmlspecialchars($value).'</textarea>';
 
         return $html;
     }

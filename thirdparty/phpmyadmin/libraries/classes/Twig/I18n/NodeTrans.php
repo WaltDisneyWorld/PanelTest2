@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * hold PhpMyAdmin\Twig\I18n\NodeTrans class
- *
- * @package PhpMyAdmin\Twig\I18n
+ * hold PhpMyAdmin\Twig\I18n\NodeTrans class.
  */
+
 namespace PhpMyAdmin\Twig\I18n;
 
 use Twig\Compiler;
@@ -13,9 +13,7 @@ use Twig\Node\Node;
 use Twig\Node\Expression\AbstractExpression;
 
 /**
- * Class NodeTrans
- *
- * @package PhpMyAdmin\Twig\I18n
+ * Class NodeTrans.
  */
 class NodeTrans extends TransNode
 {
@@ -93,7 +91,7 @@ class NodeTrans extends TransNode
 
         if ($vars) {
             $compiler
-                ->write('echo strtr(' . $function . '(')
+                ->write('echo strtr('.$function.'(')
                 ->subcompile($msg)
             ;
 
@@ -119,7 +117,7 @@ class NodeTrans extends TransNode
                     ;
                 } else {
                     $compiler
-                        ->string('%' . $var->getAttribute('name') . '%')
+                        ->string('%'.$var->getAttribute('name').'%')
                         ->raw(' => ')
                         ->subcompile($var)
                         ->raw(', ')
@@ -129,11 +127,11 @@ class NodeTrans extends TransNode
 
             $compiler->raw("));\n");
         } else {
-            $compiler->write('echo ' . $function . '(');
+            $compiler->write('echo '.$function.'(');
 
             if ($this->hasNode('context')) {
                 $context = trim($this->getNode('context')->getAttribute('data'));
-                $compiler->write('"' . $context . '", ');
+                $compiler->write('"'.$context.'", ');
             }
 
             $compiler->subcompile($msg);

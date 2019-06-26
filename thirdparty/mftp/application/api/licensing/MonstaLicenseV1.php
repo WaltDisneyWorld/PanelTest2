@@ -1,6 +1,6 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/MonstaLicense.php');
+    require_once dirname(__FILE__).'/MonstaLicense.php';
 
     class MonstaLicenseV1 extends MonstaLicense
     {
@@ -32,7 +32,7 @@
         }
 
         /**
-         * @return integer
+         * @return int
          */
         public function getPurchaseDate()
         {
@@ -40,7 +40,7 @@
         }
 
         /**
-         * @return integer
+         * @return int
          */
         public function getExpiryDate()
         {

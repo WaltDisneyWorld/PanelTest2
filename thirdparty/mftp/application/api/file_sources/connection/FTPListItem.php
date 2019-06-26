@@ -1,8 +1,8 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/ListItem.php');
-    require_once(dirname(__FILE__) . '/StringPermissionSet.php');
-    require_once(dirname(__FILE__) . '/../DateTransformer.php');
+    require_once dirname(__FILE__).'/ListItem.php';
+    require_once dirname(__FILE__).'/StringPermissionSet.php';
+    require_once dirname(__FILE__).'/../DateTransformer.php';
 
     abstract class PermLevelStartIndex
     {
@@ -41,7 +41,7 @@
         public function __construct($itemLine)
         {
             if (!preg_match(MFTP_UNIX_LIST_FORMAT, $itemLine, $matches)) {
-                throw new UnexpectedValueException("FTP list item was not in the correct format.");
+                throw new UnexpectedValueException('FTP list item was not in the correct format.');
             }
 
             // all FTPListColumnIndex must + 1 because $matches[0] is the full result from preg_match
@@ -61,8 +61,8 @@
 
         private function parsePermissionsFlags($permissionsFlags)
         {
-            $this->directory = substr($permissionsFlags, PermissionsFlagIndex::Directory, 1) == 'd';
-            $this->link = substr($permissionsFlags, PermissionsFlagIndex::Directory, 1) == 'l';
+            $this->directory = 'd' == substr($permissionsFlags, PermissionsFlagIndex::Directory, 1);
+            $this->link = 'l' == substr($permissionsFlags, PermissionsFlagIndex::Directory, 1);
 
             $this->ownerPermissions = new StringPermissionSet(substr($permissionsFlags, PermLevelStartIndex::Owner, 3));
             $this->groupPermissions = new StringPermissionSet(substr($permissionsFlags, PermLevelStartIndex::Group, 3));
@@ -88,7 +88,7 @@
 
             $modificationDay = intval($splitDate[1]);
 
-            if (strpos($splitDate[2], ':') !== false) {
+            if (false !== strpos($splitDate[2], ':')) {
                 /* if there is a : in the date it contains a time and therefore is of current year (or december previous year maybe) */
                 $modificationYear = intval(date('Y'));
                 $splitTime = explode(':', $splitDate[2]);
@@ -119,7 +119,7 @@
 
         private function parseNameWithLink($nameWithLink)
         {
-            $splitName = explode(" -> ", $nameWithLink);
+            $splitName = explode(' -> ', $nameWithLink);
             return $splitName[0];
         }
     }

@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * A caching proxy for retrieving version information from https://www.phpmyadmin.net/
- *
- * @package PhpMyAdmin
+ * A caching proxy for retrieving version information from https://www.phpmyadmin.net/.
  */
-
 use PhpMyAdmin\Core;
 use PhpMyAdmin\VersionInformation;
 use PhpMyAdmin\Response;
@@ -31,14 +29,14 @@ if (empty($versionDetails)) {
     );
     $version = '';
     $date = '';
-    if ($latestCompatible != null) {
+    if (null != $latestCompatible) {
         $version = $latestCompatible['version'];
         $date = $latestCompatible['date'];
     }
     echo json_encode(
         array(
-            'version' => (! empty($version) ? $version : ''),
-            'date' => (! empty($date) ? $date : ''),
+            'version' => (!empty($version) ? $version : ''),
+            'date' => (!empty($date) ? $date : ''),
         )
     );
 }

@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Represents the interface between the linter and  the query editor.
- *
- * @package PhpMyAdmin
  */
-
 use PhpMyAdmin\Core;
 use PhpMyAdmin\Linter;
 use PhpMyAdmin\Response;
@@ -36,16 +34,16 @@ Response::getInstance()->disable();
 
 Core::headerJSON();
 
-if (! empty($_POST['options'])) {
+if (!empty($_POST['options'])) {
     $options = $_POST['options'];
 
-    if (! empty($options['routine_editor'])) {
-        $sql_query = 'CREATE PROCEDURE `a`() ' . $sql_query;
-    } elseif (! empty($options['trigger_editor'])) {
+    if (!empty($options['routine_editor'])) {
+        $sql_query = 'CREATE PROCEDURE `a`() '.$sql_query;
+    } elseif (!empty($options['trigger_editor'])) {
         $sql_query = 'CREATE TRIGGER `a` AFTER INSERT ON `b` FOR EACH ROW '
-            . $sql_query;
-    } elseif (! empty($options['event_editor'])) {
-        $sql_query = 'CREATE EVENT `a` ON SCHEDULE EVERY MINUTE DO ' . $sql_query;
+            .$sql_query;
+    } elseif (!empty($options['event_editor'])) {
+        $sql_query = 'CREATE EVENT `a` ON SCHEDULE EVERY MINUTE DO '.$sql_query;
     }
 }
 

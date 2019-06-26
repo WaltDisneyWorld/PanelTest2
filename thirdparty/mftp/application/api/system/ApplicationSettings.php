@@ -1,7 +1,7 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/../lib/LocalizableException.php");
-    require_once(dirname(__FILE__) . "/../lib/nicejson.php");
+    require_once dirname(__FILE__).'/../lib/LocalizableException.php';
+    require_once dirname(__FILE__).'/../lib/nicejson.php';
 
     class ApplicationSettings
     {
@@ -25,46 +25,46 @@
          */
         private $settingsReadError;
 
-        private static $KEY_SHOW_DOT_FILES = "showDotFiles";
-        private static $KEY_LANGUAGE = "language";
-        private static $KEY_EDIT_NEW_FILES_IMMEDIATELY = "editNewFilesImmediately";
-        private static $KEY_EDITABLE_FILE_EXTENSIONS = "editableFileExtensions";
-        private static $KEY_CONNECTION_RESTRICTIONS = "connectionRestrictions";
-        private static $KEY_HIDE_PRO_UPGRADE_MESSAGES = "hideProUpgradeMessages";
-        private static $KEY_DISABLE_MASTER_LOGIN = "disableMasterLogin";
-        private static $KEY_ENCODE_EDITOR_SAVES = "encodeEditorSaves";
-        private static $KEY_DISABLE_CHMOD = "disableChmod";
-        private static $KEY_DISABLE_FILE_VIEW = "disableFileView";
-        private static $KEY_DISABLE_FILE_EDIT = "disableFileEdit";
-        private static $KEY_DISABLE_ADD_ONS_BUTTON = "disableAddOnsButton";
-        private static $KEY_DISABLE_HELP_BUTTON = "disableHelpButton";
-        private static $KEY_HELP_URL = "helpUrl";
-        private static $KEY_XHR_TIMEOUT_SECONDS = "xhrTimeoutSeconds";
-        private static $KEY_POST_LOGOUT_URL = "postLogoutUrl";
-        private static $KEY_DISABLE_REMOTE_SERVER_ADDRESS_DISPLAY = "disableRemoteServerAddressDisplay";
-        private static $KEY_DISABLE_CHANGE_SERVER_BUTTON = "disableChangeServerButton";
-        private static $KEY_FOOTER_ITEM_DISPLAY = "footerItemDisplay";
-        private static $KEY_SIDEBAR_ITEM_DISPLAY = "sidebarItemDisplay";
-        private static $KEY_CONTEXT_MENU_ITEM_DISPLAY = "contextMenuItemDisplay";
-        private static $KEY_FILE_BROWSER_COLUMN_DISPLAY = "fileBrowserColumnDisplay";
-        private static $KEY_HEADER_ITEM_DISPLAY = "headerItemDisplay";
-        private static $KEY_HIDE_HISTORY_BAR = "hideHistoryBar";
-        private static $KEY_ENABLE_RESET_PASSWORD = "enableResetPassword";
-        private static $KEY_ENABLE_FORGOT_PASSWORD = "enableForgotPassword";
-        private static $KEY_DISABLE_LOGIN_LINK_BUTTON = "disableLoginLinkButton";
-        private static $KEY_LOGIN_ITEM_DISPLAY = "loginItemDisplay";
-        private static $KEY_EDITOR_LINE_SEPARATOR = "editorLineSeparator";
-        private static $KEY_ALLOWED_CLIENT_ADDRESSES = "allowedClientAddresses";
-        private static $KEY_DISALLOWED_CLIENT_MESSAGE = "disallowedClientMessage";
-        private static $KEY_LOGIN_FAILURE_REDIRECT = "loginFailureRedirect";
-        private static $KEY_DISABLE_LOGIN_FORM = "disableLoginForm";
-        private static $KEY_RESUME_SESSION_INFO_DISPLAY_SECONDS = "resumeSessionInfoDisplaySeconds";
-        private static $KEY_DISABLE_UPLOAD_OVERWRITE_CONFIRMATION = "disableUploadOverwriteConfirmation";
-        private static $KEY_DISABLE_DELETE_CONFIRMATION = "disableDeleteConfirmation";
+        private static $KEY_SHOW_DOT_FILES = 'showDotFiles';
+        private static $KEY_LANGUAGE = 'language';
+        private static $KEY_EDIT_NEW_FILES_IMMEDIATELY = 'editNewFilesImmediately';
+        private static $KEY_EDITABLE_FILE_EXTENSIONS = 'editableFileExtensions';
+        private static $KEY_CONNECTION_RESTRICTIONS = 'connectionRestrictions';
+        private static $KEY_HIDE_PRO_UPGRADE_MESSAGES = 'hideProUpgradeMessages';
+        private static $KEY_DISABLE_MASTER_LOGIN = 'disableMasterLogin';
+        private static $KEY_ENCODE_EDITOR_SAVES = 'encodeEditorSaves';
+        private static $KEY_DISABLE_CHMOD = 'disableChmod';
+        private static $KEY_DISABLE_FILE_VIEW = 'disableFileView';
+        private static $KEY_DISABLE_FILE_EDIT = 'disableFileEdit';
+        private static $KEY_DISABLE_ADD_ONS_BUTTON = 'disableAddOnsButton';
+        private static $KEY_DISABLE_HELP_BUTTON = 'disableHelpButton';
+        private static $KEY_HELP_URL = 'helpUrl';
+        private static $KEY_XHR_TIMEOUT_SECONDS = 'xhrTimeoutSeconds';
+        private static $KEY_POST_LOGOUT_URL = 'postLogoutUrl';
+        private static $KEY_DISABLE_REMOTE_SERVER_ADDRESS_DISPLAY = 'disableRemoteServerAddressDisplay';
+        private static $KEY_DISABLE_CHANGE_SERVER_BUTTON = 'disableChangeServerButton';
+        private static $KEY_FOOTER_ITEM_DISPLAY = 'footerItemDisplay';
+        private static $KEY_SIDEBAR_ITEM_DISPLAY = 'sidebarItemDisplay';
+        private static $KEY_CONTEXT_MENU_ITEM_DISPLAY = 'contextMenuItemDisplay';
+        private static $KEY_FILE_BROWSER_COLUMN_DISPLAY = 'fileBrowserColumnDisplay';
+        private static $KEY_HEADER_ITEM_DISPLAY = 'headerItemDisplay';
+        private static $KEY_HIDE_HISTORY_BAR = 'hideHistoryBar';
+        private static $KEY_ENABLE_RESET_PASSWORD = 'enableResetPassword';
+        private static $KEY_ENABLE_FORGOT_PASSWORD = 'enableForgotPassword';
+        private static $KEY_DISABLE_LOGIN_LINK_BUTTON = 'disableLoginLinkButton';
+        private static $KEY_LOGIN_ITEM_DISPLAY = 'loginItemDisplay';
+        private static $KEY_EDITOR_LINE_SEPARATOR = 'editorLineSeparator';
+        private static $KEY_ALLOWED_CLIENT_ADDRESSES = 'allowedClientAddresses';
+        private static $KEY_DISALLOWED_CLIENT_MESSAGE = 'disallowedClientMessage';
+        private static $KEY_LOGIN_FAILURE_REDIRECT = 'loginFailureRedirect';
+        private static $KEY_DISABLE_LOGIN_FORM = 'disableLoginForm';
+        private static $KEY_RESUME_SESSION_INFO_DISPLAY_SECONDS = 'resumeSessionInfoDisplaySeconds';
+        private static $KEY_DISABLE_UPLOAD_OVERWRITE_CONFIRMATION = 'disableUploadOverwriteConfirmation';
+        private static $KEY_DISABLE_DELETE_CONFIRMATION = 'disableDeleteConfirmation';
 
-        private static $DEFAULT_LANGUAGE = "en_us";
+        private static $DEFAULT_LANGUAGE = 'en_us';
         private static $DEFAULT_EDITABLE_FILE_EXTENSIONS =
-            "txt,htm,html,php,asp,aspx,js,css,xhtml,cfm,pl,py,c,cpp,rb,java,xml,json";
+            'txt,htm,html,php,asp,aspx,js,css,xhtml,cfm,pl,py,c,cpp,rb,java,xml,json';
 
         private function getValidKeys()
         {
@@ -105,7 +105,7 @@
                 self::$KEY_DISABLE_LOGIN_FORM,
                 self::$KEY_RESUME_SESSION_INFO_DISPLAY_SECONDS,
                 self::$KEY_DISABLE_UPLOAD_OVERWRITE_CONFIRMATION,
-                self::$KEY_DISABLE_DELETE_CONFIRMATION
+                self::$KEY_DISABLE_DELETE_CONFIRMATION,
             );
         }
 
@@ -142,12 +142,12 @@
                 self::$KEY_LOGIN_ITEM_DISPLAY => new ArrayObject(),
                 self::$KEY_EDITOR_LINE_SEPARATOR => null,
                 self::$KEY_ALLOWED_CLIENT_ADDRESSES => null,
-                self::$KEY_DISALLOWED_CLIENT_MESSAGE => "",
+                self::$KEY_DISALLOWED_CLIENT_MESSAGE => '',
                 self::$KEY_LOGIN_FAILURE_REDIRECT => null,
                 self::$KEY_DISABLE_LOGIN_FORM => false,
                 self::$KEY_RESUME_SESSION_INFO_DISPLAY_SECONDS => 3,
                 self::$KEY_DISABLE_UPLOAD_OVERWRITE_CONFIRMATION => false,
-                self::$KEY_DISABLE_DELETE_CONFIRMATION => false
+                self::$KEY_DISABLE_DELETE_CONFIRMATION => false,
             );
         }
 
@@ -157,7 +157,7 @@
             return array(
                 self::$KEY_SHOW_DOT_FILES,
                 self::$KEY_LANGUAGE,
-                self::$KEY_EDIT_NEW_FILES_IMMEDIATELY
+                self::$KEY_EDIT_NEW_FILES_IMMEDIATELY,
             );
         }
 
@@ -173,16 +173,16 @@
 
                 $settingsContents = @file_get_contents($settingsPath);
 
-                if ($settingsContents === false) {
+                if (false === $settingsContents) {
                     $this->settingsReadFailed = true;
                     $this->settingsReadError = "Couldn't read data from settings file.";
                 } else {
                     $settings = json_decode($settingsContents, true);
 
-                    if ($settings == null || !is_array($settings)) {
+                    if (null == $settings || !is_array($settings)) {
                         $settings = array();
                         $this->settingsReadFailed = true;
-                        $this->settingsReadError = "Couldn't decode JSON from settings file. JSON error was: " . json_last_error_msg();
+                        $this->settingsReadError = "Couldn't decode JSON from settings file. JSON error was: ".json_last_error_msg();
                     }
                 }
 
@@ -191,7 +191,7 @@
         }
 
         /**
-         * @return boolean
+         * @return bool
          */
         public function isSettingsReadFailed()
         {
@@ -210,9 +210,9 @@
         {
             if (!$this->settingsWritable()) {
                 throw new LocalizableException(
-                    "Could not write settings JSON at " . $this->settingsPath,
+                    'Could not write settings JSON at '.$this->settingsPath,
                     LocalizableExceptionDefinition::$SETTINGS_WRITE_ERROR,
-                    array("path" => $this->settingsPath)
+                    array('path' => $this->settingsPath)
                 );
             }
 
@@ -262,11 +262,11 @@
             $blankedArray = array();
 
             foreach ($inputArray as $key => $value) {
-                if ($key == "types" || $key == "host" && is_array($value)) {
+                if ('types' == $key || 'host' == $key && is_array($value)) {
                     $blankedArray[$key] = $value;
                 } elseif (is_array($value)) {
                     $blankedArray[$key] = $this->blankArray($value, $skipKeys);
-                } elseif (array_search($key, $skipKeys) !== false) {
+                } elseif (false !== array_search($key, $skipKeys)) {
                     $blankedArray[$key] = $value;
                 } else {
                     $blankedArray[$key] = true;
@@ -305,7 +305,7 @@
         private function getSetOrGet($isSet, $key)
         {
             $prefix = $isSet ? 'set' : 'get';
-            return $prefix . ucfirst($key);
+            return $prefix.ucfirst($key);
         }
 
         private function getAccessorLookupMap($isSet)
@@ -380,14 +380,14 @@
             if (is_array($restrictions)) {
                 $license = readDefaultMonstaLicense();
                 if (is_null($license) || !$license->isLicensed()) {
-                    if (array_key_exists("types", $restrictions)) {
-                        return array("types" => $restrictions["types"]);
+                    if (array_key_exists('types', $restrictions)) {
+                        return array('types' => $restrictions['types']);
                     }
 
                     return $this->getDefaultValue(self::$KEY_CONNECTION_RESTRICTIONS);
                 }
 
-                $restrictions = $this->blankArray($restrictions, array("authenticationModeName", "initialDirectory"));
+                $restrictions = $this->blankArray($restrictions, array('authenticationModeName', 'initialDirectory'));
             }
 
             return $restrictions;
@@ -643,12 +643,12 @@
         {
             $this->settings[self::$KEY_LOGIN_ITEM_DISPLAY] = $loginItemDisplay;
         }
-        
+
         public function getAllowedClientAddresses()
         {
             return $this->getSetKey(self::$KEY_ALLOWED_CLIENT_ADDRESSES);
         }
-        
+
         public function setAllowedClientAddresses($allowedClientAddresses)
         {
             $this->settings[self::$KEY_ALLOWED_CLIENT_ADDRESSES] = $allowedClientAddresses;
@@ -663,7 +663,7 @@
         {
             $this->settings[self::$KEY_DISALLOWED_CLIENT_MESSAGE] = $disallowedClientMessage;
         }
-        
+
         public function getLoginFailureRedirect()
         {
             return $this->getSetKey(self::$KEY_LOGIN_FAILURE_REDIRECT);
@@ -671,7 +671,7 @@
 
         public function setLoginFailureRedirect($loginFailureRedirect)
         {
-            $this->settings[self::$KEY_LOGIN_FAILURE_REDIRECT]  = $loginFailureRedirect;
+            $this->settings[self::$KEY_LOGIN_FAILURE_REDIRECT] = $loginFailureRedirect;
         }
 
         public function getDisableLoginForm()

@@ -7,7 +7,7 @@
 
         public static function getTransformer()
         {
-            if (static::$instance === null) {
+            if (null === static::$instance) {
                 static::$instance = new static();
             }
 

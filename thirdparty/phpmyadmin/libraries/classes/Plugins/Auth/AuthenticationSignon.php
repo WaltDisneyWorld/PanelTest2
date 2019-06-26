@@ -1,11 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * SignOn Authentication plugin for phpMyAdmin
- *
- * @package    PhpMyAdmin-Authentication
- * @subpackage SignOn
+ * SignOn Authentication plugin for phpMyAdmin.
  */
+
 namespace PhpMyAdmin\Plugins\Auth;
 
 use PhpMyAdmin\Core;
@@ -13,16 +12,14 @@ use PhpMyAdmin\Plugins\AuthenticationPlugin;
 use PhpMyAdmin\Util;
 
 /**
- * Handles the SignOn authentication method
- *
- * @package PhpMyAdmin-Authentication
+ * Handles the SignOn authentication method.
  */
 class AuthenticationSignon extends AuthenticationPlugin
 {
     /**
-     * Displays authentication form
+     * Displays authentication form.
      *
-     * @return boolean   always true (no return indeed)
+     * @return bool always true (no return indeed)
      */
     public function showLoginForm()
     {
@@ -41,9 +38,9 @@ class AuthenticationSignon extends AuthenticationPlugin
     }
 
     /**
-     * Gets authentication credentials
+     * Gets authentication credentials.
      *
-     * @return boolean   whether we get authentication settings or not
+     * @return bool whether we get authentication settings or not
      */
     public function readCredentials()
     {
@@ -81,7 +78,7 @@ class AuthenticationSignon extends AuthenticationPlugin
             if (!@file_exists($script_name)) {
                 Core::fatalError(
                     __('Can not find signon authentication script:')
-                    . ' ' . $script_name
+                    .' '.$script_name
                 );
             }
             include $script_name;
@@ -182,7 +179,7 @@ class AuthenticationSignon extends AuthenticationPlugin
                 $_SESSION[' PMA_token '] = $pma_token;
             }
 
-            /**
+            /*
              * Clear user cache.
              */
             Util::clearUserCache();
@@ -201,11 +198,9 @@ class AuthenticationSignon extends AuthenticationPlugin
     }
 
     /**
-     * User is not allowed to login to MySQL -> authentication failed
+     * User is not allowed to login to MySQL -> authentication failed.
      *
      * @param string $failure String describing why authentication has failed
-     *
-     * @return void
      */
     public function showFailure($failure)
     {

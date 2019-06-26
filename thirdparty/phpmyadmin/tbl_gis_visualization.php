@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * handles creation of the GIS visualizations.
- *
- * @package PhpMyAdmin
  */
-
 use PhpMyAdmin\Controllers\Table\TableGisVisualizationController;
 use PhpMyAdmin\Di\Container;
 use PhpMyAdmin\Response;
@@ -26,14 +24,14 @@ $container->alias('response', 'PhpMyAdmin\Response');
 
 /* Define dependencies for the concerned controller */
 $dependency_definitions = array(
-    "sql_query" => &$GLOBALS['sql_query'],
-    "url_params" => &$GLOBALS['url_params'],
-    "goto" => Util::getScriptNameForOption(
+    'sql_query' => &$GLOBALS['sql_query'],
+    'url_params' => &$GLOBALS['url_params'],
+    'goto' => Util::getScriptNameForOption(
         $GLOBALS['cfg']['DefaultTabDatabase'],
         'database'
     ),
-    "back" => 'sql.php',
-    "visualizationSettings" => array()
+    'back' => 'sql.php',
+    'visualizationSettings' => array(),
 );
 
 /** @var TableGisVisualizationController $controller */

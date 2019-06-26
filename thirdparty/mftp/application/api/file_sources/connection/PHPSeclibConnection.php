@@ -1,12 +1,12 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/../../lib/helpers.php");
-    require_once(dirname(__FILE__) . "/SFTPConnectionBase.php");
-    require_once(dirname(__FILE__) . "/PHPSeclibListParser.php");
-    require_once(dirname(__FILE__) . "/../../lib/logging.php");
-    require_once('Net/SFTP.php');
-    require_once('Crypt/RSA.php');
-    require_once('System/SSH_Agent.php');
+    require_once dirname(__FILE__).'/../../lib/helpers.php';
+    require_once dirname(__FILE__).'/SFTPConnectionBase.php';
+    require_once dirname(__FILE__).'/PHPSeclibListParser.php';
+    require_once dirname(__FILE__).'/../../lib/logging.php';
+    require_once 'Net/SFTP.php';
+    require_once 'Crypt/RSA.php';
+    require_once 'System/SSH_Agent.php';
 
     class PHPSeclibConnection extends SFTPConnectionBase
     {
@@ -31,8 +31,8 @@
         {
             $stat = $this->statRemoteFile($path);
 
-            if ($stat === false || $stat['type'] != NET_SFTP_TYPE_DIRECTORY) {
-                if ($stat === false) {
+            if (false === $stat || NET_SFTP_TYPE_DIRECTORY != $stat['type']) {
+                if (false === $stat) {
                     $errorMessage = "$path does not exist";
                 } else {
                     $errorMessage = "$path is not a directory";
@@ -47,7 +47,7 @@
             $rawList = $this->connection->rawlist($path);
             $dirList = new PHPSeclibListParser($rawList, $showHidden);
 
-            mftpLog(LOG_DEBUG, "SFTPSecLib listed directory: $path. Returned " . count($rawList) . " results.");
+            mftpLog(LOG_DEBUG, "SFTPSecLib listed directory: $path. Returned ".count($rawList).' results.');
 
             return $dirList;
         }

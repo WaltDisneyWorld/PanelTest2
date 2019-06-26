@@ -1,6 +1,6 @@
 <?php
-    require_once(dirname(__FILE__) . "/../constants.php");
-    require_once(dirname(__FILE__) . '/MonstaLicenseV2.php');
+    require_once dirname(__FILE__).'/../constants.php';
+    require_once dirname(__FILE__).'/MonstaLicenseV2.php';
 
     class MonstaLicenseV3 extends MonstaLicenseV2
     {
@@ -13,10 +13,10 @@
 
         public function __construct($email, $purchaseDate, $expiryDate, $version, $isTrial, $productEdition)
         {
-            if ($productEdition !== MONSTA_PRODUCT_EDITION_BUSINESS &&
-                $productEdition !== MONSTA_PRODUCT_EDITION_HOST
+            if (MONSTA_PRODUCT_EDITION_BUSINESS !== $productEdition &&
+                MONSTA_PRODUCT_EDITION_HOST !== $productEdition
             ) {
-                throw new InvalidArgumentException("product edition must be 0 or 1");
+                throw new InvalidArgumentException('product edition must be 0 or 1');
             }
 
             parent::__construct($email, $purchaseDate, $expiryDate, $version, $isTrial);
@@ -38,11 +38,11 @@
 
         public function isMonstaBusinessEdition()
         {
-            return $this->productEdition == MONSTA_PRODUCT_EDITION_BUSINESS;
+            return MONSTA_PRODUCT_EDITION_BUSINESS == $this->productEdition;
         }
 
         public function isMonstaHostEdition()
         {
-            return $this->productEdition == MONSTA_PRODUCT_EDITION_HOST;
+            return MONSTA_PRODUCT_EDITION_HOST == $this->productEdition;
         }
     }

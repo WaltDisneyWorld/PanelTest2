@@ -1,25 +1,21 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Table export
- *
- * @package PhpMyAdmin
+ * Table export.
  */
 use PhpMyAdmin\Config\PageSettings;
 use PhpMyAdmin\Display\Export;
 use PhpMyAdmin\Relation;
 use PhpMyAdmin\Response;
 
-/**
- *
- */
 require_once 'libraries/common.inc.php';
 
 PageSettings::showGroup('Export');
 
 $response = Response::getInstance();
-$header   = $response->getHeader();
-$scripts  = $header->getScripts();
+$header = $response->getHeader();
+$scripts = $header->getScripts();
 $scripts->addFile('export.js');
 
 // Get the relation settings
@@ -35,7 +31,7 @@ if (isset($_POST['templateAction']) && $cfgRelation['exporttemplateswork']) {
 }
 
 /**
- * Gets tables information and displays top links
+ * Gets tables information and displays top links.
  */
 require_once 'libraries/tbl_common.inc.php';
 $url_query .= '&amp;goto=tbl_export.php&amp;back=tbl_export.php';
@@ -47,13 +43,12 @@ $export_page_title = __('View dump (schema) of table');
 // When we have some query, we need to remove LIMIT from that and possibly
 // generate WHERE clause (if we are asked to export specific rows)
 
-if (! empty($sql_query)) {
+if (!empty($sql_query)) {
     $parser = new PhpMyAdmin\SqlParser\Parser($sql_query);
 
     if ((!empty($parser->statements[0]))
         && ($parser->statements[0] instanceof PhpMyAdmin\SqlParser\Statements\SelectStatement)
     ) {
-
         // Finding aliases and removing them, but we keep track of them to be
         // able to replace them in select expression too.
         $aliases = array();
@@ -69,11 +64,11 @@ if (! empty($sql_query)) {
 
         // Rebuilding the SELECT and FROM clauses.
         if (count($parser->statements[0]->from) > 0
-            && count($parser->statements[0]->union) === 0
+            && 0 === count($parser->statements[0]->union)
         ) {
             $replaces = array(
                 array(
-                    'FROM', 'FROM ' . PhpMyAdmin\SqlParser\Components\ExpressionArray::build(
+                    'FROM', 'FROM '.PhpMyAdmin\SqlParser\Components\ExpressionArray::build(
                         $parser->statements[0]->from
                     ),
                 ),
@@ -83,7 +78,7 @@ if (! empty($sql_query)) {
         // Checking if the WHERE clause has to be replaced.
         if ((!empty($where_clause)) && (is_array($where_clause))) {
             $replaces[] = array(
-                'WHERE', 'WHERE (' . implode(') OR (', $where_clause) . ')'
+                'WHERE', 'WHERE ('.implode(') OR (', $where_clause).')',
             );
         }
 
@@ -109,11 +104,11 @@ if (! empty($sql_query)) {
                     array(
                         'type' => PhpMyAdmin\SqlParser\Token::TYPE_OPERATOR,
                         'value_str' => '.',
-                    )
+                    ),
                 ),
                 array(
                     new PhpMyAdmin\SqlParser\Token($table),
-                    new PhpMyAdmin\SqlParser\Token('.', PhpMyAdmin\SqlParser\Token::TYPE_OPERATOR)
+                    new PhpMyAdmin\SqlParser\Token('.', PhpMyAdmin\SqlParser\Token::TYPE_OPERATOR),
                 )
             );
         }
@@ -123,16 +118,16 @@ if (! empty($sql_query)) {
     echo PhpMyAdmin\Util::getMessage(PhpMyAdmin\Message::success());
 }
 
-if (! isset($sql_query)) {
+if (!isset($sql_query)) {
     $sql_query = '';
 }
-if (! isset($num_tables)) {
+if (!isset($num_tables)) {
     $num_tables = 0;
 }
-if (! isset($unlim_num_rows)) {
+if (!isset($unlim_num_rows)) {
     $unlim_num_rows = 0;
 }
-if (! isset($multi_values)) {
+if (!isset($multi_values)) {
     $multi_values = '';
 }
 $response = Response::getInstance();

@@ -1,9 +1,8 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * The navigation panel - displays server, db and table selection tree
- *
- * @package PhpMyAdmin-Navigation
+ * The navigation panel - displays server, db and table selection tree.
  */
 
 // Include common functionalities
@@ -17,7 +16,7 @@ require_once './libraries/common.inc.php';
 // Also initialises the collapsible tree class
 $response = Response::getInstance();
 $navigation = new Navigation();
-if (! $response->isAjax()) {
+if (!$response->isAjax()) {
     $response->addHTML(
         PhpMyAdmin\Message::error(
             __('Fatal error: The navigation can only be accessed via AJAX')
@@ -35,37 +34,37 @@ $relation = new Relation();
 $cfgRelation = $relation->getRelationsParam();
 if ($cfgRelation['navwork']) {
     if (isset($_POST['hideNavItem'])) {
-        if (! empty($_POST['itemName'])
-            && ! empty($_POST['itemType'])
-            && ! empty($_POST['dbName'])
+        if (!empty($_POST['itemName'])
+            && !empty($_POST['itemType'])
+            && !empty($_POST['dbName'])
         ) {
             $navigation->hideNavigationItem(
                 $_POST['itemName'],
                 $_POST['itemType'],
                 $_POST['dbName'],
-                (! empty($_POST['tableName']) ? $_POST['tableName'] : null)
+                (!empty($_POST['tableName']) ? $_POST['tableName'] : null)
             );
         }
         exit;
     }
 
     if (isset($_POST['unhideNavItem'])) {
-        if (! empty($_POST['itemName'])
-            && ! empty($_POST['itemType'])
-            && ! empty($_POST['dbName'])
+        if (!empty($_POST['itemName'])
+            && !empty($_POST['itemType'])
+            && !empty($_POST['dbName'])
         ) {
             $navigation->unhideNavigationItem(
                 $_POST['itemName'],
                 $_POST['itemType'],
                 $_POST['dbName'],
-                (! empty($_POST['tableName']) ? $_POST['tableName'] : null)
+                (!empty($_POST['tableName']) ? $_POST['tableName'] : null)
             );
         }
         exit;
     }
 
     if (isset($_POST['showUnhideDialog'])) {
-        if (! empty($_POST['dbName'])) {
+        if (!empty($_POST['dbName'])) {
             $response->addJSON(
                 'message',
                 $navigation->getItemUnhideDialog($_POST['dbName'])

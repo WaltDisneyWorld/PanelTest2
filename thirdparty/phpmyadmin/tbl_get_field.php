@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Provides download to a given field defined in parameters.
- *
- * @package PhpMyAdmin
  */
-
 use PhpMyAdmin\Core;
 use PhpMyAdmin\Mime;
 use PhpMyAdmin\Response;
@@ -40,13 +38,13 @@ if (!$GLOBALS['dbi']->getColumns($db, $table)) {
 }
 
 /* Grab data */
-$sql = 'SELECT ' . PhpMyAdmin\Util::backquote($_GET['transform_key'])
-    . ' FROM ' . PhpMyAdmin\Util::backquote($table)
-    . ' WHERE ' . $_GET['where_clause'] . ';';
+$sql = 'SELECT '.PhpMyAdmin\Util::backquote($_GET['transform_key'])
+    .' FROM '.PhpMyAdmin\Util::backquote($table)
+    .' WHERE '.$_GET['where_clause'].';';
 $result = $GLOBALS['dbi']->fetchValue($sql);
 
 /* Check return code */
-if ($result === false) {
+if (false === $result) {
     PhpMyAdmin\Util::mysqlDie(
         __('MySQL returned an empty result set (i.e. zero rows).'),
         $sql
@@ -57,7 +55,7 @@ if ($result === false) {
 ini_set('url_rewriter.tags', '');
 
 Core::downloadHeader(
-    $table . '-' .  $_GET['transform_key'] . '.bin',
+    $table.'-'.$_GET['transform_key'].'.bin',
     Mime::detect($result),
     strlen($result)
 );

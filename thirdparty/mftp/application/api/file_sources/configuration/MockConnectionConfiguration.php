@@ -1,5 +1,5 @@
 <?php
-    require_once(dirname(__FILE__) . '/ConfigurationBase.php');
+    require_once dirname(__FILE__).'/ConfigurationBase.php';
 
     class MockConnectionConfiguration implements ConfigurationBase
     {
@@ -19,8 +19,9 @@
 
         /**
          * MockConnectionConfiguration constructor.
-         * @param null $username string
-         * @param null $password string
+         *
+         * @param null $username  string
+         * @param null $password  string
          * @param null $validHost bool
          */
         public function __construct($username = null, $password = null, $validHost = null)
@@ -63,7 +64,7 @@
         }
 
         /**
-         * @return boolean
+         * @return bool
          */
         public function isValidHost()
         {
@@ -101,6 +102,6 @@
 
         public function getInitialDirectory()
         {
-            return "/";
+            return '/';
         }
     }

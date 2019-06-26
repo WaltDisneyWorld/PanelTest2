@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Holds the PhpMyAdmin\Database\Designer class
- *
- * @package PhpMyAdmin
+ * Holds the PhpMyAdmin\Database\Designer class.
  */
+
 namespace PhpMyAdmin\Database;
 
 use PhpMyAdmin\DatabaseInterface;
@@ -16,19 +16,17 @@ use PhpMyAdmin\Template;
 use PhpMyAdmin\Util;
 
 /**
- * Set of functions related to database designer
- *
- * @package PhpMyAdmin
+ * Set of functions related to database designer.
  */
 class Designer
 {
     /**
-     * @var Relation $relation
+     * @var Relation
      */
     private $relation;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -36,7 +34,7 @@ class Designer
     }
 
     /**
-     * Function to get html for displaying the page edit/delete form
+     * Function to get html for displaying the page edit/delete form.
      *
      * @param string $db        database name
      * @param string $operation 'edit' or 'delete' depending on the operation
@@ -55,7 +53,7 @@ class Designer
     }
 
     /**
-     * Function to get html for displaying the page save as form
+     * Function to get html for displaying the page save as form.
      *
      * @param string $db database name
      *
@@ -72,7 +70,7 @@ class Designer
     }
 
     /**
-     * Retrieve IDs and names of schema pages
+     * Retrieve IDs and names of schema pages.
      *
      * @param string $db database name
      *
@@ -81,11 +79,11 @@ class Designer
     private function getPageIdsAndNames($db)
     {
         $cfgRelation = $this->relation->getRelationsParam();
-        $page_query = "SELECT `page_nr`, `page_descr` FROM "
-            . Util::backquote($cfgRelation['db']) . "."
-            . Util::backquote($cfgRelation['pdf_pages'])
-            . " WHERE db_name = '" . $GLOBALS['dbi']->escapeString($db) . "'"
-            . " ORDER BY `page_descr`";
+        $page_query = 'SELECT `page_nr`, `page_descr` FROM '
+            .Util::backquote($cfgRelation['db']).'.'
+            .Util::backquote($cfgRelation['pdf_pages'])
+            ." WHERE db_name = '".$GLOBALS['dbi']->escapeString($db)."'"
+            .' ORDER BY `page_descr`';
         $page_rs = $this->relation->queryAsControlUser(
             $page_query,
             false,
@@ -100,7 +98,7 @@ class Designer
     }
 
     /**
-     * Function to get html for displaying the schema export
+     * Function to get html for displaying the schema export.
      *
      * @param string $db   database name
      * @param int    $page the page to be exported
@@ -112,7 +110,7 @@ class Designer
         /* Scan for schema plugins */
         /* @var $export_list SchemaPlugin[] */
         $export_list = Plugins::getPlugins(
-            "schema",
+            'schema',
             'libraries/classes/Plugins/Schema/',
             null
         );
@@ -129,13 +127,13 @@ class Designer
                 [
                     'db' => $db,
                     'page' => $page,
-                    'export_list' => $export_list
+                    'export_list' => $export_list,
                 ]
             );
     }
 
     /**
-     * Returns HTML for including some variable to be accessed by JavaScript
+     * Returns HTML for including some variable to be accessed by JavaScript.
      *
      * @param array $script_tables        array on foreign key support for each table
      * @param array $script_contr         initialization data array
@@ -160,17 +158,17 @@ class Designer
         $designerConfig->displayPage = $display_page;
         $designerConfig->tablesEnabled = $cfgRelation['pdfwork'];
         return Template::get('database/designer/js_fields')->render([
-            'designer_config' => json_encode($designerConfig)
+            'designer_config' => json_encode($designerConfig),
         ]);
     }
 
     /**
-     * Returns HTML for the menu bar of the designer page
+     * Returns HTML for the menu bar of the designer page.
      *
-     * @param boolean $visualBuilder whether this is visual query builder
-     * @param string  $selectedPage  name of the selected page
-     * @param array   $paramsArray   array with class name for various buttons
-     *                               on side menu
+     * @param bool   $visualBuilder whether this is visual query builder
+     * @param string $selectedPage  name of the selected page
+     * @param array  $paramsArray   array with class name for various buttons
+     *                              on side menu
      *
      * @return string html
      */
@@ -185,7 +183,7 @@ class Designer
     }
 
     /**
-     * Returns array of stored values of Designer Settings
+     * Returns array of stored values of Designer Settings.
      *
      * @return array stored values
      */
@@ -197,10 +195,10 @@ class Designer
 
         if ($GLOBALS['cfgRelation']['designersettingswork']) {
             $query = 'SELECT `settings_data` FROM '
-                . Util::backquote($cfgRelation['db']) . '.'
-                . Util::backquote($cfgRelation['designer_settings'])
-                . ' WHERE ' . Util::backquote('username') . ' = "'
-                . $GLOBALS['cfg']['Server']['user'] . '";';
+                .Util::backquote($cfgRelation['db']).'.'
+                .Util::backquote($cfgRelation['designer_settings'])
+                .' WHERE '.Util::backquote('username').' = "'
+                .$GLOBALS['cfg']['Server']['user'].'";';
 
             $result = $GLOBALS['dbi']->fetchSingleRow($query);
 
@@ -211,7 +209,7 @@ class Designer
     }
 
     /**
-     * Returns class names for various buttons on Designer Side Menu
+     * Returns class names for various buttons on Designer Side Menu.
      *
      * @return array class names of various buttons
      */
@@ -221,7 +219,7 @@ class Designer
         $params_array = $this->getSideMenuParamsArray();
 
         if (isset($params_array['angular_direct'])
-            && $params_array['angular_direct'] == 'angular'
+            && 'angular' == $params_array['angular_direct']
         ) {
             $classes_array['angular_direct'] = 'M_butt_Selected_down';
         } else {
@@ -229,7 +227,7 @@ class Designer
         }
 
         if (isset($params_array['snap_to_grid'])
-            && $params_array['snap_to_grid'] == 'on'
+            && 'on' == $params_array['snap_to_grid']
         ) {
             $classes_array['snap_to_grid'] = 'M_butt_Selected_down';
         } else {
@@ -237,7 +235,7 @@ class Designer
         }
 
         if (isset($params_array['pin_text'])
-            && $params_array['pin_text'] == 'true'
+            && 'true' == $params_array['pin_text']
         ) {
             $classes_array['pin_text'] = 'M_butt_Selected_down';
         } else {
@@ -245,7 +243,7 @@ class Designer
         }
 
         if (isset($params_array['relation_lines'])
-            && $params_array['relation_lines'] == 'false'
+            && 'false' == $params_array['relation_lines']
         ) {
             $classes_array['relation_lines'] = 'M_butt_Selected_down';
         } else {
@@ -253,7 +251,7 @@ class Designer
         }
 
         if (isset($params_array['small_big_all'])
-            && $params_array['small_big_all'] == 'v'
+            && 'v' == $params_array['small_big_all']
         ) {
             $classes_array['small_big_all'] = 'M_butt_Selected_down';
         } else {
@@ -261,7 +259,7 @@ class Designer
         }
 
         if (isset($params_array['side_menu'])
-            && $params_array['side_menu'] == 'true'
+            && 'true' == $params_array['side_menu']
         ) {
             $classes_array['side_menu'] = 'M_butt_Selected_down';
         } else {
@@ -272,7 +270,7 @@ class Designer
     }
 
     /**
-     * Returns HTML for the canvas element
+     * Returns HTML for the canvas element.
      *
      * @return string html
      */
@@ -282,7 +280,7 @@ class Designer
     }
 
     /**
-     * Return HTML for the table list
+     * Return HTML for the table list.
      *
      * @param array $tab_pos      table positions
      * @param int   $display_page page number of the selected page
@@ -303,7 +301,7 @@ class Designer
     }
 
     /**
-     * Get HTML to display tables on designer page
+     * Get HTML to display tables on designer page.
      *
      * @param array $tab_pos                  tables positions
      * @param int   $display_page             page number of the selected page
@@ -352,7 +350,7 @@ class Designer
     }
 
     /**
-     * Returns HTML for the relations delete panel
+     * Returns HTML for the relations delete panel.
      *
      * @return string html
      */
@@ -363,7 +361,7 @@ class Designer
     }
 
     /**
-     * Returns HTML for the options panel
+     * Returns HTML for the options panel.
      *
      * @return string html
      */
@@ -373,7 +371,7 @@ class Designer
     }
 
     /**
-     * Get HTML for the 'rename to' panel
+     * Get HTML for the 'rename to' panel.
      *
      * @return string html
      */
@@ -384,7 +382,7 @@ class Designer
     }
 
     /**
-     * Returns HTML for the 'having' panel
+     * Returns HTML for the 'having' panel.
      *
      * @return string html
      */
@@ -395,7 +393,7 @@ class Designer
     }
 
     /**
-     * Returns HTML for the 'aggregate' panel
+     * Returns HTML for the 'aggregate' panel.
      *
      * @return string html
      */
@@ -406,7 +404,7 @@ class Designer
     }
 
     /**
-     * Returns HTML for the 'where' panel
+     * Returns HTML for the 'where' panel.
      *
      * @return string html
      */
@@ -417,7 +415,7 @@ class Designer
     }
 
     /**
-     * Returns HTML for the query details panel
+     * Returns HTML for the query details panel.
      *
      * @param string $db Database name
      *

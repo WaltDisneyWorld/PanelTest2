@@ -1,5 +1,5 @@
 <?php
-    require_once(dirname(__FILE__) . '/PermissionSet.php');
+    require_once dirname(__FILE__).'/PermissionSet.php';
 
     abstract class PermissionTypeIndex
     {
@@ -12,7 +12,7 @@
     {
         public function __construct($permissions)
         {
-            if (strlen($permissions) != 3) {
+            if (3 != strlen($permissions)) {
                 throw new InvalidArgumentException(sprintf(
                     "Permissions arg must be a string of length 3, got '%s'",
                     $permissions
@@ -23,19 +23,19 @@
             $readBit = substr($permissions, PermissionTypeIndex::Read, 1);
             $executeBit = substr($permissions, PermissionTypeIndex::Execute, 1);
 
-            if ($readBit != "-") {
+            if ('-' != $readBit) {
                 $readBit = 'r';
             }
 
-            if ($writeBit != "-") {
+            if ('-' != $writeBit) {
                 $writeBit = 'w';
             }
 
-            if ($executeBit == "T") {
-                $executeBit = "-";
+            if ('T' == $executeBit) {
+                $executeBit = '-';
             }
 
-            if ($executeBit != "-") {
+            if ('-' != $executeBit) {
                 $executeBit = 'x';
             }
 
@@ -43,14 +43,14 @@
             $this->validateModeBit('w', $writeBit);
             $this->validateModeBit('x', $executeBit);
 
-            $this->readable = $readBit == 'r';
-            $this->writable = $writeBit == 'w';
-            $this->executable = $executeBit == 'x';
+            $this->readable = 'r' == $readBit;
+            $this->writable = 'w' == $writeBit;
+            $this->executable = 'x' == $executeBit;
         }
 
         private function validateModeBit($expectedBit, $actualBit)
         {
-            if ($actualBit != $expectedBit && $actualBit != '-') {
+            if ($actualBit != $expectedBit && '-' != $actualBit) {
                 throw new InvalidArgumentException(sprintf(
                     "Invalid flag for %s bit, expected '%s' or '-', got '%s'",
                     $expectedBit,

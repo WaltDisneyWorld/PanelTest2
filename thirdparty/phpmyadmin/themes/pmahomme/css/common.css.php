@@ -1,14 +1,11 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Common styles for the pmahomme theme
- *
- * @package    PhpMyAdmin-theme
- * @subpackage PMAHomme
+ * Common styles for the pmahomme theme.
  */
 
 // unplanned execution path
-if (! defined('PHPMYADMIN') && ! defined('TESTSUITE')) {
+if (!defined('PHPMYADMIN') && !defined('TESTSUITE')) {
     exit();
 }
 ?>
@@ -26,7 +23,7 @@ textarea {
 
 
 body {
-<?php if (! empty($GLOBALS['cfg']['FontFamily'])) : ?>
+<?php if (!empty($GLOBALS['cfg']['FontFamily'])) : ?>
     font-family: <?php echo $GLOBALS['cfg']['FontFamily']; ?>;
 <?php endif; ?>
     padding: 0;
@@ -60,7 +57,7 @@ body#loginform {
     margin: 0 auto;
 }
 
-<?php if (! empty($GLOBALS['cfg']['FontFamilyFixed'])) : ?>
+<?php if (!empty($GLOBALS['cfg']['FontFamilyFixed'])) : ?>
     textarea,
     tt,
     pre,
@@ -352,10 +349,10 @@ fieldset, .preview_sql {
     border: #aaa solid 1px;
     padding: 0.5em;
     background: #eee;
-    text-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 2px #fff inset;
-    -moz-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 2px #fff inset;
-    -webkit-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 2px #fff inset;
-    box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 2px #fff inset;
+    text-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 2px #fff inset;
+    -moz-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 2px #fff inset;
+    -webkit-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 2px #fff inset;
+    box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 2px #fff inset;
 }
 
 fieldset fieldset {
@@ -375,9 +372,9 @@ fieldset legend {
     -webkit-border-radius: 2px;
     border: 1px solid #aaa;
     background-color: #fff;
-    -moz-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>3px 3px 15px #bbb;
-    -webkit-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>3px 3px 15px #bbb;
-    box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>3px 3px 15px #bbb;
+    -moz-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>3px 3px 15px #bbb;
+    -webkit-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>3px 3px 15px #bbb;
+    box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>3px 3px 15px #bbb;
     max-width: 100%;
 }
 
@@ -623,7 +620,7 @@ tr:last-child td.condition {
     border-width: 0 1px 1px 1px;
 }
 
-<?php if ($GLOBALS['text_dir'] === 'ltr') : ?>
+<?php if ('ltr' === $GLOBALS['text_dir']) : ?>
     /* for first th which must have right border set (ltr only) */
     .before-condition {
     border-right: 1px solid <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
@@ -652,7 +649,7 @@ table [class=value] {
 }
 
 
-<?php if (! empty($GLOBALS['cfg']['FontFamilyFixed'])) : ?>
+<?php if (!empty($GLOBALS['cfg']['FontFamilyFixed'])) : ?>
     .value {
     font-family: <?php echo $GLOBALS['cfg']['FontFamilyFixed']; ?>;
     }
@@ -732,7 +729,7 @@ div.error {
     margin: .5em 0 0.5em;
     border: 1px solid;
     background-repeat: no-repeat;
-    <?php if ($GLOBALS['text_dir'] === 'ltr') : ?>
+    <?php if ('ltr' === $GLOBALS['text_dir']) : ?>
         background-position: 10px 50%;
         padding: 10px 10px 10px 10px;
     <?php else : ?>
@@ -1041,9 +1038,9 @@ fieldset.caution a:hover {
 }
 
 ul#topmenu ul {
-    -moz-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 6px #ddd;
-    -webkit-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 3px #666;
-    box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 3px #666;
+    -moz-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 6px #ddd;
+    -webkit-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 3px #666;
+    box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 3px #666;
 }
 
 ul#topmenu ul.only {
@@ -1366,7 +1363,7 @@ div#serverstatusquerieschart {
     float: <?php echo $left; ?>;
     width: 500px;
     height: 350px;
-    margin-<?php echo $right;?>: 50px;
+    margin-<?php echo $right; ?>: 50px;
 }
 
 table#serverstatusqueriesdetails,
@@ -1448,9 +1445,9 @@ div.tabLinks .icon {
     border: 1px solid #CCC;
     margin: 0;
     padding: 3px;
-    -moz-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 3px #666;
-    -webkit-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 3px #666;
-    box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 3px #666;
+    -moz-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 3px #666;
+    -webkit-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 3px #666;
+    box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 3px #666;
     background-color: #fff;
     z-index: 2;
 }
@@ -1560,7 +1557,7 @@ p.notice {
     margin: 1.5em 0;
     border: 1px solid #000;
     background-repeat: no-repeat;
-    <?php if ($GLOBALS['text_dir'] === 'ltr') : ?>
+    <?php if ('ltr' === $GLOBALS['text_dir']) : ?>
         background-position: 10px 50%;
         padding: 10px 10px 10px 25px;
     <?php else : ?>
@@ -1606,7 +1603,7 @@ div#profilingchart {
 }
 .chartOption {
     float: <?php echo $left; ?>;
-    margin-<?php echo $right;?>: 40px;
+    margin-<?php echo $right; ?>: 40px;
 }
 /* end table charting */
 
@@ -1700,7 +1697,7 @@ div#queryboxcontainer div#bookmarkoptions {
 
 /* main page */
 #maincontainer {
-    /* background-image: url(<?php echo $theme->getImgPath('logo_right.png');?>); */
+    /* background-image: url(<?php echo $theme->getImgPath('logo_right.png'); ?>); */
     /* background-position: <?php echo $right; ?> bottom; */
     /* background-repeat: no-repeat; */
 }
@@ -1873,9 +1870,9 @@ div.sqlvalidate {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -moz-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 5px #ccc;
-    -webkit-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 5px #ccc;
-    box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 5px #ccc;
+    -moz-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 5px #ccc;
+    -webkit-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 5px #ccc;
+    box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 5px #ccc;
     margin-bottom: 1em;
     padding-bottom: 1em;
 }
@@ -1888,9 +1885,9 @@ div.sqlvalidate {
     font-size: 1.6em;
     font-weight: normal;
     text-shadow: 0 1px 0 #777;
-    -moz-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 15px #999 inset;
-    -webkit-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 15px #999 inset;
-    box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 15px #999 inset;
+    -moz-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 15px #999 inset;
+    -webkit-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 15px #999 inset;
+    box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 15px #999 inset;
 }
 
 .group-cnt {
@@ -1999,7 +1996,7 @@ select.invalid_value,
     display: inline;
     left: 0;
     right: 0;
-    background-image: url(<?php echo $theme->getImgPath('ajax_clock_small.gif');?>);
+    background-image: url(<?php echo $theme->getImgPath('ajax_clock_small.gif'); ?>);
     background-repeat: no-repeat;
     background-position: 2%;
     border: 1px solid #e2b709;
@@ -2756,7 +2753,7 @@ fieldset .disabled-field td {
 }
 
 .cPointer {
-    background: url(<?php echo $theme->getImgPath('col_pointer.png');?>);
+    background: url(<?php echo $theme->getImgPath('col_pointer.png'); ?>);
     height: 20px;
     margin-<?php echo $left; ?>: -5px;  /* must be minus half of its width */
     margin-top: -10px;
@@ -2789,7 +2786,7 @@ fieldset .disabled-field td {
 }
 
 .coldrop {
-    background: url(<?php echo $theme->getImgPath('col_drop.png');?>);
+    background: url(<?php echo $theme->getImgPath('col_drop.png'); ?>);
     cursor: pointer;
     height: 16px;
     margin-<?php echo $left; ?>: .3em;
@@ -2938,12 +2935,12 @@ fieldset .disabled-field td {
 }
 
 .cEdit .edit_box_posting {
-    background: #FFF url(<?php echo $theme->getImgPath('ajax_clock_small.gif');?>) no-repeat right center;
+    background: #FFF url(<?php echo $theme->getImgPath('ajax_clock_small.gif'); ?>) no-repeat right center;
     padding-<?php echo $right; ?>: 1.5em;
 }
 
 .cEdit .edit_area_loading {
-    background: #FFF url(<?php echo $theme->getImgPath('ajax_clock_small.gif');?>) no-repeat center;
+    background: #FFF url(<?php echo $theme->getImgPath('ajax_clock_small.gif'); ?>) no-repeat center;
     height: 10em;
 }
 
@@ -2954,7 +2951,7 @@ fieldset .disabled-field td {
 }
 
 .saving_edited_data {
-    background: url(<?php echo $theme->getImgPath('ajax_clock_small.gif');?>) no-repeat left;
+    background: url(<?php echo $theme->getImgPath('ajax_clock_small.gif'); ?>) no-repeat left;
     padding-<?php echo $left; ?>: 20px;
 }
 
@@ -3425,9 +3422,9 @@ html.ie7 #pma_console .query_input {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -moz-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 5px #ccc;
-    -webkit-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 5px #ccc;
-    box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 5px #ccc;
+    -moz-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 5px #ccc;
+    -webkit-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 5px #ccc;
+    box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 5px #ccc;
 }
 
 .pma_sql_import_status h2,
@@ -3440,9 +3437,9 @@ html.ie7 #pma_console .query_input {
     font-size: 1.6em;
     font-weight: normal;
     text-shadow: 0 1px 0 #777;
-    -moz-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 15px #999 inset;
-    -webkit-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 15px #999 inset;
-    box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 15px #999 inset;
+    -moz-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 15px #999 inset;
+    -webkit-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 15px #999 inset;
+    box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 15px #999 inset;
 }
 
 .pma_sql_import_status div {
@@ -3523,7 +3520,7 @@ html.ie7 #pma_console .query_input {
 
 span.drag_icon {
     display: inline-block;
-    background-image: url('<?php echo $theme->getImgPath('s_sortable.png');?>');
+    background-image: url('<?php echo $theme->getImgPath('s_sortable.png'); ?>');
     background-position: center center;
     background-repeat: no-repeat;
     width: 1em;
@@ -3566,11 +3563,11 @@ th.header .sorticon {
 }
 
 th.headerSortUp .sorticon, th.headerSortDown:hover .sorticon {
-    background-image: url(<?php echo $theme->getImgPath('s_desc.png');?>);
+    background-image: url(<?php echo $theme->getImgPath('s_desc.png'); ?>);
 }
 
 th.headerSortDown .sorticon, th.headerSortUp:hover .sorticon {
-    background-image: url(<?php echo $theme->getImgPath('s_asc.png');?>);
+    background-image: url(<?php echo $theme->getImgPath('s_asc.png'); ?>);
 }
 /* end of styles of sortable tables */
 

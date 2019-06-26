@@ -1,18 +1,17 @@
 <?php
 
     /**
-     * Class MonstaInstaller
+     * Class MonstaInstaller.
      */
     class MonstaInstaller
     {
-
         /**
          * MonstaInstaller constructor.
+         *
          * @param $archivePath string
          * @param $installDirectory string
          * @param $installContext MonstaInstallContext
          */
-
         private $archivePath;
         private $installDirectory;
         private $installContext;

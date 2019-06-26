@@ -1,16 +1,14 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * CSV import plugin for phpMyAdmin using LOAD DATA
- *
- * @package    PhpMyAdmin-Import
- * @subpackage LDI
+ * CSV import plugin for phpMyAdmin using LOAD DATA.
  */
+
 namespace PhpMyAdmin\Plugins\Import;
 
 use PhpMyAdmin\Import;
 use PhpMyAdmin\Message;
-use PhpMyAdmin\Plugins\Import\AbstractImportCsv;
 use PhpMyAdmin\Properties\Options\Items\BoolPropertyItem;
 use PhpMyAdmin\Properties\Options\Items\TextPropertyItem;
 use PhpMyAdmin\Util;
@@ -20,22 +18,19 @@ if (!defined('PHPMYADMIN')) {
 }
 
 // We need relations enabled and we work only on database
-if ($GLOBALS['plugin_param'] !== 'table') {
+if ('table' !== $GLOBALS['plugin_param']) {
     $GLOBALS['skip_import'] = true;
 
     return;
 }
 
 /**
- * Handles the import for the CSV format using load data
- *
- * @package    PhpMyAdmin-Import
- * @subpackage LDI
+ * Handles the import for the CSV format using load data.
  */
 class ImportLdi extends AbstractImportCsv
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -45,20 +40,18 @@ class ImportLdi extends AbstractImportCsv
     /**
      * Sets the import plugin properties.
      * Called in the constructor.
-     *
-     * @return void
      */
     protected function setProperties()
     {
-        if ($GLOBALS['cfg']['Import']['ldi_local_option'] == 'auto') {
+        if ('auto' == $GLOBALS['cfg']['Import']['ldi_local_option']) {
             $GLOBALS['cfg']['Import']['ldi_local_option'] = false;
 
             $result = $GLOBALS['dbi']->tryQuery(
                 'SELECT @@local_infile;'
             );
-            if ($result != false && $GLOBALS['dbi']->numRows($result) > 0) {
+            if (false != $result && $GLOBALS['dbi']->numRows($result) > 0) {
                 $tmp = $GLOBALS['dbi']->fetchRow($result);
-                if ($tmp[0] == 'ON') {
+                if ('ON' == $tmp[0]) {
                     $GLOBALS['cfg']['Import']['ldi_local_option'] = true;
                 }
             }
@@ -71,30 +64,28 @@ class ImportLdi extends AbstractImportCsv
         $this->properties->setExtension('ldi');
 
         $leaf = new TextPropertyItem(
-            "columns",
+            'columns',
             __('Column names: ')
         );
         $generalOptions->addProperty($leaf);
 
         $leaf = new BoolPropertyItem(
-            "ignore",
+            'ignore',
             __('Do not abort on INSERT error')
         );
         $generalOptions->addProperty($leaf);
 
         $leaf = new BoolPropertyItem(
-            "local_option",
+            'local_option',
             __('Use LOCAL keyword')
         );
         $generalOptions->addProperty($leaf);
     }
 
     /**
-     * Handles the whole import logic
+     * Handles the whole import logic.
      *
      * @param array &$sql_data 2-element array with sql data
-     *
-     * @return void
      */
     public function doImport(array &$sql_data = array())
     {
@@ -104,8 +95,8 @@ class ImportLdi extends AbstractImportCsv
 
         $compression = $GLOBALS['import_handle']->getCompression();
 
-        if ($import_file == 'none'
-            || $compression != 'none'
+        if ('none' == $import_file
+            || 'none' != $compression
             || $charset_conversion
         ) {
             // We handle only some kind of data!
@@ -121,44 +112,44 @@ class ImportLdi extends AbstractImportCsv
         if (isset($ldi_local_option)) {
             $sql .= ' LOCAL';
         }
-        $sql .= ' INFILE \'' . $GLOBALS['dbi']->escapeString($import_file)
-            . '\'';
+        $sql .= ' INFILE \''.$GLOBALS['dbi']->escapeString($import_file)
+            .'\'';
         if (isset($ldi_replace)) {
             $sql .= ' REPLACE';
         } elseif (isset($ldi_ignore)) {
             $sql .= ' IGNORE';
         }
-        $sql .= ' INTO TABLE ' . Util::backquote($table);
+        $sql .= ' INTO TABLE '.Util::backquote($table);
 
         if (strlen($ldi_terminated) > 0) {
-            $sql .= ' FIELDS TERMINATED BY \'' . $ldi_terminated . '\'';
+            $sql .= ' FIELDS TERMINATED BY \''.$ldi_terminated.'\'';
         }
         if (strlen($ldi_enclosed) > 0) {
             $sql .= ' ENCLOSED BY \''
-                . $GLOBALS['dbi']->escapeString($ldi_enclosed) . '\'';
+                .$GLOBALS['dbi']->escapeString($ldi_enclosed).'\'';
         }
         if (strlen($ldi_escaped) > 0) {
             $sql .= ' ESCAPED BY \''
-                . $GLOBALS['dbi']->escapeString($ldi_escaped) . '\'';
+                .$GLOBALS['dbi']->escapeString($ldi_escaped).'\'';
         }
         if (strlen($ldi_new_line) > 0) {
-            if ($ldi_new_line == 'auto') {
+            if ('auto' == $ldi_new_line) {
                 $ldi_new_line
                     = (PHP_EOL == "\n")
                     ? '\n'
                     : '\r\n';
             }
-            $sql .= ' LINES TERMINATED BY \'' . $ldi_new_line . '\'';
+            $sql .= ' LINES TERMINATED BY \''.$ldi_new_line.'\'';
         }
         if ($skip_queries > 0) {
-            $sql .= ' IGNORE ' . $skip_queries . ' LINES';
+            $sql .= ' IGNORE '.$skip_queries.' LINES';
             $skip_queries = 0;
         }
         if (strlen($ldi_columns) > 0) {
             $sql .= ' (';
             $tmp = preg_split('/,( ?)/', $ldi_columns);
             $cnt_tmp = count($tmp);
-            for ($i = 0; $i < $cnt_tmp; $i++) {
+            for ($i = 0; $i < $cnt_tmp; ++$i) {
                 if ($i > 0) {
                     $sql .= ', ';
                 }

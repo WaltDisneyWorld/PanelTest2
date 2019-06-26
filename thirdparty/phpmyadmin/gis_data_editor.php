@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Editor for Geometry data types.
- *
- * @package PhpMyAdmin
  */
-
 use PhpMyAdmin\Core;
 use PhpMyAdmin\Gis\GisFactory;
 use PhpMyAdmin\Gis\GisVisualization;
@@ -27,7 +25,7 @@ function escape($variable)
 
 require_once 'libraries/common.inc.php';
 
-if (! isset($_POST['field'])) {
+if (!isset($_POST['field'])) {
     PhpMyAdmin\Util::checkParameters(array('field'));
 }
 
@@ -44,25 +42,25 @@ $gis_types = array(
     'MULTILINESTRING',
     'POLYGON',
     'MULTIPOLYGON',
-    'GEOMETRYCOLLECTION'
+    'GEOMETRYCOLLECTION',
 );
 
 // Extract type from the initial call and make sure that it's a valid one.
 // Extract from field's values if available, if not use the column type passed.
-if (! isset($gis_data['gis_type'])) {
-    if (isset($_POST['type']) && $_POST['type'] != '') {
+if (!isset($gis_data['gis_type'])) {
+    if (isset($_POST['type']) && '' != $_POST['type']) {
         $gis_data['gis_type'] = mb_strtoupper($_POST['type']);
     }
-    if (isset($_POST['value']) && trim($_POST['value']) != '') {
-        $start = (substr($_POST['value'], 0, 1) == "'") ? 1 : 0;
+    if (isset($_POST['value']) && '' != trim($_POST['value'])) {
+        $start = ("'" == substr($_POST['value'], 0, 1)) ? 1 : 0;
         $gis_data['gis_type'] = mb_substr(
             $_POST['value'],
             $start,
-            mb_strpos($_POST['value'], "(") - $start
+            mb_strpos($_POST['value'], '(') - $start
         );
     }
-    if ((! isset($gis_data['gis_type']))
-        || (! in_array($gis_data['gis_type'], $gis_types))
+    if ((!isset($gis_data['gis_type']))
+        || (!in_array($gis_data['gis_type'], $gis_types))
     ) {
         $gis_data['gis_type'] = $gis_types[0];
     }
@@ -79,17 +77,17 @@ if (isset($_POST['value'])) {
 }
 
 // Generate Well Known Text
-$srid = (isset($gis_data['srid']) && $gis_data['srid'] != '')
+$srid = (isset($gis_data['srid']) && '' != $gis_data['srid'])
     ? htmlspecialchars($gis_data['srid']) : 0;
 $wkt = $gis_obj->generateWkt($gis_data, 0);
 $wkt_with_zero = $gis_obj->generateWkt($gis_data, 0, '0');
-$result = "'" . $wkt . "'," . $srid;
+$result = "'".$wkt."',".$srid;
 
 // Generate SVG based visualization
 $visualizationSettings = array(
     'width' => 450,
     'height' => 300,
-    'spatialColumn' => 'wkt'
+    'spatialColumn' => 'wkt',
 );
 $data = array(array('wkt' => $wkt_with_zero, 'srid' => $srid));
 $visualization = GisVisualization::getByData($data, $visualizationSettings)
@@ -99,11 +97,11 @@ $open_layers = GisVisualization::getByData($data, $visualizationSettings)
     ->asOl();
 
 // If the call is to update the WKT and visualization make an AJAX response
-if (isset($_POST['generate']) && $_POST['generate'] == true) {
+if (isset($_POST['generate']) && true == $_POST['generate']) {
     $extra_data = array(
-        'result'        => $result,
+        'result' => $result,
         'visualization' => $visualization,
-        'openLayers'    => $open_layers,
+        'openLayers' => $open_layers,
     );
     $response = Response::getInstance();
     $response->addJSON($extra_data);
@@ -136,25 +134,24 @@ echo Url::getHiddenInputs();
 
 echo '<!-- Visualization section -->';
 echo '<div id="placeholder" '
-    , ($srid != 0 ? 'class="hide' : '') , '">';
+    , (0 != $srid ? 'class="hide' : '') , '">';
 echo $visualization;
 echo '</div>';
 
 echo '<div id="openlayersmap" '
-    , ($srid == 0 ? 'class="hide' : '') , '">';
+    , (0 == $srid ? 'class="hide' : '') , '">';
 echo '</div>';
 
 echo '<div class="choice floatright">';
 echo '<input type="checkbox" id="choice" value="useBaseLayer"'
-    , ($srid != 0 ? ' checked="checked"' : '') , '/>';
-echo '<label for="choice">' ,  __("Use OpenStreetMaps as Base Layer") , '</label>';
+    , (0 != $srid ? ' checked="checked"' : '') , '/>';
+echo '<label for="choice">' ,  __('Use OpenStreetMaps as Base Layer') , '</label>';
 echo '</div>';
 
 echo '<script language="javascript" type="text/javascript">';
 echo $open_layers;
 echo '</script>';
 echo '<!-- End of visualization section -->';
-
 
 echo '<!-- Header section - Inclueds GIS type selector and input field for SRID -->';
 echo '<div id="gis_data_header">';
@@ -178,22 +175,22 @@ echo '<!-- Data section -->';
 echo '<div id="gis_data">';
 
 $geom_count = 1;
-if ($geom_type == 'GEOMETRYCOLLECTION') {
+if ('GEOMETRYCOLLECTION' == $geom_type) {
     $geom_count = (isset($gis_data[$geom_type]['geom_count']))
         ? intval($gis_data[$geom_type]['geom_count']) : 1;
     if (isset($gis_data[$geom_type]['add_geom'])) {
-        $geom_count++;
+        ++$geom_count;
     }
     echo '<input type="hidden" name="gis_data[GEOMETRYCOLLECTION][geom_count]"'
         , ' value="' , $geom_count , '" />';
 }
 
-for ($a = 0; $a < $geom_count; $a++) {
-    if (! isset($gis_data[$a])) {
+for ($a = 0; $a < $geom_count; ++$a) {
+    if (!isset($gis_data[$a])) {
         continue;
     }
 
-    if ($geom_type == 'GEOMETRYCOLLECTION') {
+    if ('GEOMETRYCOLLECTION' == $geom_type) {
         echo '<br/><br/>';
         printf(__('Geometry %d:'), $a + 1);
         echo '<br/>';
@@ -215,65 +212,65 @@ for ($a = 0; $a < $geom_count; $a++) {
         $type = $geom_type;
     }
 
-    if ($type == 'POINT') {
+    if ('POINT' == $type) {
         echo '<br/>';
         echo __('Point:');
-        echo '<label for="x">' , __("X") , '</label>';
+        echo '<label for="x">' , __('X') , '</label>';
         echo '<input name="gis_data[' , $a , '][POINT][x]" type="text"'
             , ' value="' , escape($gis_data[$a]['POINT']['x']) , '" />';
-        echo '<label for="y">' , __("Y") , '</label>';
+        echo '<label for="y">' , __('Y') , '</label>';
         echo '<input name="gis_data[' , $a , '][POINT][y]" type="text"'
             , ' value="' , escape($gis_data[$a]['POINT']['y']) , '" />';
-    } elseif ($type == 'MULTIPOINT' || $type == 'LINESTRING') {
+    } elseif ('MULTIPOINT' == $type || 'LINESTRING' == $type) {
         $no_of_points = isset($gis_data[$a][$type]['no_of_points'])
             ? intval($gis_data[$a][$type]['no_of_points']) : 1;
-        if ($type == 'LINESTRING' && $no_of_points < 2) {
+        if ('LINESTRING' == $type && $no_of_points < 2) {
             $no_of_points = 2;
         }
-        if ($type == 'MULTIPOINT' && $no_of_points < 1) {
+        if ('MULTIPOINT' == $type && $no_of_points < 1) {
             $no_of_points = 1;
         }
 
         if (isset($gis_data[$a][$type]['add_point'])) {
-            $no_of_points++;
+            ++$no_of_points;
         }
         echo '<input type="hidden" value="' , $no_of_points , '"'
             , ' name="gis_data[' , $a , '][' , $type , '][no_of_points]" />';
 
-        for ($i = 0; $i < $no_of_points; $i++) {
+        for ($i = 0; $i < $no_of_points; ++$i) {
             echo '<br/>';
             printf(__('Point %d'), $i + 1);
             echo ': ';
-            echo '<label for="x">' ,  __("X") , '</label>';
+            echo '<label for="x">' ,  __('X') , '</label>';
             echo '<input type="text"'
                 , ' name="gis_data[' , $a , '][' , $type , '][' , $i , '][x]"'
                 , ' value="' , escape($gis_data[$a][$type][$i]['x']) , '" />';
-            echo '<label for="y">' , __("Y") , '</label>';
+            echo '<label for="y">' , __('Y') , '</label>';
             echo '<input type="text"'
                 , ' name="gis_data[' , $a , '][' , $type , '][' , $i , '][y]"'
                 , ' value="' , escape($gis_data[$a][$type][$i]['y']) , '" />';
         }
         echo '<input type="submit"'
             , ' name="gis_data[' , $a , '][' , $type , '][add_point]"'
-            , ' class="add addPoint" value="' , __("Add a point") , '" />';
-    } elseif ($type == 'MULTILINESTRING' || $type == 'POLYGON') {
+            , ' class="add addPoint" value="' , __('Add a point') , '" />';
+    } elseif ('MULTILINESTRING' == $type || 'POLYGON' == $type) {
         $no_of_lines = isset($gis_data[$a][$type]['no_of_lines'])
             ? intval($gis_data[$a][$type]['no_of_lines']) : 1;
         if ($no_of_lines < 1) {
             $no_of_lines = 1;
         }
         if (isset($gis_data[$a][$type]['add_line'])) {
-            $no_of_lines++;
+            ++$no_of_lines;
         }
         echo '<input type="hidden" value="' , $no_of_lines , '"'
             , ' name="gis_data[' , $a , '][' , $type , '][no_of_lines]" />';
 
-        for ($i = 0; $i < $no_of_lines; $i++) {
+        for ($i = 0; $i < $no_of_lines; ++$i) {
             echo '<br/>';
-            if ($type == 'MULTILINESTRING') {
+            if ('MULTILINESTRING' == $type) {
                 printf(__('Linestring %d:'), $i + 1);
             } else {
-                if ($i == 0) {
+                if (0 == $i) {
                     echo __('Outer ring:');
                 } else {
                     printf(__('Inner ring %d:'), $i);
@@ -282,57 +279,57 @@ for ($a = 0; $a < $geom_count; $a++) {
 
             $no_of_points = isset($gis_data[$a][$type][$i]['no_of_points'])
                 ? intval($gis_data[$a][$type][$i]['no_of_points']) : 2;
-            if ($type == 'MULTILINESTRING' && $no_of_points < 2) {
+            if ('MULTILINESTRING' == $type && $no_of_points < 2) {
                 $no_of_points = 2;
             }
-            if ($type == 'POLYGON' && $no_of_points < 4) {
+            if ('POLYGON' == $type && $no_of_points < 4) {
                 $no_of_points = 4;
             }
             if (isset($gis_data[$a][$type][$i]['add_point'])) {
-                $no_of_points++;
+                ++$no_of_points;
             }
             echo '<input type="hidden" value="' , $no_of_points , '"'
                 , ' name="gis_data[' , $a , '][' , $type , '][' , $i
                 , '][no_of_points]" />';
 
-            for ($j = 0; $j < $no_of_points; $j++) {
-                echo('<br/>');
+            for ($j = 0; $j < $no_of_points; ++$j) {
+                echo '<br/>';
                 printf(__('Point %d'), $j + 1);
                 echo ': ';
-                echo '<label for="x">' ,  __("X") , '</label>';
-                echo '<input type="text" name="gis_data[' , $a , '][' , $type . ']['
+                echo '<label for="x">' ,  __('X') , '</label>';
+                echo '<input type="text" name="gis_data[' , $a , '][' , $type.']['
                     , $i , '][' , $j , '][x]" value="'
                     , escape($gis_data[$a][$type][$i][$j]['x']) , '" />';
-                echo '<label for="y">' , __("Y") , '</label>';
+                echo '<label for="y">' , __('Y') , '</label>';
                 echo '<input type="text" name="gis_data[' , $a , '][' , $type , ']['
                     , $i , '][' , $j , '][y]"' , ' value="'
                     , escape($gis_data[$a][$type][$i][$j]['y']) , '" />';
             }
             echo '<input type="submit" name="gis_data[' , $a , '][' , $type , ']['
                 , $i , '][add_point]"'
-                , ' class="add addPoint" value="' , __("Add a point") , '" />';
+                , ' class="add addPoint" value="' , __('Add a point') , '" />';
         }
-        $caption = ($type == 'MULTILINESTRING')
+        $caption = ('MULTILINESTRING' == $type)
             ? __('Add a linestring')
             : __('Add an inner ring');
         echo '<br/>';
         echo '<input type="submit"'
             , ' name="gis_data[' , $a , '][' , $type , '][add_line]"'
             , ' class="add addLine" value="' , $caption , '" />';
-    } elseif ($type == 'MULTIPOLYGON') {
+    } elseif ('MULTIPOLYGON' == $type) {
         $no_of_polygons = isset($gis_data[$a][$type]['no_of_polygons'])
             ? intval($gis_data[$a][$type]['no_of_polygons']) : 1;
         if ($no_of_polygons < 1) {
             $no_of_polygons = 1;
         }
         if (isset($gis_data[$a][$type]['add_polygon'])) {
-            $no_of_polygons++;
+            ++$no_of_polygons;
         }
         echo '<input type="hidden"'
             , ' name="gis_data[' , $a , '][' , $type , '][no_of_polygons]"'
             , ' value="' , $no_of_polygons , '" />';
 
-        for ($k = 0; $k < $no_of_polygons; $k++) {
+        for ($k = 0; $k < $no_of_polygons; ++$k) {
             echo '<br/>';
             printf(__('Polygon %d:'), $k + 1);
             $no_of_lines = isset($gis_data[$a][$type][$k]['no_of_lines'])
@@ -341,15 +338,15 @@ for ($a = 0; $a < $geom_count; $a++) {
                 $no_of_lines = 1;
             }
             if (isset($gis_data[$a][$type][$k]['add_line'])) {
-                $no_of_lines++;
+                ++$no_of_lines;
             }
             echo '<input type="hidden"'
                 , ' name="gis_data[' , $a , '][' , $type , '][' , $k
                 , '][no_of_lines]"' , ' value="' , $no_of_lines , '" />';
 
-            for ($i = 0; $i < $no_of_lines; $i++) {
+            for ($i = 0; $i < $no_of_lines; ++$i) {
                 echo '<br/><br/>';
-                if ($i == 0) {
+                if (0 == $i) {
                     echo __('Outer ring:');
                 } else {
                     printf(__('Inner ring %d:'), $i);
@@ -361,23 +358,23 @@ for ($a = 0; $a < $geom_count; $a++) {
                     $no_of_points = 4;
                 }
                 if (isset($gis_data[$a][$type][$k][$i]['add_point'])) {
-                    $no_of_points++;
+                    ++$no_of_points;
                 }
                 echo '<input type="hidden"'
                     , ' name="gis_data[' , $a , '][' , $type , '][' , $k , '][' , $i
                     , '][no_of_points]"' , ' value="' , $no_of_points , '" />';
 
-                for ($j = 0; $j < $no_of_points; $j++) {
+                for ($j = 0; $j < $no_of_points; ++$j) {
                     echo '<br/>';
                     printf(__('Point %d'), $j + 1);
                     echo ': ';
-                    echo '<label for="x">' ,  __("X") , '</label>';
+                    echo '<label for="x">' ,  __('X') , '</label>';
                     echo '<input type="text"'
                         , ' name="gis_data[' , $a , '][' , $type , '][' , $k , ']['
                         , $i , '][' , $j , '][x]"'
                         , ' value="' , escape($gis_data[$a][$type][$k][$i][$j]['x'])
                         , '" />';
-                    echo '<label for="y">' , __("Y") , '</label>';
+                    echo '<label for="y">' , __('Y') , '</label>';
                     echo '<input type="text"'
                         , ' name="gis_data[' , $a , '][' , $type , '][' , $k , ']['
                         , $i , '][' , $j , '][y]"'
@@ -387,7 +384,7 @@ for ($a = 0; $a < $geom_count; $a++) {
                 echo '<input type="submit"'
                     , ' name="gis_data[' , $a , '][' , $type , '][' , $k , '][' , $i
                     , '][add_point]"'
-                    , ' class="add addPoint" value="' , __("Add a point") , '" />';
+                    , ' class="add addPoint" value="' , __('Add a point') , '" />';
             }
             echo '<br/>';
             echo '<input type="submit"'
@@ -401,10 +398,10 @@ for ($a = 0; $a < $geom_count; $a++) {
             , ' class="add addPolygon" value="' ,  __('Add a polygon') , '" />';
     }
 }
-if ($geom_type == 'GEOMETRYCOLLECTION') {
+if ('GEOMETRYCOLLECTION' == $geom_type) {
     echo '<br/><br/>';
     echo '<input type="submit" name="gis_data[GEOMETRYCOLLECTION][add_geom]"'
-        , 'class="add addGeom" value="' , __("Add geometry") , '" />';
+        , 'class="add addGeom" value="' , __('Add geometry') , '" />';
 }
 echo '</div>';
 echo '<!-- End of data section -->';
@@ -417,7 +414,7 @@ echo '<h3>' , __('Output') , '</h3>';
 echo '<p>';
 echo __(
     'Choose "GeomFromText" from the "Function" column and paste the'
-    . ' string below into the "Value" field.'
+    .' string below into the "Value" field.'
 );
 echo '</p>';
 echo '<textarea id="gis_data_textarea" cols="95" rows="5">';

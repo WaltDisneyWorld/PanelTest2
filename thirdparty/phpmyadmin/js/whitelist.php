@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Exporting of $goto_whitelist from PHP to Javascript
- *
- * @package PhpMyAdmin
+ * Exporting of $goto_whitelist from PHP to Javascript.
  */
-
 if (!defined('TESTSUITE')) {
     chdir('..');
 
@@ -14,7 +12,7 @@ if (!defined('TESTSUITE')) {
 
     // Cache output in client - the nocache query parameter makes sure that this
     // file is reloaded when config changes
-    header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 3600) . ' GMT');
+    header('Expires: '.gmdate('D, d M Y H:i:s', time() + 3600).' GMT');
 
     // Avoid loading the full common.inc.php because this would add many
     // non-js-compatible stuff like DOCTYPE
@@ -38,6 +36,6 @@ if (!defined('TESTSUITE')) {
 echo "var PMA_gotoWhitelist = new Array();\n";
 $i = -1;
 foreach ($GLOBALS['goto_whitelist'] as $one_whitelist) {
-    $i++;
+    ++$i;
     echo 'PMA_gotoWhitelist[' , $i , ']="' , $one_whitelist , '";' , "\n";
 }

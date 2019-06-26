@@ -1,14 +1,11 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Common styles for the original theme
- *
- * @package    PhpMyAdmin-theme
- * @subpackage Original
+ * Common styles for the original theme.
  */
 
 // unplanned execution path
-if (! defined('PHPMYADMIN') && ! defined('TESTSUITE')) {
+if (!defined('PHPMYADMIN') && !defined('TESTSUITE')) {
     exit();
 }
 ?>
@@ -27,7 +24,7 @@ textarea {
 
 
 body {
-<?php if (! empty($GLOBALS['cfg']['FontFamily'])) {
+<?php if (!empty($GLOBALS['cfg']['FontFamily'])) {
     ?>
     font-family:        <?php echo $GLOBALS['cfg']['FontFamily']; ?>;
     <?php
@@ -64,7 +61,7 @@ body#loginform {
     margin: 0 auto;
 }
 
-<?php if (! empty($GLOBALS['cfg']['FontFamilyFixed'])) {
+<?php if (!empty($GLOBALS['cfg']['FontFamilyFixed'])) {
     ?>
     textarea, tt, pre, code {
     font-family:        <?php echo $GLOBALS['cfg']['FontFamilyFixed']; ?>;
@@ -348,7 +345,7 @@ table [class=value] {
 }
 
 
-<?php if (! empty($GLOBALS['cfg']['FontFamilyFixed'])) {
+<?php if (!empty($GLOBALS['cfg']['FontFamilyFixed'])) {
     ?>
     .value {
         font-family:        <?php echo $GLOBALS['cfg']['FontFamilyFixed']; ?>;
@@ -441,7 +438,7 @@ div.error {
     background-repeat:  no-repeat;
     clear:              both;
     <?php
-    if ($GLOBALS['text_dir'] === 'ltr') {
+    if ('ltr' === $GLOBALS['text_dir']) {
         ?>
         background-position: 10px 50%;
         padding:            0.1em 0.1em 0.1em 42px;
@@ -509,10 +506,10 @@ fieldset.confirmation legend {
     border-left:        0.1em solid #FF0000;
     border-right:       0.1em solid #FF0000;
     font-weight:        bold;
-    background-image:   url(<?php echo $theme->getImgPath('s_really.png');?>);
+    background-image:   url(<?php echo $theme->getImgPath('s_really.png'); ?>);
     background-repeat:  no-repeat;
     <?php
-    if ($GLOBALS['text_dir'] === 'ltr') {
+    if ('ltr' === $GLOBALS['text_dir']) {
         ?>
         background-position: 5px 50%;
         padding:            0.2em 0.2em 0.2em 25px;
@@ -1049,7 +1046,7 @@ div#serverstatusquerieschart {
     float: <?php echo $left; ?>;
     width: 500px;
     height: 350px;
-    margin-<?php echo $right;?>: 50px;
+    margin-<?php echo $right; ?>: 50px;
 }
 
 div#serverstatus table#serverstatusqueriesdetails {
@@ -1242,7 +1239,7 @@ div#profilingchart {
 /* table charting */
 .chartOption {
     float: <?php echo $left; ?>;
-    margin-<?php echo $right;?>: 40px;
+    margin-<?php echo $right; ?>: 40px;
 }
 /* end table charting */
 
@@ -1281,7 +1278,7 @@ div#queryboxcontainer div#bookmarkoptions {
 
 /* main page */
 #maincontainer {
-    background-image: url(<?php echo $theme->getImgPath('logo_right.png');?>);
+    background-image: url(<?php echo $theme->getImgPath('logo_right.png'); ?>);
     background-position: <?php echo $right; ?> bottom;
     background-repeat: no-repeat;
 }
@@ -1560,7 +1557,7 @@ select.invalid_value,
     display: block;
     left: 0;
     right: 0;
-    background-image: url(<?php echo $theme->getImgPath('ajax_clock_small.gif');?>);
+    background-image: url(<?php echo $theme->getImgPath('ajax_clock_small.gif'); ?>);
     background-repeat: no-repeat;
     background-position: 2%;
  }
@@ -2228,7 +2225,7 @@ fieldset .disabled-field td {
 }
 
 .cPointer {
-    background: url(<?php echo $theme->getImgPath('col_pointer.png');?>);
+    background: url(<?php echo $theme->getImgPath('col_pointer.png'); ?>);
     height: 20px;
     margin-left: -5px;  /* must be minus half of its width */
     margin-top: -10px;
@@ -2266,7 +2263,7 @@ fieldset .disabled-field td {
 }
 
 .coldrop {
-    background: url(<?php echo $theme->getImgPath('col_drop.png');?>);
+    background: url(<?php echo $theme->getImgPath('col_drop.png'); ?>);
     cursor: pointer;
     height: 16px;
     margin-left: 0.5em;
@@ -2393,12 +2390,12 @@ fieldset .disabled-field td {
 }
 
 .cEdit .edit_box_posting {
-    background: #FFF url(<?php echo $theme->getImgPath('ajax_clock_small.gif');?>) no-repeat right center;
+    background: #FFF url(<?php echo $theme->getImgPath('ajax_clock_small.gif'); ?>) no-repeat right center;
     padding-right: 1.5em;
 }
 
 .cEdit .edit_area_loading {
-    background: #FFF url(<?php echo $theme->getImgPath('ajax_clock_small.gif');?>) no-repeat center;
+    background: #FFF url(<?php echo $theme->getImgPath('ajax_clock_small.gif'); ?>) no-repeat center;
     height: 10em;
 }
 
@@ -2409,7 +2406,7 @@ fieldset .disabled-field td {
 }
 
 .saving_edited_data {
-    background: url(<?php echo $theme->getImgPath('ajax_clock_small.gif');?>) no-repeat left;
+    background: url(<?php echo $theme->getImgPath('ajax_clock_small.gif'); ?>) no-repeat left;
     padding-left: 20px;
 }
 
@@ -3134,9 +3131,9 @@ html.ie7 #pma_console .query_input {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -moz-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 5px #ccc;
-    -webkit-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 5px #ccc;
-    box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>2px 2px 5px #ccc;
+    -moz-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 5px #ccc;
+    -webkit-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 5px #ccc;
+    box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>2px 2px 5px #ccc;
 }
 
 .pma_sql_import_status h2,
@@ -3149,9 +3146,9 @@ html.ie7 #pma_console .query_input {
     font-size: 1.6em;
     font-weight: normal;
     text-shadow: 0 1px 0 #777;
-    -moz-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 15px #999 inset;
-    -webkit-box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 15px #999 inset;
-    box-shadow: <?php echo $GLOBALS['text_dir'] === 'rtl' ? '-' : ''; ?>1px 1px 15px #999 inset;
+    -moz-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 15px #999 inset;
+    -webkit-box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 15px #999 inset;
+    box-shadow: <?php echo 'rtl' === $GLOBALS['text_dir'] ? '-' : ''; ?>1px 1px 15px #999 inset;
 }
 
 .pma_sql_import_status div {
@@ -3227,7 +3224,7 @@ html.ie7 #pma_console .query_input {
 
 span.drag_icon {
     display: inline-block;
-    background-image: url('<?php echo $theme->getImgPath('s_sortable.png');?>');
+    background-image: url('<?php echo $theme->getImgPath('s_sortable.png'); ?>');
     background-position: center center;
     background-repeat: no-repeat;
     width: 1em;
@@ -3260,11 +3257,11 @@ th.header .sorticon {
 }
 
 th.headerSortUp .sorticon, th.headerSortDown:hover .sorticon {
-    background-image: url(<?php echo $theme->getImgPath('s_desc.png');?>);
+    background-image: url(<?php echo $theme->getImgPath('s_desc.png'); ?>);
 }
 
 th.headerSortDown .sorticon, th.headerSortUp:hover .sorticon {
-    background-image: url(<?php echo $theme->getImgPath('s_asc.png');?>);
+    background-image: url(<?php echo $theme->getImgPath('s_asc.png'); ?>);
 }
 /* end of styles of sortable tables */
 

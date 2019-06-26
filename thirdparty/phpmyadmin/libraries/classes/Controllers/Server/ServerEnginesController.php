@@ -1,10 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 
 /**
- * Holds the PhpMyAdmin\Controllers\Server\ServerEnginesController
- *
- * @package PhpMyAdmin\Controllers
+ * Holds the PhpMyAdmin\Controllers\Server\ServerEnginesController.
  */
 
 namespace PhpMyAdmin\Controllers\Server;
@@ -13,28 +12,23 @@ use PhpMyAdmin\Controllers\Controller;
 use PhpMyAdmin\Server\Common;
 use PhpMyAdmin\StorageEngine;
 use PhpMyAdmin\Template;
-use PhpMyAdmin\Util;
 
 /**
- * Handles viewing storage engine details
- *
- * @package PhpMyAdmin\Controllers
+ * Handles viewing storage engine details.
  */
 class ServerEnginesController extends Controller
 {
     /**
-     * Index action
-     *
-     * @return void
+     * Index action.
      */
     public function indexAction()
     {
         /**
-         * Does the common work
+         * Does the common work.
          */
         require 'libraries/server_common.inc.php';
 
-        /**
+        /*
          * Displays the sub-page heading
          */
         $this->response->addHTML(
@@ -43,11 +37,11 @@ class ServerEnginesController extends Controller
             ])
         );
 
-        /**
+        /*
          * Did the user request information about a certain storage engine?
          */
         if (empty($_REQUEST['engine'])
-            || ! StorageEngine::isValid($_REQUEST['engine'])
+            || !StorageEngine::isValid($_REQUEST['engine'])
         ) {
             $this->response->addHTML($this->_getHtmlForAllServerEngines());
         } else {
@@ -57,7 +51,7 @@ class ServerEnginesController extends Controller
     }
 
     /**
-     * Return HTML with all Storage Engine information
+     * Return HTML with all Storage Engine information.
      *
      * @return string
      */
@@ -69,7 +63,7 @@ class ServerEnginesController extends Controller
     }
 
     /**
-     * Return HTML for a given Storage Engine
+     * Return HTML for a given Storage Engine.
      *
      * @param StorageEngine $engine storage engine
      *
@@ -78,9 +72,9 @@ class ServerEnginesController extends Controller
     private function _getHtmlForServerEngine(StorageEngine $engine)
     {
         $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : '';
-        $pageOutput = ! empty($page) ? $engine->getPage($page) : '';
+        $pageOutput = !empty($page) ? $engine->getPage($page) : '';
 
-        /**
+        /*
          * Displays details about a given Storage Engine
          */
         return Template::get('server/engines/engine')->render(

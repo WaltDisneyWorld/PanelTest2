@@ -1,13 +1,13 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/MonstaLicenseV1.php');
+    require_once dirname(__FILE__).'/MonstaLicenseV1.php';
 
     class MonstaLicenseV2 extends MonstaLicenseV1
     {
         // the V2 refers to the license version, not the application version
 
         /**
-         * @var boolean
+         * @var bool
          */
         protected $trial;
 
@@ -23,7 +23,7 @@
         }
 
         /**
-         * @return boolean
+         * @return bool
          */
         public function isTrial()
         {

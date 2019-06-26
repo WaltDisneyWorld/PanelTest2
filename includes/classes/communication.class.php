@@ -1,17 +1,14 @@
 <?php
 
-$intisp_ver = "13";
+$intisp_ver = '13';
 if (!isset($tempxaaa)) {
-    require_once("includes/classes/license.class.php");
-
-
+    require_once 'includes/classes/license.class.php';
 
     include 'config.php';
 
-
-    $keys = "";
+    $keys = '';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
     $sql = "SELECT value FROM settings WHERE code =  'register' LIMIT 0 , 30";
     if ($result = mysqli_query($con, $sql)) {
@@ -23,7 +20,7 @@ if (!isset($tempxaaa)) {
         mysqli_free_result($result);
     }
     mysqli_close($con);
-    
+
     function issues()
     {
     }
@@ -35,16 +32,15 @@ if (!isset($tempxaaa)) {
         */
     return true;
     }
-  
-    
-    $edition = getEdition($keys)["Type"];
-  
+
+    $edition = getEdition($keys)['Type'];
+
     $logging = $debug;
     function updatePassword($pass)
     {
         global $logging;
         if ($logging) {
-            $message = "[" . time() . "] " . $_SESSION["user"] . " Recieved Update Password";
+            $message = '['.time().'] '.$_SESSION['user'].' Recieved Update Password';
             $myfile = file_put_contents('actions.log', $message.PHP_EOL, FILE_APPEND | LOCK_EX);
         }
         //Update Password
@@ -53,17 +49,17 @@ if (!isset($tempxaaa)) {
     {
         global $logging;
         if ($logging) {
-            $message = "[" . time() . "] " . $_SESSION["user"] . " Recieved Status Update";
+            $message = '['.time().'] '.$_SESSION['user'].' Recieved Status Update';
             $myfile = file_put_contents('actions.log', $message.PHP_EOL, FILE_APPEND | LOCK_EX);
         }
         //Server Status
-        return "Online";
+        return 'Online';
     }
     function getDiskPercentage()
     {
         global $logging;
         if ($logging) {
-            $message = "[" . time() . "] " . $_SESSION["user"] . " Recieved Disk Usage ";
+            $message = '['.time().'] '.$_SESSION['user'].' Recieved Disk Usage ';
             $myfile = file_put_contents('actions.log', $message.PHP_EOL, FILE_APPEND | LOCK_EX);
         }
         //Disk Percentage Used
@@ -73,7 +69,7 @@ if (!isset($tempxaaa)) {
     {
         global $logging;
         if ($logging) {
-            $message = "[" . time() . "] " . $_SESSION["user"] . " Recieved Power Action " . $action;
+            $message = '['.time().'] '.$_SESSION['user'].' Recieved Power Action '.$action;
             $myfile = file_put_contents('actions.log', $message.PHP_EOL, FILE_APPEND | LOCK_EX);
         }
         // Power Controls
@@ -82,7 +78,7 @@ if (!isset($tempxaaa)) {
     {
         global $logging;
         if ($logging) {
-            $message = "[" . time() . "] " . $_SESSION["user"] . " Recieved Provision of User " . $username;
+            $message = '['.time().'] '.$_SESSION['user'].' Recieved Provision of User '.$username;
             $myfile = file_put_contents('actions.log', $message.PHP_EOL, FILE_APPEND | LOCK_EX);
         }
         //Provision a new server

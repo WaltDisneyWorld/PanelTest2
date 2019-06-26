@@ -1,6 +1,6 @@
 <?php
 
-    require_once(dirname(__FILE__) . '/../Validation.php');
+    require_once dirname(__FILE__).'/../Validation.php';
 
     class TransferOperation
     {

@@ -1,11 +1,9 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Displays table create form and handles it
- *
- * @package PhpMyAdmin
+ * Displays table create form and handles it.
  */
-
 use PhpMyAdmin\Core;
 use PhpMyAdmin\CreateAddField;
 use PhpMyAdmin\Response;
@@ -14,7 +12,7 @@ use PhpMyAdmin\Url;
 use PhpMyAdmin\Util;
 
 /**
- * Get some core libraries
+ * Get some core libraries.
  */
 require_once 'libraries/common.inc.php';
 
@@ -22,7 +20,7 @@ require_once 'libraries/common.inc.php';
 Util::checkParameters(array('db'));
 
 /* Check if database name is empty */
-if (strlen($db) === 0) {
+if (0 === strlen($db)) {
     Util::mysqlDie(
         __('The database name is empty!'),
         '',
@@ -31,7 +29,7 @@ if (strlen($db) === 0) {
     );
 }
 
-/**
+/*
  * Selects the database to work with
  */
 if (!$GLOBALS['dbi']->selectDb($db)) {
@@ -49,7 +47,7 @@ if ($GLOBALS['dbi']->getColumns($db, $table)) {
         sprintf(__('Table %s already exists!'), htmlspecialchars($table)),
         '',
         false,
-        'db_structure.php' . Url::getCommon(array('db' => $db))
+        'db_structure.php'.Url::getCommon(array('db' => $db))
     );
 }
 
@@ -61,7 +59,7 @@ $num_fields = $createAddField->getNumberOfFieldsFromRequest();
 
 $action = 'tbl_create.php';
 
-/**
+/*
  * The form used to define the structure of the table has been submitted
  */
 if (isset($_POST['do_save_data'])) {
@@ -109,6 +107,6 @@ if (isset($_POST['do_save_data'])) {
 $GLOBAL['table'] = '';
 
 /**
- * Displays the form used to define the structure of the table
+ * Displays the form used to define the structure of the table.
  */
 require 'libraries/tbl_columns_definition_form.inc.php';

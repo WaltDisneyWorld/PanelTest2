@@ -1,7 +1,7 @@
 <?php
-    require_once(dirname(__FILE__) . "/../constants.php");
-    require_once(dirname(__FILE__) . "/../lib/LocalizableException.php");
-    require_once(dirname(__FILE__) . "/../lib/helpers.php");
+    require_once dirname(__FILE__).'/../constants.php';
+    require_once dirname(__FILE__).'/../lib/LocalizableException.php';
+    require_once dirname(__FILE__).'/../lib/helpers.php';
 
     class HTTPFetcher
     {
@@ -10,9 +10,9 @@
 
         public function fetch($fetchRequest)
         {
-            if ($this->fetchRequest != null) {
+            if (null != $this->fetchRequest) {
                 throw new LocalizableException(
-                    "Can not fetch a request as one is already in progress.",
+                    'Can not fetch a request as one is already in progress.',
                     LocalizableExceptionDefinition::$FETCH_IN_PROGRESS_ERROR
                 );
             }
@@ -42,9 +42,9 @@
             curl_close($ch);
             fclose($fp);
 
-            if ($success === false) {
+            if (false === $success) {
                 throw new LocalizableException(
-                    "File fetch failed: " . $curlError,
+                    'File fetch failed: '.$curlError,
                     LocalizableExceptionDefinition::$FETCH_FAILED_ERROR,
                     array('cause' => $curlError, 'url' => $this->fetchRequest->getURL())
                 );

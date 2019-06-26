@@ -16,9 +16,9 @@ require 'includes/classes/head.class.php';
     {
         ob_start();
         phpinfo();
-        $info_arr   = [];
+        $info_arr = [];
         $info_lines = explode("\n", strip_tags(ob_get_clean(), '<tr><td><h2>'));
-        $cat        = 'General';
+        $cat = 'General';
         foreach ($info_lines as $line) {
             // new cat?
             preg_match('~<h2>(.*)</h2>~', $line, $title) ? $cat = $title[1] : null;

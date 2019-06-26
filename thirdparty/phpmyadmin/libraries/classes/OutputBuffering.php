@@ -1,15 +1,14 @@
-<?php /* vim: set expandtab sw=4 ts=4 sts=4: */
+<?php
+
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Output buffering wrapper
- *
- * @package PhpMyAdmin
+ * Output buffering wrapper.
  */
+
 namespace PhpMyAdmin;
 
 /**
- * Output buffering wrapper class
- *
- * @package PhpMyAdmin
+ * Output buffering wrapper class.
  */
 class OutputBuffering
 {
@@ -19,7 +18,7 @@ class OutputBuffering
     private $_on;
 
     /**
-     * Initializes class
+     * Initializes class.
      */
     private function __construct()
     {
@@ -30,13 +29,13 @@ class OutputBuffering
     /**
      * This function could be used eventually to support more modes.
      *
-     * @return integer  the output buffer mode
+     * @return int the output buffer mode
      */
     private function _getMode()
     {
         $mode = 0;
         if ($GLOBALS['cfg']['OBGzip'] && function_exists('ob_start')) {
-            if (ini_get('output_handler') == 'ob_gzhandler') {
+            if ('ob_gzhandler' == ini_get('output_handler')) {
                 // If a user sets the output_handler in php.ini to ob_gzhandler, then
                 // any right frame file in phpMyAdmin will not be handled properly by
                 // the browser. My fix was to check the ini file within the
@@ -58,7 +57,7 @@ class OutputBuffering
     }
 
     /**
-     * Returns the singleton OutputBuffering object
+     * Returns the singleton OutputBuffering object.
      *
      * @return OutputBuffering object
      */
@@ -74,18 +73,16 @@ class OutputBuffering
      * This function will need to run at the top of all pages if output
      * output buffering is turned on.  It also needs to be passed $mode from
      * the PMA_outBufferModeGet() function or it will be useless.
-     *
-     * @return void
      */
     public function start()
     {
-        if (! $this->_on) {
+        if (!$this->_on) {
             if ($this->_mode && function_exists('ob_gzhandler')) {
                 ob_start('ob_gzhandler');
             }
             ob_start();
-            if (! defined('TESTSUITE')) {
-                header('X-ob_mode: ' . $this->_mode);
+            if (!defined('TESTSUITE')) {
+                header('X-ob_mode: '.$this->_mode);
             }
             register_shutdown_function(
                 array(OutputBuffering::class, 'stop')
@@ -98,8 +95,6 @@ class OutputBuffering
      * This function will need to run at the bottom of all pages if output
      * buffering is turned on.  It also needs to be passed $mode from the
      * PMA_outBufferModeGet() function or it will be useless.
-     *
-     * @return void
      */
     public static function stop()
     {
@@ -112,7 +107,7 @@ class OutputBuffering
     }
 
     /**
-     * Gets buffer content
+     * Gets buffer content.
      *
      * @return string buffer content
      */
@@ -122,9 +117,7 @@ class OutputBuffering
     }
 
     /**
-     * Flushes output buffer
-     *
-     * @return void
+     * Flushes output buffer.
      */
     public function flush()
     {

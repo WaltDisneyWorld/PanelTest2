@@ -22,8 +22,8 @@ onlyadmin();
     <tbody>
             <?php
 
-            $con    = mysqli_connect($host, $user, $pass, $data);
-            $sql    = 'SELECT * FROM users';
+            $con = mysqli_connect($host, $user, $pass, $data);
+            $sql = 'SELECT * FROM users';
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_row($result)) {
                 echo ' <tr>

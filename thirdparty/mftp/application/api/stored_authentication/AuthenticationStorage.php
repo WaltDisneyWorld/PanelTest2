@@ -1,7 +1,7 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/EncryptedFileIO.php");
-    require_once(dirname(__FILE__) . "/Exceptions.php");
+    require_once dirname(__FILE__).'/EncryptedFileIO.php';
+    require_once dirname(__FILE__).'/Exceptions.php';
 
     class AuthenticationStorage
     {
@@ -20,7 +20,7 @@
         {
             $decodedData = self::decodeEncryptedDataAtPath($path, $password);
 
-            if ($decodedData === null) {
+            if (null === $decodedData) {
                 throw new AuthenticationFileReadException(
                     "Could not load valid data from storage at $path",
                     LocalizableExceptionDefinition::$COULD_NOT_LOAD_PROFILE_DATA_ERROR,
@@ -60,7 +60,7 @@
 
             $fileSize = filesize($path);
 
-            if ($fileSize === false) {
+            if (false === $fileSize) {
                 throw new AuthenticationFileReadException(
                     "File exists at $path but couldn't get its size.",
                     LocalizableExceptionDefinition::$PROFILE_SIZE_READ_ERROR,
@@ -68,11 +68,11 @@
                 );
             }
 
-            return $fileSize != 0;
+            return 0 != $fileSize;
         }
 
         public static function validateAuthenticationPassword($path, $password)
         {
-            return self::decodeEncryptedDataAtPath($path, $password) !== null;
+            return null !== self::decodeEncryptedDataAtPath($path, $password);
         }
     }

@@ -15,7 +15,7 @@
 
         public function recordHostAndUserLoginFailure($host, $user)
         {
-            if ($this->maxFailures == 0 || $this->failureResetSeconds == 0) {
+            if (0 == $this->maxFailures || 0 == $this->failureResetSeconds) {
                 return;
             }
 
@@ -26,7 +26,7 @@
 
         public function resetHostUserLoginFailure($host, $user)
         {
-            if ($this->maxFailures == 0 || $this->failureResetSeconds == 0) {
+            if (0 == $this->maxFailures || 0 == $this->failureResetSeconds) {
                 return;
             }
 
@@ -40,7 +40,7 @@
 
         public function hostAndUserBanned($host, $user)
         {
-            if ($this->maxFailures == 0 || $this->failureResetSeconds == 0) {
+            if (0 == $this->maxFailures || 0 == $this->failureResetSeconds) {
                 return false;
             }
 
@@ -106,22 +106,22 @@
 
         private function recordLoginFailureInUserHostArray(&$userHostArray)
         {
-            if (!isset($userHostArray["failureCount"])) {
-                $userHostArray["failureCount"] = 0;
+            if (!isset($userHostArray['failureCount'])) {
+                $userHostArray['failureCount'] = 0;
             }
 
-            ++$userHostArray["failureCount"];
+            ++$userHostArray['failureCount'];
 
-            $userHostArray["lastFailureTime"] = time();
+            $userHostArray['lastFailureTime'] = time();
         }
 
         private function userHostArrayExceedsFailureSettings($userHostArray)
         {
-            if ($userHostArray["failureCount"] < $this->maxFailures) {
+            if ($userHostArray['failureCount'] < $this->maxFailures) {
                 return false;
             }
 
-            if (time() - $userHostArray["lastFailureTime"] > $this->failureResetSeconds) {
+            if (time() - $userHostArray['lastFailureTime'] > $this->failureResetSeconds) {
                 return false;
             }
 

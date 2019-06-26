@@ -1,10 +1,10 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Holds the PhpMyAdmin\Controllers\Table\TableIndexesController
- *
- * @package PhpMyAdmin\Controllers
+ * Holds the PhpMyAdmin\Controllers\Table\TableIndexesController.
  */
+
 namespace PhpMyAdmin\Controllers\Table;
 
 use PhpMyAdmin\Controllers\TableController;
@@ -18,35 +18,32 @@ require_once 'libraries/common.inc.php';
 require_once 'libraries/db_common.inc.php';
 
 /**
- * Class TableGisVisualizationController
- *
- * @package PhpMyAdmin\Controllers
+ * Class TableGisVisualizationController.
  */
 class TableGisVisualizationController extends TableController
 {
-
     /**
-     * @var array $url_params
+     * @var array
      */
     protected $url_params;
 
     /**
-     * @var string $sql_query
+     * @var string
      */
     protected $sql_query;
 
     /**
-     * @var array $visualizationSettings
+     * @var array
      */
     protected $visualizationSettings;
 
     /**
-     * @var \PhpMyAdmin\Gis\GisVisualization $visualization
+     * @var \PhpMyAdmin\Gis\GisVisualization
      */
     protected $visualization;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $sql_query             SQL query for retrieving GIS data
      * @param array  $url_params            array of URL parameters
@@ -75,9 +72,7 @@ class TableGisVisualizationController extends TableController
     }
 
     /**
-     * Save to file
-     *
-     * @return void
+     * Save to file.
      */
     public function saveToFileAction()
     {
@@ -88,14 +83,12 @@ class TableGisVisualizationController extends TableController
     }
 
     /**
-     * Index
-     *
-     * @return void
+     * Index.
      */
     public function indexAction()
     {
         // Throw error if no sql query is set
-        if (! isset($this->sql_query) || $this->sql_query == '') {
+        if (!isset($this->sql_query) || '' == $this->sql_query) {
             $this->response->setRequestStatus(false);
             $this->response->addHTML(
                 Message::error(__('No SQL query was set to fetch data.'))
@@ -112,7 +105,7 @@ class TableGisVisualizationController extends TableController
         $labelCandidates = array();
         $spatialCandidates = array();
         foreach ($meta as $column_meta) {
-            if ($column_meta->type == 'geometry') {
+            if ('geometry' == $column_meta->type) {
                 $spatialCandidates[] = $column_meta->name;
             } else {
                 $labelCandidates[] = $column_meta->name;
@@ -131,7 +124,7 @@ class TableGisVisualizationController extends TableController
         }
 
         // If spatial column is not set, use first geometric column as spatial column
-        if (! isset($this->visualizationSettings['spatialColumn'])) {
+        if (!isset($this->visualizationSettings['spatialColumn'])) {
             $this->visualizationSettings['spatialColumn'] = $spatialCandidates[0];
         }
 
@@ -141,7 +134,7 @@ class TableGisVisualizationController extends TableController
         if (isset($_REQUEST['session_max_rows'])) {
             $rows = $_REQUEST['session_max_rows'];
         } else {
-            if ($_SESSION['tmpval']['max_rows'] != 'all') {
+            if ('all' != $_SESSION['tmpval']['max_rows']) {
                 $rows = $_SESSION['tmpval']['max_rows'];
             } else {
                 $rows = $GLOBALS['cfg']['MaxRows'];
@@ -168,7 +161,7 @@ class TableGisVisualizationController extends TableController
         );
 
         // If all the rows contain SRID, use OpenStreetMaps on the initial loading.
-        if (! isset($_REQUEST['displayVisualization'])) {
+        if (!isset($_REQUEST['displayVisualization'])) {
             if ($this->visualization->hasSrid()) {
                 $this->visualizationSettings['choice'] = 'useBaseLayer';
             } else {
@@ -177,25 +170,25 @@ class TableGisVisualizationController extends TableController
         }
 
         $this->visualization->setUserSpecifiedSettings($this->visualizationSettings);
-        if ($this->visualizationSettings != null) {
+        if (null != $this->visualizationSettings) {
             foreach ($this->visualization->getSettings() as $setting => $val) {
-                if (! isset($this->visualizationSettings[$setting])) {
+                if (!isset($this->visualizationSettings[$setting])) {
                     $this->visualizationSettings[$setting] = $val;
                 }
             }
         }
 
-        /**
+        /*
          * Displays the page
          */
         $this->url_params['sql_query'] = $this->sql_query;
-        $downloadUrl = 'tbl_gis_visualization.php' . Url::getCommon(
+        $downloadUrl = 'tbl_gis_visualization.php'.Url::getCommon(
             array_merge(
                 $this->url_params,
                 array(
                     'saveToFile' => true,
                     'session_max_rows' => $rows,
-                    'pos' => $pos
+                    'pos' => $pos,
                 )
             )
         );
@@ -209,7 +202,7 @@ class TableGisVisualizationController extends TableController
                 'sql_query' => $this->sql_query,
                 'visualization' => $this->visualization->toImage('svg'),
                 'draw_ol' => $this->visualization->asOl(),
-                'pma_theme_image' => $GLOBALS['pmaThemeImage']
+                'pma_theme_image' => $GLOBALS['pmaThemeImage'],
             )
         );
 

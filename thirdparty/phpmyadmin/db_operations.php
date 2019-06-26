@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * handles miscellaneous db operations:
@@ -7,11 +8,8 @@
  *  - changing collation
  *  - changing comment
  *  - adding tables
- *  - viewing PDF schemas
- *
- * @package PhpMyAdmin
+ *  - viewing PDF schemas.
  */
-use PhpMyAdmin\DatabaseInterface;
 use PhpMyAdmin\Display\CreateTable;
 use PhpMyAdmin\Message;
 use PhpMyAdmin\Operations;
@@ -23,12 +21,12 @@ use PhpMyAdmin\Response;
 use PhpMyAdmin\Util;
 
 /**
- * requirements
+ * requirements.
  */
 require_once 'libraries/common.inc.php';
 
 /**
- * functions implementation for this script
+ * functions implementation for this script.
  */
 require_once 'libraries/check_user_privileges.inc.php';
 
@@ -42,23 +40,23 @@ $sql_query = '';
 
 $operations = new Operations();
 
-/**
+/*
  * Rename/move or copy database
  */
 if (strlen($GLOBALS['db']) > 0
-    && (! empty($_POST['db_rename']) || ! empty($_POST['db_copy']))
+    && (!empty($_POST['db_rename']) || !empty($_POST['db_copy']))
 ) {
-    if (! empty($_POST['db_rename'])) {
+    if (!empty($_POST['db_rename'])) {
         $move = true;
     } else {
         $move = false;
     }
 
-    if (! isset($_POST['newname']) || strlen($_POST['newname']) === 0) {
+    if (!isset($_POST['newname']) || 0 === strlen($_POST['newname'])) {
         $message = Message::error(__('The database name is empty!'));
     } else {
         // lower_case_table_names=1 `DB` becomes `db`
-        if ($GLOBALS['dbi']->getLowerCaseNames() === '1') {
+        if ('1' === $GLOBALS['dbi']->getLowerCaseNames()) {
             $_POST['newname'] = mb_strtolower(
                 $_POST['newname']
             );
@@ -70,7 +68,7 @@ if (strlen($GLOBALS['db']) > 0
             );
         } else {
             $_error = false;
-            if ($move || ! empty($_POST['create_database_before_copying'])) {
+            if ($move || !empty($_POST['create_database_before_copying'])) {
                 $operations->createDbBeforeCopy();
             }
 
@@ -90,12 +88,12 @@ if (strlen($GLOBALS['db']) > 0
             // remove all foreign key constraints, otherwise we can get errors
             /* @var $export_sql_plugin ExportSql */
             $export_sql_plugin = Plugins::getPlugin(
-                "export",
-                "sql",
+                'export',
+                'sql',
                 'libraries/classes/Plugins/Export/',
                 array(
                     'single_table' => isset($single_table),
-                    'export_type'  => 'database'
+                    'export_type' => 'database',
                 )
             );
 
@@ -114,13 +112,13 @@ if (strlen($GLOBALS['db']) > 0
             );
 
             // handle the views
-            if (! $_error) {
+            if (!$_error) {
                 $operations->handleTheViews($views, $move, $GLOBALS['db']);
             }
             unset($views);
 
             // now that all tables exist, create all the accumulated constraints
-            if (! $_error && count($sqlConstratints) > 0) {
+            if (!$_error && count($sqlConstratints) > 0) {
                 $operations->createAllAccumulatedConstraints($sqlConstratints);
             }
             unset($sqlConstratints);
@@ -138,22 +136,22 @@ if (strlen($GLOBALS['db']) > 0
             // Duplicate the bookmarks for this db (done once for each db)
             $operations->duplicateBookmarks($_error, $GLOBALS['db']);
 
-            if (! $_error && $move) {
+            if (!$_error && $move) {
                 if (isset($_POST['adjust_privileges'])
-                    && ! empty($_POST['adjust_privileges'])
+                    && !empty($_POST['adjust_privileges'])
                 ) {
                     $operations->adjustPrivilegesMoveDb($GLOBALS['db'], $_POST['newname']);
                 }
 
-                /**
+                /*
                  * cleanup pmadb stuff for this db
                  */
                 RelationCleanup::database($GLOBALS['db']);
 
                 // if someday the RENAME DATABASE reappears, do not DROP
                 $local_query = 'DROP DATABASE '
-                    . Util::backquote($GLOBALS['db']) . ';';
-                $sql_query .= "\n" . $local_query;
+                    .Util::backquote($GLOBALS['db']).';';
+                $sql_query .= "\n".$local_query;
                 $GLOBALS['dbi']->query($local_query);
 
                 $message = Message::success(
@@ -161,9 +159,9 @@ if (strlen($GLOBALS['db']) > 0
                 );
                 $message->addParam($GLOBALS['db']);
                 $message->addParam($_POST['newname']);
-            } elseif (! $_error) {
+            } elseif (!$_error) {
                 if (isset($_POST['adjust_privileges'])
-                    && ! empty($_POST['adjust_privileges'])
+                    && !empty($_POST['adjust_privileges'])
                 ) {
                     $operations->adjustPrivilegesCopyDb($GLOBALS['db'], $_POST['newname']);
                 }
@@ -176,14 +174,14 @@ if (strlen($GLOBALS['db']) > 0
             } else {
                 $message = Message::error();
             }
-            $reload     = true;
+            $reload = true;
 
             /* Change database to be used */
-            if (! $_error && $move) {
+            if (!$_error && $move) {
                 $GLOBALS['db'] = $_POST['newname'];
-            } elseif (! $_error) {
+            } elseif (!$_error) {
                 if (isset($_POST['switch_to_new'])
-                    && $_POST['switch_to_new'] == 'true'
+                    && 'true' == $_POST['switch_to_new']
                 ) {
                     $_SESSION['pma_switch_to_new'] = true;
                     $GLOBALS['db'] = $_POST['newname'];
@@ -194,7 +192,7 @@ if (strlen($GLOBALS['db']) > 0
         }
     }
 
-    /**
+    /*
      * Database has been successfully renamed/moved.  If in an Ajax request,
      * generate the output with {@link PhpMyAdmin\Response} and exit
      */
@@ -212,13 +210,13 @@ if (strlen($GLOBALS['db']) > 0
 }
 
 /**
- * Settings for relations stuff
+ * Settings for relations stuff.
  */
 $relation = new Relation();
 
 $cfgRelation = $relation->getRelationsParam();
 
-/**
+/*
  * Check if comments were updated
  * (must be done before displaying the menu tabs)
  */
@@ -256,7 +254,7 @@ $is_information_schema = $GLOBALS['dbi']->isSystemSchema($GLOBALS['db']);
 
 if (!$is_information_schema) {
     if ($cfgRelation['commwork']) {
-        /**
+        /*
          * database comment
          */
         $response->addHTML($operations->getHtmlForDatabaseComment($GLOBALS['db']));
@@ -266,10 +264,10 @@ if (!$is_information_schema) {
     $response->addHTML(CreateTable::getHtml($db));
     $response->addHTML('</div>');
 
-    /**
+    /*
      * rename database
      */
-    if ($GLOBALS['db'] != 'mysql') {
+    if ('mysql' != $GLOBALS['db']) {
         $response->addHTML($operations->getHtmlForRenameDatabase($GLOBALS['db'], $db_collation));
     }
 
@@ -278,31 +276,31 @@ if (!$is_information_schema) {
     // You won't be able to. Believe me. You won't.
     // Don't allow to easily drop mysql database, RFE #1327514.
     if (($GLOBALS['dbi']->isSuperuser() || $GLOBALS['cfg']['AllowUserDropDatabase'])
-        && ! $db_is_system_schema
-        && $GLOBALS['db'] != 'mysql'
+        && !$db_is_system_schema
+        && 'mysql' != $GLOBALS['db']
     ) {
         $response->addHTML($operations->getHtmlForDropDatabaseLink($GLOBALS['db']));
     }
-    /**
+    /*
      * Copy database
      */
     $response->addHTML($operations->getHtmlForCopyDatabase($GLOBALS['db'], $db_collation));
 
-    /**
+    /*
      * Change database charset
      */
     $response->addHTML($operations->getHtmlForChangeDatabaseCharset($GLOBALS['db'], $db_collation));
 
-    if (! $cfgRelation['allworks']
-        && $cfg['PmaNoRelation_DisableWarning'] == false
+    if (!$cfgRelation['allworks']
+        && false == $cfg['PmaNoRelation_DisableWarning']
     ) {
         $message = Message::notice(
             __(
-                'The phpMyAdmin configuration storage has been deactivated. ' .
+                'The phpMyAdmin configuration storage has been deactivated. '.
                 '%sFind out why%s.'
             )
         );
-        $message->addParamHtml('<a href="./chk_rel.php" data-post="' . $url_query . '">');
+        $message->addParamHtml('<a href="./chk_rel.php" data-post="'.$url_query.'">');
         $message->addParamHtml('</a>');
         /* Show error if user has configured something, notice elsewhere */
         if (!empty($cfg['Servers'][$server]['pmadb'])) {

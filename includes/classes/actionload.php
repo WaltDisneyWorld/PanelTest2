@@ -4,39 +4,39 @@ if (!isset($HOME)) {
     die();
 }
 
-if (!isset($_GET["action"])) {
+if (!isset($_GET['action'])) {
     die();
 }
    require 'config.php';
    if ($debug) {
-       require('includes/classes/php_error.class.php');
+       require 'includes/classes/php_error.class.php';
        $options = array(
             'snippet_num_lines' => 3,
-            'background_text'  => 'IntISP',
+            'background_text' => 'IntISP',
             'error_reporting_off' => 0,
             'enable_saving' => 0,
             'display_line_numbers' => 0,
             'server_name' => 'IntISP has stopped because an exception has occured.',
-            'error_reporting_on' => E_ALL
+            'error_reporting_on' => E_ALL,
     );
        php_error\reportErrors($options);
    } else {
        error_reporting(0);
    }
-$_ACT = $_GET["action"];
-if ($_ACT == "login") {
-    require("includes/classes/doLogin.class.php");
+$_ACT = $_GET['action'];
+if ('login' == $_ACT) {
+    require 'includes/classes/doLogin.class.php';
 }
-if ($_ACT == "pass") {
-    require("includes/classes/pass.class.php");
+if ('pass' == $_ACT) {
+    require 'includes/classes/pass.class.php';
 }
-if ($_ACT == "action") {
-    require("includes/classes/action.class.php");
+if ('action' == $_ACT) {
+    require 'includes/classes/action.class.php';
 }
-if ($_ACT == "options") {
+if ('options' == $_ACT) {
     function onlyadmin()
     {
-        if ($_SESSION['user'] == 'admin') {
+        if ('admin' == $_SESSION['user']) {
         } else {
             die();
         }
@@ -74,54 +74,51 @@ if ($_ACT == "options") {
     mysqli_query($con, $sql);
     $sql = 'update settings set id="13", value="'.$_POST['whmurl'].'",code="whmurl" where id="13"';
     mysqli_query($con, $sql);
-    
-    
-    
-    
+
     $sql = 'update settings set id="15", value="'.$_POST['smtp_host'].'",code="smtp_host" where id="15"';
     mysqli_query($con, $sql);
     $sql = 'update settings set id="16", value="'.$_POST['smtp_port'].'",code="smtp_port" where id="16"';
     mysqli_query($con, $sql);
-    
+
     $sql = 'update settings set id="17", value="'.$_POST['smtp_security'].'",code="smtp_security" where id="17"';
     mysqli_query($con, $sql);
-    
+
     $sql = 'update settings set id="18", value="'.$_POST['smtp_username'].'",code="smtp_username" where id="18"';
     mysqli_query($con, $sql);
     $sql = 'update settings set id="19", value="'.$_POST['smtp_password'].'",code="smtp_password" where id="19"';
     mysqli_query($con, $sql);
-    
+
     function ae($f, $ds)
     {
         global $con;
-        $sql = 'update settings set id="' . $ds . '", value="'.$_POST[$f . '_public'].'",code="' . $f . '_public" where id="' . $ds . '"';
+        $sql = 'update settings set id="'.$ds.'", value="'.$_POST[$f.'_public'].'",code="'.$f.'_public" where id="'.$ds.'"';
         mysqli_query($con, $sql);
         $ds = $ds + 1;
-        $sql = 'update settings set id="' . $ds . '", value="'.$_POST[$f . '_secret'].'",code="' . $f . '_secret" where id="' . $ds . '"';
+        $sql = 'update settings set id="'.$ds.'", value="'.$_POST[$f.'_secret'].'",code="'.$f.'_secret" where id="'.$ds.'"';
         mysqli_query($con, $sql);
     }
-    ae("github", 20);
-    ae("twitter", 22);
-    ae("google", 24);
-    ae("facebook", 26);
-    
+    ae('github', 20);
+    ae('twitter', 22);
+    ae('google', 24);
+    ae('facebook', 26);
+
     mysqli_close($con);
     sendemailuser(
-        "settings Changed",
-        "
+        'settings Changed',
+        '
     <b>settings have been changed on the Webister Hosting Control Panel</b>
     <p>This email is automatically sent out everytime a setting is changed. To disable this feature please visit the control panel and set the email to nothing.
-    "
+    '
     );
     header('Location: /settings');
 }
-if ($_ACT == "newserv") {
-    require("includes/classes/newserv.class.php");
+if ('newserv' == $_ACT) {
+    require 'includes/classes/newserv.class.php';
 }
-if ($_ACT == "exit") {
+if ('exit' == $_ACT) {
     require 'config.php';
-    unset($_SESSION["user"]);
-    
+    unset($_SESSION['user']);
+
     session_destroy();
-    header('Location: ' .$webroot . '/');
+    header('Location: '.$webroot.'/');
 }

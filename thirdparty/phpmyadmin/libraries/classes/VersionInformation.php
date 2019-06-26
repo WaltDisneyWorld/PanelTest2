@@ -1,25 +1,21 @@
 <?php
+
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * Responsible for retrieving version information and notifiying about latest version
- *
- * @package PhpMyAdmin
+ * Responsible for retrieving version information and notifiying about latest version.
  */
+
 namespace PhpMyAdmin;
 
-use PhpMyAdmin\Util;
 use PhpMyAdmin\Utils\HttpRequest;
 
 /**
- * Responsible for retrieving version information and notifiying about latest version
- *
- * @package PhpMyAdmin
- *
+ * Responsible for retrieving version information and notifiying about latest version.
  */
 class VersionInformation
 {
     /**
-     * Returns information with latest version from phpmyadmin.net
+     * Returns information with latest version from phpmyadmin.net.
      *
      * @return object JSON decoded object with the data
      */
@@ -47,7 +43,7 @@ class VersionInformation
         $data = json_decode($response);
 
         /* Basic sanity checking */
-        if (! is_object($data)
+        if (!is_object($data)
             || empty($data->version)
             || empty($data->releases)
             || empty($data->date)
@@ -58,14 +54,14 @@ class VersionInformation
         if ($save) {
             $_SESSION['cache']['version_check'] = array(
                 'response' => $response,
-                'timestamp' => time()
+                'timestamp' => time(),
             );
         }
         return $data;
     }
 
     /**
-     * Calculates numerical equivalent of phpMyAdmin version string
+     * Calculates numerical equivalent of phpMyAdmin version string.
      *
      * @param string $version version
      *
@@ -131,7 +127,7 @@ class VersionInformation
 
     /**
      * Returns the version and date of the latest phpMyAdmin version compatible
-     * with the available PHP and MySQL versions
+     * with the available PHP and MySQL versions.
      *
      * @param array $releases array of information related to each version
      *
@@ -141,18 +137,18 @@ class VersionInformation
     {
         foreach ($releases as $release) {
             $phpVersions = $release->php_versions;
-            $phpConditions = explode(",", $phpVersions);
+            $phpConditions = explode(',', $phpVersions);
             foreach ($phpConditions as $phpCondition) {
-                if (! $this->evaluateVersionCondition("PHP", $phpCondition)) {
+                if (!$this->evaluateVersionCondition('PHP', $phpCondition)) {
                     continue 2;
                 }
             }
 
             // We evalute MySQL version constraint if there are only
             // one server configured.
-            if (count($GLOBALS['cfg']['Servers']) == 1) {
+            if (1 == count($GLOBALS['cfg']['Servers'])) {
                 $mysqlVersions = $release->mysql_versions;
-                $mysqlConditions = explode(",", $mysqlVersions);
+                $mysqlConditions = explode(',', $mysqlVersions);
                 foreach ($mysqlConditions as $mysqlCondition) {
                     if (!$this->evaluateVersionCondition('MySQL', $mysqlCondition)) {
                         continue 2;
@@ -171,19 +167,19 @@ class VersionInformation
     }
 
     /**
-     * Checks whether PHP or MySQL version meets supplied version condition
+     * Checks whether PHP or MySQL version meets supplied version condition.
      *
      * @param string $type      PHP or MySQL
      * @param string $condition version condition
      *
-     * @return boolean whether the condition is met
+     * @return bool whether the condition is met
      */
     public function evaluateVersionCondition($type, $condition)
     {
         $operator = null;
-        $operators = array("<=", ">=", "!=", "<>", "<", ">", "="); // preserve order
+        $operators = array('<=', '>=', '!=', '<>', '<', '>', '='); // preserve order
         foreach ($operators as $oneOperator) {
-            if (strpos($condition, $oneOperator) === 0) {
+            if (0 === strpos($condition, $oneOperator)) {
                 $operator = $oneOperator;
                 $version = substr($condition, strlen($oneOperator));
                 break;
@@ -191,20 +187,20 @@ class VersionInformation
         }
 
         $myVersion = null;
-        if ($type == 'PHP') {
+        if ('PHP' == $type) {
             $myVersion = $this->getPHPVersion();
-        } elseif ($type == 'MySQL') {
+        } elseif ('MySQL' == $type) {
             $myVersion = $this->getMySQLVersion();
         }
 
-        if ($myVersion != null && $operator != null) {
+        if (null != $myVersion && null != $operator) {
             return version_compare($myVersion, $version, $operator);
         }
         return false;
     }
 
     /**
-     * Returns the PHP version
+     * Returns the PHP version.
      *
      * @return string PHP version
      */
@@ -214,7 +210,7 @@ class VersionInformation
     }
 
     /**
-     * Returns the MySQL version if connected to a database
+     * Returns the MySQL version if connected to a database.
      *
      * @return string MySQL version
      */

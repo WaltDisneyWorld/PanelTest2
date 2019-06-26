@@ -1,21 +1,21 @@
 <?php
 if (!defined('HOMEBASE')) {
-    die("Direct Access is Not Allowed");
+    die('Direct Access is Not Allowed');
 }
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
 
-require "../vendor/autoload.php";
+require '../vendor/autoload.php';
 @ini_set('zlib.output_compression', 0);
 set_time_limit(0);
-if (!isset($_SESSION["install_db"])) {
+if (!isset($_SESSION['install_db'])) {
     ?>
      <script>window.location.href = "index.php?pg=license";</script>
         <a href="index.php?pg=license">Click here</a> if you are not redirected.
     <?php
     die();
 }
-if (!isset($_SESSION["act"])) {
+if (!isset($_SESSION['act'])) {
     ?>
      <script>window.location.href = "index.php?pg=db";</script>
         <a href="index.php?pg=db">Click here</a> if you are not redirected.
@@ -30,14 +30,14 @@ if (!isset($_SESSION["act"])) {
 <Br><br>
 <textarea style="margin: 0px; height: 345px; width: 744px;" disabled>
     IntISP Installation Process has been started!<?php echo "\n";
-    require("../config.php");
+    require '../config.php';
     echo "Importing Database...\n";
      $m = new MySQLi($host, $user, $pass, $data);
-    $path_migrations = "sql";
-    foreach (glob($path_migrations.DIRECTORY_SEPARATOR."*.sql") as $script) {
+    $path_migrations = 'sql';
+    foreach (glob($path_migrations.DIRECTORY_SEPARATOR.'*.sql') as $script) {
         $sql = file_get_contents($script);
-        if (!$m->query($sql) === true) {
-            die("MySQL Error! Cannot Continue");
+        if (true === !$m->query($sql)) {
+            die('MySQL Error! Cannot Continue');
         }
     }
         $key = Key::createNewRandomKey();
@@ -53,8 +53,8 @@ $sql = "INSERT INTO settings (id, code, value) VALUES ('3', 'color', '000000')";
 $m->query($sql);
 $sql = "INSERT INTO settings (id, code, value) VALUES ('4', 'forum', 'https://forum.delinz.com')";
 $m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('5', 'head', '" . '<center><a href="https://github.com/INTisp/INTisp"><img src="templates/default/public/assets/img/wall.jpg"></a></center>
-'. "')";
+$sql = "INSERT INTO settings (id, code, value) VALUES ('5', 'head', '".'<center><a href="https://github.com/INTisp/INTisp"><img src="templates/default/public/assets/img/wall.jpg"></a></center>
+'."')";
 $m->query($sql);
 $sql = "INSERT INTO settings (id, code, value) VALUES ('6', 'loginfoot', '')";
 $m->query($sql);
@@ -89,33 +89,31 @@ $m->query($sql);
 function ae($c, $f)
 {
     global $m;
-    $sql = "INSERT INTO settings (id, code, value) VALUES ('$f', '" . $c . "_public', '')";
+    $sql = "INSERT INTO settings (id, code, value) VALUES ('$f', '".$c."_public', '')";
     $m->query($sql);
     $ds = $f + 1;
-    $sql = "INSERT INTO settings (id, code, value) VALUES ('" . $ds . "', '" . $c . "_secret', '')";
+    $sql = "INSERT INTO settings (id, code, value) VALUES ('".$ds."', '".$c."_secret', '')";
     $m->query($sql);
 }
-ae("github", 20);
-ae("twitter", 22);
-ae("google", 24);
-ae("facebook", 26);
+ae('github', 20);
+ae('twitter', 22);
+ae('google', 24);
+ae('facebook', 26);
 
-
-
-$sql = "INSERT INTO settings (id, code, value) VALUES ('14', 'register', '" . $_SESSION["act"] . "')";
+$sql = "INSERT INTO settings (id, code, value) VALUES ('14', 'register', '".$_SESSION['act']."')";
 $m->query($sql);
-$sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '". Crypto::encrypt("admin", $key) ."', '', '', '80')";
+$sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '".Crypto::encrypt('admin', $key)."', '', '', '80')";
 $m->query($sql);
 
         // Close the connection
         $m->close();
-        
+
         echo "Import Complete...\n";
         echo "Updating Configuration...\n";
-        $c = file_get_contents("../config.php");
-        $c  = str_replace("%SALT%", $salt, $c);
-        file_put_contents("../config.php", $c);
-        echo "Configuration Updated. Installation Complete";
+        $c = file_get_contents('../config.php');
+        $c = str_replace('%SALT%', $salt, $c);
+        file_put_contents('../config.php', $c);
+        echo 'Configuration Updated. Installation Complete';
     ?>
     </textarea>
 <br>

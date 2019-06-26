@@ -1,4 +1,5 @@
 <?php
+
 use OAuth\OAuth2\Service\Google;
 use OAuth\Common\Storage\Session;
 use OAuth\Common\Consumer\Credentials;
@@ -8,7 +9,7 @@ function auth()
 {
     require 'config.php';
     $mysqli = new mysqli();
-    $con    = mysqli_connect("$host", "$user", "$pass", "$data");
+    $con = mysqli_connect("$host", "$user", "$pass", "$data");
     $sql = "SELECT value FROM settings WHERE code =  'google_public' LIMIT 0 , 30";
 
     if ($result = mysqli_query($con, $sql)) {
@@ -31,8 +32,8 @@ function auth()
     }
     $serviceFactory = new \OAuth\ServiceFactory();
     // Session storage
-    $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-  
+    $actual_link = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http')."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
     $storage = new Session();
     $credentials = new Credentials(
     $gpub,
@@ -48,10 +49,10 @@ function auth()
         // Send a request with it
         $result = json_decode($googleService->request('userinfo'), true);
         // Show some of the resultant data
-        return $result["email"];
+        return $result['email'];
     } else {
         $url = $googleService->getAuthorizationUri();
-        header('Location: ' . $url);
+        header('Location: '.$url);
         die();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-    require_once(dirname(__FILE__) . "/Exceptions.php");
+    require_once dirname(__FILE__).'/Exceptions.php';
 
     class CipherSuite
     {
@@ -22,7 +22,7 @@
 
         private function getPreferredCipherMethods()
         {
-            return explode("|", PREFERRED_CIPHER_METHODS);
+            return explode('|', PREFERRED_CIPHER_METHODS);
         }
 
         public function getSupportedCipherMethods()
