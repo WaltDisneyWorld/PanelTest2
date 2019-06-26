@@ -15,16 +15,6 @@ if (!isset($_SESSION['install_db'])) {
 <?php
 if (isset($_GET['c'])) {
     $e = 0;
-    require '../includes/classes/license.class.php';
-    if (false == getEdition($_POST['key'])) {
-        $e = 1; ?>
-   <div class="notification is-danger">
- The License information provided may be not be valid.
-</div>
-  <?php
-    } else {
-        $_SESSION['act'] = $_POST['key'];
-    }
     if (0 == $e) {
         $conn = new mysqli($_POST['host'], $_POST['username'], $_POST['password']);
         $sql = 'CREATE DATABASE IF NOT EXISTS '.$_POST['database'];
