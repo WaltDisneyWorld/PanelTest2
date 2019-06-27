@@ -7,7 +7,19 @@
   DESIGNED TO WORK WITH INTISP
   COPYRIGHT ADACLARE TECHNOLOGIES ALL RIGHTS RESERVED
 
-
+  WITH SAFE MODE FOR INTISP
+  + ./ & ../ HACK PREVENTOR
+  + ACE CODE EDITOR
+  + WORDPRESS INSTALLER
+  + COPY, CUT, PASTE SYSTEM
+  + BRUTE FORCE SAFE
+  + LOCK DOWN DRIVE FEATURE
+   _       _            _                
+  /_\   __| | __ _  ___| | __ _ _ __ ___ 
+ //_\\ / _` |/ _` |/ __| |/ _` | '__/ _ \
+/  _  | (_| | (_| | (__| | (_| | | |  __/
+\_/ \_/\__,_|\__,_|\___|_|\__,_|_|  \___|
+                                         
 
 
 */
@@ -17,10 +29,6 @@ if (!isset($_SESSION['user'])) {
   die();
 }
 require("config.php");
-/*
-../ & ./ preventor
-
-*/
 
 function strpX($var) {
   $var = str_replace("/", "", $var);
