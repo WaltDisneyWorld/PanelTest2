@@ -15,6 +15,9 @@ require 'includes/classes/head.class.php'; ?>
    <script>
   function resizeIframe(obj) {
     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    if (obj.contentWindow.document.body.scrollHeight < "600") {
+        obj.style.height = '600px';
+    }
   }
 </script> </div>
   </div>
