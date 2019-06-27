@@ -91,9 +91,6 @@ function loadINTisp()
     $router->get('/temppass', function () {
         int_route('includes/views/temppass.tpl.php');
     });
-    $router->get('/activation', function () {
-        int_route('includes/views/activation.tpl.php');
-    });
     $router->get('/wizard', function () {
         int_route('includes/views/wizard.tpl.php');
     });

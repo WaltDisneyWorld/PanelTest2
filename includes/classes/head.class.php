@@ -172,13 +172,7 @@ mysqli_close($con);
        }
        $menu_builder .= '><a href="'.$webroot.'/newserv"><i class="fa fa fa-plus"></i> <span>'.$lang_15.'</span></a></li>';
 
-       if (ismasterreseller()) {
-           $menu_builder .= '<li';
-           if ('newresell' == $_GET['page']) {
-               $menu_builder .= ' class="active"';
-           }
-           $menu_builder .= '><a href="'.$webroot.'/newresell"><i class="fa fa fa-plus"></i> <span>'.$lang_16.'</span></a></li>';
-       }
+     
        if ('' != file_get_contents('data/cloudflare')) {
            $menu_builder .= '<li';
            if ('cloudflare' == $_GET['page']) {

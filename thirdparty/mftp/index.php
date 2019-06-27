@@ -243,6 +243,21 @@ if (is_dir($_SESSION["d_copy"])) {
 $_SESSION["p_dir"] = $_GET["p"];
 
 
+if (isset($_GET["wp"])) {
+  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+      file_put_contents($path . "/" . $_GET["p"] . "/wordpress.zip",file_get_contents($wp_url));
+      $zip = new ZipArchive;
+if ($zip->open($path . "/" . $_GET["p"] . "/wordpress.zip") === TRUE) {
+    $zip->extractTo($path . "/" . $_GET["p"] . "/");
+    $zip->close();
+}
+unlink($path . "/" . $_GET["p"] . "/wordpress.zip");
+  }
+
+  
+}
+
+
 ?>
 <html>
   <head>
@@ -299,7 +314,7 @@ foreach ($arr as $ocur) {
      <?php } ?>
      <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#newFile"> <i class="fas fa-file-medical"></i></button>
         <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#newFold"> <i class="fas fa-folder-plus"></i></button>
-        <button class="btn btn-light btn-sm pl-3 pr-3 ml-1"> <img width="16px" height="16px" src="public/wp.png"></button>
+        <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#wpModal"> <img width="16px" height="16px" src="public/wp.png"></button>
       </div>
     </div>
     
@@ -318,7 +333,27 @@ $full_path = $path;
 if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
     $full_path = $path . $_GET["p"];
 }
-$folders_files = scandir($full_path);
+
+function betterScan($path) {
+$a = scandir($path);
+$c = array();
+foreach ($a as $b) {
+if (is_dir($b)) {
+  array_push($c,$b);
+}
+}
+$a = scandir($path);
+foreach($a as $b) {
+  if (!is_dir($b)) {
+    array_push($c,$b);
+  }
+}
+return $c;
+}
+
+
+
+$folders_files = betterScan($full_path);
 function filesize_formatted($path)
 {
     $size = filesize($path);
@@ -356,10 +391,22 @@ foreach ($folders_files as $type) {
     } else {
         ?>
         <div class="row edrive-table-data-row">
-        <div class="col-lg-3 col-md-3 col-sm-3 col-12 data-name"><i class="fas fa-file edrive-file-icon"></i> <a href="?e=<?php 
+        <div class="col-lg-3 col-md-3 col-sm-3 col-12 data-name">
+        <?php
+$ext = pathinfo($path . "/" . $_GET["p"] . "/" . $type, PATHINFO_EXTENSION);
+if ($ext == "php" || $ext == "html" || $ext == "js" || $ext == "css" || $ext == "htaccess" || $ext == "htpasswd" || $ext == "htm") echo '<i class="fas fa-file-code"></i>';
+else if ($ext == "png" || $ext == "jpg" || $ext == "jpeg" || $ext == "bmp")  echo '<i class="fas fa-file-image"></i>';
+else if ($ext == "pdf") echo '<i class="fas fa-file-pdf"></i>';
+else if ($ext == "zip" || $ext == "rar" || $ext == "7z") echo '<i class="fas fa-archive"></i>';
+else echo '<i class="fas fa-file"></i>';
+ ?>
+        
+        
+        
+         <a href="?e=<?php 
         
         if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-          echo $_GET["p"] . "/" . $type;
+          echo $path . "/" . $_GET["p"] . "/" . $type;
         } else {
         echo $type;
         }
@@ -709,5 +756,24 @@ if (!$disable_uploading) { ?>
 		}
   </script>
 <?php } ?>
+<div class="modal fade" id="wpModal" tabindex="-1" role="dialog" aria-labelledby="wpModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="wpModalLabel">Download Wordpress</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+     <p>WordPress is web software you can use to create a beautiful website or blog. We like to say that WordPress is both free and priceless at the same time. The core software is built by hundreds of community volunteers, and when you're ready for more there are thousands of plugins and themes available to transform your site into almost anything you can imagine. Over 60 million people have chosen WordPress to power the place on the web they call "home" we'd love you to join the family.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a href="?p=<?php echo $_GET["p"]; ?>&wp" class="btn btn-primary">Download Now</a>
+      </div>
+    </div>
+  </div>
+</div>
   </body>
 </html>

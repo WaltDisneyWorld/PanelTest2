@@ -183,12 +183,7 @@ $(document).ready(function(){
   <li class="list-group-item">  
 
                                         <a type="button" href="<?php echo $webroot; ?>/newserv" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_15; ?></a>
-                                            <?php
-                                            if (ismasterreseller()) {
-                                                ?>
-                                             <a type="button" href="<?php echo $webroot; ?>/newresell" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_16; ?></a>
-                                            <?php
-                                            } ?>
+                                        
                                         <?php if ('' != file_get_contents('data/cloudflare')) {
                                                 ?>
                                         
@@ -234,8 +229,7 @@ if (ismasterreseller()) {
                                                                             } ?>
                                   <a type="button" href="<?php echo $webroot; ?>/plug" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/plugins.svg"><hr><?php echo $lang_23; ?></a>
                                         <a type="button" href="<?php echo $webroot; ?>/terminal" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/term.svg"><hr><?php echo $lang_24; ?></a>
-                                        <a  type="button" href="<?php echo $webroot; ?>/activation" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/active.png"><hr>My License</a>
-                                        <a  type="button" href="<?php echo $webroot; ?>/manage7" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/manage7.png"><hr>Manage7</a>
+                                         <a  type="button" href="<?php echo $webroot; ?>/manage7" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/manage7.png"><hr>Manage7</a>
                                                                                       <a type="button" href="<?php echo $webroot; ?>/mail" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/mail.svg"><hr><?php echo $lang_25; ?></a>
                                       
                                             <?php

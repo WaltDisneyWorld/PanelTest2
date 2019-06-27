@@ -74,6 +74,14 @@ if (!isset($tempxaaa)) {
         }
         // Power Controls
     }
+    function deprovision($username) {
+        global $logging;
+        if ($logging) {
+            $message = '['.time().'] '.$_SESSION['user'].' Recieved deProvision of User '.$username;
+            $myfile = file_put_contents('actions.log', $message.PHP_EOL, FILE_APPEND | LOCK_EX);
+        }
+        //Delete User
+    }
     function provserverclient($port, $disk, $username, $password)
     {
         global $logging;

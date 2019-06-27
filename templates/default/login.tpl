@@ -55,30 +55,9 @@
         {{ oauth | raw }}
           </form>
       
-       <div class="or">or</div>
-      <hr class="invisible">
-      <div class="form-group">
-           <div class="form-group mb10">
-          <div class="input-group">
-            <span class="input-group-addon"></span>
-              <form  class="login100-form validate-form" style="padding-top:0px;" method="GET" action="">
-           {% if reseller == true %}
-              <input type="text" name="reseller" class="form-control" placeholder="Enter Reseller" value="{{ the_reseller }}" disabled>
-           </div>
-        </div>
-        
-            <input type="hidden" name="page" value="logout">
-           <input type="submit" value="X" class="btn btn-danger btn-quirk btn-block">
-         {% else %}
-          <input type="text" name="reseller"  class="form-control" placeholder="Enter Reseller">
-         </div>
-        </div>
-        
-         <input type="submit" value="Switch" class="btn btn-success btn-quirk btn-block">
-          {% endif %}
-
-         </form>
-      </div>
+     
+      
+      
     </div><center>
       <a href="?en">English</a>
   <a href="?es">Spanish</a>
