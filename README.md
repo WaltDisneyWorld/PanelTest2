@@ -6,11 +6,20 @@ The IntISP Web hosting interface is a plugin to the IntISP solution. We have mad
 
 - IntISP Software Itself
 - phpmyadmin Database Management Software
-- Monsta FTP Client
+- IntISP File Manager Utility
+- Quick Wordpress Installation
+- ACE Code Editor built in
 - Awesome Error Reporting Utility
 - Full SMTP Client to automatically send mail to users
 - Random AES256 Password Hashing
 - OAUTH Connectivity to Twitter, Google, Facebook, and Github
+
+## Planned Features
+
+- Adding Apache2 Support
+- Combine all repo into 1 repo
+- SSL Certificates
+
 
 ## Screenshots
 

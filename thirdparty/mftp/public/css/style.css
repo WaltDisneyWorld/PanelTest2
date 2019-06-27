@@ -60,7 +60,7 @@
     text-shadow: 0pt 0pt 1pt #eee;
   }
   .edrive-sidebar a:hover {
-    color: #07f;
+    color: #fff;
     text-decoration: none;
   }
   .edrive-sidebar ul {
@@ -114,7 +114,7 @@
   }
   .edrive-space .edrive-table-data-row .data-name a:hover {
     text-decoration: none;
-    color: #07f;
+    color: #fff;
   }
   .edrive-space .edrive-table-data-row .data-info {
     font-size: 12px;
@@ -123,3 +123,23 @@
     margin: auto 0;
   }
   
+#image-uploader{
+	border: 1px dotted #555;
+	height: 150px;
+	text-align: center;
+	line-height: 150px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#main{
+	box-shadow: 0 0 8px #ccc;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	margin-bottom: 30px;
+}
+
+#main h3{
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 10px;
+}
