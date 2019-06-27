@@ -63,7 +63,7 @@ if (!isset($tempxaaa)) {
             $myfile = file_put_contents('actions.log', $message.PHP_EOL, FILE_APPEND | LOCK_EX);
         }
         //Disk Percentage Used
-        return 30;
+        return 90;
     }
     function pwrmgmnt($action)
     {

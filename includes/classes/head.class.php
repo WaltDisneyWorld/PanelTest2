@@ -101,11 +101,7 @@ $result = mysqli_query($con, $sql);
    mysqli_free_result($result);
     mysqli_close($con);
     if (100 == getDiskPercentage()) {
-        ?>
-    <h1>You have reached your disk usage limit</h1>
-    <p>Please contact support to remove this message.</p>
-    <?php
-    die();
+    $_SESSION["preventative"] = true;
     }
     ?>
 <!DOCTYPE html>
@@ -234,10 +230,7 @@ mysqli_close($con);
                      $menu_builder .= ' <h5 class="sidebar-title">My Server</h5>
        <ul class="nav nav-pills nav-stacked nav-quirk">';
 
-               $menu_builder .= '<li'; if ('FileManager' == $_GET['page']) {
-                   $menu_builder .= ' class="active"';
-               }  $menu_builder .= '><a href="'.$webroot.'/FileManager"><i class="fa fa fa-file"></i> <span>'.$lang_26.'</span></a></li>';
-               $menu_builder .= '<li'; if ('cron' == $_GET['page']) {
+                   $menu_builder .= '<li'; if ('cron' == $_GET['page']) {
                    $menu_builder .= ' class="active"';
                }  $menu_builder .= '><a href="'.$webroot.'/cron"><i class="fa fa fa-clock-o"></i> <span>'.$lang_27.'</span></a></li>';
            $menu_builder .= '    <li><a href="thirdparty/phpmyadmin/index.php"><i class="fa fa fa-database"></i> <span>'.$lang_28.'</span></a></li>
@@ -301,7 +294,7 @@ function newVersion() {
    }
  }rrmdir('install');
             }
-              if (file_exists('install')) {
+              if (file_exists('install') && "admin" == $_SESSION["user"]) {
                 ?>
            <div class="alert alert-warning" role="alert">
  <h4 class="alert-heading">The Install Folder Needs to be deleted</h4>
@@ -313,7 +306,14 @@ function newVersion() {
         } if ($dev_edition) {
             echo $lang_39;
         }
-
+if (isset($_SESSION["preventative"])) {
+    ?>
+ <div class="alert alert-warning" role="alert">
+<b>You have reached your disk limit</b>
+<p>To ensure you will not go over your disk limit, functions have been disabled. Please contact your web hosting service or delete some files.<Br>You may also want to upgrade your plan to allow for more storage.</p>
+ </div>
+    <?php
+}
                            if (issues()) {
                                die($lang_34);
                            }

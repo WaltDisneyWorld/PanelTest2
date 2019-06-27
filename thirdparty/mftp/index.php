@@ -11,6 +11,7 @@
 
 
 */
+
 session_start();
 if (!isset($_SESSION['user'])) {
   die();
@@ -28,7 +29,7 @@ function strpX($var) {
 }
 
 
-if(isset($_FILES['file']) && !empty($_FILES['file'])){
+if(isset($_FILES['file']) && !empty($_FILES['file']) && !isset($_SESSION["preventative"])){
   if ($disable_uploading) {
     die();
   }
@@ -81,7 +82,7 @@ if (strpos($_GET["p"], './') !== false) {
     die("../ & ./ Preventor Tripped");
 }
 
-if (isset($_GET["file"])) {
+if (isset($_GET["file"]) && !isset($_SESSION["preventative"])) {
   $file_name = strpX($_GET["file"]);
   if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
     if (!file_exists($path . "/" . $_GET["p"] . "/" . $file_name)) {
@@ -90,7 +91,7 @@ if (isset($_GET["file"])) {
   }
   header("Location: ?p=" . $_GET["p"]);
 }
-if (isset($_GET["folder"])) {
+if (isset($_GET["folder"]) && !isset($_SESSION["preventative"])) {
   $file_name = strpX($_GET["folder"]);
   if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
     if (!file_exists($path . "/" . $_GET["p"] . "/" . $file_name)) {
@@ -120,7 +121,7 @@ if (isset($_GET["d_confirmed"])) {
 }
 
 
-if (isset($_GET["prev"])) {
+if (isset($_GET["prev"]) && !isset($_SESSION["preventative"])) {
   $old = strpX($_GET["prev"]);
   $new = strpX($_GET["renamed"]);
   if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
@@ -133,7 +134,7 @@ if (isset($_GET["prev"])) {
   }
   header("Location: ?p=" . $_GET["p"]);
 }
-if (isset($_GET["d_cut"])) {
+if (isset($_GET["d_cut"]) && !isset($_SESSION["preventative"])) {
   $new = strpX($_GET["d_cut"]);
   if (isset($_SESSION["d_copy"])) unset($_SESSION["d_copy"]);
 
@@ -144,7 +145,7 @@ if (isset($_GET["d_cut"])) {
     }}
     header("Location: ?p=" . $_GET["p"]);
 }
-if (isset($_GET["d_copy"])) {
+if (isset($_GET["d_copy"]) && !isset($_SESSION["preventative"])) {
   $new = strpX($_GET["d_copy"]);
   if (isset($_SESSION["d_cut"])) unset($_SESSION["d_cut"]);
   if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
@@ -154,7 +155,7 @@ if (isset($_GET["d_copy"])) {
     header("Location: ?p=" . $_GET["p"]);
 }
 
-if (isset($_GET["cancelcut"])) {
+if (isset($_GET["cancelcut"]) && !isset($_SESSION["preventative"])) {
   if (isset($_SESSION["d_cut"])) unset($_SESSION["d_cut"]);
   if (isset($_SESSION["d_copy"])) unset($_SESSION["d_copy"]);
   header("Location: ?p=" . $_GET["p"]);
@@ -206,7 +207,7 @@ function rrmdir($dir) {
     rmdir($dir); 
   } 
 }
-if (isset($_GET["paste"])) {
+if (isset($_GET["paste"]) && !isset($_SESSION["preventative"])) {
   if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
       if (isset($_SESSION["d_cut"])) {
         if (is_dir($_SESSION["d_cut"])) {
@@ -243,7 +244,7 @@ if (is_dir($_SESSION["d_copy"])) {
 $_SESSION["p_dir"] = $_GET["p"];
 
 
-if (isset($_GET["wp"])) {
+if (isset($_GET["wp"]) && !isset($_SESSION["preventative"])) {
   if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
       file_put_contents($path . "/" . $_GET["p"] . "/wordpress.zip",file_get_contents($wp_url));
       $zip = new ZipArchive;
@@ -299,6 +300,7 @@ foreach ($arr as $ocur) {
           </span>
         </div>
       </div>
+      
       <div class="col-md-5 col-sm-5 col-5 text-right">
      <?php if (isset($_SESSION["d_copy"]) || isset($_SESSION["d_cut"])) { ?>
       <?php if (isset($_SESSION["d_copy"])) { 
@@ -308,16 +310,27 @@ foreach ($arr as $ocur) {
       } ?>
       <a href="?p=<?php echo $_GET["p"]; ?>&paste" class="btn btn-light btn-sm pl-3 pr-3 ml-1"> <i class="fas fa-paste"></i></a>
       <a href="?p=<?php echo $_GET["p"]; ?>&cancelcut" class="btn btn-light btn-sm pl-3 pr-3 ml-1"><i class="fas fa-ban"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <?php } if (!$disable_uploading) { ?>
+     <?php }  if (!isset($_SESSION["preventative"])) { if (!$disable_uploading) { 
+     
+       ?>
      
      <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#uploadFile"> <i class="fas fa-upload"></i></button>
      <?php } ?>
      <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#newFile"> <i class="fas fa-file-medical"></i></button>
         <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#newFold"> <i class="fas fa-folder-plus"></i></button>
         <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#wpModal"> <img width="16px" height="16px" src="public/wp.png"></button>
+        <?php } ?>
       </div>
     </div>
-    
+    <?php
+     
+if (isset($_SESSION["preventative"])) {
+  ?>
+<div class="alert alert-danger" style="border-radius: 0 !important;border:0;"><b>Safe Mode</b> has been enabled.</div>
+  <?php
+}
+
+?>
     <div class="row edrive-wrapper">
   
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 edrive-space">
@@ -380,10 +393,10 @@ foreach ($folders_files as $type) {
           <div class="col-lg-2 col-md-2 col-sm-2 col-12 data-info">Folder</div>
           <div class="col-lg-1 col-md-1 col-sm-1 col-12 data-info">-</div>
           <div class="col-lg-4 col-md-3 col-sm-3 col-12 data-info">
-          <a href="?p=<?php echo $_GET["p"]; ?>&d_copy=<?php echo urlencode($type); ?>"><i class="fas fa-copy"></i></a>&nbsp;&nbsp;&nbsp;
+          <?php if (!$_SESSION["preventative"]) { ?>     <a href="?p=<?php echo $_GET["p"]; ?>&d_copy=<?php echo urlencode($type); ?>"><i class="fas fa-copy"></i></a>&nbsp;&nbsp;&nbsp;
           <a href="?p=<?php echo $_GET["p"]; ?>&d_cut=<?php echo urlencode($type); ?>"><i class="fas fa-cut"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a href="?p=<?php echo $_GET["p"]; ?>&rename=<?php echo urlencode($type); ?>"><i class="fas fa-i-cursor"></i></a> &nbsp;&nbsp;&nbsp;
-          <a href="?p=<?php echo $_GET["p"]; ?>&d_confirm=<?php echo urlencode($type); ?>"><i class="fas fa-trash"></i></a>
+          <?php } ?>      <a href="?p=<?php echo $_GET["p"]; ?>&d_confirm=<?php echo urlencode($type); ?>"><i class="fas fa-trash"></i></a>
       
           </div>
         </div>
@@ -417,11 +430,11 @@ else echo '<i class="fas fa-file"></i>';
         <div class="col-lg-2 col-md-2 col-sm-2 col-12 data-info">File</div>
         <div class="col-lg-1 col-md-1 col-sm-1 col-12 data-info"><?php echo filesize_formatted($full_path . "/" . $type); ?></div>
         <div class="col-lg-4 col-md-3 col-sm-3 col-12 data-info">
-        <a href="?p=<?php echo $_GET["p"]; ?>&d_copy=<?php echo urlencode($type); ?>"><i class="fas fa-copy"></i></a>&nbsp;&nbsp;&nbsp;
+        <?php if (!$_SESSION["preventative"]) { ?>     <a href="?p=<?php echo $_GET["p"]; ?>&d_copy=<?php echo urlencode($type); ?>"><i class="fas fa-copy"></i></a>&nbsp;&nbsp;&nbsp;
           <a href="?p=<?php echo $_GET["p"]; ?>&d_cut=<?php echo urlencode($type); ?>"><i class="fas fa-cut"></i></a>&nbsp;&nbsp;&nbsp;
-        <a href="?p=<?php echo $_GET["p"]; ?>&edit=<?php echo urlencode($type); ?>"><i class="fas fa-edit"></i></a> &nbsp;&nbsp;&nbsp;
+    <a href="?p=<?php echo $_GET["p"]; ?>&edit=<?php echo urlencode($type); ?>"><i class="fas fa-edit"></i></a> &nbsp;&nbsp;&nbsp;
         <a href="?p=<?php echo $_GET["p"]; ?>&rename=<?php echo urlencode($type); ?>"><i class="fas fa-i-cursor"></i></a> &nbsp;&nbsp;&nbsp;
-        <a href="?p=<?php echo $_GET["p"]; ?>&d_confirm=<?php echo urlencode($type); ?>"><i class="fas fa-trash"></i></a>
+        <?php } ?>     <a href="?p=<?php echo $_GET["p"]; ?>&d_confirm=<?php echo urlencode($type); ?>"><i class="fas fa-trash"></i></a>
         
         </div>
         </div>
@@ -627,7 +640,7 @@ if (isset($_GET["edit"])) {
   <?php
 }
 
-if (isset($_GET["edit"])) {
+if (isset($_GET["edit"]) && !isset($_SESSION["preventative"])) {
   if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
     $editing_file = strpX($_GET["edit"]);
     if (file_exists($path . "/" . $_GET["p"] . "/" . $editing_file) && !is_dir($path . "/" . $_GET["p"] . "/" . $editing_file)) {

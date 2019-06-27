@@ -257,6 +257,8 @@ if (ismasterreseller()) {
 
 <br>
 <?php
+
+
      if ('admin' != $_SESSION['user']) {
          ?>
 <div>
@@ -282,8 +284,7 @@ $(document).ready(function(){
   <li class="list-group-item notification is-dark"><a id="hide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="show" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> <?php echo $lang_47; ?></li>
   <li class="list-group-item">  
 
-                                        <a  type="button" href="<?php echo $webroot; ?>/FileManager" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/file.svg"><hr><?php echo $lang_26; ?></a>
-    <a    type="button" href="<?php echo $webroot; ?>/cron" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/cron.svg"><hr><?php echo $lang_27; ?></a>
+                                     <a    type="button" href="<?php echo $webroot; ?>/cron" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/cron.svg"><hr><?php echo $lang_27; ?></a>
                                         <a    type="button" href="thirdparty/phpmyadmin/index.php" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/dx.svg"><hr><?php echo $lang_28; ?></a>
                                               <a  type="button" href="<?php echo $webroot; ?>/phpinfo" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/php.svg"><hr><?php echo $lang_29; ?></a>
                                                                                  
@@ -320,6 +321,28 @@ $(document).ready(function(){
                                     
                                                          </li>
   </ul>  
+  <?php
+if ('admin' != $_SESSION['user']) {
+   ?>
+ <ul class="list-group" data-step="5" data-intro="This is where users manage there servers.">
+  <li class="list-group-item notification is-dark">File Manager</li>
+  <li class="list-group-item">  
+  <iframe src="thirdparty/mftp/index.php" style="width:1000px;border:0;" scrolling="no" onload="resizeIframe(this)"></iframe>
+  <script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    if (obj.contentWindow.document.body.scrollHeight < "500") {
+        obj.style.height = '500px';
+    }
+  }
+</script>
+  </li>
 
+ </ul>
+
+
+   <?php
+}
+?>
 
 <?php require 'includes/classes/footer.class.php'; ?>

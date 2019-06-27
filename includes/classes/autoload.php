@@ -130,9 +130,6 @@ function loadINTisp()
     $router->get('/plpage', function () {
         int_route('includes/views/plpage.tpl.php');
     });
-    $router->get('/FileManager', function () {
-        int_route('includes/views/FileManager.tpl.php');
-    });
     $router->get('/phpinfo', function () {
         int_route('includes/views/phpinfo.tpl.php');
     });

@@ -86,12 +86,8 @@ border: 0px;
         <div class="media-left" style="background-color: #262b36;">
      
         </div>
-         <div class="media-body" style="background-color: #262b36;">
-          <h4 class="media-heading">
-              {{ edition }} 
-              </h4>
-              </div>
-        <br>
+       
+      
              <div class="media-body">
           <h4 class="media-heading">{{ username }} </h4>
           <span>{{ usertype }}</span>
