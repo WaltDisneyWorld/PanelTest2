@@ -18,9 +18,10 @@
         "league/oauth2-google": "^3.0",
         "hayageek/oauth2-yahoo": "^2.0",
         "stevenmaguire/oauth2-microsoft": "^2.2",
-        "twig/twig": "^2.6",
+
         "bramus/router": "~1.4",
         "predis/predis": "^1.1",
-        "psr/log": "^1.1"
+        "psr/log": "^1.1",
+        "phpmyadmin/phpmyadmin": "4.9.0.1"
     }
 }

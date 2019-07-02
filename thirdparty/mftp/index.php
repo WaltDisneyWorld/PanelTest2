@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 /*
 
   INTISP FILE MANAGER UTLITY
@@ -28,7 +29,7 @@ session_start();
 if (!isset($_SESSION['user'])) {
   die();
 }
-require("config.php");
+require("alpha.php");
 
 function strpX($var) {
   $var = str_replace("/", "", $var);

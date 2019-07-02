@@ -182,9 +182,7 @@ mysqli_close($con);
        }
        $menu_builder .= '><a href="'.$webroot.'/list#"><i class="fa fa fa-user"></i> <span>'.$lang_18.'</span></a></li>';
 
-       if (ismasterreseller()) {
-           $menu_builder .= '<li><a href="thirdparty/phpmyadmin/index.php?server=localhost&pma_username='.urlencode($user).'&pma_password='.urlencode($pass).'"><i class="fa fa fa-database"></i> <span>'.$lang_20.'</span></a></li>';
-       }
+    
        $menu_builder .= ' </ul>
                       <h5 class="sidebar-title">System</h5>
        <ul class="nav nav-pills nav-stacked nav-quirk">';
@@ -233,7 +231,7 @@ mysqli_close($con);
                    $menu_builder .= '<li'; if ('cron' == $_GET['page']) {
                    $menu_builder .= ' class="active"';
                }  $menu_builder .= '><a href="'.$webroot.'/cron"><i class="fa fa fa-clock-o"></i> <span>'.$lang_27.'</span></a></li>';
-           $menu_builder .= '    <li><a href="thirdparty/phpmyadmin/index.php"><i class="fa fa fa-database"></i> <span>'.$lang_28.'</span></a></li>
+           $menu_builder .= '    <li><a href="thirdparty/phpminiadmin/index.php"><i class="fa fa fa-database"></i> <span>'.$lang_28.'</span></a></li>
              <li><a href="'.$webroot.'/phpinfo"><i class="fa fa fa-code"></i> <span>'.$lang_29.'</span></a></li>
                      </ul>';
         if ($CP) {

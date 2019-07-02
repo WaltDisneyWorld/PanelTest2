@@ -191,14 +191,7 @@ $(document).ready(function(){
                                         <?php
                                             } ?>
                                         <a type="button" href="<?php echo $webroot; ?>/list#" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/list.svg"><hr><?php echo $lang_18; ?></a>
-                                                                             <?php
-                                                                            if (ismasterreseller()) {
-                                                                                ?>
-                                                                                   
-                                                                                         
-                                                                                                                  <a type="button" href="thirdparty/phpmyadmin/index.php?pma_username=<?php echo urlencode($user); ?>&pma_password=<?php echo urlencode($pass); ?>" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/bd.svg"><hr> <?php echo $lang_20; ?></a>
-                                                                            <?php
-                                                                            } ?>
+                                                                       
                                          </li>
   </ul>
   <script>
@@ -285,7 +278,7 @@ $(document).ready(function(){
   <li class="list-group-item">  
 
                                      <a    type="button" href="<?php echo $webroot; ?>/cron" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/cron.svg"><hr><?php echo $lang_27; ?></a>
-                                        <a    type="button" href="thirdparty/phpmyadmin/index.php" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/dx.svg"><hr><?php echo $lang_28; ?></a>
+                                        <a    type="button" href="thirdparty/phpminiadmin/index.php" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/dx.svg"><hr><?php echo $lang_28; ?></a>
                                               <a  type="button" href="<?php echo $webroot; ?>/phpinfo" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/php.svg"><hr><?php echo $lang_29; ?></a>
                                                                                  
                                                                                  
