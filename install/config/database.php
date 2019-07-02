@@ -30,6 +30,7 @@ $host = '%HOSTNAME%';
 $user = '%USERNAME%';
 $pass = '%PASSWORD%';
 $data = '%DATABASE%';
+$port = '%PORT%';
 $salt = '%SALT%';
 $lang = '%LANG%';
 $webroot = '%WEBROOT%';
