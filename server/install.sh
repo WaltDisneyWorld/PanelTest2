@@ -36,6 +36,7 @@ if [ -f /etc/redhat-release ]; then
   cp -rf $DIRFIX/install /var/www/html/install
   cp -rf $DIRFIX/plugins /var/www/html/plugins
   cp -rf $DIRFIX/templates /var/www/html/templates
+  cp -rf $DIRFIX/thirdparty /var/www/html/thirdparty
   cp -rf $DIRFIX/vendor /var/www/html/vendor
   cp -rf $DIRFIX/.htaccess /var/www/html/.htaccess
   cp -rf $DIRFIX/action.php /var/www/html/action.php
@@ -85,6 +86,7 @@ if [ -f /etc/lsb-release ]; then
   cp -rf $DIRFIX/plugins /var/www/html/plugins
   cp -rf $DIRFIX/templates /var/www/html/templates
   cp -rf $DIRFIX/vendor /var/www/html/vendor
+  cp -rf $DIRFIX/thirdparty /var/www/html/thirdparty
   cp -rf $DIRFIX/.htaccess /var/www/html/.htaccess
   cp -rf $DIRFIX/action.php /var/www/html/action.php
   cp -rf $DIRFIX/index.php /var/www/html/index.php
