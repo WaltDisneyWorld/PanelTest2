@@ -5,7 +5,7 @@ if (!isset($HOME)) {
 if (file_exists('config.php')) {
     require 'config.php';
 }
-if (!file_exists('config.php')) {
+if (!file_exists('config.php') || file_get_contents("config.php") == "") {
     header('Location: install/');
     die();
 }

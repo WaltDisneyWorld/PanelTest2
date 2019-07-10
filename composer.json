@@ -21,6 +21,7 @@
 
         "bramus/router": "~1.4",
         "predis/predis": "^1.1",
-        "psr/log": "^1.1"
+        "psr/log": "^1.1",
+        "twig/twig": "^2.11"
     }
 }
