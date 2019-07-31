@@ -22,48 +22,32 @@
   <![endif]-->
 
 </head>
-
-<body class="signwrapper">
-
-  <div class="sign-overlay"></div>
-  <div class="signpanel"></div>
-
-  <div class="panel signin">
-    <div class="panel-heading">
-           <h1><img src="{{ template_dir }}/public/assets/img/image.png"></h1>
-           <h4 class="panel-title">{{ site_title }}</h4>
-            </div>
-    <div class="panel-body">
-        {{ alerts | raw }}
-         <form action="{{ action_url }}" method="post">
-        <div class="form-group mb10">
-          <div class="input-group">
-            <span class="input-group-addon"></span>
-            <input type="text" class="form-control" name="user" placeholder="{{ lang_55 }}">
-          </div>
-        </div>
-        <div class="form-group nomargin">
-          <div class="input-group">
-            <span class="input-group-addon"></span>
-            <input type="password" class="form-control" name="pass" placeholder="{{ lang_58 }}">
-          </div>
-        </div>
-        <div><br></div>
-        <div class="form-group">
-          <button class="btn btn-success btn-quirk btn-block">{{ lang_70 }}</button>
-        </div>
-        {{ oauth | raw }}
-          </form>
-      
-     
-      
-      
-    </div><center>
-      <a href="?en">English</a>
-  <a href="?es">Spanish</a>
-<a href="?de">German</a>
+<body>
+    <div class = "container">
+	<div class="wrapper">
+   
+		<form action="{{ action_url }}" method="post" name="Login_Form" class="form-signin">   
+       {{ alerts | raw }}
+		    <h3 class="form-signin-heading"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAR4AAABOAQAAAADeS0Q4AAAAAnRSTlMAAQGU/a4AAAAJcEhZcwAAAEgAAABIAEbJaz4AAAJlSURBVEjH3dZLEqMgEADQtliw5AhcZGq42FS0ai7mUTgCSxaUDP0B2kST1CxmMS5ao09b0O4I9fNS4J+jFBK0JdQacb3U4mrNbctQXAhFT8jWuuMa1tw3K5+NaHOJr1DJQIimHsyJOkRgKQ3IEQg7ZiC0UQqNVoWSQqbg+YICnw5+W6rsobho5AWFhmQIvKOhApZ3+SyojYHywOMVOYVAo1+InCBJt4KRIRyvyE5UTujHBapgOPEyUQbHt2l5X8slqJ91Qjwm11A6zQkhnL02x+2xHhISOH5H2mpTqGgUwQ8Un1EZKJxRAo+vyTEQze6KKCNKHZmB3B0KiIpCbeIqIz/SfYFiR06unxFRuoRox2cX4edbtDF6YCY57insPAWE4B5R9aTx0mmUFGoZJ8Ibs3KRJIGQl3JYXlCYyJ5QGZkEBTpqBJlvkNWI2gojaQ6xF0ibrHxGURBIiXpBfqCVUNYIW8+2yHOcaC2q8+CvS6TbExbdRCs+cUZVIYMIlnRGGHZuLzyniAzdsxyvHPJE4RZVfI8IUSFNVM9op27GldWKOg60jUDDhWu03CFLA9smWgSt3yHzjPAQ3KBe1BNJkr29+9fI3CEuapjICKIe8heI2o9Cm0LUVzU6BioKUTc8RiPr52O9fUIFkXtGqvkevSg7uuqrXCwmv0Vcdlaj15YZO/Jv0PiTfEHuGfmJrvoq/2uFdIO8QqtGj3E7va8y4h5yRv4JGYVSqzw3UMCtIC0zc8tH1D4CPB3CsFKQ5pvlC6w9O1O3gDNeZ4jcxsvSUfvs2nHrNwbDgT/DarUd1c/Lf47+ADSdLFwWBKuHAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE4LTA5LTAyVDExOjA1OjAxLTA1OjAwe5kqXQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOC0wOS0wMlQxMTowNTowMS0wNTowMArEkuEAAAAASUVORK5CYII=" width="200px" height="40px"><br>{{ site_title }}
+</h3>
+			  {{ lang_55 }}<br>
+			  <input type="text" class="form-control" name="user" placeholder="Enter your Username" required="" autofocus="" /><br>
+      {{ lang_58 }}<br>
+			  <input type="password" class="form-control" name="pass" placeholder="Enter your Password" required=""/>     		  
+			 
+			  <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="Submit">{{ lang_70 }}</button>  	
+      {{ oauth | raw }}
+		</form>	
+    <center>
+       <ul>
+         <li><a href="?en">English</a></li>
+         <li><a href="?es">Spanish</a></li>
+         <li><a href="?de">German</a></li>
+      </ul>
+    </center>
+	</div>
+</div><center><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAR4AAABOAQAAAADeS0Q4AAAAAnRSTlMAAQGU/a4AAAAJcEhZcwAAAEgAAABIAEbJaz4AAAJlSURBVEjH3dZLEqMgEADQtliw5AhcZGq42FS0ai7mUTgCSxaUDP0B2kST1CxmMS5ao09b0O4I9fNS4J+jFBK0JdQacb3U4mrNbctQXAhFT8jWuuMa1tw3K5+NaHOJr1DJQIimHsyJOkRgKQ3IEQg7ZiC0UQqNVoWSQqbg+YICnw5+W6rsobho5AWFhmQIvKOhApZ3+SyojYHywOMVOYVAo1+InCBJt4KRIRyvyE5UTujHBapgOPEyUQbHt2l5X8slqJ91Qjwm11A6zQkhnL02x+2xHhISOH5H2mpTqGgUwQ8Un1EZKJxRAo+vyTEQze6KKCNKHZmB3B0KiIpCbeIqIz/SfYFiR06unxFRuoRox2cX4edbtDF6YCY57insPAWE4B5R9aTx0mmUFGoZJ8Ibs3KRJIGQl3JYXlCYyJ5QGZkEBTpqBJlvkNWI2gojaQ6xF0ibrHxGURBIiXpBfqCVUNYIW8+2yHOcaC2q8+CvS6TbExbdRCs+cUZVIYMIlnRGGHZuLzyniAzdsxyvHPJE4RZVfI8IUSFNVM9op27GldWKOg60jUDDhWu03CFLA9smWgSt3yHzjPAQ3KBe1BNJkr29+9fI3CEuapjICKIe8heI2o9Cm0LUVzU6BioKUTc8RiPr52O9fUIFkXtGqvkevSg7uuqrXCwmv0Vcdlaj15YZO/Jv0PiTfEHuGfmJrvoq/2uFdIO8QqtGj3E7va8y4h5yRv4JGYVSqzw3UMCtIC0zc8tH1D4CPB3CsFKQ5pvlC6w9O1O3gDNeZ4jcxsvSUfvs2nHrNwbDgT/DarUd1c/Lf47+ADSdLFwWBKuHAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE4LTA5LTAyVDExOjA1OjAxLTA1OjAwe5kqXQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOC0wOS0wMlQxMTowNTowMS0wNTowMArEkuEAAAAASUVORK5CYII=" width="100px" height="20px">
+<div class="a">Copyright Adaclare Technologies All Rights Reserved</div>
 </center>
-  </div><!-- panel -->
-
-</body>
+   </body>
 </html>
