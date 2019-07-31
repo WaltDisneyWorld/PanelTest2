@@ -12,7 +12,7 @@
 
   <link rel="stylesheet" href="{{ template_dir }}/public/lib/fontawesome/css/font-awesome.css">
 
-  <link rel="stylesheet" href="{{ template_dir }}/public/css/styles.css">
+  <link rel="stylesheet" href="{{ template_dir }}/public/css/login.css">
 
   <script src="{{ template_dir }}/public/lib/modernizr/modernizr.js"></script>
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
