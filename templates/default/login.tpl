@@ -11,7 +11,7 @@
   <title>IntISP Login</title>
 
   <link rel="stylesheet" href="{{ template_dir }}/public/lib/fontawesome/css/font-awesome.css">
-
+<link rel="stylesheet" href="{{ template_dir }}/public/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ template_dir }}/public/css/login.css">
 
   <script src="{{ template_dir }}/public/lib/modernizr/modernizr.js"></script>
