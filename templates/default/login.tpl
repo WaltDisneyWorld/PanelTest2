@@ -36,7 +36,7 @@
 			  <input type="password" class="form-control" name="pass" placeholder="Enter your Password" required=""/>     		  
 			 
 			  <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="Submit">{{ lang_70 }}</button>  	
-      {{ oauth | raw }}
+   <br>   {{ oauth | raw }}
 		</form>	
     <center>
        <ul>
