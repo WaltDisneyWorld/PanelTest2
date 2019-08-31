@@ -26,21 +26,7 @@ if (isset($_SESSION['lang'])) {
     $lang = $_SESSION['lang'];
 }
 require 'includes/lang/'.$lang.'.php';
-  $keys = '';
-    $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data");
-    // Check connection
-    $sql = "SELECT value FROM settings WHERE code =  'register' LIMIT 0 , 30";
-    if ($result = mysqli_query($con, $sql)) {
-        // Fetch one and one row
-        while ($row = mysqli_fetch_row($result)) {
-            $keys = $row[0];
-        }
-        // Free result set
-        mysqli_free_result($result);
-    }
-    mysqli_close($con);
-    require_once 'includes/classes/communication.class.php';
+require_once 'includes/classes/communication.class.php';
 
     if (!$failsafe_offline) {
         if (false == getEdition($keys)) {
@@ -100,7 +86,10 @@ $result = mysqli_query($con, $sql);
  }
    mysqli_free_result($result);
     mysqli_close($con);
-    if (100 == getDiskPercentage()) {
+    $communications = new communications;
+    $intisp_ver = $communications->getIntISPVersion();
+
+    if (100 == $communications->getDiskPercentage()) {
     $_SESSION["preventative"] = true;
     }
     ?>
@@ -312,7 +301,7 @@ if (isset($_SESSION["preventative"])) {
  </div>
     <?php
 }
-                           if (issues()) {
+                           if ($communications->overQuota()) {
                                die($lang_34);
                            }
 

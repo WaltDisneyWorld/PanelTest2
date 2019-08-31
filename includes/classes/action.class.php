@@ -20,6 +20,7 @@ function onlyadmin()
 }
 onlyadmin();
 require 'includes/classes/communication.class.php';
+$communications = new communications;
 require 'config.php';
 if (!isset($_SESSION['user'])) {
     header('Location: '.$webroot.'/cp');
@@ -27,17 +28,17 @@ if (!isset($_SESSION['user'])) {
 }
 
 if ('restart' == $_GET['act']) {
-    pwrmgmnt('restart');
+    $communications->pwrmgmnt('restart');
     header('Location: '.$webroot.'/cp');
     die();
 }
 if ('mysql' == $_GET['act']) {
-    pwrmgmnt('mysql');
+    $communications->pwrmgmnt('mysql');
     header('Location: '.$webroot.'/cp');
     die();
 }
 if ('server' == $_GET['act']) {
-    pwrmgmnt('server');
+    $communications->pwrmgmnt('server');
     header('Location: '.$webroot.'/cp');
     die();
 }

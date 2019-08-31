@@ -81,6 +81,7 @@ function loadINTisp()
     $router = new \Bramus\Router\Router();
 
     $router->get('/', function () {
+        
         if (isset($_SESSION['user'])) {
             int_route('includes/views/cp.tpl.php', true);
         } else {
@@ -136,5 +137,11 @@ function loadINTisp()
     $router->get('/cron', function () {
         int_route('includes/views/cron.tpl.php');
     });
+    $router->set404(function() {
+        header('HTTP/1.1 404 Not Found');
+        echo file_get_contents("templates/404.html");
+    });
     $router->run();
 }
+
+?>

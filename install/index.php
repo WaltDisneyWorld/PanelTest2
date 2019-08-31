@@ -33,6 +33,10 @@ error_reporting(0);
             <strong>V<?php
             $tempxaaa = 1;
             require '../includes/classes/communication.class.php';
+            $communications = new communications;
+           $intisp_ver = $communications->getIntISPVersion();
+
+
             echo $intisp_ver;
             ?></strong>
           </div>

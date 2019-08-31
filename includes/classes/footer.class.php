@@ -75,8 +75,8 @@ $microsoft = "	<script type='text/javascript'>setTimeout(function(){{var s=docum
                'port' => $myp,
                'ip' => gethostbyname(gethostname()),
                'ftppass' => $ftppass,
-               'status' => getStatus(),
-               'disk' => getDiskPercentage(),
+               'status' => $communications->getStatus(),
+               'disk' => $communications->getDiskPercentage(),
                'failed_login' => $failed_login,
             'microsoft' => $microsoft, ]);
 

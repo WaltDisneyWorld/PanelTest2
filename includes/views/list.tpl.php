@@ -17,7 +17,8 @@ onlyadmin();
   if ($_GET["dc"] == $_SESSION["user"]) die();
   if ($_GET["dc"] == "admin") die();
   require_once 'includes/classes/communication.class.php';
-  deprovision($_GET["dc"]);
+  $communications = new communications;
+  $communications->deprovision($_GET["dc"]);
 
 require_once("config.php");
   $con = mysqli_connect($host, $user, $pass, $data);

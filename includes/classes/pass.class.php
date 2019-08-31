@@ -24,6 +24,7 @@ require 'config.php';
     mysqli_query($con, $sql);
 
    require 'includes/classes/communication.class.php';
-   updatePassword(Crypto::encrypt($_POST['password'], $key));
+   $communications = new communications;
+   $communications->updatePassword(Crypto::encrypt($_POST['password'], $key));
 
     header('Location: '.$webroot.'/cp#');

@@ -42,7 +42,8 @@ VALUES ('".rand(10000, 99999)."', '".$username."', '".Crypto::encrypt($password,
 
         $conn->close();
         require_once 'includes/classes/communication.class.php';
-        provserverclient($port, $disk, $username, $password);
+        $communications = new communications;
+        $communications->provserverclient($port, $disk, $username, $password);
 
         $returnval = $returnval.'<br>Done!';
         return urlencode($returnval);
