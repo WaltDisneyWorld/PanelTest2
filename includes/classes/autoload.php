@@ -51,6 +51,14 @@ function int_route($file, $CP = false)
 
     require_once 'vendor/autoload.php';
 
+
+    require_once 'includes/classes/detect.class.php';
+    $detect = new Mobile_Detect;
+    if ($detect->isMobile()) {
+        $template_name = "mobile";
+    }
+
+
     $loader = new \Twig\Loader\FilesystemLoader('templates/'.$template_name);
     if (!$debug) {
         $twig = new \Twig\Environment($loader, [
