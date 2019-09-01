@@ -23,6 +23,12 @@ class communications {
     function deprovision($username) {
 
     }
+    function adddomain($domain) {
+
+    }
+    function removedomain($user,$domain) {
+        // USER , DOMAIN ID
+    }
     function overQuota() {
         return false;
     }

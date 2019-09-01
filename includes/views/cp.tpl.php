@@ -58,14 +58,14 @@ $(document).ready(function(){
                                                                                 <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;"><?php
                                                                                 $count = 0;
     $con = mysqli_connect($host, $user, $pass, $data);
-    $sql = 'SELECT * FROM users';
+    $sql = 'SELECT * FROM domains';
     $result = mysqli_query($con, $sql);
     while ($row = mysqli_fetch_row($result)) {
         $count = $count + 1;
     }
     mysqli_free_result($result);
     mysqli_close($con);
-    echo $count; ?></h1><hr> <?php echo $lang_14; ?></a>
+    echo $count; ?></h1><hr> Domains</a>
                                                                                                                         <a type="button" href="" class="aasvr btn btn-default"><h1 style="font-size: 60px;">
                                                                                                                             <?php
                                                                                                                             $count = 0;
@@ -280,7 +280,8 @@ $(document).ready(function(){
                                      <a    type="button" href="<?php echo $webroot; ?>/cron" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/cron.svg"><hr><?php echo $lang_27; ?></a>
                                         <a    type="button" href="thirdparty/phpminiadmin/index.php" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/dx.svg"><hr><?php echo $lang_28; ?></a>
                                               <a  type="button" href="<?php echo $webroot; ?>/phpinfo" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/php.svg"><hr><?php echo $lang_29; ?></a>
-                                                                                 
+                                              <a  type="button" href="<?php echo $webroot; ?>/domain" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/internet.svg"><hr>Domains</a>
+                                                                        
                                                                                  
                                                                                    <a id="serv"  type="button" href="<?php
     require 'config.php';

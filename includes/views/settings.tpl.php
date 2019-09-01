@@ -17,7 +17,7 @@
   text-decoration: none;
 								pointer-events: none;
 }</style>
-  <ul class="nav nav-tabs" style="width:539px">
+  <ul class="nav nav-tabs" >
     <li><a class="isDisabled">System Settings</a></li>
     <li  class="active"><a href="#menu1">Branding</a></li>
     <li><a href="#menu2">Email</a></li>
@@ -25,7 +25,7 @@
     <li><a href="#menu4">Oauth</a></li>
   </ul>
    <form method="POST" action="action.php?action=options">
-  <div class="tab-content" style="width:70%">
+  <div class="tab-content" >
 
     <div id="menu1" class="tab-pane fade in active">
       <h3>Branding</h3>

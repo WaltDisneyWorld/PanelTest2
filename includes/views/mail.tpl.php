@@ -34,7 +34,7 @@ if (isset($_GET['a'])) {
                 echo ' <tr>
         <td>'.$row[1].'</td>
         <td>'.$row[2].'</td>
-        <td><a href="?page=mail&a='.$row[0].'"><i class="fa fa-times-circle-o fa-5x" aria-hidden="true"></i>
+        <td><a href="?page=mail&a='.$row[0].'">Delete
 </a></td>
       </tr>';
             }

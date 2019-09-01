@@ -224,6 +224,7 @@ mysqli_close($con);
                }  $menu_builder .= '><a href="'.$webroot.'/cron"><i class="fa fa fa-clock-o"></i> <span>'.$lang_27.'</span></a></li>';
            $menu_builder .= '    <li><a href="thirdparty/phpminiadmin/index.php"><i class="fa fa fa-database"></i> <span>'.$lang_28.'</span></a></li>
              <li><a href="'.$webroot.'/phpinfo"><i class="fa fa fa-code"></i> <span>'.$lang_29.'</span></a></li>
+             <li><a href="'.$webroot.'/domain"><i class="fa fa fa-plus"></i> <span>Domains</span></a></li>
                      </ul>';
         if ($CP) {
             $page = 'cp';

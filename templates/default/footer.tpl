@@ -52,14 +52,14 @@
 
 <progress class="progress is-small" value="{{ disk }}" max="100">{{ disk }}%</progress>
             </li>
-                </ul>
-          </div>
-          <table class="table table-hover">
+            <li>
+
+ <table class="table table-hover">
                                             <thead>
                                                 <tr>
                                                   
                                                     <th>IP</th>
-                                                    <th>Time</th>
+                                                    <th>Date</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -67,6 +67,10 @@
                                                        </tbody>
                                         </table>
         </table>
+            </li>
+                </ul>
+          </div>
+         
     </div>
    
 </div>       
