@@ -34,15 +34,15 @@
  
   <div class="headerpanel">
 
-    <div class="logopanel">
+    <div class="logopanel" style="background-color:#262b36; text-align: center;">
        
-      <h2><a href="index.php?page=cp">IntISP {{ intisp_ver }} </a></h2>
+      <h2><a href="cp" >IntISP {{ intisp_ver }}</a></h2>
 
     </div><!-- logopanel -->
 
     <div class="headerbar">
     
-    <div class="logopanel" ><h2 style="color:White;">{{ site_title }} </h2></div>
+    
      <style>
           .btn-group .btn-group+.btn-group, .btn-group .btn-group+.btn:not(.btn-default), .btn-group .btn:not(.btn-default)+.btn-group, .btn-group .btn:not(.btn-default)+.btn:not(.btn-default) {
 border: 0px;              
@@ -50,18 +50,13 @@ border: 0px;
       </style>
       <div class="header-right">
         <ul class="headermenu">
-            
+            <li style="padding-left: 20px; padding-right: 20px;"><h2 style="color:White;">{{ site_title }} </h2></li>
           <li>
             <div id="noticePanel" class="btn-group">
                        <button onclick="location.href='{{ webroot }}/cp';" class="btn btn-notice" data-toggle="dropdown">
              <i style="color:white" class="fa fa-home"></i>
               </button>
-                          <button onclick="location.href='{{ webroot }}/FileManager';" class="btn btn-notice" data-toggle="dropdown">
-             <i style="color:white" class="fa fa-file"></i>
-              </button>
-                <button onclick="location.href='thirdparty/phpmyadmin/index.php';" class="btn btn-notice" data-toggle="dropdown">
-             <i style="color:white" class="fa fa-database"></i>
-              </button>
+          
               <button data-toggle="modal" data-target="#myModal" class="btn btn-notice" data-toggle="dropdown">
              <i style="color:white" class="fa fa-user"></i>
               </button>
@@ -77,19 +72,19 @@ border: 0px;
   </div><!-- header-->
 </header>
 <section>
-    
+
   <div class="leftpanel">
     <div class="leftpanelinner">
 
       <!-- ################## LEFT PANEL PROFILE ################## -->
-          <div class="media leftpanel-profile" style="background-color: #262b36;">
-        <div class="media-left" style="background-color: #262b36;">
-     
+          <div class="media leftpanel-profile" >
+        <div class="media-left" >
+     <i class="fa fa fa-user fa-4x" style="color:white;"></i>
         </div>
        
       
-             <div class="media-body">
-          <h4 class="media-heading">{{ username }} </h4>
+             <div class="media-body" style="text-align:center;">
+          <h4 class="media-heading" >{{ username }} </h4>
           <span>{{ usertype }}</span>
         </div>
       </div><!-- leftpanel-profile -->

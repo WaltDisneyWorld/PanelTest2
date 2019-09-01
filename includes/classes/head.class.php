@@ -1,5 +1,7 @@
 <?php
 
+
+
 /*
 Set this to true, so that if missed Server Check, The License stuff won't work correctly.
 */
@@ -245,20 +247,6 @@ echo $twig->render('head.tpl', ['template_dir' => 'templates/'.$template_name,
 'menu' => $menu_builder,
 'webroot' => $webroot, ]);
 
-function newVersion() {
-    /*
-    New Method to get the new Version
-    */
-
-    $xv = file_get_contents('https://raw.githubusercontent.com/INTisp/INTisp/master/includes/classes/communication.class.php');
-    $randfile = rand(1,9999).'.php';
-    file_put_contents('cache/'.$randfile,$xv);
-    $tempxaaa = true;
-    require 'cache/'.$randfile;
-    $currentV = $intisp_ver;
-    unlink('cache/'.$randfile);
-    return $currentV;
-    }
 
  if (!isSSL()) {
                            echo $lang_33;

@@ -3,9 +3,9 @@
 }
 require 'includes/classes/head.class.php';
 $loggedin = $_SESSION['user'];
-if (isset($_GET['yes'])) {
+if (isset($_POST['time'])) {
     $time = $_POST['time'];
-    $command = $_POST['command'];
+    $command = $_POST['comman'];
     $conn = mysqli_connect("$host", "$user", "$pass", "$data");
 
     $sql = "INSERT INTO cron (id, user, time, value)
@@ -22,7 +22,7 @@ VALUES ('".rand(10000, 99999)."', '".$loggedin."', '".$time."','".$command."')";
 
                         <h2 class="page-title"><?php echo $lang_27; ?></h2>
   
-                                                <form method="POST" action="?page=cron&yes">
+                                                <form method="POST">
 
     <div class="form-group">
   <label for="sel1"><?php echo $lang_49; ?></label>
@@ -36,7 +36,7 @@ VALUES ('".rand(10000, 99999)."', '".$loggedin."', '".$time."','".$command."')";
 </div>
   <fieldset class="form-group">
     <label for="formGroupExampleInput"><?php echo $lang_50; ?></label>
-    <input type="text" class="form-control" name="command" id="formGroupExampleInput" placeholder="">
+    <input type="text" class="form-control" name="comman" id="formGroupExampleInput" placeholder="">
   </fieldset>
 <button type="submit" class="btn btn-primary"><?php echo $lang_51; ?></button>
 </form>

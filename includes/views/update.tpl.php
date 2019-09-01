@@ -9,7 +9,9 @@ error_reporting(E_ALL);
 function redodie($a = '')
 {
     $HOME = true;
+
 }
+
 ?>
  <div class="content-wrapper">
             <div class="container-fluid">
@@ -42,13 +44,12 @@ if (version_compare(phpversion(), '4.1') < 0) {
 @set_time_limit(0);
 @ini_set('max_execution_time', 0);
 @ini_set('memory_limit', '32M');
-require_once 'includes/classes/communication.class.php';
 $currentVersion = $intisp_ver;
 if (isset($_GET['force'])) {
     $currentVersion = '0.0.1';
 }
 
-$getVersions = newVersion();
+$getVersions = file_get_contents($webroot . "/action.php?act=latest");
 if ('' != $getVersions and '' != $currentVersion) {
     print_message(lang('CURRENT VERSION'), $currentVersion, $color = 'grey');
     print_message(lang('WARNING'), lang('The upgrade process will affect all files and folders included in the main script installation.').'<br>'.lang('This includes all the core files used to run the script.').'<br>'.lang('If you have made any modifications to those files, your changes will be lost.'), $color = 'red');

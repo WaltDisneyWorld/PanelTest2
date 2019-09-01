@@ -2,7 +2,14 @@
 if (!isset($HOME)) {
     die();
 }
-if (file_exists('config.php')) {
+class IntISP {
+    function preInit() {
+        if (file_exists("config.php")) {
+            require("includes/classes/session.db.php");	//Include MySQL database class
+            require("includes/classes/mysql.db.php");	//Include PHP MySQL sessions
+            $session = new Session();	//Start a new PHP MySQL session
+            }
+        if (file_exists('config.php')) {
     require 'config.php';
 }
 if (!file_exists('config.php') || file_get_contents("config.php") == "") {
@@ -24,25 +31,7 @@ if ($debug) {
 } else {
     error_reporting(0);
 }
-
-if (isset($_GET['reseller'])) {
-    if (file_exists('data/reseller/'.$_GET['reseller'])) {
-        session_destroy(); //Prevents other cpanel users from switching to vm.
-        session_start();
-        $_SESSION['reseller'] = $_GET['reseller'];
-    } else {
-        header('HTTP/1.0 404 Not Found'); ?>
-<!doctype html><html><head><title>404 Not Found</title><style>
-body { background-color: #fcfcfc; color: #333333; margin: 0; padding:0; }
-h1 { font-size: 1.5em; font-weight: normal; background-color: #9999cc; min-height:2em; line-height:2em; border-bottom: 1px inset black; margin: 0; }
-h1, p { padding-left: 10px; }
-code.url { background-color: #eeeeee; font-family:monospace; padding:0 2px;}
-</style>
-</head><body><h1>INTISP RESELLER NOT FOUND</h1><p>The requested reseller <code class="url"><?php echo $_GET['reseller']; ?></code> was not found on this server.</p></body></html>
-<?php
-die();
     }
-}
 function int_route($file, $CP = false)
 {
 	require 'config.php';
@@ -74,74 +63,33 @@ function int_route($file, $CP = false)
     $HOME = true;
     include $file;
 }
-function loadINTisp()
-{
+function initPages() {
     require 'config.php';
     require_once 'vendor/autoload.php';
     $router = new \Bramus\Router\Router();
-
     $router->get('/', function () {
         
-        if (isset($_SESSION['user'])) {
-            int_route('includes/views/cp.tpl.php', true);
-        } else {
-            int_route('includes/views/login.tpl.php');
+    if (isset($_SESSION['user'])) {
+            $this->int_route('includes/views/cp.tpl.php', true);
+    } else {
+            $this->int_route('includes/views/login.tpl.php');
             die();
+    }
+    });
+    $router->get('/(\w+)', function($name) {
+    if (file_exists("includes/views/" . $name . ".tpl.php")) {
+        if ($name == "cp") {
+        $this->int_route('includes/views/cp.tpl.php', true);
+        } else {
+$this->int_route("includes/views/" . $name . ".tpl.php");
         }
-    });
-    $router->get('/temppass', function () {
-        int_route('includes/views/temppass.tpl.php');
-    });
-    $router->get('/wizard', function () {
-        int_route('includes/views/wizard.tpl.php');
-    });
-    $router->get('/manage7', function () {
-        int_route('includes/views/manage7.tpl.php');
-    });
-    $router->get('/fman', function () {
-        int_route('includes/views/fman.tpl.php');
-    });
-    $router->get('/cp', function () {
-        int_route('includes/views/cp.tpl.php', true);
-    });
-    $router->get('/newserv', function () {
-        int_route('includes/views/newserv.tpl.php');
-    });
-    $router->get('/list', function () {
-        int_route('includes/views/list.tpl.php');
-    });
-    $router->get('/plans', function () {
-        int_route('includes/views/plans.tpl.php');
-    });
-    $router->get('/settings', function () {
-        int_route('includes/views/settings.tpl.php');
-    });
-    $router->get('/update', function () {
-        int_route('includes/views/update.tpl.php');
-    });
-    $router->get('/plug', function () {
-        int_route('includes/views/plugin.tpl.php');
-    });
-    $router->get('/terminal', function () {
-        int_route('includes/views/terminal.tpl.php');
-    });
-    $router->get('/mail', function () {
-        int_route('includes/views/mail.tpl.php');
-    });
-    $router->get('/plpage', function () {
-        int_route('includes/views/plpage.tpl.php');
-    });
-    $router->get('/phpinfo', function () {
-        int_route('includes/views/phpinfo.tpl.php');
-    });
-    $router->get('/cron', function () {
-        int_route('includes/views/cron.tpl.php');
-    });
-    $router->set404(function() {
-        header('HTTP/1.1 404 Not Found');
+    } else {
+                header('HTTP/1.1 404 Not Found');
         echo file_get_contents("templates/404.html");
+        die();
+    }
     });
     $router->run();
 }
-
+}
 ?>

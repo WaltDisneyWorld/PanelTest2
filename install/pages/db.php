@@ -127,8 +127,15 @@ echo 'intisp'.generateRandomString(10);
   <div class="control">
 	  <?php $link = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ?
                 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].
-                $_SERVER['REQUEST_URI']; ?>
-    <input name="webroot" class="input is-rounded" type="text" value="<?php echo substr($link, 0, -24); ?>" style="width:400px">
+                $_SERVER['REQUEST_URI']; 
+                if (isset($_GET["c"])) {
+                $return = substr($link, 0, -26);
+                } else {
+                  $return = substr($link, 0, -24);
+                }
+                
+                ?>
+    <input name="webroot" class="input is-rounded" type="text" value="<?php echo $return; ?>" style="width:400px">
     <p>The website URL where IntISP is installed.</p>
   </div>
 </div><Br><br>
