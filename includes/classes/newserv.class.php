@@ -20,7 +20,8 @@ if (isset($_POST['username'])) {
                 die('Error Username is not Unique');
             }
             if ($port == $row[5]) {
-                die('Port number is not unique');
+                // die('Port number is not unique');
+                // Ports are now depricated.
             }
         }
 
