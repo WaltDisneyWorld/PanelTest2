@@ -1,6 +1,12 @@
+## Warning out of date
+
+I have been very busy working on different projects and I have recently just came back to this one. IntISP will be completely recreated and a new pricing structure will be put in place. For now you will still have access to this control panel but you will not recieve any new updates until the next version is release. IntISP will be moving away from open source as we feel this project has the potential to become very popular. A blog link will be placed here soon.
+
+
 # IntISP Web Hosting Interface
 
 The IntISP Web hosting interface is a plugin to the IntISP solution. We have made the project open source once again. IntISP can be rewritten to interface into many different control panels like CPanel, IntISP, Webmin, or whatever you would like. 
+
 
 ## Whats Included?
 
