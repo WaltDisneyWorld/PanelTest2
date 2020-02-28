@@ -284,7 +284,6 @@ echo $twig->render('head.tpl', ['template_dir' => 'templates/'.$template_name,
         }
 		
 	
-		<?php
 		
 		
 		
