@@ -3,12 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="Hosting Control Panel">
+  <meta name="author" content="Adaclare">
+  <meta name="robots" content="noindex">
+  <meta name="googlebot" content="noindex">
   <!--<link rel="shortcut icon" href="../images/favicon.png" type="image/png">-->
 
   <title>IntISP Control Panel</title>
-<script src="{{ template_dir }}/public/assets/js/jquery.min.js"></script>
+  <script src="{{ template_dir }}/public/assets/js/jquery.min.js"></script>
   <link rel="stylesheet" href="{{ template_dir }}/public/lib/Hover/hover.css">
   <link rel="stylesheet" href="{{ template_dir }}/public/lib/fontawesome/css/font-awesome.css">
   <link rel="stylesheet" href="{{ template_dir }}/public/lib/weather-icons/css/weather-icons.css">
@@ -26,10 +28,18 @@
   <![endif]-->
   
 <link rel="Stylesheet" type="text/css" href="{{ template_dir }}/public/textedit/style/jHtmlArea.css" />
+<style>
+.btn-group .btn-group+.btn-group, .btn-group .btn-group+.btn:not(.btn-default), .btn-group .btn:not(.btn-default)+.btn-group, .btn-group .btn:not(.btn-default)+.btn:not(.btn-default) {
+border: 0px;              
+}
+.page-title {
+    border-top: 0px;
+    border-bottom: 0px;
+}
+</style>
 </head>
 
-    <body>
-
+<body>
 <header>
  
   <div class="headerpanel">
@@ -43,11 +53,6 @@
     <div class="headerbar">
     
     
-     <style>
-          .btn-group .btn-group+.btn-group, .btn-group .btn-group+.btn:not(.btn-default), .btn-group .btn:not(.btn-default)+.btn-group, .btn-group .btn:not(.btn-default)+.btn:not(.btn-default) {
-border: 0px;              
-          }
-      </style>
       <div class="header-right">
         <ul class="headermenu">
             <li style="padding-left: 20px; padding-right: 20px;"><h2 style="color:White;">{{ site_title }} </h2></li>
@@ -128,10 +133,4 @@ border: 0px;
 
     </div><!-- leftpanelinner -->
   </div><!-- leftpanel -->
-  <style>
-      .page-title {
-          border-top: 0px;
-          border-bottom: 0px;
-      }
-  </style>
   <div class="mainpanel">
