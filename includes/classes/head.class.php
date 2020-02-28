@@ -283,14 +283,7 @@ echo $twig->render('head.tpl', ['template_dir' => 'templates/'.$template_name,
             echo $lang_39;
         }
 		
-		/*
-		MIGRATION WARNING
-		*/
-		?>
-		 <div class="alert alert-warning" role="alert">
-<b>This version of IntISP is severely out of date.</b>
-<p>I have been very busy working on different projects and I have recently just came back to this one. IntISP will be completely recreated and a new pricing structure will be put in place. For now you will still have access to this control panel but you will not recieve any new updates until the next version is release. IntISP will be moving away from open source as we feel this project has the potential to become very popular. A blog link will be placed here soon.</p>
- </div>
+	
 		<?php
 		
 		
