@@ -6,14 +6,14 @@ Take a look [here](https://www.adaclare.com)
 
 
 
-# IntISP Web Hosting Interface
+# Adaclare Web Host Manager
 
-The IntISP Web hosting interface is a plugin to the IntISP solution. We have made the project open source once again. IntISP can be rewritten to interface into many different control panels like CPanel, IntISP, Webmin, or whatever you would like. 
+The Adaclare Web hosting interface is a plugin to the Adaclare solution. We have made the project open source once again. IntISP can be rewritten to interface into many different control panels like CPanel, IntISP, Webmin, or whatever you would like. 
 
 
 ## Whats Included?
 
-- IntISP Software Itself
+- Adaclare Software Itself
 - phpmyadmin Database Management Software
 - IntISP File Manager Utility
 - Quick Wordpress Installation
@@ -25,6 +25,7 @@ The IntISP Web hosting interface is a plugin to the IntISP solution. We have mad
 
 ## Planned Features
 
+- Add Adaclare API Support
 - Adding Apache2 Support
 - Combine all repo into 1 repo
 - SSL Certificates
