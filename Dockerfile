@@ -1,37 +1,78 @@
 FROM ubuntu:18.04
+MAINTAINER Adaclare Technologies <support@adaclare.com>
 
 RUN apt-get update
+RUN apt-get upgrade -y
 RUN apt-get install software-properties-common -y
 RUN add-apt-repository ppa:ondrej/php -y
 RUN apt-get update
+COPY debconf.selections /tmp/
+RUN debconf-set-selections /tmp/debconf.selections
+RUN apt-get install -y zip unzip
 
-# Install apache, PHP, and supplimentary programs. curl is for debugging the container.
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 mysql-server libapache2-mod-php7.3 php7.3-common php7.3-cli php7.3-mbstring php7.3-mysql php7.3-int php7.3-gd php7.3-json php-pear php-apcu php7.3-curl curl supervisor vim
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+	php7.3 \
+	php7.3-bz2 \
+	php7.3-cgi \
+	php7.3-cli \
+	php7.3-common \
+	php7.3-curl \
+	php7.3-dev \
+	php7.3-enchant \
+	php7.3-fpm \
+	php7.3-gd \
+	php7.3-gmp \
+	php7.3-imap \
+	php7.3-interbase \
+	php7.3-intl \
+	php7.3-json \
+	php7.3-ldap \
+	php7.3-mbstring \
+	php7.3-mysql \
+	php7.3-odbc \
+	php7.3-opcache \
+	php7.3-pgsql \
+	php7.3-phpdbg \
+	php7.3-pspell \
+	php7.3-readline \
+	php7.3-recode \
+	php7.3-snmp \
+	php7.3-sqlite3 \
+	php7.3-sybase \
+	php7.3-tidy \
+	php7.3-xmlrpc \
+	php7.3-xsl \
+	php7.3-zip
+RUN DEBIAN_FRONTEND=noninteractive apt-get install apache2 libapache2-mod-php7.3 -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install mariadb-common mariadb-server mariadb-client -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install postfix -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install git composer curl -y
 
-# Enable apache mods.
-RUN a2enmod php7.3
+ENV LOG_STDOUT **Boolean**
+ENV LOG_STDERR **Boolean**
+ENV LOG_LEVEL warn
+ENV ALLOW_OVERRIDE All
+ENV DATE_TIMEZONE UTC
+ENV TERM dumb
+
+COPY panel /var/www/html/
+COPY run-docker.sh /usr/sbin/
+
 RUN a2enmod rewrite
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN chmod +x /usr/sbin/run-docker.sh
+RUN chown -R www-data:www-data /var/www/html
 
-# Manually set up the apache environment variables
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
-ENV APACHE_LOCK_DIR /var/lock/apache2
-ENV APACHE_PID_FILE /var/run/apache2.pid
+VOLUME /var/www/html
+VOLUME /var/log/httpd
+VOLUME /var/lib/mysql
+VOLUME /var/log/mysql
+VOLUME /etc/apache2
 
-
-ARG SEED=true
-# Export port 80
 EXPOSE 80
 EXPOSE 443
+EXPOSE 3306
 
-# add source to image
-RUN mkdir -p var/www/intisp
-COPY ./panel var/www/intisp
+CMD ["/usr/sbin/run-docker.sh"]
 
 
-# Update the default apache site with the config we created.
-ADD docker-build-files/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
-
-# Update the default apache ports with the config we created.
-ADD docker-build-files/ports.conf /etc/apache2/ports.conf
