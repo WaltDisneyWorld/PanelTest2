@@ -57,6 +57,7 @@ ENV TERM dumb
 
 COPY panel /var/www/html/
 COPY run-docker.sh /usr/sbin/
+COPY fixindex.html /var/www/html/index.html
 
 RUN a2enmod rewrite
 RUN ln -s /usr/bin/nodejs /usr/bin/node

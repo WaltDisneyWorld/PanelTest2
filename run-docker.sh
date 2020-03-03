@@ -26,38 +26,20 @@ if [ $LOG_LEVEL != 'warn' ]; then
 fi
 
 # enable php short tags:
-/bin/sed -i "s/short_open_tag\ \=\ Off/short_open_tag\ \=\ On/g" /etc/php/7.0/apache2/php.ini
+/bin/sed -i "s/short_open_tag\ \=\ Off/short_open_tag\ \=\ On/g" /etc/php/7.3/apache2/php.ini
 
 # stdout server info:
 if [ ! $LOG_STDOUT ]; then
-cat << EOB
-    
-    **********************************************
-    *                                            *
-    *    Adaclare Technologies IntISP            *
-    *    Docker Containter                       *
-    *                                            *
-    **********************************************
-
-    SERVER SETTINGS
-    ---------------
-    · Redirect Apache access_log to STDOUT [LOG_STDOUT]: No.
-    · Redirect Apache error_log to STDERR [LOG_STDERR]: $LOG_STDERR
-    · Log Level [LOG_LEVEL]: $LOG_LEVEL
-    · Allow override [ALLOW_OVERRIDE]: $ALLOW_OVERRIDE
-    · PHP date timezone [DATE_TIMEZONE]: $DATE_TIMEZONE
-    IntISP  Copyright (C) 2020 Adaclare Technologies
-    This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-    This is free software, and you are welcome to redistribute it
-    under certain conditions; type `show c' for details.
-
-EOB
+echo "IntISP  Copyright 2020 Adaclare Technologies"
+echo "This program comes with ABSOLUTELY NO WARRANTY"
+echo "This is free software, and you are welcome to redistribute it"
+echo "under certain conditions."
 else
     /bin/ln -sf /dev/stdout /var/log/apache2/access.log
 fi
 
 # Set PHP timezone
-/bin/sed -i "s/\;date\.timezone\ \=/date\.timezone\ \=\ ${DATE_TIMEZONE}/" /etc/php/7.0/apache2/php.ini
+/bin/sed -i "s/\;date\.timezone\ \=/date\.timezone\ \=\ ${DATE_TIMEZONE}/" /etc/php/7.3/apache2/php.ini
 
 # Run Postfix
 /usr/sbin/postfix start
@@ -71,4 +53,5 @@ if [ $LOG_LEVEL == 'debug' ]; then
 else
     &>/dev/null /usr/sbin/apachectl -DFOREGROUND -k start
 fi
+echo "Server is running...";
 
