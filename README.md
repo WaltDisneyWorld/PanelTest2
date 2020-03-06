@@ -31,6 +31,8 @@ IntISP is a web hosting control panel that can run in a docker container. It con
 
 - Email
 - SSL
+- FTP
+- Better Tracking of Resources
 - Better Subdomains
 - A new interface
 - CI & Testing
