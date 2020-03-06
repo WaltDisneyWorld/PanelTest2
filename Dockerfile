@@ -3,15 +3,19 @@ MAINTAINER Adaclare Technologies <support@adaclare.com>
 
 RUN apt-get update
 RUN apt-get upgrade -y
+
+# Add php repo
 RUN apt-get install software-properties-common -y
 RUN add-apt-repository ppa:ondrej/php -y
 RUN apt-get update
+
 COPY debconf.selections /tmp/
 RUN debconf-set-selections /tmp/debconf.selections
 RUN apt-get install -y zip unzip
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	php7.3 \
+	php7.3-bcmath \
 	php7.3-bz2 \
 	php7.3-cgi \
 	php7.3-cli \
@@ -36,6 +40,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	php7.3-pspell \
 	php7.3-readline \
 	php7.3-recode \
+	php7.3-soap \
 	php7.3-snmp \
 	php7.3-sqlite3 \
 	php7.3-sybase \
@@ -43,9 +48,25 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	php7.3-xmlrpc \
 	php7.3-xsl \
 	php7.3-zip
-RUN DEBIAN_FRONTEND=noninteractive apt-get install apache2 libapache2-mod-php7.3 -y
+
+# Install apache web server
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y apache2 libapache2-mod-php7.3 libapache2-mod-security2
+RUN a2enmod rewrite
+RUN a2enmod headers
+RUN a2enmod cache
+RUN a2enmod expires
+RUN a2enmod ssl
+RUN a2enmod proxy
+
+# Default config for mod_security
+RUN cp /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+
+# Install mariadb
 RUN DEBIAN_FRONTEND=noninteractive apt-get install mariadb-common mariadb-server mariadb-client -y
+
+# Install smtp mail server
 RUN DEBIAN_FRONTEND=noninteractive apt-get install postfix -y
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get install git composer curl -y
 
 ENV LOG_STDOUT **Boolean**
