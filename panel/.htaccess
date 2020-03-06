@@ -114,6 +114,9 @@ ModPagespeedEnableFilters collapse_whitespace,remove_comments
 </IfModule>
 # TN – ENABLE MOD PAGESPEED END
 ErrorDocument 404 /doesnotexist
+<IfModule mod_rewrite.c>
+    DirectoryIndex index.html index.php
+
 RewriteEngine On
 RewriteRule ^public - [L,NC] 
 RewriteRule ^thirdparty - [L,NC]
@@ -121,3 +124,4 @@ RewriteRule ^templates - [L,NC]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php [L]
+</IfModule>

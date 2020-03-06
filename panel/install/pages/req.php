@@ -2,6 +2,11 @@
 if (!defined('HOMEBASE')) {
     die('Direct Access is Not Allowed');
 }
+
+if (!defined('DOC_ROOT')) {
+
+    define('DOC_ROOT',dirname(dirname(__DIR__)));
+}
 ?>
 <h1 class="title">IntISP Requirements</h1>
 <p>Before we can install IntISP on your server, we need to make sure that the system meets the basic requirements. These requirements are put in place because it can help stop many bugs from occuring in your installation.</p>
@@ -23,9 +28,15 @@ if (!defined('HOMEBASE')) {
   <tbody>
       <?php
       $failedreq = 0;
+      /**
+       * @param
+       * @param 
+       * @param
+       */
       function displayReq($title, $server, $ok)
       {
-          global $failedreq; ?>
+          global $failedreq; 
+      ?>
             <tr>
       <td><?php echo $title; ?></td>
       <td><?php echo $server; ?></td>
@@ -42,23 +53,26 @@ if (!defined('HOMEBASE')) {
       </tr>
           <?php
       }
-      if (is_writable('../config.php')) {
+
+        if (is_writable(DOC_ROOT.DIRECTORY_SEPARATOR.'config.php')) {
           displayReq('Writable Configuration', 'config.php exists and can be written to.', true);
       } else {
-          displayReq('Writable Configuration', 'config.php does not exist. Please create a config.php file and check permissions.', false);
+            displayReq('Writable Configuration', DOC_ROOT.DIRECTORY_SEPARATOR.'config.php does not exist. Please create a config.php file and check permissions.', false);
       }
-if (is_writable('../cache')) {
-    displayReq('Writable Cache Directory', 'cache folder exists and can be written to.', true);
+
+        if (is_writable(DOC_ROOT.DIRECTORY_SEPARATOR.'cache')) {
+            displayReq('Writable Cache Directory', DOC_ROOT.DIRECTORY_SEPARATOR.'cache folder exists and can be written to.', true);
 } else {
     displayReq('Writable Cache Directory', 'The cache folder cannot be written to. Please verify the permissions and make sure the directory cache exists.', false);
 }
 
-        if (file_exists('../vendor')) {
+        if (file_exists(DOC_ROOT.DIRECTORY_SEPARATOR.'vendor')) {
             displayReq('Composer Installation', 'Composer has been installed and setup.', true);
         } else {
             displayReq('Composer Installation', "Composer has not been installed. Please make sure you extract the vendor.zip or run composer install. <a href='installVendor'>Try running automated Install</a>", false);
         }
     preg_match("#^\d+(\.\d+)*#", PHP_VERSION, $match);
+    
 if (version_compare($match[0], '7.0.0', '>=')) {
     displayReq('PHP VERSION', 'Your php version '.$match[0].' matched the requirement.', true);
 } else {
@@ -80,11 +94,6 @@ if (function_exists('curl_version')) {
     displayReq('PHP CURL', 'PHP CURL is not installed. Please install it before continuing.', false);
 }
       ?>
-      
-     
-      
-    
-      
 </tbody>
 </table>
 <?php if ($failedreq) {
