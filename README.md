@@ -1,12 +1,6 @@
-## CLOUD SERVER MANAGER
-
-IntISP is now compatible with Adaclare Server Manager.
-Take a look [here](https://www.adaclare.com)
-
-
-
-
 # Adaclare Web Host Manager
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H81HAQY)
 
 The Adaclare Web hosting interface is a plugin to the Adaclare solution. We have made the project open source once again. IntISP can be rewritten to interface into many different control panels like CPanel, IntISP, Webmin, or whatever you would like. 
 
