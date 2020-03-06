@@ -20,20 +20,20 @@ IntISP is a web hosting control panel that can run in a docker container. It con
 
 ## Things that need to be fixed
 
-- File Manager
-- Composer installs phpmyadmin instead
-- Remove **depreciated** Port methods
-- Fix mysql id's to auto increment
-- Add a docker bypass for configuration files
-- Setup Persistant Storage
+- File Manager **NOT DONE**
+- Composer installs phpmyadmin instead **NOT DONE**
+- Remove **depreciated** Port methods **NOT DONE**
+- Fix mysql id's to auto increment **NOT DONE**
+- Add a docker bypass for configuration files **NOT DONE**
+- Setup Persistant Storage **NOT DONE**
 
 ## Planned Additions
 
-- Email
-- SSL
-- FTP
-- Better Tracking of Resources
-- Better Subdomains
-- A new interface
-- CI & Testing
-- Java Daemon
+- Email **NOT DONE**
+- SSL **NOT DONE**
+- FTP **NOT DONE**
+- Better Tracking of Resources **NOT DONE**
+- Better Subdomains **NOT DONE**
+- A new interface **NOT DONE**
+- CI & Testing **NOT DONE**
+- Java Daemon **NOT DONE**
