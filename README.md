@@ -1,48 +1,37 @@
 # Adaclare Web Host Manager
 
+**Not for production use yet**
+
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H81HAQY)
 
-The Adaclare Web hosting interface is a plugin to the Adaclare solution. We have made the project open source once again. IntISP can be rewritten to interface into many different control panels like CPanel, IntISP, Webmin, or whatever you would like. 
+[Latest Docker Image](https://hub.docker.com/r/adaclare/intisp)
 
+IntISP is a web hosting control panel that can run in a docker container. It consists of two major parts, the control panel and the backend daemon server. The control panel is written in PHP using composer and the daemon is written in Javascript. Together they communicate together seamlessly.
 
-## Whats Included?
+## Current Features
 
-- Adaclare Software Itself
-- phpmyadmin Database Management Software
-- IntISP File Manager Utility
-- Quick Wordpress Installation
-- ACE Code Editor built in
-- Awesome Error Reporting Utility
+- Clean & Responsive Control Panel
+- Completely Rewritten Code
+- Docker Enviroment
+- Error Reporting Utility
 - Full SMTP Client to automatically send mail to users
-- Random AES256 Password Hashing
-- OAUTH Connectivity to Twitter, Google, Facebook, and Github
+- [Defuse PHP Encryption](https://github.com/defuse/php-encryption)
+- OAUTH Connectivity to Twitter, Google, Facebook, and Github **sort of, not ready yet**
 
-## Planned Features
+## Things that need to be fixed
 
-- Add Adaclare API Support
-- Adding Apache2 Support
-- Combine all repo into 1 repo
-- SSL Certificates
+- File Manager
+- Composer installs phpmyadmin instead
+- Remove **depreciated** Port methods
+- Fix mysql id's to auto increment
+- Add a docker bypass for configuration files
+- Setup Persistant Storage
 
+## Planned Additions
 
-## Screenshots
-
-![1](https://github.com/INTisp/INTisp/blob/master/screenshots/1.png?raw=true)
-![2](https://github.com/INTisp/INTisp/blob/master/screenshots/2.png?raw=true)
-![3](https://github.com/INTisp/INTisp/blob/master/screenshots/3.png?raw=true)
-![4](https://github.com/INTisp/INTisp/blob/master/screenshots/4.png?raw=true)
-![5](https://github.com/INTisp/INTisp/blob/master/screenshots/5.png?raw=true)
-![6](https://github.com/INTisp/INTisp/blob/master/screenshots/6.png?raw=true)
-
-## Installation
-
-1. Copy Files to the Web Server
-2. Install Composer (curl -sS https://getcomposer.org/installer | php)
-3. composer.phar install
-4. Follow the Installation Procedure Online
-
-## Hacking
-
-- [Communication Class with Hosting Server](https://github.com/INTisp/INTisp/blob/master/includes/classes/communication.class.php)
-- [License Class in case of issues](https://github.com/INTisp/INTisp/blob/master/includes/classes/license.class.php)
-- [Add Custom Oauth Protocols](https://github.com/INTisp/INTisp/tree/master/includes/oauth)
+- Email
+- SSL
+- Better Subdomains
+- A new interface
+- CI & Testing
+- Java Daemon
