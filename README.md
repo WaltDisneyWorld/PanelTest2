@@ -21,6 +21,7 @@ IntISP is a web hosting control panel that can run in a docker container. It con
 ## Things that need to be fixed
 
 - File Manager **NOT DONE**
+- Terminal **NOT DONE**
 - Composer installs phpmyadmin instead **NOT DONE**
 - Remove **depreciated** Port methods **NOT DONE**
 - Fix mysql id's to auto increment **NOT DONE**
