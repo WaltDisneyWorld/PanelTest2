@@ -13,6 +13,8 @@ IntISP is a web hosting control panel that can run in a docker container. It con
 - Clean & Responsive Control Panel
 - Completely Rewritten Code
 - Docker Enviroment
+- Terminal
+- Composer installs phpmyadmin
 - Error Reporting Utility
 - Full SMTP Client to automatically send mail to users
 - [Defuse PHP Encryption](https://github.com/defuse/php-encryption)
@@ -21,12 +23,11 @@ IntISP is a web hosting control panel that can run in a docker container. It con
 ## Things that need to be fixed
 
 - File Manager **NOT DONE**
-- Terminal **NOT DONE**
-- Composer installs phpmyadmin instead **NOT DONE**
 - Remove **depreciated** Port methods **NOT DONE**
 - Fix mysql id's to auto increment **NOT DONE**
 - Add a docker bypass for configuration files **NOT DONE**
 - Setup Persistant Storage **NOT DONE**
+- Recode Everything **NOT DONE**
 
 ## Planned Additions
 
