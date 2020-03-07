@@ -1,8 +1,0 @@
-vendor
-config.php
-cache
-thirdparty/phpmyadmin/tmp
-actions.log
-includes/master.zip
-includes/tmp
-composer.lock

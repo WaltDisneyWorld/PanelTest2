@@ -40,7 +40,7 @@ error_reporting(0);
             echo $intisp_ver;
             ?></strong>
           </div>
-               <a class="button is-light" href="https://host.enyrx.com/contact.php">
+               <a class="button is-light" href="https://github.com/Adaclare/Server-Manager/issues">
                <i class="fas fa-life-ring"></i>
           </a>
         </div>

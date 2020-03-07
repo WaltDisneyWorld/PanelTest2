@@ -7,6 +7,16 @@ if (!defined('DOC_ROOT')) {
 
     define('DOC_ROOT',dirname(dirname(__DIR__)));
 }
+if (isset($_GET["config"])) {
+    touch("../config.php");
+    if (!file_exists("../config.php")) {
+        ?>
+       <div class="notification is-danger">
+        Failed To Touch, Please manually create the file.
+        </div>
+        <?php
+    }
+}
 ?>
 <h1 class="title">IntISP Requirements</h1>
 <p>Before we can install IntISP on your server, we need to make sure that the system meets the basic requirements. These requirements are put in place because it can help stop many bugs from occuring in your installation.</p>
@@ -57,7 +67,7 @@ if (!defined('DOC_ROOT')) {
         if (is_writable(DOC_ROOT.DIRECTORY_SEPARATOR.'config.php')) {
           displayReq('Writable Configuration', 'config.php exists and can be written to.', true);
       } else {
-            displayReq('Writable Configuration', DOC_ROOT.DIRECTORY_SEPARATOR.'config.php does not exist. Please create a config.php file and check permissions.', false);
+            displayReq('Writable Configuration', DOC_ROOT.DIRECTORY_SEPARATOR.'config.php does not exist. Please create a config.php file and check permissions. <a href="?pg=req&config">Touch Config File</a>', false);
       }
 
         if (is_writable(DOC_ROOT.DIRECTORY_SEPARATOR.'cache')) {

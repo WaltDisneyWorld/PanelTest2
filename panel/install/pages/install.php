@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('HOMEBASE')) {
     die('Direct Access is Not Allowed');
 }
@@ -22,17 +23,18 @@ if (!isset($_SESSION['act'])) {
     <?php
     die();
 }
+
 ?>
 
 
 <h1 class="title">Installation Procedure</h1>
 <p>The installation procedure is running please do not close or refresh this page. Do not turn off the server.</p>
 <Br><br>
-<textarea style="margin: 0px; height: 345px; width: 744px;" disabled>
-    IntISP Installation Process has been started!<?php echo "\n";
+<textarea style="margin: 0px; height: 345px; width: 744px;" disabled>IntISP Installation Process has been started!<?php
+    echo "\n";
     require '../config.php';
     echo "Importing Database...\n";
-     $m = new MySQLi($host, $user, $pass, $data);
+     $m = establishDBconnection();
     $path_migrations = 'sql';
     foreach (glob($path_migrations.DIRECTORY_SEPARATOR.'*.sql') as $script) {
         $sql = file_get_contents($script);
@@ -42,71 +44,49 @@ if (!isset($_SESSION['act'])) {
     }
         $key = Key::createNewRandomKey();
         $salt = $key->saveToAsciiSafeString();
-     $sql = "INSERT INTO mail (id, subject, message) VALUES ('1','Welcome To Webister','<b>We are glad that you decided to choose Webister.</b> <p>We hope you enjoy our awesome control panel. You will get messages/emails once you place your email address in the settings.</p><p>
+        function simpleSettingInsert($key,$value = '') {
+            global $m;
+            $sql = "INSERT INTO settings (code, value) VALUES ('$key', '$value')";
+            echo "Placing Default Value for $key...\n";
+            $m->query($sql);
+        }
+     $sql = "INSERT INTO mail (subject, message) VALUES ('Welcome To Webister','<b>We are glad that you decided to choose Webister.</b> <p>We hope you enjoy our awesome control panel. You will get messages/emails once you place your email address in the settings.</p><p>
 If you feel that there are some issues or you need fix your Webister, please remember to try updating it first. You can update this in our main control panel.</p>')";
 $m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('1', 'title', 'My Web Host')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('2', 'cloudflare', '')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('3', 'color', '000000')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('4', 'forum', 'https://forum.delinz.com')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('5', 'head', '".'<center><a href="https://github.com/INTisp/INTisp"><img src="templates/default/public/assets/img/wall.jpg"></a></center>
-'."')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('6', 'loginfoot', '')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('7', 'loginhead', '')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('8', 'logo', 'public/assets/img/webister.png')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('9', 'mail', 'nobody@gmail.com')";
-$m->query($sql);
+simpleSettingInsert('title','My Web Host');
+simpleSettingInsert('cloudflare');
+simpleSettingInsert('color','000000');
+simpleSettingInsert('forum');
+simpleSettingInsert('head','Panel');
+simpleSettingInsert('logo','public/assets/img/intisp.png');
+simpleSettingInsert('mail');
+simpleSettingInsert('support');
+simpleSettingInsert('theme','default');
+simpleSettingInsert('upbutton');
+simpleSettingInsert('whmurl');
+simpleSettingInsert('smtp_host');
+simpleSettingInsert('smtp_port');
+simpleSettingInsert('smtp_security');
+simpleSettingInsert('smtp_username');
+simpleSettingInsert('smtp_password');
 
-$sql = "INSERT INTO settings (id, code, value) VALUES ('10', 'supprt', 'https://host.delinz.com')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('11', 'theme', 'default')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('12', 'upbutton', 'https://google.com')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('13', 'whmurl', '')";
-$m->query($sql);
-
-$sql = "INSERT INTO settings (id, code, value) VALUES ('15', 'smtp_host', 'localhost')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('16', 'smtp_port', '22')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('17', 'smtp_security', '0')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('18', 'smtp_username', '')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('19', 'smtp_password', '')";
-$m->query($sql);
-$sql = "INSERT INTO settings (id, code, value) VALUES ('20', 'theme', 'default')";
-$m->query($sql);
-function ae($c, $f)
+function oauth_db($c)
 {
-    global $m;
-    $sql = "INSERT INTO settings (id, code, value) VALUES ('$f', '".$c."_public', '')";
-    $m->query($sql);
-    $ds = $f + 1;
-    $sql = "INSERT INTO settings (id, code, value) VALUES ('".$ds."', '".$c."_secret', '')";
-    $m->query($sql);
+    simpleSettingInsert($c . "_public");
+    simpleSettingInsert($c . "_secret");
+    echo "Installing $c Auth Support...\n";
 }
-ae('github', 20);
-ae('twitter', 22);
-ae('google', 24);
-ae('facebook', 26);
-
-$sql = "INSERT INTO settings (id, code, value) VALUES ('14', 'register', '".$_SESSION['act']."')";
-$m->query($sql);
+oauth_db('github');
+oauth_db('twitter');
+oauth_db('google');
+oauth_db('facebook');
+simpleSettingInsert('register',$_SESSION['act']);
 $sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '".Crypto::encrypt('admin', $key)."', '', '', '80')";
 $m->query($sql);
 
         // Close the connection
         $m->close();
+
 
         echo "Import Complete...\n";
         echo "Updating Configuration...\n";
