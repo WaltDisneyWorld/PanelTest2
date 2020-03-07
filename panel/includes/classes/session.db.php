@@ -6,23 +6,23 @@
 	Last Modified 2/27/2017
 	*/
 
-	// Define database configuration
-	require_once("config.php");
-	define("DB_HOST", $host);
-	define("DB_USER", $user);
-	define("DB_PASS", $pass);
-	define("DB_NAME", $data);
-
 	class Database{
-		private $host      = DB_HOST;
-		private $user      = DB_USER;
-		private $pass      = DB_PASS;
-		private $dbname    = DB_NAME;
+		private $host      = null;
+		private $user      = null;
+		private $pass      = null;
+		private $dbname    = null;
 		private $dbh;
 		private $error;
 		private $stmt;
 	 
 		public function __construct(){
+			$loader = new IntISP;
+			$config = $loader->loadConfig();
+			$this->host = $config["database_host"];
+			$this->user = $config["database_username"];
+			$this->pass = $config["database_password"];
+			$this->dbname = $config["database_name"];
+		
 			// Set DSN
 			$dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
 			// Set options

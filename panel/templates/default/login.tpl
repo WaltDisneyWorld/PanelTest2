@@ -28,7 +28,7 @@
    
 		<form action="{{ action_url }}" method="post" name="Login_Form" class="form-signin">   
        {{ alerts | raw }}
-		    <h3 class="form-signin-heading"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAR4AAABOAQAAAADeS0Q4AAAAAnRSTlMAAQGU/a4AAAAJcEhZcwAAAEgAAABIAEbJaz4AAAJlSURBVEjH3dZLEqMgEADQtliw5AhcZGq42FS0ai7mUTgCSxaUDP0B2kST1CxmMS5ao09b0O4I9fNS4J+jFBK0JdQacb3U4mrNbctQXAhFT8jWuuMa1tw3K5+NaHOJr1DJQIimHsyJOkRgKQ3IEQg7ZiC0UQqNVoWSQqbg+YICnw5+W6rsobho5AWFhmQIvKOhApZ3+SyojYHywOMVOYVAo1+InCBJt4KRIRyvyE5UTujHBapgOPEyUQbHt2l5X8slqJ91Qjwm11A6zQkhnL02x+2xHhISOH5H2mpTqGgUwQ8Un1EZKJxRAo+vyTEQze6KKCNKHZmB3B0KiIpCbeIqIz/SfYFiR06unxFRuoRox2cX4edbtDF6YCY57insPAWE4B5R9aTx0mmUFGoZJ8Ibs3KRJIGQl3JYXlCYyJ5QGZkEBTpqBJlvkNWI2gojaQ6xF0ibrHxGURBIiXpBfqCVUNYIW8+2yHOcaC2q8+CvS6TbExbdRCs+cUZVIYMIlnRGGHZuLzyniAzdsxyvHPJE4RZVfI8IUSFNVM9op27GldWKOg60jUDDhWu03CFLA9smWgSt3yHzjPAQ3KBe1BNJkr29+9fI3CEuapjICKIe8heI2o9Cm0LUVzU6BioKUTc8RiPr52O9fUIFkXtGqvkevSg7uuqrXCwmv0Vcdlaj15YZO/Jv0PiTfEHuGfmJrvoq/2uFdIO8QqtGj3E7va8y4h5yRv4JGYVSqzw3UMCtIC0zc8tH1D4CPB3CsFKQ5pvlC6w9O1O3gDNeZ4jcxsvSUfvs2nHrNwbDgT/DarUd1c/Lf47+ADSdLFwWBKuHAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE4LTA5LTAyVDExOjA1OjAxLTA1OjAwe5kqXQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOC0wOS0wMlQxMTowNTowMS0wNTowMArEkuEAAAAASUVORK5CYII=" width="200px" height="40px"><br>{{ site_title }}
+		    <h3 class="form-signin-heading"><img src="includes/img/logo.png" width="200px" height="40px"><br>{{ site_title }}
 </h3>
 			  {{ lang_55 }}<br>
 			  <input type="text" class="form-control" name="user" placeholder="Enter your Username" required="" autofocus="" /><br>
@@ -46,7 +46,7 @@
       </ul>
     </center>
 	</div>
-</div><center><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAR4AAABOAQAAAADeS0Q4AAAAAnRSTlMAAQGU/a4AAAAJcEhZcwAAAEgAAABIAEbJaz4AAAJlSURBVEjH3dZLEqMgEADQtliw5AhcZGq42FS0ai7mUTgCSxaUDP0B2kST1CxmMS5ao09b0O4I9fNS4J+jFBK0JdQacb3U4mrNbctQXAhFT8jWuuMa1tw3K5+NaHOJr1DJQIimHsyJOkRgKQ3IEQg7ZiC0UQqNVoWSQqbg+YICnw5+W6rsobho5AWFhmQIvKOhApZ3+SyojYHywOMVOYVAo1+InCBJt4KRIRyvyE5UTujHBapgOPEyUQbHt2l5X8slqJ91Qjwm11A6zQkhnL02x+2xHhISOH5H2mpTqGgUwQ8Un1EZKJxRAo+vyTEQze6KKCNKHZmB3B0KiIpCbeIqIz/SfYFiR06unxFRuoRox2cX4edbtDF6YCY57insPAWE4B5R9aTx0mmUFGoZJ8Ibs3KRJIGQl3JYXlCYyJ5QGZkEBTpqBJlvkNWI2gojaQ6xF0ibrHxGURBIiXpBfqCVUNYIW8+2yHOcaC2q8+CvS6TbExbdRCs+cUZVIYMIlnRGGHZuLzyniAzdsxyvHPJE4RZVfI8IUSFNVM9op27GldWKOg60jUDDhWu03CFLA9smWgSt3yHzjPAQ3KBe1BNJkr29+9fI3CEuapjICKIe8heI2o9Cm0LUVzU6BioKUTc8RiPr52O9fUIFkXtGqvkevSg7uuqrXCwmv0Vcdlaj15YZO/Jv0PiTfEHuGfmJrvoq/2uFdIO8QqtGj3E7va8y4h5yRv4JGYVSqzw3UMCtIC0zc8tH1D4CPB3CsFKQ5pvlC6w9O1O3gDNeZ4jcxsvSUfvs2nHrNwbDgT/DarUd1c/Lf47+ADSdLFwWBKuHAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE4LTA5LTAyVDExOjA1OjAxLTA1OjAwe5kqXQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOC0wOS0wMlQxMTowNTowMS0wNTowMArEkuEAAAAASUVORK5CYII=" width="100px" height="20px">
+</div><center><img src="includes/img/logo.png" width="100px" height="20px">
 <div class="a">Copyright Adaclare Technologies All Rights Reserved</div>
 </center>
    </body>

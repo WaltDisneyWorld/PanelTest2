@@ -1,42 +1,12 @@
 <?php
-
-if (isset($_GET['de'])) {
-    $_SESSION['lang'] = 'de';
-}
-if (isset($_GET['es'])) {
-    $_SESSION['lang'] = 'es';
-}
-if (isset($_GET['en'])) {
-    $_SESSION['lang'] = 'en';
-}
-
-if (!isset($HOME)) {
-    die();
-}
-require 'config.php';
-
-if (!isset($lang)) {
-    $lang = 'en';
-}
-if (isset($_SESSION['lang'])) {
-    $lang = $_SESSION['lang'];
-}
-
-require 'includes/lang/'.$lang.'.php';
- require 'config.php';
-    $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data");
-    // Check connection
-    $sql = "SELECT value FROM settings WHERE code =  'title' LIMIT 0 , 30";
-    if ($result = mysqli_query($con, $sql)) {
-        // Fetch one and one row
-        while ($row = mysqli_fetch_row($result)) {
-            $site_title = $row[0];
-        }
-        // Free result set
-        mysqli_free_result($result);
-    }
-    mysqli_close($con);
+if (isset($_GET['de'])) $_SESSION['lang'] = 'de';
+if (isset($_GET['es'])) $_SESSION['lang'] = 'es';
+if (isset($_GET['en'])) $_SESSION['lang'] = 'en';
+if (!isset($HOME)) die();
+if (!isset($lang)) $lang = 'en';
+if (isset($_SESSION['lang'])) $lang = $_SESSION['lang'];
+require_once 'includes/lang/'.$lang.'.php';
+define("site_title",$this->getValueFromSetting("title"));
     $alerts = '';
         if (isset($_GET['error'])) {
             $alerts .= "<div class='alert alert-danger'>".$lang_71.'</div>';
@@ -50,66 +20,12 @@ require 'includes/lang/'.$lang.'.php';
         $google = false;
         $twitter = false;
         $facebook = false;
-          $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data");
-    // Check connection
-    $sql = "SELECT value FROM settings WHERE code =  'github_public' LIMIT 0 , 30";
-    if ($result = mysqli_query($con, $sql)) {
-        // Fetch one and one row
-        while ($row = mysqli_fetch_row($result)) {
-            if ('' != $row[0]) {
-                $github = true;
-            }
-        }
-        // Free result set
-        mysqli_free_result($result);
-    }
-    mysqli_close($con);
-             $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data");
-    // Check connection
-    $sql = "SELECT value FROM settings WHERE code =  'facebook_public' LIMIT 0 , 30";
-    if ($result = mysqli_query($con, $sql)) {
-        // Fetch one and one row
-        while ($row = mysqli_fetch_row($result)) {
-            if ('' != $row[0]) {
-                $facebook = true;
-            }
-        }
-        // Free result set
-        mysqli_free_result($result);
-    }
-    mysqli_close($con);
-                     $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data");
-    // Check connection
-    $sql = "SELECT value FROM settings WHERE code =  'google_public' LIMIT 0 , 30";
-    if ($result = mysqli_query($con, $sql)) {
-        // Fetch one and one row
-        while ($row = mysqli_fetch_row($result)) {
-            if ('' != $row[0]) {
-                $google = true;
-            }
-        }
-        // Free result set
-        mysqli_free_result($result);
-    }
-    mysqli_close($con);
-                 $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data");
-    // Check connection
-    $sql = "SELECT value FROM settings WHERE code =  'twitter_public' LIMIT 0 , 30";
-    if ($result = mysqli_query($con, $sql)) {
-        // Fetch one and one row
-        while ($row = mysqli_fetch_row($result)) {
-            if ('' != $row[0]) {
-                $twitter = true;
-            }
-        }
-        // Free result set
-        mysqli_free_result($result);
-    }
-    mysqli_close($con);
+        
+    if ($this->getValueFromSetting("github_public") != "") $github = true;
+    if ($this->getValueFromSetting("facebook_public") != "") $facebook = true;
+    if ($this->getValueFromSetting("google_public") != "") $google = true;        
+    if ($this->getValueFromSetting("twitter_public") != "") $twitter = true;               
+   
         $oauth_cred = '';
 
    if ($facebook) {
@@ -126,8 +42,8 @@ require 'includes/lang/'.$lang.'.php';
        } else {
            $reseller = '';
        }
-echo $twig->render('login.tpl', ['template_dir' => 'templates/'.$template_name,
-'site_title' => $site_title,
+     $twig_settings = Array('template_dir' => 'templates/'.constant("template_name"),
+'site_title' => constant("site_title"),
 'alerts' => $alerts,
 'action_url' => 'action.php?action=login',
 'lang_55' => $lang_55,
@@ -135,4 +51,5 @@ echo $twig->render('login.tpl', ['template_dir' => 'templates/'.$template_name,
 'lang_70' => $lang_70,
 'oauth' => $oauth_cred,
 'reseller' => isset($_SESSION['reseller']),
-'the_reseller' => $reseller, ]);
+'the_reseller' => $reseller);
+ die($twig->render('login.tpl', $twig_settings));

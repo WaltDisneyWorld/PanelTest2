@@ -3,6 +3,7 @@
 if (!defined('HOMEBASE')) {
     die('Direct Access is Not Allowed');
 }
+
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
 
@@ -33,8 +34,9 @@ if (!isset($_SESSION['act'])) {
 <textarea style="margin: 0px; height: 345px; width: 744px;" disabled>IntISP Installation Process has been started!<?php
     echo "\n";
     require '../config.php';
+ 
     echo "Importing Database...\n";
-     $m = establishDBconnection();
+     $m = new MySQLi($config["database_host"], $config["database_username"], $config["database_password"], $config["database_name"]);
     $path_migrations = 'sql';
     foreach (glob($path_migrations.DIRECTORY_SEPARATOR.'*.sql') as $script) {
         $sql = file_get_contents($script);
