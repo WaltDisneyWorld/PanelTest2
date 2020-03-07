@@ -22,6 +22,7 @@
         "bramus/router": "~1.4",
         "predis/predis": "^1.1",
         "psr/log": "^1.1",
-        "twig/twig": "^2.11"
+        "twig/twig": "^2.11",
+        "phpmyadmin/phpmyadmin": "^5.0"
     }
 }

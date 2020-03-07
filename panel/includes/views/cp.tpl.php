@@ -222,7 +222,7 @@ if (ismasterreseller()) {
                                                                             } ?>
                                   <a type="button" href="<?php echo $webroot; ?>/plug" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/plugins.svg"><hr><?php echo $lang_23; ?></a>
                                         <a type="button" href="<?php echo $webroot; ?>/terminal" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/term.svg"><hr><?php echo $lang_24; ?></a>
-                                         <a  type="button" href="<?php echo $webroot; ?>/manage7" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/manage7.png"><hr>Manage7</a>
+                                        
                                                                                       <a type="button" href="<?php echo $webroot; ?>/mail" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/mail.svg"><hr><?php echo $lang_25; ?></a>
                                       
                                             <?php
@@ -278,7 +278,7 @@ $(document).ready(function(){
   <li class="list-group-item">  
 
                                      <a    type="button" href="<?php echo $webroot; ?>/cron" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/cron.svg"><hr><?php echo $lang_27; ?></a>
-                                        <a    type="button" href="thirdparty/phpminiadmin/index.php" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/dx.svg"><hr><?php echo $lang_28; ?></a>
+                                        <a    type="button" href="vendor/phpmyadmin/phpmyadmin/" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/dx.svg"><hr><?php echo $lang_28; ?></a>
                                               <a  type="button" href="<?php echo $webroot; ?>/phpinfo" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/php.svg"><hr><?php echo $lang_29; ?></a>
                                               <a  type="button" href="<?php echo $webroot; ?>/domain" class="serv btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/internet.svg"><hr>Domains</a>
                                                                         

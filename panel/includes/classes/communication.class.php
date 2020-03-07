@@ -1,7 +1,7 @@
 <?php
 class communications {
     function getIntISPVersion() {
-        $version = 14.2;
+        $version = 15.0;
         return $version;
     }
     function updatePassword($pass)

@@ -81,6 +81,9 @@ COPY run-docker.sh /usr/sbin/
 COPY fixindex.html /var/www/html/index.html
 RUN mkdir /var/www/html/cache
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install -d /var/www/html/
+RUN mkdir /var/www/html/vendor/phpmyadmin/phpmyadmin/vendor
+COPY daemon/fixpmaadmin.php /var/www/html/vendor/phpmyadmin/phpmyadmin/vendor/autoload.php
+
 
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN chmod +x /usr/sbin/run-docker.sh

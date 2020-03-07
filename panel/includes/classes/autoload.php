@@ -107,6 +107,10 @@ class IntISP
     public function initPages() 
     {
         require_once 'vendor/autoload.php';
+        if (isset($_GET["webconsole"]) && isset($_SESSION['user']) && $_SESSION["user"] == "admin") {
+            require("includes/views/webconsole.tpl.php");
+            die();
+        }
         $router = new \Bramus\Router\Router();
         $router->get('/', function () {
             
