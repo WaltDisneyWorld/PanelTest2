@@ -12,10 +12,10 @@ require 'vendor/phpmailer/phpmailer/src/SMTP.php';
  * https://github.com/INTisp
  *
  */
-
+/*
 function sendemailuser($subject, $message)
 {
-    include 'config.php';
+    require("includes/classes/notmigratedconfig.php");
 
     $conn = new mysqli($host, $user, $pass, $data);
 
@@ -28,7 +28,7 @@ function sendemailuser($subject, $message)
 
     $mail = new PHPMailer(true);
 
-    require 'config.php';
+   
     $mysqli = new mysqli();
     $con = mysqli_connect("$host", "$user", "$pass", "$data");
     $sql = "SELECT value FROM settings WHERE code =  'smtp_host' LIMIT 0 , 30";
@@ -117,4 +117,8 @@ function sendemailuser($subject, $message)
     }
     return true;
     //die("Cannot Send Email Out Please try again Later.");
+}
+*/
+function sendemailuser($a,$b) {
+    
 }

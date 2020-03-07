@@ -1,21 +1,10 @@
 <?php
-
-if (!isset($HOME)) {
-    die();
-}
-/*
- * Adaclare IntISP System
- * Copyright Adaclare Technologies 2007-2018
- * https://www.adaclare.com
- * https://github.com/INTisp
- *
- */
+if (!defined("HOMEBASE")) die();
 
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
 
 require 'vendor/autoload.php';
-require 'config.php';
 
 if (isset($_GET['oauth'])) {
     if ('github' == $_GET['oauth']) {
@@ -60,6 +49,12 @@ if (isset($_GET['oauth'])) {
     die();
 }
 
+
+
+
+
+
+
 $con = mysqli_connect("$host", "$user", "$pass", "$data");
 if (!isset($_POST['user'])) {
     $email = mysqli_real_escape_string($con, '');
@@ -70,6 +65,7 @@ if (!isset($_POST['user'])) {
 $sql = "select * from users where username='$email'";
 $run_user = mysqli_query($con, $sql);
 $check_user = mysqli_num_rows($run_user);
+
 if ($check_user > 0) {
     $sql = "SELECT password FROM users where username='$email'";
     if ($result = mysqli_query($con, $sql)) {
@@ -87,7 +83,7 @@ if ($check_user > 0) {
                 header('Location: '.$webroot.'/cp');
                 die();
             } else {
-                include 'config.php';
+             
 
                 // Create connection
                 $conn = new mysqli('localhost', 'root', "$pass", "$data");
@@ -97,6 +93,7 @@ if ($check_user > 0) {
 VALUES ('".rand(1, 99999)."', '".$_SERVER['REMOTE_ADDR']."', '".date('Y-m-d', $t)."')";
                 $conn->query($sql);
                 $conn->close();
+                
                 if ('admin' == $_POST['user']) {
                     require 'includes/classes/mail.class.php';
                     sendemailuser('Failed login attempt for admin', '
@@ -114,7 +111,7 @@ VALUES ('".rand(1, 99999)."', '".$_SERVER['REMOTE_ADDR']."', '".date('Y-m-d', $t
         // Free result set
     }
 }
-    include 'config.php';
+   
 
     // Create connection
     $conn = new mysqli('localhost', 'root', "$pass", "$data");

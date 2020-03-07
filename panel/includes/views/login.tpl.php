@@ -1,12 +1,16 @@
 <?php
+if (!defined("HOMEBASE")) die();
+
 if (isset($_GET['de'])) $_SESSION['lang'] = 'de';
 if (isset($_GET['es'])) $_SESSION['lang'] = 'es';
 if (isset($_GET['en'])) $_SESSION['lang'] = 'en';
-if (!isset($HOME)) die();
 if (!isset($lang)) $lang = 'en';
 if (isset($_SESSION['lang'])) $lang = $_SESSION['lang'];
+
 require_once 'includes/lang/'.$lang.'.php';
+
 define("site_title",$this->getValueFromSetting("title"));
+
     $alerts = '';
         if (isset($_GET['error'])) {
             $alerts .= "<div class='alert alert-danger'>".$lang_71.'</div>';
@@ -45,7 +49,7 @@ define("site_title",$this->getValueFromSetting("title"));
      $twig_settings = Array('template_dir' => 'templates/'.constant("template_name"),
 'site_title' => constant("site_title"),
 'alerts' => $alerts,
-'action_url' => 'action.php?action=login',
+'action_url' => 'index.php?action=login',
 'lang_55' => $lang_55,
 'lang_58' => $lang_58,
 'lang_70' => $lang_70,

@@ -1,7 +1,5 @@
 <?php
-if (!isset($HOME)) {
-    die();
-}
+if (!defined("HOMEBASE")) die();
 /**
  * IntISP
  */
@@ -30,7 +28,7 @@ class IntISP
             require("includes/classes/mysql.db.php");	//Include PHP MySQL sessions
             $session = new Session();	//Start a new PHP MySQL session
         }     
-        
+       
         //if (!file_exists('config.php') || file_get_contents("config.php") == "") {
         if (!file_exists($this->config_path.'config.php') || empty($this->config)) {
             header('Location: install/');
@@ -52,9 +50,17 @@ class IntISP
         } else {
             error_reporting(0);
         }
+        
         // Final Initialization Sequence
         $this->database = new MySQLi($this->config["database_host"], $this->config["database_username"], $this->config["database_password"], $this->config["database_name"]);
-        
+        if (isset($_GET["action"])) {
+            require_once "includes/classes/actionload.php";
+            
+            $actionload = new IntISPBackend;
+            $actionload->preInit();
+           
+           die();
+        }
     }
   
     public function getValueFromSetting($setting) {
@@ -90,8 +96,7 @@ class IntISP
         } else {
             $twig = new \Twig\Environment($loader);
         }
-
-        $HOME = true;
+        require_once "includes/classes/notmigratedconfig.php";
         require_once $file;
         exit;
     }

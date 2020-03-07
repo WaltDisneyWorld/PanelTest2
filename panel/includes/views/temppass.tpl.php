@@ -1,26 +1,14 @@
 <?php
+
 if (!isset($HOME)) {
     die();
 }
- require 'config.php';
+
 if (!isset($_SESSION['user'])) {
     header('Location: '.$webroot.'/');
     die();
 }
 
-    $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data");
-    // Check connection
-    $sql = "SELECT value FROM settings WHERE code =  'loginhead' LIMIT 0 , 30";
-    if ($result = mysqli_query($con, $sql)) {
-        // Fetch one and one row
-        while ($row = mysqli_fetch_row($result)) {
-            printf($row[0]);
-        }
-        // Free result set
-        mysqli_free_result($result);
-    }
-    mysqli_close($con);
 ?>
 
 
@@ -56,7 +44,6 @@ if (!isset($_SESSION['user'])) {
     <div class="panel-heading">
       <h1><img src="templates/default/public/assets/img/image.png"></h1>
       <h4 class="panel-title"><?php
-    require 'config.php';
     $mysqli = new mysqli();
     $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection
@@ -75,7 +62,7 @@ if (!isset($_SESSION['user'])) {
     <div class="panel-body">
 
 
-    <form action="action.php?action=pass" method="post">
+    <form action="index.php?action=pass" method="post">
       <div class="input-container">
           <input type="hidden" name="username" value="<?php echo $_SESSION['user']; ?>">
        <div class="form-group mb10">
@@ -94,7 +81,7 @@ if (!isset($_SESSION['user'])) {
 </div>
 
 <?php
-    require 'config.php';
+  
     $mysqli = new mysqli();
     $con = mysqli_connect("$host", "$user", "$pass", "$data");
     // Check connection

@@ -4,8 +4,8 @@ $config = array(
 "database_host"=>"localhost",
 "database_username"=>"root",
 "database_password"=>"Pr@gr@fl@re7233",
-"database_name"=>"intispKHBMVPRBFH",
-"encryption_salt"=>"def00000b419a78f552deb47642b81aaf4c9d3af132c648356bcc739d7b19e3fe914fa27b1b587655263c20e1165319f6303877aaf9979955d3847711f4adf02e4b4cd6a",
+"database_name"=>"intispDSTYUMGOAU",
+"encryption_salt"=>"def000006c59e13904a0f82965c8e2c6cb93dc988eb13d263d42335634e3efa8ed44566947b0b1ffadcf0cb65d6ec7c64d1870320f1e144370ae1cce1fa83206dab14e7c",
 "language"=>"en",
 "installation_path"=>"http://192.168.1.254/panel"
 );
