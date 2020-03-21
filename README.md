@@ -4,6 +4,8 @@
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H81HAQY)
 
+[![Build Status](https://ci.adaclare.com/job/IntISP%20Dockerized/badge/icon)](https://ci.adaclare.com/job/IntISP%20Dockerized/)
+
 [Latest Docker Image](https://hub.docker.com/r/adaclare/intisp)
 
 IntISP is a web hosting control panel that can run in a docker container. It consists of two major parts, the control panel and the backend daemon server. The control panel is written in PHP using composer and the daemon is written in Javascript. Together they communicate together seamlessly.
