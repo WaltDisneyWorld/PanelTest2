@@ -1,0 +1,16 @@
+{
+    "name": "adaclare/server-manager",
+    "description": "This repository holds the IntISP Interface. It can be rebuilt to interface with any other hosting panel",
+    "type": "project",
+    "require": {
+        "defuse/php-encryption": "^2.2"
+    },
+    "license": "GNU",
+	"require": {
+        "php": ">=7.3",
+    	"ext-json" : "*",
+    	"ext-mbstring" : "*",
+    	"ext-curl" : "*",
+		"ext-zip" : "*"
+    }
+}
