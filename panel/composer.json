@@ -1,14 +1,8 @@
 {
-    "name": "adaclare/intisp",
+    "name": "adaclare/server-manager",
     "description": "The main web interface for the IntISP Project.",
     "type": "project",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Package Maintainer",
-            "email": "nobody@adaclare.com"
-        }
-    ],
+    "license": "GPL-3.0-or-later",
     "require": {
         "samayo/bulletproof": "4.0.*",
         "defuse/php-encryption": "^2.2",
@@ -18,7 +12,6 @@
         "league/oauth2-google": "^3.0",
         "hayageek/oauth2-yahoo": "^2.0",
         "stevenmaguire/oauth2-microsoft": "^2.2",
-
         "bramus/router": "~1.4",
         "predis/predis": "^1.1",
         "psr/log": "^1.1",
