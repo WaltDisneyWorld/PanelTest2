@@ -1,39 +1,40 @@
 <?php
-class communications {
-    function getIntISPVersion() {
+class communications
+{
+    public function getIntISPVersion()
+    {
         $version = 15.0;
         return $version;
     }
-    function updatePassword($pass)
+    public function updatePassword($pass)
     {
-
-    } 
-    function getStatus()
+    }
+    public function getStatus()
     {
         return 'Online';
-    }   
-    function getDiskPercentage()
+    }
+    public function getDiskPercentage()
     {
-        return 90;
+        return 3;
     }
-    function pwrmgmnt($action)
+    public function pwrmgmnt($action)
     {
-
     }
-    function deprovision($username) {
-
+    public function deprovision($username)
+    {
     }
-    function adddomain($domain) {
-
+    public function adddomain($domain)
+    {
     }
-    function removedomain($user,$domain) {
+    public function removedomain($user, $domain)
+    {
         // USER , DOMAIN ID
     }
-    function overQuota() {
-        return false;
-    }
-    function provserverclient($port, $disk, $username, $password)
+    public function getDiskLimit($user)
     {
-
+        return "1000";
+    }
+    public function provserverclient($port, $disk, $username, $password)
+    {
     }
 }

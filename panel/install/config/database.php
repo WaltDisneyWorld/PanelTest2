@@ -9,4 +9,3 @@ $config = array(
 "language"=>"%LANG%",
 "installation_path"=>"%WEBROOT%"
 );
-?>

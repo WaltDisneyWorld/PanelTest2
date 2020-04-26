@@ -39,7 +39,7 @@ function auth()
         $gpub,
         $gsec,
         $actual_link
-);
+    );
     $facebookService = $serviceFactory->createService('facebook', $credentials, $storage, array());
     if (!empty($_GET['code'])) {
         // retrieve the CSRF state parameter

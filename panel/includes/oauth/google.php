@@ -36,10 +36,10 @@ function auth()
 
     $storage = new Session();
     $credentials = new Credentials(
-    $gpub,
-    $gsec,
-    $actual_link
-);
+        $gpub,
+        $gsec,
+        $actual_link
+    );
     $googleService = $serviceFactory->createService('google', $credentials, $storage, array('userinfo_email', 'userinfo_profile'));
     if (!empty($_GET['code'])) {
         // retrieve the CSRF state parameter

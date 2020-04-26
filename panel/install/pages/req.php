@@ -4,8 +4,7 @@ if (!defined('HOMEBASE')) {
 }
 
 if (!defined('DOC_ROOT')) {
-
-    define('DOC_ROOT',dirname(dirname(__DIR__)));
+    define('DOC_ROOT', dirname(dirname(__DIR__)));
 }
 if (isset($_GET["config"])) {
     touch("../config.php");
@@ -40,13 +39,12 @@ if (isset($_GET["config"])) {
       $failedreq = 0;
       /**
        * @param
-       * @param 
+       * @param
        * @param
        */
       function displayReq($title, $server, $ok)
       {
-          global $failedreq; 
-      ?>
+          global $failedreq; ?>
             <tr>
       <td><?php echo $title; ?></td>
       <td><?php echo $server; ?></td>
@@ -65,16 +63,16 @@ if (isset($_GET["config"])) {
       }
 
         if (is_writable(DOC_ROOT.DIRECTORY_SEPARATOR.'config.php')) {
-          displayReq('Writable Configuration', 'config.php exists and can be written to.', true);
-      } else {
+            displayReq('Writable Configuration', 'config.php exists and can be written to.', true);
+        } else {
             displayReq('Writable Configuration', DOC_ROOT.DIRECTORY_SEPARATOR.'config.php does not exist. Please create a config.php file and check permissions. <a href="?pg=req&config">Touch Config File</a>', false);
-      }
+        }
 
         if (is_writable(DOC_ROOT.DIRECTORY_SEPARATOR.'cache')) {
             displayReq('Writable Cache Directory', DOC_ROOT.DIRECTORY_SEPARATOR.'cache folder exists and can be written to.', true);
-} else {
-    displayReq('Writable Cache Directory', 'The cache folder cannot be written to. Please verify the permissions and make sure the directory cache exists.', false);
-}
+        } else {
+            displayReq('Writable Cache Directory', 'The cache folder cannot be written to. Please verify the permissions and make sure the directory cache exists.', false);
+        }
 
         if (file_exists(DOC_ROOT.DIRECTORY_SEPARATOR.'vendor')) {
             displayReq('Composer Installation', 'Composer has been installed and setup.', true);

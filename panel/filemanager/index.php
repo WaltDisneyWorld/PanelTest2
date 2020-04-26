@@ -1,89 +1,79 @@
 <?php
-error_reporting(E_ALL);
-/*
-
-  INTISP FILE MANAGER UTLITY
-
-
-  DESIGNED TO WORK WITH INTISP
-  COPYRIGHT ADACLARE TECHNOLOGIES ALL RIGHTS RESERVED
-
-  WITH SAFE MODE FOR INTISP
-  + ./ & ../ HACK PREVENTOR
-  + ACE CODE EDITOR
-  + WORDPRESS INSTALLER
-  + COPY, CUT, PASTE SYSTEM
-  + BRUTE FORCE SAFE
-  + LOCK DOWN DRIVE FEATURE
-   _       _            _                
-  /_\   __| | __ _  ___| | __ _ _ __ ___ 
- //_\\ / _` |/ _` |/ __| |/ _` | '__/ _ \
-/  _  | (_| | (_| | (__| | (_| | | |  __/
-\_/ \_/\__,_|\__,_|\___|_|\__,_|_|  \___|
-                                         
-
-
-*/
-if (file_exists("config.php")) {
-  require("../../includes/classes/session.db.php");	//Include MySQL database class
-  require("../../includes/classes/mysql.db.php");	//Include PHP MySQL sessions
-  $session = new Session();	//Start a new PHP MySQL session
-  }
+error_reporting(0);
 session_start();
-if (!isset($_SESSION['user'])) {
-  die();
-}
-require("alpha.php");
+define("HOMEBASE", true);
 
-function strpX($var) {
-  $var = str_replace("/", "", $var);
-  $var = str_replace("\\", "", $var);
-  return $var;
-}
-
-
-if(isset($_FILES['file']) && !empty($_FILES['file']) && !isset($_SESSION["preventative"])){
-  if ($disable_uploading) {
-    die();
-  }
-if (isset($_SESSION["p_dir"]) && file_exists($path . "/" . $_SESSION["p_dir"]) && is_dir($path . "/" . $_SESSION["p_dir"])) {
-
-
-  if (strpos($_SESSION["p_dir"], '../') !== false) {
-    die("../ & ./ Preventor Tripped");
-}
-if (strpos($_SESSION["p_dir"], './') !== false) {
-    die("../ & ./ Preventor Tripped");
+require("../includes/classes/autoload.php");
+require("../includes/classes/session.db.php");	//Include MySQL database class
+require("../includes/classes/mysql.db.php");	//Include PHP MySQL sessions
+$session = new Session();	//Start a new PHP MySQL session
+if (isset($_SESSION["preventative"])) {
+    $safemode = true;
 }
 
-	$name = $_FILES['file']['name'];
-	$tmp_name = $_FILES['file']['tmp_name'];
-	if(isset($name) && !empty($name)){
-    $pathxd = $path . "/" . $_SESSION["p_dir"] . "/" .$name;
-    if (file_exists($pathxd)) {
-      die("File Already Exists");
+
+    if ('admin' == $_SESSION['user']) {
+        $path = "/";
+    } else {
+        $path = "/";
     }
-    $ext = pathinfo($name, PATHINFO_EXTENSION);
-if (in_array($ext,$banned_ext)) {
-  die("Banned File Type");
+    $disable_uploading = false;
+$banned_ext = array("exe","bat","doc","docx","docm","jar","vbs","vb","sfx","dll","py","cmd");
+$wp_url = "https://wordpress.org/latest.zip";
+if (file_exists("config.php")) {
+    require("../includes/classes/session.db.php");	//Include MySQL database class
+  require("../includes/classes/mysql.db.php");	//Include PHP MySQL sessions
+  $session = new Session();	//Start a new PHP MySQL session
 }
 
-		if(move_uploaded_file($tmp_name, $pathxd)){
-			$return = array();
-			$return['path'] = $pathxd;
-			echo json_encode($return);
-		}
-  }
+function strpX($var)
+{
+    $var = str_replace("/", "", $var);
+    $var = str_replace("\\", "", $var);
+    return $var;
 }
- die(); 
-}	
+
+
+if (isset($_FILES['file']) && !empty($_FILES['file']) && !isset($safemode)) {
+    if ($disable_uploading) {
+        die();
+    }
+    if (isset($_SESSION["p_dir"]) && file_exists($path . "/" . $_SESSION["p_dir"]) && is_dir($path . "/" . $_SESSION["p_dir"])) {
+        if (strpos($_SESSION["p_dir"], '../') !== false) {
+            die("../ & ./ Preventor Tripped");
+        }
+        if (strpos($_SESSION["p_dir"], './') !== false) {
+            die("../ & ./ Preventor Tripped");
+        }
+
+        $name = $_FILES['file']['name'];
+        $tmp_name = $_FILES['file']['tmp_name'];
+        if (isset($name) && !empty($name)) {
+            $pathxd = $path . "/" . $_SESSION["p_dir"] . "/" .$name;
+            if (file_exists($pathxd)) {
+                die("File Already Exists");
+            }
+            $ext = pathinfo($name, PATHINFO_EXTENSION);
+            if (in_array($ext, $banned_ext)) {
+                die("Banned File Type");
+            }
+
+            if (move_uploaded_file($tmp_name, $pathxd)) {
+                $return = array();
+                $return['path'] = $pathxd;
+                echo json_encode($return);
+            }
+        }
+    }
+    die();
+}
 if (!isset($_GET["p"])) {
     header("Location: ?p=%2F");
     die();
 }
 if (!file_exists($path . "/" . $_GET["p"])) {
-  header("Location: ?p=%2F");
-  die();
+    header("Location: ?p=%2F");
+    die();
 }
 
 
@@ -95,83 +85,93 @@ if (strpos($_GET["p"], './') !== false) {
     die("../ & ./ Preventor Tripped");
 }
 
-if (isset($_GET["file"]) && !isset($_SESSION["preventative"])) {
-  $file_name = strpX($_GET["file"]);
-  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-    if (!file_exists($path . "/" . $_GET["p"] . "/" . $file_name)) {
-    touch($path . "/" . $_GET["p"] . "/" . $file_name);
+if (isset($_GET["file"]) && !isset($safemode)) {
+    $file_name = strpX($_GET["file"]);
+    if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+        if (!file_exists($path . "/" . $_GET["p"] . "/" . $file_name)) {
+            touch($path . "/" . $_GET["p"] . "/" . $file_name);
+        }
     }
-  }
-  header("Location: ?p=" . $_GET["p"]);
+    header("Location: ?p=" . $_GET["p"]);
 }
-if (isset($_GET["folder"]) && !isset($_SESSION["preventative"])) {
-  $file_name = strpX($_GET["folder"]);
-  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-    if (!file_exists($path . "/" . $_GET["p"] . "/" . $file_name)) {
-    mkdir($path . "/" . $_GET["p"] . "/" . $file_name);
+if (isset($_GET["folder"]) && !isset($safemode)) {
+    $file_name = strpX($_GET["folder"]);
+    if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+        if (!file_exists($path . "/" . $_GET["p"] . "/" . $file_name)) {
+            mkdir($path . "/" . $_GET["p"] . "/" . $file_name);
+        }
     }
-  }
-  header("Location: ?p=" . $_GET["p"]);
+    header("Location: ?p=" . $_GET["p"]);
 }
 if (isset($_GET["d_confirmed"])) {
-  function recurseRmdir($dir) {
-    $files = array_diff(scandir($dir), array('.','..'));
-    foreach ($files as $file) {
-      (is_dir("$dir/$file")) ? recurseRmdir("$dir/$file") : unlink("$dir/$file");
+    function recurseRmdir($dir)
+    {
+        $files = array_diff(scandir($dir), array('.','..'));
+        foreach ($files as $file) {
+            (is_dir("$dir/$file")) ? recurseRmdir("$dir/$file") : unlink("$dir/$file");
+        }
+        return rmdir($dir);
     }
-    return rmdir($dir);
-  }
-  $file_name = strpX($_GET["d_confirmed"]);
-  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-    if (is_dir($path . "/" . $_GET["p"] . "/" . $file_name)) {
-      recurseRmdir($path . "/" . $_GET["p"] . "/" . $file_name);
-      rmdir($path . "/" . $_GET["p"] . "/" . $file_name);
-    } else {
-      unlink($path . "/" . $_GET["p"] . "/" . $file_name);
+    $file_name = strpX($_GET["d_confirmed"]);
+    if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+        if (is_dir($path . "/" . $_GET["p"] . "/" . $file_name)) {
+            recurseRmdir($path . "/" . $_GET["p"] . "/" . $file_name);
+            rmdir($path . "/" . $_GET["p"] . "/" . $file_name);
+        } else {
+            unlink($path . "/" . $_GET["p"] . "/" . $file_name);
+        }
+        header("Location: ?p=" . $_GET["p"]);
+    }
+}
+
+
+if (isset($_GET["prev"]) && !isset($safemode)) {
+    $old = strpX($_GET["prev"]);
+    $new = strpX($_GET["renamed"]);
+    if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+        if (file_exists($path . "/" . $_GET["p"] . "/" . $old)) {
+            if (!file_exists($path . "/" . $_GET["p"] . "/" . $new)) {
+                rename($path . "/" . $_GET["p"] . "/" . $old, $path . "/" . $_GET["p"] . "/" . $new);
+            }
+        }
     }
     header("Location: ?p=" . $_GET["p"]);
-  }
 }
-
-
-if (isset($_GET["prev"]) && !isset($_SESSION["preventative"])) {
-  $old = strpX($_GET["prev"]);
-  $new = strpX($_GET["renamed"]);
-  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-    if (file_exists($path . "/" . $_GET["p"] . "/" . $old)) {
-      if (!file_exists($path . "/" . $_GET["p"] . "/" . $new)) {
-        rename($path . "/" . $_GET["p"] . "/" . $old,$path . "/" . $_GET["p"] . "/" . $new);
-
-      }
+if (isset($_GET["d_cut"]) && !isset($safemode)) {
+    $new = strpX($_GET["d_cut"]);
+    if (isset($_SESSION["d_copy"])) {
+        unset($_SESSION["d_copy"]);
     }
-  }
-  header("Location: ?p=" . $_GET["p"]);
-}
-if (isset($_GET["d_cut"]) && !isset($_SESSION["preventative"])) {
-  $new = strpX($_GET["d_cut"]);
-  if (isset($_SESSION["d_copy"])) unset($_SESSION["d_copy"]);
 
 
-  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-    if (file_exists($path . "/" . $_GET["p"] . "/" . $new)) {
-        $_SESSION["d_cut"] = $path . "/" . $_GET["p"] . "/" . $new;
-    }}
+    if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+        if (file_exists($path . "/" . $_GET["p"] . "/" . $new)) {
+            $_SESSION["d_cut"] = $path . "/" . $_GET["p"] . "/" . $new;
+        }
+    }
     header("Location: ?p=" . $_GET["p"]);
 }
-if (isset($_GET["d_copy"]) && !isset($_SESSION["preventative"])) {
-  $new = strpX($_GET["d_copy"]);
-  if (isset($_SESSION["d_cut"])) unset($_SESSION["d_cut"]);
-  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-    if (file_exists($path . "/" . $_GET["p"] . "/" . $new)) {
-        $_SESSION["d_copy"] = $path . "/" . $_GET["p"] . "/" . $new;
-    }}
+if (isset($_GET["d_copy"]) && !isset($safemode)) {
+    $new = strpX($_GET["d_copy"]);
+    if (isset($_SESSION["d_cut"])) {
+        unset($_SESSION["d_cut"]);
+    }
+    if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+        if (file_exists($path . "/" . $_GET["p"] . "/" . $new)) {
+            $_SESSION["d_copy"] = $path . "/" . $_GET["p"] . "/" . $new;
+        }
+    }
     header("Location: ?p=" . $_GET["p"]);
 }
 
-if (isset($_GET["cancelcut"]) && !isset($_SESSION["preventative"])) {
-  if (isset($_SESSION["d_cut"])) unset($_SESSION["d_cut"]);
-  if (isset($_SESSION["d_copy"])) unset($_SESSION["d_copy"]);
-  header("Location: ?p=" . $_GET["p"]);
+if (isset($_GET["cancelcut"]) && !isset($safemode)) {
+    if (isset($_SESSION["d_cut"])) {
+        unset($_SESSION["d_cut"]);
+    }
+    if (isset($_SESSION["d_copy"])) {
+        unset($_SESSION["d_copy"]);
+    }
+    header("Location: ?p=" . $_GET["p"]);
 }
 function xcopy($source, $dest, $permissions = 0755)
 {
@@ -206,69 +206,68 @@ function xcopy($source, $dest, $permissions = 0755)
     $dir->close();
     return true;
 }
-function rrmdir($dir) { 
-  if (is_dir($dir)) { 
-    $objects = scandir($dir); 
-    foreach ($objects as $object) { 
-      if ($object != "." && $object != "..") { 
-        if (is_dir($dir."/".$object))
-          rrmdir($dir."/".$object);
-        else
-          unlink($dir."/".$object); 
-      } 
-    }
-    rmdir($dir); 
-  } 
-}
-if (isset($_GET["paste"]) && !isset($_SESSION["preventative"])) {
-  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-      if (isset($_SESSION["d_cut"])) {
-        if (is_dir($_SESSION["d_cut"])) {
-
-        $dirname = basename($_SESSION["d_cut"]);
-        mkdir($path . "/" . $_GET["p"] . "/" . $dirname);
-
-
-        xcopy($_SESSION["d_cut"],$path . "/" . $_GET["p"] . "/" . $dirname);
-        rrmdir($_SESSION["d_cut"]);
-        unset($_SESSION["d_cut"]);
-        } else {
-          $dirname = basename($_SESSION["d_cut"]);
-          copy($_SESSION["d_cut"],$path . "/" . $_GET["p"] . "/" . $dirname);
-unlink($_SESSION["d_cut"]);
-unset($_SESSION["d_cut"]);
+function rrmdir($dir)
+{
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != "." && $object != "..") {
+                if (is_dir($dir."/".$object)) {
+                    rrmdir($dir."/".$object);
+                } else {
+                    unlink($dir."/".$object);
+                }
+            }
         }
-      } 
-      if (isset($_SESSION["d_copy"])) {
-if (is_dir($_SESSION["d_copy"])) {
-  $dirname = basename($_SESSION["d_copy"]);
-  mkdir($path . "/" . $_GET["p"] . "/" . $dirname);
-  xcopy($_SESSION["d_copy"],$path . "/" . $_GET["p"] . "/" . $dirname);
-  unset($_SESSION["d_copy"]);
-} else {
-  $dirname = basename($_SESSION["d_copy"]);
-  copy($_SESSION["d_copy"],$path . "/" . $_GET["p"] . "/" . $dirname);
-  unset($_SESSION["d_copy"]);
+        rmdir($dir);
+    }
 }
-      }
-  }
-  header("Location: ?p=" . $_GET["p"]);
+if (isset($_GET["paste"]) && !isset($safemode)) {
+    if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+        if (isset($_SESSION["d_cut"])) {
+            if (is_dir($_SESSION["d_cut"])) {
+                $dirname = basename($_SESSION["d_cut"]);
+                mkdir($path . "/" . $_GET["p"] . "/" . $dirname);
+
+
+                xcopy($_SESSION["d_cut"], $path . "/" . $_GET["p"] . "/" . $dirname);
+                rrmdir($_SESSION["d_cut"]);
+                unset($_SESSION["d_cut"]);
+            } else {
+                $dirname = basename($_SESSION["d_cut"]);
+                copy($_SESSION["d_cut"], $path . "/" . $_GET["p"] . "/" . $dirname);
+                unlink($_SESSION["d_cut"]);
+                unset($_SESSION["d_cut"]);
+            }
+        }
+        if (isset($_SESSION["d_copy"])) {
+            if (is_dir($_SESSION["d_copy"])) {
+                $dirname = basename($_SESSION["d_copy"]);
+                mkdir($path . "/" . $_GET["p"] . "/" . $dirname);
+                xcopy($_SESSION["d_copy"], $path . "/" . $_GET["p"] . "/" . $dirname);
+                unset($_SESSION["d_copy"]);
+            } else {
+                $dirname = basename($_SESSION["d_copy"]);
+                copy($_SESSION["d_copy"], $path . "/" . $_GET["p"] . "/" . $dirname);
+                unset($_SESSION["d_copy"]);
+            }
+        }
+    }
+    header("Location: ?p=" . $_GET["p"]);
 }
 $_SESSION["p_dir"] = $_GET["p"];
 
 
-if (isset($_GET["wp"]) && !isset($_SESSION["preventative"])) {
-  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-      file_put_contents($path . "/" . $_GET["p"] . "/wordpress.zip",file_get_contents($wp_url));
-      $zip = new ZipArchive;
-if ($zip->open($path . "/" . $_GET["p"] . "/wordpress.zip") === TRUE) {
-    $zip->extractTo($path . "/" . $_GET["p"] . "/");
-    $zip->close();
-}
-unlink($path . "/" . $_GET["p"] . "/wordpress.zip");
-  }
-
-  
+if (isset($_GET["wp"]) && !isset($safemode)) {
+    if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+        file_put_contents($path . "/" . $_GET["p"] . "/wordpress.zip", file_get_contents($wp_url));
+        $zip = new ZipArchive;
+        if ($zip->open($path . "/" . $_GET["p"] . "/wordpress.zip") === true) {
+            $zip->extractTo($path . "/" . $_GET["p"] . "/");
+            $zip->close();
+        }
+        unlink($path . "/" . $_GET["p"] . "/wordpress.zip");
+    }
 }
 
 
@@ -291,23 +290,20 @@ unlink($path . "/" . $_GET["p"] . "/wordpress.zip");
           <a href="?p=%2F"><i class="fas fa-hdd"></i></a>
             
    <?php
-$arr=explode("/",$_GET["p"]);
+$arr=explode("/", $_GET["p"]);
 $c = -2;
 $d = 0;
 foreach ($arr as $ocur) {
     $c++;
     if ($c >= 0) {
-        $d++;
-    ?>
+        $d++; ?>
  <a href="?p=<?php
-   for( $i= 0 ; $i <= $d ; $i++ ) {
+   for ($i= 0 ; $i <= $d ; $i++) {
        echo urlencode($arr[$i] . "/");
-   }
- 
- ?>"><?php echo $ocur; ?></a>
+   } ?>"><?php echo $ocur; ?></a>
  <span class="separator"> / </span>
     <?php
-}
+    }
 }
 ?>
           </span>
@@ -316,29 +312,31 @@ foreach ($arr as $ocur) {
       
       <div class="col-md-5 col-sm-5 col-5 text-right">
      <?php if (isset($_SESSION["d_copy"]) || isset($_SESSION["d_cut"])) { ?>
-      <?php if (isset($_SESSION["d_copy"])) { 
-        echo basename($_SESSION["d_copy"]);
-       } else {
-        echo basename($_SESSION["d_cut"]);
-      } ?>
+      <?php if (isset($_SESSION["d_copy"])) {
+    echo basename($_SESSION["d_copy"]);
+} else {
+    echo basename($_SESSION["d_cut"]);
+} ?>
       <a href="?p=<?php echo $_GET["p"]; ?>&paste" class="btn btn-light btn-sm pl-3 pr-3 ml-1"> <i class="fas fa-paste"></i></a>
       <a href="?p=<?php echo $_GET["p"]; ?>&cancelcut" class="btn btn-light btn-sm pl-3 pr-3 ml-1"><i class="fas fa-ban"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <?php }  if (!isset($_SESSION["preventative"])) { if (!$disable_uploading) { 
-     
-       ?>
+     <?php }  if (!isset($safemode)) {
+    if (!$disable_uploading) {
+        ?>
      
      <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#uploadFile"> <i class="fas fa-upload"></i></button>
-     <?php } ?>
+     <?php
+    } ?>
      <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#newFile"> <i class="fas fa-file-medical"></i></button>
         <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#newFold"> <i class="fas fa-folder-plus"></i></button>
         <button class="btn btn-light btn-sm pl-3 pr-3 ml-1" data-toggle="modal" data-target="#wpModal"> <img width="16px" height="16px" src="public/wp.png"></button>
-        <?php } ?>
+        <?php
+} ?>
       </div>
     </div>
     <?php
      
-if (isset($_SESSION["preventative"])) {
-  ?>
+if (isset($safemode)) {
+    ?>
 <div class="alert alert-danger" style="border-radius: 0 !important;border:0;"><b>Safe Mode</b> has been enabled.</div>
   <?php
 }
@@ -360,21 +358,22 @@ if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path .
     $full_path = $path . $_GET["p"];
 }
 
-function betterScan($path) {
-$a = scandir($path);
-$c = array();
-foreach ($a as $b) {
-if (is_dir($b)) {
-  array_push($c,$b);
-}
-}
-$a = scandir($path);
-foreach($a as $b) {
-  if (!is_dir($b)) {
-    array_push($c,$b);
-  }
-}
-return $c;
+function betterScan($path)
+{
+    $a = scandir($path);
+    $c = array();
+    foreach ($a as $b) {
+        if (is_dir($b)) {
+            array_push($c, $b);
+        }
+    }
+    $a = scandir($path);
+    foreach ($a as $b) {
+        if (!is_dir($b)) {
+            array_push($c, $b);
+        }
+    }
+    return $c;
 }
 
 
@@ -388,25 +387,23 @@ function filesize_formatted($path)
     return number_format($size / pow(1024, $power), 2, '.', ',') . ' ' . $units[$power];
 }
 foreach ($folders_files as $type) {
-    if ($type == "." || $type == "..") {} else {
-    if (is_dir($full_path . "/" . $type)) {
-?>
+    if ($type == "." || $type == "..") {
+    } else {
+        if (is_dir($full_path . "/" . $type)) {
+            ?>
   <div class="row edrive-table-data-row">
-          <div class="col-lg-3 col-md-3 col-sm-3 col-12 data-name"><i class="fas fa-folder edrive-file-icon"></i> <a href="?p=<?php 
+          <div class="col-lg-3 col-md-3 col-sm-3 col-12 data-name"><i class="fas fa-folder edrive-file-icon"></i> <a href="?p=<?php
           
           if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-            echo $_GET["p"] . "/" . $type;
+              echo $_GET["p"] . "/" . $type;
           } else {
-          echo $type;
-          }
-          
-          
-          ?>" title="<?php echo $type; ?>"><?php echo $type; ?></a></div>
-          <div class="col-lg-2 col-md-3 col-sm-3 col-12 data-info"><?php echo date ("F d Y H:i:s.",filemtime($full_path . "/" . $type)); ?></div>
+              echo $type;
+          } ?>" title="<?php echo $type; ?>"><?php echo $type; ?></a></div>
+          <div class="col-lg-2 col-md-3 col-sm-3 col-12 data-info"><?php echo date("F d Y H:i:s.", filemtime($full_path . "/" . $type)); ?></div>
           <div class="col-lg-2 col-md-2 col-sm-2 col-12 data-info">Folder</div>
           <div class="col-lg-1 col-md-1 col-sm-1 col-12 data-info">-</div>
           <div class="col-lg-4 col-md-3 col-sm-3 col-12 data-info">
-          <?php if (!$_SESSION["preventative"]) { ?>     <a href="?p=<?php echo $_GET["p"]; ?>&d_copy=<?php echo urlencode($type); ?>"><i class="fas fa-copy"></i></a>&nbsp;&nbsp;&nbsp;
+          <?php if (!$safemode) { ?>     <a href="?p=<?php echo $_GET["p"]; ?>&d_copy=<?php echo urlencode($type); ?>"><i class="fas fa-copy"></i></a>&nbsp;&nbsp;&nbsp;
           <a href="?p=<?php echo $_GET["p"]; ?>&d_cut=<?php echo urlencode($type); ?>"><i class="fas fa-cut"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <a href="?p=<?php echo $_GET["p"]; ?>&rename=<?php echo urlencode($type); ?>"><i class="fas fa-i-cursor"></i></a> &nbsp;&nbsp;&nbsp;
           <?php } ?>      <a href="?p=<?php echo $_GET["p"]; ?>&d_confirm=<?php echo urlencode($type); ?>"><i class="fas fa-trash"></i></a>
@@ -414,36 +411,38 @@ foreach ($folders_files as $type) {
           </div>
         </div>
 <?php
-    } else {
-        ?>
+        } else {
+            ?>
         <div class="row edrive-table-data-row">
         <div class="col-lg-3 col-md-3 col-sm-3 col-12 data-name">
         <?php
 $ext = pathinfo($path . "/" . $_GET["p"] . "/" . $type, PATHINFO_EXTENSION);
-if ($ext == "php" || $ext == "html" || $ext == "js" || $ext == "css" || $ext == "htaccess" || $ext == "htpasswd" || $ext == "htm") echo '<i class="fas fa-file-code"></i>';
-else if ($ext == "png" || $ext == "jpg" || $ext == "jpeg" || $ext == "bmp")  echo '<i class="fas fa-file-image"></i>';
-else if ($ext == "pdf") echo '<i class="fas fa-file-pdf"></i>';
-else if ($ext == "zip" || $ext == "rar" || $ext == "7z") echo '<i class="fas fa-archive"></i>';
-else echo '<i class="fas fa-file"></i>';
- ?>
+            if ($ext == "php" || $ext == "html" || $ext == "js" || $ext == "css" || $ext == "htaccess" || $ext == "htpasswd" || $ext == "htm") {
+                echo '<i class="fas fa-file-code"></i>';
+            } elseif ($ext == "png" || $ext == "jpg" || $ext == "jpeg" || $ext == "bmp") {
+                echo '<i class="fas fa-file-image"></i>';
+            } elseif ($ext == "pdf") {
+                echo '<i class="fas fa-file-pdf"></i>';
+            } elseif ($ext == "zip" || $ext == "rar" || $ext == "7z") {
+                echo '<i class="fas fa-archive"></i>';
+            } else {
+                echo '<i class="fas fa-file"></i>';
+            } ?>
         
         
         
-         <a href="?e=<?php 
+         <a href="?e=<?php
         
         if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-          echo $path . "/" . $_GET["p"] . "/" . $type;
+            echo $path . "/" . $_GET["p"] . "/" . $type;
         } else {
-        echo $type;
-        }
-        
-        
-        ?>" title="<?php echo $type; ?>"><?php echo $type; ?></a></div>
-        <div class="col-lg-2 col-md-3 col-sm-3 col-12 data-info"><?php echo date ("F d Y H:i:s.",filemtime($full_path . "/" . $type)); ?></div>
+            echo $type;
+        } ?>" title="<?php echo $type; ?>"><?php echo $type; ?></a></div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-12 data-info"><?php echo date("F d Y H:i:s.", filemtime($full_path . "/" . $type)); ?></div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-12 data-info">File</div>
         <div class="col-lg-1 col-md-1 col-sm-1 col-12 data-info"><?php echo filesize_formatted($full_path . "/" . $type); ?></div>
         <div class="col-lg-4 col-md-3 col-sm-3 col-12 data-info">
-        <?php if (!$_SESSION["preventative"]) { ?>     <a href="?p=<?php echo $_GET["p"]; ?>&d_copy=<?php echo urlencode($type); ?>"><i class="fas fa-copy"></i></a>&nbsp;&nbsp;&nbsp;
+        <?php if (!$safemode) { ?>     <a href="?p=<?php echo $_GET["p"]; ?>&d_copy=<?php echo urlencode($type); ?>"><i class="fas fa-copy"></i></a>&nbsp;&nbsp;&nbsp;
           <a href="?p=<?php echo $_GET["p"]; ?>&d_cut=<?php echo urlencode($type); ?>"><i class="fas fa-cut"></i></a>&nbsp;&nbsp;&nbsp;
     <a href="?p=<?php echo $_GET["p"]; ?>&edit=<?php echo urlencode($type); ?>"><i class="fas fa-edit"></i></a> &nbsp;&nbsp;&nbsp;
         <a href="?p=<?php echo $_GET["p"]; ?>&rename=<?php echo urlencode($type); ?>"><i class="fas fa-i-cursor"></i></a> &nbsp;&nbsp;&nbsp;
@@ -452,8 +451,8 @@ else echo '<i class="fas fa-file"></i>';
         </div>
         </div>
   <?php
+        }
     }
-}
 }
 ?>
 
@@ -545,8 +544,8 @@ else echo '<i class="fas fa-file"></i>';
       Limit: <?php echo ini_get('upload_max_filesize'); ?><br>
 Banned Extentions: 
 <?php
-foreach($banned_ext as $ext){
-  echo $ext . " ";
+foreach ($banned_ext as $ext) {
+    echo $ext . " ";
 }
 ?>
 	</div>
@@ -559,8 +558,7 @@ foreach($banned_ext as $ext){
 </div>
 <?php
 if (isset($_GET["d_confirm"])) {
-  
-  ?>
+    ?>
 
 <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -585,12 +583,11 @@ if (isset($_GET["d_confirm"])) {
 <?php
 }
 
-if (isset($_GET["rename"])) { 
-  
-  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-$editing_file = strpX($_GET["rename"]);
-    if (file_exists($path . "/" . $_GET["p"] . "/" . $editing_file)) {
-  ?>
+if (isset($_GET["rename"])) {
+    if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+        $editing_file = strpX($_GET["rename"]);
+        if (file_exists($path . "/" . $_GET["p"] . "/" . $editing_file)) {
+            ?>
 
 <div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="renameLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -620,13 +617,16 @@ $editing_file = strpX($_GET["rename"]);
 </div>
 
 
-<?php }} }?>
+<?php
+        }
+    }
+}?>
 <script src="public/js/jquery.js"></script>
 <script src="public/js/popper.min.js"></script>
 <script src="public/js/bootstrap.min.js"></script>
 <?php
 if (isset($_GET["d_confirm"])) {
-  ?>
+    ?>
 <script type="text/javascript">
     $(window).on('load',function(){
         $('#delModal').modal('show');
@@ -636,7 +636,7 @@ if (isset($_GET["d_confirm"])) {
 }
 
 if (isset($_GET["edit"])) {
-  ?>
+    ?>
 <script type="text/javascript">
     $(window).on('load',function(){
         $('#editModal').modal('show');
@@ -644,21 +644,20 @@ if (isset($_GET["edit"])) {
 </script>
 <?php
 } if (isset($_GET["rename"])) {
-  ?>
+        ?>
 <script type="text/javascript">
     $(window).on('load',function(){
         $('#renameModal').modal('show');
     });
 </script>
   <?php
-}
+    }
 
-if (isset($_GET["edit"]) && !isset($_SESSION["preventative"])) {
-  if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
-    $editing_file = strpX($_GET["edit"]);
-    if (file_exists($path . "/" . $_GET["p"] . "/" . $editing_file) && !is_dir($path . "/" . $_GET["p"] . "/" . $editing_file)) {
-    
-  ?>
+if (isset($_GET["edit"]) && !isset($safemode)) {
+    if (isset($_GET["p"]) && file_exists($path . "/" . $_GET["p"]) && is_dir($path . "/" . $_GET["p"])) {
+        $editing_file = strpX($_GET["edit"]);
+        if (file_exists($path . "/" . $_GET["p"] . "/" . $editing_file) && !is_dir($path . "/" . $_GET["p"] . "/" . $editing_file)) {
+            ?>
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -677,13 +676,12 @@ if (isset($_GET["edit"]) && !isset($_SESSION["preventative"])) {
   width: 50%px;
 }
 </style>
-<form method="POST" action="?p=<?php echo $_GET["p"];?>&edit=<?php echo $_GET["edit"]; ?>&save">
-<?php if (isset($_GET["save"])) { 
-  file_put_contents($path . "/" . $_GET["p"] . "/" . $editing_file,$_POST["editor"]);
-  ?>
+<form method="POST" action="?p=<?php echo $_GET["p"]; ?>&edit=<?php echo $_GET["edit"]; ?>&save">
+<?php if (isset($_GET["save"])) {
+                file_put_contents($path . "/" . $_GET["p"] . "/" . $editing_file, $_POST["editor"]); ?>
   <div class="alert alert-success">The file has been saved.</div>
-<?php }
-?>
+<?php
+            } ?>
 <textarea name="editor">
 <?php echo htmlspecialchars(file_get_contents($path . "/" . $_GET["p"] . "/" . $editing_file)); ?>
 </textarea>
@@ -711,7 +709,9 @@ editor.getSession().on('change', function(){
 </div>
 
 <?php
-}}}
+        }
+    }
+}
 if (!$disable_uploading) { ?>
 <script>
 		$(document).ready(function(){
@@ -742,7 +742,7 @@ if (!$disable_uploading) { ?>
       if(<?php
       
       foreach ($banned_ext as $ext) {
-        echo "ext != '$ext' && ";
+          echo "ext != '$ext' && ";
       }
       echo "ext != 'fjsdfifwejfiowjffjfwefwefjwefij'";
       ?>){

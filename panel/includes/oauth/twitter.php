@@ -36,19 +36,19 @@ function auth()
 
     $storage = new Session();
     $credentials = new Credentials(
-    $gpub,
-    $gsec,
-    $actual_link
-);
+        $gpub,
+        $gsec,
+        $actual_link
+    );
     $twitterService = $serviceFactory->createService('twitter', $credentials, $storage);
     if (!empty($_GET['oauth_token'])) {
         $token = $storage->retrieveAccessToken('Twitter');
         // This was a callback request from twitter, get the token
         $twitterService->requestAccessToken(
-        $_GET['oauth_token'],
-        $_GET['oauth_verifier'],
-        $token->getRequestTokenSecret()
-    );
+            $_GET['oauth_token'],
+            $_GET['oauth_verifier'],
+            $token->getRequestTokenSecret()
+        );
         // Send a request now that we have access token
         $result = json_decode($twitterService->request('account/verify_credentials.json'));
         return $result['email'];

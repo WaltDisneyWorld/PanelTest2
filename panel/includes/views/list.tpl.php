@@ -3,7 +3,7 @@ if (!isset($HOME)) {
     die();
 }
 require 'includes/classes/head.class.php';
-onlyadmin();
+$permissions->onlyadmin();
 ?>
     <div class="content-wrapper">
             <div class="container-fluid">
@@ -13,23 +13,27 @@ onlyadmin();
 
                         <h2 class="page-title"><?php echo $lang_54; ?></h2>
 
-<?php if(isset($_GET["dc"])) {
-  if ($_GET["dc"] == $_SESSION["user"]) die();
-  if ($_GET["dc"] == "admin") die();
-  require_once 'includes/classes/communication.class.php';
-  $communications = new communications;
-  $communications->deprovision($_GET["dc"]);
+<?php if (isset($_GET["dc"])) {
+    if ($_GET["dc"] == $_SESSION["user"]) {
+        die();
+    }
+    if ($_GET["dc"] == "admin") {
+        die();
+    }
+    require_once 'includes/classes/communication.class.php';
+    $communications = new communications;
+    $communications->deprovision($_GET["dc"]);
 
-require_once("config.php");
-  $con = mysqli_connect($host, $user, $pass, $data);
-  $sql = 'delete from users where id = '.$_GET['dc'];
-  $result = mysqli_query($con, $sql);
+    require_once("config.php");
+    $con = mysqli_connect($host, $user, $pass, $data);
+    $sql = 'delete from users where id = '.$_GET['dc'];
+    $result = mysqli_query($con, $sql);
 
-  echo "<div class='alert alert-warning'>User has been deleted!</div>";
+    echo "<div class='alert alert-warning'>User has been deleted!</div>";
 }
 ?>
 
-<?php if(isset($_GET["d"])) { ?>
+<?php if (isset($_GET["d"])) { ?>
 
 <div class="alert alert-warning"><b>All userdata will be lost</b><br>
 <p>Please confirm that this is actually what you want to do.</p>
@@ -38,7 +42,7 @@ require_once("config.php");
 $s = array('<a href="list">No</a>','<a href="list">No</a>','<a href="list">No</a>','<a href="list">No</a>','<a href="list">No</a>','<a href="list?dc=' . $_GET["d"] . '">Yes</a>');
 shuffle($s);
 foreach ($s as $n) {
-  echo $n . "<Br>";
+    echo $n . "<Br>";
 }
 ?>
 <a href="list">No</a>
@@ -62,22 +66,19 @@ foreach ($s as $n) {
             $sql = 'SELECT * FROM users';
             $result = mysqli_query($con, $sql);
             while ($row = mysqli_fetch_row($result)) {
-if ($row[1] == $_SESSION["user"]) {
-  echo ' <tr>
+                if ($row[1] == $_SESSION["user"]) {
+                    echo ' <tr>
   <td>'.$row[1].'</td>
   <td>'.$row[5].'</td>
   <td></td>
 </tr>';
-} else {
-  echo ' <tr>
+                } else {
+                    echo ' <tr>
   <td>'.$row[1].'</td>
   <td>'.$row[5].'</td>
   <td><a href="list?d=' . $row[0] . '">Delete</a></td>
 </tr>';
-}
-
-
-           
+                }
             }
             mysqli_free_result($result);
             mysqli_close($con);

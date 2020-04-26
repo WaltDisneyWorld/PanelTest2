@@ -40,7 +40,7 @@ function auth()
         $gpub,
         $gsec,
         $actual_link
-);
+    );
     $gitHub = $serviceFactory->createService('GitHub', $credentials, $storage, array('user'));
     if (!empty($_GET['code'])) {
         // This was a callback request from github, get the token

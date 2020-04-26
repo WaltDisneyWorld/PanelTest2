@@ -3,7 +3,7 @@ if (!isset($HOME)) {
     die();
 }
 require 'includes/classes/head.class.php';
-onlyadmin();
+$permissions->onlyadmin();
 ?>
  <div class="content-wrapper">
             <div class="container-fluid">
@@ -14,7 +14,7 @@ onlyadmin();
                      
                     <h2 class="page-title">File Manager</h2>
                         
-                        <iframe src="thirdparty/mftp/index.php" style="width:1000px;border:0;" scrolling="no" onload="resizeIframe(this)"></iframe>
+                        <iframe src="filemanager" style="width:900px;border:0;" scrolling="no" onload="resizeIframe(this)"></iframe>
    <script>
 function resizeIframe(obj) {
     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';

@@ -3,7 +3,7 @@ if (!isset($HOME)) {
     die();
 }
 require 'includes/classes/head.class.php';
-onlyadmin();
+$permissions->onlyadmin();
 if (isset($_GET['a'])) {
     $con = mysqli_connect($host, $user, $pass, $data);
     $sql = 'delete from mail where id = '.$_GET['a'];

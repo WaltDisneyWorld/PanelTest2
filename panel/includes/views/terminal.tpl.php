@@ -3,7 +3,7 @@ if (!isset($HOME)) {
     die();
 }
 require 'includes/classes/head.class.php';
-onlyadmin();
+$permissions->onlyadmin();
 ?>
   <div class="content-wrapper">
             <div class="container-fluid">

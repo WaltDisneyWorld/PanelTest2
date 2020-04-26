@@ -5,7 +5,7 @@ if (!isset($HOME)) {
 }
 require 'includes/classes/head.class.php';
 require 'includes/classes/phphooks.class.php';
-onlyadmin();
+$permissions->onlyadmin();
 $plugin_list = new phphooks();
 $plugin_headers = $plugin_list->get_plugins_header();
 ?>

@@ -16,7 +16,7 @@ $safe = false;
 $noshow = true;
 require 'plugins/'.$_GET['pl'];
 if ($menu_only_admin) {
-    onlyadmin();
+    $permissions->onlyadmin();
 }
 page();
 ?>

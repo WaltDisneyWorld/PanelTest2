@@ -3,13 +3,12 @@ if (!isset($HOME)) {
     die();
 }
 require 'includes/classes/head.class.php';
-onlyadmin();
+$permissions->onlyadmin();
 ini_set('max_execution_time', 60);
 error_reporting(E_ALL);
 function redodie($a = '')
 {
     $HOME = true;
-
 }
 
 ?>
@@ -127,19 +126,20 @@ if ('' != $getVersions and '' != $currentVersion) {
                     }
                 }
                 $master = 'includes/tmp/';
-                function doTheExtraction() {
+                function doTheExtraction()
+                {
                     $data = exec('unzip -d includes/tmp includes/master.zip');
                     if (is_dir('includes/tmp/intisp')) {
                         return;
                     }
                     $zip = new ZipArchive();
-                    if (TRUE === $zip->open('includes/master.zip')) {
-                    $zip->extractTo('includes/tmp/');
-                     $zip->close();
-                     return true;
+                    if (true === $zip->open('includes/master.zip')) {
+                        $zip->extractTo('includes/tmp/');
+                        $zip->close();
+                        return true;
                     } else {
-                   return false;
-                   die('t');
+                        return false;
+                        die('t');
                     }
                 }
 
@@ -191,11 +191,11 @@ if ('' != $getVersions and '' != $currentVersion) {
     if (isset($updated) and true == $updated) {
         include 'includes/classes/mail.class.php';
         sendemailuser(
-                'System Update/Emergency Recovery',
-                '
+            'System Update/Emergency Recovery',
+            '
     <p>IntISP has been updated to version '.$actualVersion.'. Please make sure everything works, if not you will need to either run a emergency restore or restore your backup.</p>
     '
-            );
+        );
         print_message(lang('READY'), lang('Script Updated To Version').' '.$actualVersion, $color = 'green');
     } elseif (!isset($found) or true != $found) {
         print_message(lang('INFO'), lang('The Newest Version Of The Script Is Version').' '.$currentVersion, $color = 'green');

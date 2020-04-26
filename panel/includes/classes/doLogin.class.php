@@ -1,5 +1,7 @@
 <?php
-if (!defined("HOMEBASE")) die();
+if (!defined("HOMEBASE")) {
+    die();
+}
 
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;

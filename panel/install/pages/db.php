@@ -50,10 +50,10 @@ if (isset($_GET['c'])) {
         /*
         Broken due to remove License Checks. Fix Session issues
         */
-          $_SESSION["act"] = true;
-        /*
-          BYPASS ACTIVATION CHECK
-        */
+            $_SESSION["act"] = true;
+            /*
+              BYPASS ACTIVATION CHECK
+            */
 
             ?>
      <script>window.location.href = "index.php?pg=installation";</script>
@@ -106,15 +106,16 @@ if (isset($_GET['c'])) {
   <label class="label">Database Name</label>
   <div class="control">
     <input name="database" class="input is-rounded" type="text" placeholder="intisp" value="<?php
-    function generateRandomString($length = 10) {
-    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; ++$i) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    function generateRandomString($length = 10)
+    {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; ++$i) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
-    return $randomString;
-}
 echo 'intisp'.generateRandomString(10);
 
     ?>" style="width:400px">
@@ -127,11 +128,11 @@ echo 'intisp'.generateRandomString(10);
   <div class="control">
 	  <?php $link = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ?
                 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].
-                $_SERVER['REQUEST_URI']; 
+                $_SERVER['REQUEST_URI'];
                 if (isset($_GET["c"])) {
-                $return = substr($link, 0, -26);
+                    $return = substr($link, 0, -26);
                 } else {
-                  $return = substr($link, 0, -24);
+                    $return = substr($link, 0, -24);
                 }
                 
                 ?>

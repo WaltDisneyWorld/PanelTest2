@@ -231,7 +231,7 @@ class phphooks
     {
         if (isset($this->hooks[$tag])) {
             $these_hooks = $this->hooks[$tag];
-            for ($i = 0; $i <= 20; ++$i ) {
+            for ($i = 0; $i <= 20; ++$i) {
                 if (isset($these_hooks[$i])) {
                     foreach ($these_hooks[$i] as $hook) {
                         if (isset($result)) {
@@ -267,7 +267,7 @@ class phphooks
         $result = $args;
         if (isset($this->hooks[$tag])) {
             $these_hooks = $this->hooks[$tag];
-            for ($i = 0; $i <= 20; ++$i ) {
+            for ($i = 0; $i <= 20; ++$i) {
                 if (isset($these_hooks[$i])) {
                     foreach ($these_hooks[$i] as $hook) {
                         $args = $result;

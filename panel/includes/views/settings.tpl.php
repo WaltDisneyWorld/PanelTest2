@@ -1,6 +1,6 @@
 <?php if (!isset($HOME)) {
     die();
-} require 'includes/classes/head.class.php'; onlyadmin(); onlymasterreseller(); ?>
+} require 'includes/classes/head.class.php'; $permissions->onlyadmin(); ?>
         <div class="content-wrapper">
             <div class="container-fluid">
 
@@ -92,20 +92,23 @@
         mysqli_free_result($result);
     }
 
-				 $templates = scandir('templates');
-				 foreach ($templates as $template) {
-					 if ('.' == $template || '..' == $template) {} else {
-						 if (is_dir('templates/'.$template)) {
-					 ?>
-				 <option value="<?php echo $template; ?>" <?php 
-							 if ($template == $oldtemplate) {
-								 echo 'selected';
-							 } ?>
+                 $templates = scandir('templates');
+                 foreach ($templates as $template) {
+                     if ('.' == $template || '..' == $template) {
+                     } else {
+                         if (is_dir('templates/'.$template)) {
+                             ?>
+				 <option value="<?php echo $template; ?>" <?php
+                             if ($template == $oldtemplate) {
+                                 echo 'selected';
+                             } ?>
 							 ><?php echo $template; ?></option>
 				 <?php
-				 }}}
+                         }
+                     }
+                 }
 
-				 ?>
+                 ?>
 </select>
     
   </fieldset>

@@ -5,7 +5,7 @@ if (!isset($HOME)) {
 require 'includes/classes/head.class.php';
 ?>
 
-        <?php if ('admin' == $_SESSION['user']) {
+        <?php if ($permissions->isAdmin()) {
     ?>
 <style>
   .btn {
@@ -86,21 +86,6 @@ $(document).ready(function(){
   </ul> 
   
  <?php
- $whmurl = '';
-    require 'config.php';
-    $mysqli = new mysqli();
-    $con = mysqli_connect("$host", "$user", "$pass", "$data");
-    // Check connection
-    $sql = "SELECT value FROM settings WHERE code =  'whmurl' LIMIT 0 , 30";
-    if ($result = mysqli_query($con, $sql)) {
-        // Fetch one and one row
-        while ($row = mysqli_fetch_row($result)) {
-            $whmurl = $row[0];
-        }
-        // Free result set
-        mysqli_free_result($result);
-    }
-    mysqli_close($con);
     if ('' != $whmurl) {
         ?>
   <script>
@@ -133,7 +118,7 @@ $(document).ready(function(){
     } ?>
   
 <?php
-if (ismasterreseller()) {
+if ($permissions->isAdmin()) {
         ?>
     <script>
 $(document).ready(function(){
@@ -184,12 +169,7 @@ $(document).ready(function(){
 
                                         <a type="button" href="<?php echo $webroot; ?>/newserv" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/add.svg"><hr><?php echo $lang_15; ?></a>
                                         
-                                        <?php if ('' != file_get_contents('data/cloudflare')) {
-                                                ?>
-                                        
-                                          <a type="button" href="<?php echo $webroot; ?>/cloudflare" class="svr btn btn-default"><i class="fa fa-5x fa-cloud"></i><hr><?php echo $lang_17; ?></a>
-                                        <?php
-                                            } ?>
+                                     
                                         <a type="button" href="<?php echo $webroot; ?>/list#" class="svr btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/list.svg"><hr><?php echo $lang_18; ?></a>
                                                                        
                                          </li>
@@ -213,20 +193,22 @@ $(document).ready(function(){
   <li class="list-group-item notification is-dark"><a id="ahide" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a><a id="ashow" class="pull-right"><i class="fa fa-list" aria-hidden="true"></i></a> <?php echo $lang_46; ?></li>
   <li class="list-group-item">  
 <?php
-if (ismasterreseller()) {
-                                                                                ?>
+if ($permissions->isAdmin()) {
+        ?>
                                 <a type="button" href="<?php echo $webroot; ?>/settings" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/settings.svg"><hr><?php echo $lang_21; ?></a> 
+                         <a type="button" href="<?php echo $webroot; ?>/license" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/license.svg"><hr>Licensing</a> 
+                           
                             <a type="button" href="<?php echo $webroot; ?>/fman" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/file.svg"><hr>Root File Manager</a> 
                                 
                                 <a type="button" href="<?php echo $webroot; ?>/update" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/update.svg"><hr><?php echo $lang_22; ?></a> <?php
-                                                                            } ?>
+    } ?>
                                   <a type="button" href="<?php echo $webroot; ?>/plug" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/plugins.svg"><hr><?php echo $lang_23; ?></a>
                                         <a type="button" href="<?php echo $webroot; ?>/terminal" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/term.svg"><hr><?php echo $lang_24; ?></a>
                                         
                                                                                       <a type="button" href="<?php echo $webroot; ?>/mail" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/mail.svg"><hr><?php echo $lang_25; ?></a>
                                       
                                             <?php
-                                            if (ismasterreseller()) {
+                                            if ($permissions->isAdmin()) {
                                                 ?>
                                               <a type="button" href="https://host.adaclare.com/submitticket.php" class="sys btn btn-default"><img style="width:50px;height:50px;"  src="includes/img/icons/support.svg"><hr><?php echo $lang_31; ?></a> 
                    
@@ -317,7 +299,7 @@ $(document).ready(function(){
   </ul>  
   <?php
 if ('admin' != $_SESSION['user']) {
-   ?>
+    ?>
  <ul class="list-group" data-step="5" data-intro="This is where users manage there servers.">
   <li class="list-group-item notification is-dark">File Manager</li>
   <li class="list-group-item">  

@@ -1,15 +1,20 @@
 <?php
-if (!defined("HOMEBASE")) die();
+if (!defined("HOMEBASE")) {
+    die();
+}
 
-if (isset($_GET['de'])) $_SESSION['lang'] = 'de';
-if (isset($_GET['es'])) $_SESSION['lang'] = 'es';
-if (isset($_GET['en'])) $_SESSION['lang'] = 'en';
-if (!isset($lang)) $lang = 'en';
-if (isset($_SESSION['lang'])) $lang = $_SESSION['lang'];
+if (isset($_GET['de'])) {
+    $_SESSION['lang'] = 'de';
+}
+if (isset($_GET['es'])) {
+    $_SESSION['lang'] = 'es';
+}
+if (isset($_GET['en'])) {
+    $_SESSION['lang'] = 'en';
+}
 
-require_once 'includes/lang/'.$lang.'.php';
 
-define("site_title",$this->getValueFromSetting("title"));
+define("site_title", $this->getValueFromSetting("title"));
 
     $alerts = '';
         if (isset($_GET['error'])) {
@@ -25,10 +30,18 @@ define("site_title",$this->getValueFromSetting("title"));
         $twitter = false;
         $facebook = false;
         
-    if ($this->getValueFromSetting("github_public") != "") $github = true;
-    if ($this->getValueFromSetting("facebook_public") != "") $facebook = true;
-    if ($this->getValueFromSetting("google_public") != "") $google = true;        
-    if ($this->getValueFromSetting("twitter_public") != "") $twitter = true;               
+    if ($this->getValueFromSetting("github_public") != "") {
+        $github = true;
+    }
+    if ($this->getValueFromSetting("facebook_public") != "") {
+        $facebook = true;
+    }
+    if ($this->getValueFromSetting("google_public") != "") {
+        $google = true;
+    }
+    if ($this->getValueFromSetting("twitter_public") != "") {
+        $twitter = true;
+    }
    
         $oauth_cred = '';
 
@@ -46,7 +59,7 @@ define("site_title",$this->getValueFromSetting("title"));
        } else {
            $reseller = '';
        }
-     $twig_settings = Array('template_dir' => 'templates/'.constant("template_name"),
+     $twig_settings = array('template_dir' => 'templates/'.constant("template_name"),
 'site_title' => constant("site_title"),
 'alerts' => $alerts,
 'action_url' => 'index.php?action=login',

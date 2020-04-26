@@ -52,12 +52,12 @@ VALUES ('".rand(10000, 99999)."', '".$username."', '".Crypto::encrypt($password,
 
     require 'includes/classes/mail.class.php';
     sendemailuser(
-                'New User',
-                '
+        'New User',
+        '
     <b>A new user has been added to Webister</b>
     <p>There username is '.$_POST['username'].'</p>
     <p>This email is automatically sent out everytime a setting is changed. To disable this feature please visit the control panel and set the email to nothing.</p>
     '
-            );
-header('Location: '.$webroot.'/newserv?pa='.newserv($_POST['pstart'], $_POST['disk'], $_POST['username'], $_POST['pend']));
+    );
+    header('Location: '.$webroot.'/newserv?pa='.newserv($_POST['pstart'], $_POST['disk'], $_POST['username'], $_POST['pend']));
 }

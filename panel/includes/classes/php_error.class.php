@@ -1329,7 +1329,7 @@ namespace php_error;
                 $this->isAjax = (
                     isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
                                 ('XMLHttpRequest' === $_SERVER['HTTP_X_REQUESTED_WITH'])
-                        ) || (
+                ) || (
                             isset($_REQUEST['php_error_is_ajax'])
                         );
 
@@ -1728,10 +1728,10 @@ namespace php_error;
                         $contents = explode(
                             "\n",
                             preg_replace(
-                                    '/(\r\n)|(\n\r)|\r/',
-                                    "\n",
-                                    str_replace("\t", '    ', $contents)
-                                )
+                                '/(\r\n)|(\n\r)|\r/',
+                                "\n",
+                                str_replace("\t", '    ', $contents)
+                            )
                         );
 
                         $this->cachedFiles[$path] = $contents;

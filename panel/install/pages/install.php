@@ -46,7 +46,8 @@ if (!isset($_SESSION['act'])) {
     }
         $key = Key::createNewRandomKey();
         $salt = $key->saveToAsciiSafeString();
-        function simpleSettingInsert($key,$value = '') {
+        function simpleSettingInsert($key, $value = '')
+        {
             global $m;
             $sql = "INSERT INTO settings (code, value) VALUES ('$key', '$value')";
             echo "Placing Default Value for $key...\n";
@@ -55,15 +56,15 @@ if (!isset($_SESSION['act'])) {
      $sql = "INSERT INTO mail (subject, message) VALUES ('Welcome To Webister','<b>We are glad that you decided to choose Webister.</b> <p>We hope you enjoy our awesome control panel. You will get messages/emails once you place your email address in the settings.</p><p>
 If you feel that there are some issues or you need fix your Webister, please remember to try updating it first. You can update this in our main control panel.</p>')";
 $m->query($sql);
-simpleSettingInsert('title','My Web Host');
+simpleSettingInsert('title', 'My Web Host');
 simpleSettingInsert('cloudflare');
-simpleSettingInsert('color','000000');
+simpleSettingInsert('color', '000000');
 simpleSettingInsert('forum');
-simpleSettingInsert('head','Panel');
-simpleSettingInsert('logo','public/assets/img/intisp.png');
+simpleSettingInsert('head', 'Panel');
+simpleSettingInsert('logo', 'public/assets/img/intisp.png');
 simpleSettingInsert('mail');
 simpleSettingInsert('support');
-simpleSettingInsert('theme','default');
+simpleSettingInsert('theme', 'default');
 simpleSettingInsert('upbutton');
 simpleSettingInsert('whmurl');
 simpleSettingInsert('smtp_host');
@@ -82,7 +83,7 @@ oauth_db('github');
 oauth_db('twitter');
 oauth_db('google');
 oauth_db('facebook');
-simpleSettingInsert('register',$_SESSION['act']);
+simpleSettingInsert('register', $_SESSION['act']);
 $sql = "INSERT INTO users (id, username, password, bandwidth, diskspace, port) VALUES ('1', 'admin', '".Crypto::encrypt('admin', $key)."', '', '', '80')";
 $m->query($sql);
 

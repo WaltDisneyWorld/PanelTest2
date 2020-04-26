@@ -28,7 +28,7 @@ function sendemailuser($subject, $message)
 
     $mail = new PHPMailer(true);
 
-   
+
     $mysqli = new mysqli();
     $con = mysqli_connect("$host", "$user", "$pass", "$data");
     $sql = "SELECT value FROM settings WHERE code =  'smtp_host' LIMIT 0 , 30";
@@ -119,6 +119,6 @@ function sendemailuser($subject, $message)
     //die("Cannot Send Email Out Please try again Later.");
 }
 */
-function sendemailuser($a,$b) {
-    
+function sendemailuser($a, $b)
+{
 }
