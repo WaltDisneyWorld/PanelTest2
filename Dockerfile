@@ -61,11 +61,6 @@ RUN a2enmod proxy
 # Default config for mod_security
 RUN cp /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
 
-# Install mariadb
-RUN DEBIAN_FRONTEND=noninteractive apt-get install mariadb-common mariadb-server mariadb-client -y
-
-# Install smtp mail server
-RUN DEBIAN_FRONTEND=noninteractive apt-get install postfix -y
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install git composer curl -y
 
@@ -91,14 +86,10 @@ RUN chown -R www-data:www-data /var/www/html
 
 VOLUME /var/www/html
 VOLUME /var/log/httpd
-VOLUME /var/lib/mysql
-VOLUME /var/log/mysql
 VOLUME /etc/apache2
 
 EXPOSE 80
 EXPOSE 443
-EXPOSE 3306
-
 CMD ["/usr/sbin/run-docker.sh"]
 
 
