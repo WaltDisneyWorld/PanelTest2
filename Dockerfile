@@ -6,11 +6,9 @@ RUN apt-get upgrade -y
 
 # Add php repo
 RUN apt-get install software-properties-common -y
+RUN add-apt-repository universe -y
 RUN add-apt-repository ppa:ondrej/php -y
 RUN apt-get update
-
-COPY debconf.selections /tmp/
-RUN debconf-set-selections /tmp/debconf.selections
 RUN apt-get install -y zip unzip
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -63,7 +61,7 @@ RUN cp /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurit
 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install git composer curl -y
-
+RUN apt-get install -y certbot python3-certbot-apache
 ENV LOG_STDOUT **Boolean**
 ENV LOG_STDERR **Boolean**
 ENV LOG_LEVEL warn
